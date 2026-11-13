@@ -5,7 +5,8 @@
 #   then runs the timer (`net_use_item`, `net_use_progress` replicate for the HUD). Moving faster than
 #   cancel_move_speed (the owner gets a "stand still" note) or taking damage cancels it. On completion the host removes one item and applies heal /
 #   food / water through SurvivalRules (healing halved while a meter is low), and starts the item's "effect" (D-052).
-# Depends on: SurvivalRules, ItemDB, Player (parent: inventory, health, life, needs, is_local).
+# Sound (D-077): the item's use sound (Sfx.use_event) plays for everyone when a use starts and stops if it's cancelled.
+# Depends on: SurvivalRules, ItemDB, Sfx, Player (parent: inventory, health, life, needs, is_local).
 class_name ItemUse
 extends Node
 
@@ -15,6 +16,7 @@ var net_use_progress := 0.0
 var _use: Dictionary = {}
 var _left := 0.0
 var _total := 1.0
+var _sound := 0  # Sfx handle of the use sound (every peer)
 
 @onready var player: Node = get_parent()
 
@@ -25,7 +27,7 @@ func _ready() -> void:
 
 func _on_damaged(_amount: float, attacker: int) -> void:
 	if attacker != -1:  # -1 = hunger/thirst, which shouldn't stop you eating
-		_cancel()
+		_abort()
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -77,6 +79,7 @@ func _host_start(item_id: String) -> void:
 	_left = _total
 	net_use_item = item_id
 	net_use_progress = 0.0
+	_fx_use.rpc(item_id, true)
 
 
 # Host, every physics tick.
@@ -88,7 +91,7 @@ func host_tick(delta: float) -> void:
 	if player.life.net_state != LifeState.ALIVE or horizontal > float(t.get("cancel_move_speed", 1.0)):
 		if player.life.net_state == LifeState.ALIVE:
 			_moved_note.rpc_id(player.peer_id)  # say why, instead of silently doing nothing
-		_cancel()
+		_abort()
 		return
 	_left -= delta
 	net_use_progress = clampf(1.0 - _left / _total, 0.0, 1.0)
@@ -108,6 +111,24 @@ func _moved_note() -> void:
 	var hud := get_tree().get_first_node_in_group("hud")
 	if hud:
 		hud.show_toast("Stand still to eat, drink or heal", 2.0)
+
+
+# Cancelled before it finished: cut the use sound too.
+func _abort() -> void:
+	if net_use_item != "":
+		_fx_use.rpc("", false)
+	_cancel()
+
+
+@rpc("authority", "call_local", "reliable")
+func _fx_use(item_id: String, start: bool) -> void:
+	Sfx.stop(_sound)
+	_sound = 0
+	if not start:
+		return
+	var ev: String = Sfx.use_event(item_id, str(ItemDB.get_item(item_id).get("category", "")))
+	if ev != "":
+		_sound = Sfx.play_local(ev) if player.is_local else Sfx.play_at(ev, player.global_position + Vector3.UP)
 
 
 func _cancel() -> void:

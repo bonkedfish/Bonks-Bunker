@@ -2,10 +2,12 @@
 #   * with a disc out: the bag (carried discs, the one in hand highlighted), backhand / forehand, tilt, and the power
 #     bar while charging, with a mark at the power that carries to the basket on flat ground;
 #   * during a round: hole, par, length, throw number, feet to the basket and score so far (above the bag), and a
-#     reminder to walk to the disc / tee when too far from it;
+#     reminder to walk to the disc / tee when too far from it; whose throw it is (top centre, D-076); the wind
+#     (arrow turned to your view, mph, where it comes from); the basket marker (arrow + feet, through trees,
+#     pinned to the screen edge when it's off screen);
 #   * near the course only (D-071): the scorecard (every player in the round, per hole, total, to par) while Q is held, for a few seconds after a
 #     hole is scored, and longer when the round ends.
-# Presentation only; redraws ~15x a second (every frame while charging). Depends on: DiscGolfDirector (group
+# Presentation only; redraws ~15x a second (every frame while charging or playing a hole). Depends on: DiscGolfDirector (group
 # "disc_golf"), DiscThrower (local player's "disc"), DiscFlightRules, DiscGolfRules.
 extends Control
 
@@ -65,7 +67,8 @@ func _process(delta: float) -> void:
 	if not visible:
 		return
 	_redraw -= delta
-	if _redraw <= 0.0 or _me.disc.charging:
+	var on_hole: bool = _dg.round_active and not e.is_empty() and not e.done and not e.left
+	if _redraw <= 0.0 or _me.disc.charging or on_hole:  # every frame on a hole: the basket marker follows the view
 		_redraw = REDRAW_SECONDS
 		queue_redraw()
 
@@ -81,6 +84,10 @@ func _draw() -> void:
 		to_basket = Vector2(_me.global_position.x, _me.global_position.z).distance_to(
 			Vector2(c.basket_position(int(e.hole)).x, c.basket_position(int(e.hole)).z))
 		_hole_line(e, c, to_basket)
+		_turn_banner()
+		_wind_rose()
+		if not e.out:
+			_basket_marker(c.basket_position(int(e.hole)), to_basket)
 	if _me.disc.active:
 		_bag(to_basket)
 	if _near and (Input.is_action_pressed("scorecard") or _card_left > 0.0) and c != null and not _dg.card.is_empty():
@@ -105,11 +112,75 @@ func _hole_line(e: Dictionary, c: DiscCourse, to_basket: float) -> void:
 	var hint := ""
 	if _dg.is_flying(multiplayer.get_unique_id()):
 		hint = "In flight..."
+	elif _dg.waiting_turn():
+		hint = _dg.wait_text()
 	elif away > reach:
 		hint = ("Go to the tee  (%d ft)" if int(e.throws) == 0 else "Walk to your disc  (%d ft)") % roundi(away * FT)
 	elif not _me.disc.active:
 		hint = "Press 3 to take out a disc"
 	_panel_text(Vector2(size.x * 0.5, size.y - 262.0), [text, hint], 17, [Color(1.0, 0.92, 0.7), Color(0.6, 0.9, 1.0)])
+
+
+# Top centre: whose throw it is (D-076).
+func _turn_banner() -> void:
+	var t: int = _dg.turn
+	if t == 0:
+		return
+	var mine: bool = t == multiplayer.get_unique_id()
+	var text := "YOUR THROW" if mine else "%s IS THROWING" % str(_dg.player_label(t)).to_upper()
+	if _dg.is_flying(t):
+		text = "YOUR DISC IS IN THE AIR" if mine else "%s'S DISC IS IN THE AIR" % str(_dg.player_label(t)).to_upper()
+	_panel_text(Vector2(size.x * 0.5, 84.0), [text], 20, [Color(0.45, 1.0, 0.5) if mine else Color(1.0, 0.85, 0.45)])
+
+
+# Left of the bag: wind arrow (where it blows, turned to your view), mph and where it comes from (D-076).
+func _wind_rose() -> void:
+	var w: Vector2 = _dg.wind
+	var c := Vector2(size.x * 0.5 - 330.0, size.y - 150.0)
+	draw_circle(c, 34.0, Color(0, 0, 0, 0.55))
+	draw_arc(c, 34.0, 0.0, TAU, 32, Color(1, 1, 1, 0.35), 1.5)
+	var mph := roundi(w.length() / DiscFlightRules.MPH)
+	if mph > 0:
+		var d := w.normalized().rotated(_me.yaw)  # same turn as the minimap: your facing is up
+		var tip := c + d * 26.0
+		var tail := c - d * 22.0
+		var side := Vector2(-d.y, d.x)
+		draw_line(tail, tip - d * 8.0, Color(0.6, 0.9, 1.0), 4.0)
+		draw_colored_polygon(PackedVector2Array([tip, tip - d * 12.0 + side * 8.0, tip - d * 12.0 - side * 8.0]), Color(0.6, 0.9, 1.0))
+	var label := "WIND %d mph" % mph
+	var from := "from %s" % DiscFlightRules.wind_from(w) if mph > 0 else "calm"
+	_text(c + Vector2(-_font.get_string_size(label, HORIZONTAL_ALIGNMENT_LEFT, -1, 14).x * 0.5, 54.0), label, 14, Color(0.85, 0.95, 1.0))
+	_text(c + Vector2(-_font.get_string_size(from, HORIZONTAL_ALIGNMENT_LEFT, -1, 13).x * 0.5, 71.0), from, 13, Color(0.75, 0.8, 0.85))
+
+
+# The basket on screen: a yellow arrow over it with the distance, drawn through trees; pinned to the screen edge
+# (pointing toward it) when it's off screen or behind you.
+func _basket_marker(basket: Vector3, metres: float) -> void:
+	var cam := get_viewport().get_camera_3d()
+	if cam == null:
+		return
+	var at := basket + Vector3.UP * 2.0
+	var behind := cam.is_position_behind(at)
+	var p := cam.unproject_position(at)
+	if behind:
+		p = size - p
+	var inner := Rect2(Vector2.ZERO, size).grow(-48.0)
+	var col := Color(1.0, 0.82, 0.18)
+	var label := "%d ft" % roundi(metres * FT)
+	if not behind and inner.has_point(p):
+		var tri := PackedVector2Array([p, p + Vector2(-11, -16), p + Vector2(11, -16)])
+		draw_colored_polygon(PackedVector2Array([p + Vector2(0, 3), p + Vector2(-14, -18), p + Vector2(14, -18)]), Color(0, 0, 0, 0.8))
+		draw_colored_polygon(tri, col)
+		_text(p + Vector2(-_font.get_string_size(label, HORIZONTAL_ALIGNMENT_LEFT, -1, 15).x * 0.5, -24.0), label, 15, col)
+		return
+	var c := size * 0.5
+	var dir := (p - c).normalized() if (p - c).length() > 0.001 else Vector2.UP
+	var k := minf(absf(inner.size.x * 0.5 / dir.x) if dir.x != 0.0 else INF, absf(inner.size.y * 0.5 / dir.y) if dir.y != 0.0 else INF)
+	var e := c + dir * k
+	var side := Vector2(-dir.y, dir.x)
+	draw_colored_polygon(PackedVector2Array([e + dir * 16.0, e - dir * 6.0 + side * 13.0, e - dir * 6.0 - side * 13.0]), Color(0, 0, 0, 0.8))
+	draw_colored_polygon(PackedVector2Array([e + dir * 13.0, e - dir * 4.0 + side * 10.0, e - dir * 4.0 - side * 10.0]), col)
+	_text(e - dir * 30.0 - Vector2(_font.get_string_size(label, HORIZONTAL_ALIGNMENT_LEFT, -1, 14).x * 0.5, -5.0), label, 14, col)
 
 
 # Bottom centre: the bag, grip, tilt, power bar.

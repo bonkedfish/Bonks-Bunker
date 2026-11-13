@@ -22,6 +22,8 @@ const WORLD_MASK := 1
 const RETARGET_DISTANCE := 0.75
 const SWIPE_ARC_DEGREES := 100.0
 
+static var frozen := false  # host: every zombie holds still (ace replay, D-076; set by AceReplay)
+
 var team := &"zombies"
 var hit_radius := 0.35
 var peer_id := 0  # not a player
@@ -189,7 +191,7 @@ func hit_capsule_at(tick: float) -> Vector4:
 
 func _physics_process(delta: float) -> void:
 	if multiplayer.has_multiplayer_peer() and multiplayer.is_server():
-		if net_active and not health.is_dead():
+		if net_active and not health.is_dead() and not frozen:
 			_host_step(delta)
 	elif net_active and not _snapshots.is_empty():
 		var s := _snapshots.sample(Time.get_ticks_msec() / 1000.0 - NetClock.INTERP_DELAY)

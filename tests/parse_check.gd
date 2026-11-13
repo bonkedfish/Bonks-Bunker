@@ -11,7 +11,10 @@ const PATHS := ["res://scripts/rules/disc_flight_rules.gd", "res://scripts/rules
 	"res://scripts/dropzone/dz_court.gd", "res://scripts/player/sport_input.gd", "res://scripts/ui/drop_zone_hud.gd",
 	"res://scripts/player/item_use.gd", "res://tools/map_import/street_signs.gd", "res://tools/map_import/build_cells.gd",
 	"res://tools/map_import/build_world_map.gd", "res://tools/map_import/water_builder.gd", "res://tools/landmarks/build_dropzone.gd",
-	"res://scripts/ui/disc_golf_hud.gd"]
+	"res://scripts/ui/disc_golf_hud.gd", "res://scripts/discgolf/disc_tracer.gd", "res://scripts/discgolf/ace_replay.gd",
+	"res://scripts/ai/zombie.gd", "res://scripts/combat/health.gd",
+	"res://scripts/audio/sfx.gd", "res://scripts/audio/ambience.gd", "res://scripts/combat/weapon_holder.gd",
+	"res://scripts/combat/combat_world.gd", "res://scripts/data/weapon_db.gd", "res://scripts/ui/settings_menu.gd"]
 
 
 func _ready() -> void:

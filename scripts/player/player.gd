@@ -66,6 +66,7 @@ var looked_pickup := 0             # local player: id of the dropped item (World
 var looked_workbench: Node = null  # local player: the crafting bench (group "workbenches") under the crosshair
 var looked_course_box: Node = null  # local player: a disc golf course box (group "course_boxes", D-069) under the crosshair
 var looked_sport_spot: Node = null  # local player: a Drop Zone bay / putting start / court post (group "sport_spots", D-074)
+var cutscene := false  # ace replay (D-076, set on every peer by AceReplay): no moving, looking or using
 var _look_timer := 0.0
 
 # Owning client: prediction history, indexed by seq % HISTORY_SIZE.
@@ -164,6 +165,7 @@ func _ready() -> void:
 	if multiplayer.is_server():
 		health.reset()
 		health.died.connect(_on_died)
+		health.damaged.connect(_on_hurt)
 		life.revived.connect(_on_revived)
 		life.bled_out.connect(_on_bled_out)
 		_spawn_point = global_position
@@ -174,7 +176,7 @@ func _ready() -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	if not is_local or Input.mouse_mode != Input.MOUSE_MODE_CAPTURED:
+	if not is_local or cutscene or Input.mouse_mode != Input.MOUSE_MODE_CAPTURED:
 		return
 	if event.is_action_pressed("interact"):
 		_try_open_container()  # an open loot window consumes E first, so this never reopens it
@@ -290,6 +292,20 @@ func _host_try_revive(flags: int, delta: float) -> void:
 			best_dist = d
 	if best:
 		best.life.host_revive_step(delta)
+
+
+# Host: a hit (not hunger/thirst, attacker -1) makes the hurt sound for everyone (D-077).
+func _on_hurt(_amount: float, attacker_peer: int) -> void:
+	if attacker_peer != -1:
+		_fx_hurt.rpc()
+
+
+@rpc("authority", "call_local", "unreliable")
+func _fx_hurt() -> void:
+	if is_local:
+		Sfx.play_local("player_hurt")
+	else:
+		Sfx.play_at("player_hurt", global_position + Vector3.UP)
 
 
 func _on_died(_attacker_peer: int) -> void:
@@ -413,12 +429,19 @@ func _simulate(move: Vector2, flags: int, look_yaw: float, look_pitch: float) ->
 		_set_crouched(want_crouch)
 	var carried := inventory.weight
 	var wading := water == MovementRules.Water.WADE
+	var was_on_floor := is_on_floor()
 	velocity = MovementRules.step_velocity(
 		velocity, MovementRules.wish_direction(move, yaw),
 		(flags & FLAG_SPRINT) != 0 and not wading and CarryRules.can_sprint(carried, _carry) and needs.can_sprint(), crouched,
-		(flags & FLAG_JUMP) != 0, is_on_floor(), _gravity, meepo.movement(tuning) if meepo.net_riding else tuning, dt,
+		(flags & FLAG_JUMP) != 0, was_on_floor, _gravity, meepo.movement(tuning) if meepo.net_riding else tuning, dt,
 		CarryRules.speed_multiplier(carried, _carry) * (float(tuning.wade_speed_mult) if wading else 1.0) * effects.speed_mult())
+	var fall := velocity.y
 	move_and_slide()
+	if is_local:  # jump / landing sounds, heard by this player only (D-077)
+		if was_on_floor and (flags & FLAG_JUMP) != 0 and fall > 0.5:
+			Sfx.play_local("jump")
+		elif not was_on_floor and is_on_floor() and fall < -float(Sfx.data.get("land_min_speed", 4.0)):
+			Sfx.play_local("land")
 
 
 # Metres of water above the feet (0 when dry), from the water surface colliders.
@@ -450,14 +473,14 @@ func _has_headroom() -> bool:
 # --- owning client -------------------------------------------------------------
 
 func _read_local_move() -> Vector2:
-	if Input.mouse_mode != Input.MOUSE_MODE_CAPTURED:
+	if cutscene or Input.mouse_mode != Input.MOUSE_MODE_CAPTURED:
 		return Vector2.ZERO
 	return Input.get_vector("move_left", "move_right", "move_forward", "move_back")
 
 
 func _read_local_flags() -> int:
 	var flags := 0
-	if Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
+	if Input.mouse_mode == Input.MOUSE_MODE_CAPTURED and not cutscene:
 		if Input.is_action_just_pressed("weapon_1"):
 			_select_slot(0)
 		if Input.is_action_just_pressed("weapon_2"):
@@ -526,6 +549,9 @@ func _send_intent(seq: int, move: Vector2, flags: int, look_yaw: float, look_pit
 	_last_queued_seq = seq
 	if move.length_squared() > 1.0:
 		move = move.normalized()
+	if cutscene:  # ace replay: hold still whatever the client sends
+		move = Vector2.ZERO
+		flags &= WeaponHolder.FLAG_SLOT2
 	_q_move[_q_next] = move
 	_q_flags[_q_next] = flags & ALL_FLAGS
 	_q_yaw[_q_next] = wrapf(look_yaw, -PI, PI)

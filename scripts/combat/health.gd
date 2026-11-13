@@ -9,6 +9,7 @@ signal damaged(amount: float, attacker_peer: int)
 @export var max_health := 100.0
 var current := 100.0
 var damage_mult := 1.0  # host: damage-taken multiplier (player effects, D-052)
+var invulnerable := false  # host: takes no damage (ace replay, D-076)
 
 
 func is_dead() -> bool:
@@ -21,7 +22,7 @@ func reset() -> void:
 
 # Host only. Returns true if this hit killed.
 func apply_damage(amount: float, attacker_peer: int) -> bool:
-	if current <= 0.0 or amount <= 0.0:
+	if current <= 0.0 or amount <= 0.0 or invulnerable:
 		return false
 	amount *= damage_mult
 	current = maxf(current - amount, 0.0)

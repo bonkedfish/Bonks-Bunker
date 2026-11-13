@@ -44,4 +44,5 @@ static func _load() -> void:
 			push_error("WeaponDB: %s:%s has unknown kind '%s'" % [PATH, id, kind])
 			continue
 		if DataLoader.validate(entry, SCHEMAS[kind], "%s:%s" % [PATH, id]):
+			entry["id"] = id  # sound events are named after the weapon (Sfx, D-077)
 			_weapons[id] = entry

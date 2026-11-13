@@ -117,7 +117,7 @@ func _process(delta: float) -> void:
 			hit_marker.hide()
 
 	var player := get_tree().get_first_node_in_group("local_player")
-	if player == null:
+	if player == null or player.cutscene:  # no player yet, or the ace replay (D-076) has the screen
 		if visible:
 			hide()
 		return

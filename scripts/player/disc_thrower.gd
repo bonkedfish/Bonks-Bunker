@@ -4,6 +4,7 @@
 # you look; right click cancels; Z / X or the mouse wheel tilt the disc (left edge down curves left), F swaps
 # backhand / forehand. The throw goes to the host as an intent (DiscGolfDirector.request_throw) — the host decides
 # everything. Shows the disc in your hand instead of the weapon, and stops the gun firing (Player checks `active`).
+# In a round you can only charge on your turn (D-076); clicking early shows whose throw it is.
 # HUD reads active / disc_id / charge / tilt_deg / forehand. Depends on: DiscFlightRules, DiscGolfDirector
 # (group "disc_golf"), Player (parent: is_local, inventory, yaw, pitch, riding, health, viewmodel, camera).
 class_name DiscThrower
@@ -91,14 +92,21 @@ func _process(delta: float) -> void:
 	if player.inventory.count(disc_id) <= 0:  # dropped or traded it away
 		_set_active(false)
 		return
-	var can: bool = Input.mouse_mode == Input.MOUSE_MODE_CAPTURED and not player.riding and not player.health.is_dead()
+	var can: bool = Input.mouse_mode == Input.MOUSE_MODE_CAPTURED and not player.riding and not player.health.is_dead() \
+		and not player.cutscene
+	var dg := get_tree().get_first_node_in_group("disc_golf")
+	if can and dg and dg.waiting_turn():
+		if Input.is_action_just_pressed("fire"):
+			var hud := get_tree().get_first_node_in_group("hud")
+			if hud:
+				hud.show_toast(dg.wait_text(), 2.0)
+		can = false
 	if can and Input.is_action_pressed("fire"):
 		charging = true
 		charge = minf(1.0, charge + delta / float(_t.charge_seconds))
 	elif charging:
 		charging = false
 		if can:
-			var dg := get_tree().get_first_node_in_group("disc_golf")
 			if dg:
 				dg.request_throw.rpc_id(1, disc_id, charge, player.yaw, player.pitch, tilt_deg, forehand)
 		charge = 0.0

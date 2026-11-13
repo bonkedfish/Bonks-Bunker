@@ -435,3 +435,38 @@ split >1.9 GB -> commit + push main -> gh release create alphaX.Y --prerelease w
 rendering/textures/vram_compression/import_etc2_astc=true (Apple Silicon needs ASTC; first export re-imports textures).
 Both presets exclude build/*. First run: preflight stopped — Git and GitHub CLI not installed. Not yet verified: a full
 release, the Mac build on a real Mac. tools/export/copy_to_new_home.* is a one-off (safe to delete).
+FIRST RELEASE (2026-11-12): alpha2.1 published as a GitHub prerelease at github.com/bonkedfish/Bonks-Bunker.
+Windows export 61 s, Mac export 274 s, smoke exit 0, zips ~2.5-2.6 GB -> 2 parts each (user wants ONE zip per platform;
+options A shrink / B cloud link / C itch.io offered, undecided). Upload ~21 min. First tries failed: gh said "not a git
+repository" because gh couldn't find git (Godot started before Git was installed) -> tool now adds the Git / GitHub CLI
+folders to PATH and runs gh auth setup-git. Repo was created PRIVATE (the "public" edit to release.json hadn't reached
+disk); made PUBLIC with tools/release/repo_visibility.tscn (applies release.json visibility), verified PUBLIC.
+Tooling note: device_commit_files can write a STALE copy when re-committing from a container path used before —
+commit from a fresh path and re-stage to verify. Mac build still untested on a real Mac.
+
+## Sound (D-077, 2026-11-13)
+System in. Sound files in (2026-11-13): 97 .ogg in assets/audio/, all CC0 (sources in CREDITS.md), made from
+Kenney + OpenGameArt downloads by tools/audio/build_sounds.py (cuts shots out of multi-shot takes, layers chains,
+strings crunches / gulps into 1-2 s uses, builds a 61 s seamless stereo prairie wind loop). Gaps: smoke = lighter
+click + breath only (no CC0 inhale found), .22 shots pitched down for the 9mm (thin), swishes are short. `Sfx` autoload + `data/audio/sounds.json` + 18 event folders
+in `assets/audio/` (each has a README.txt saying what goes in it). Hooked: pistol fire/reload/dry, raider gun_fire,
+bat swing/hit, player_hurt, jump, land, eat/drink/bandage/pills/smoke (item use, cut on cancel), disc_chains +
+disc_basket_clank (timed on the flight path), ambience_wind loop + ambience_distant one-shots. Settings has SFX /
+Ambience sliders (saved in user://settings.cfg [audio]). Missing files = one warning per event, then silent.
+Verified 2026-11-13: tests/parse_check.tscn all OK on the user's PC (sfx, ambience, every hooked script).
+Not yet verified: hearing them in game (volumes in sounds.json are first guesses), co-op hearing.
+
+## Disc golf group play (D-076, 2026-11-13)
+One thrower at a time with a turn banner for everyone ("YOUR THROW" / "P2 IS THROWING"), toasts on each new thrower
+(not when playing alone); tee shots first in tee order (hole 1 random, then best last-hole score, ties random), then
+furthest from the basket; the group goes to the next tee when everyone has holed out or picked up; late joiners start
+at the group's hole (no par reward / record for an incomplete card). Clicking out of turn shows whose throw it is;
+the host refuses it anyway. Wind 0-15 mph, shifts every 25-35 s (toast), drag on air speed: a 15 mph crosswind moves
+a full drive ~5.6 m. HUD wind rose left of the bag. Tracer ribbon per thrown disc, gone when the thrower is within
+3 m of the disc. Basket marker (arrow + feet, pinned to the screen edge), glowing basket band, tee pad "T" on the
+minimap. Ace -> AceReplay on every peer (chase cam, slow-mo at the basket, "ACE!"), players locked + invulnerable,
+zombies frozen, HUD hidden; ~7-9 s. Toasts naming a player now say "You" / "Host" / "P2" per peer (they used to say
+"You" for the host on everyone's screen).
+Tests: disc_golf_test (pure order / tee order / wind; your turn + wind in the round, out-of-turn refused, tracer in
+flight and gone at the lie, ace replay locks and lets go). Perf at Centennial 5.6 ms, 551 draw calls.
+Not yet verified: turn order with 2+ real players over the network, the replay on a client.

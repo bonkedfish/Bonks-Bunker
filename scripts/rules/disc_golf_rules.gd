@@ -1,6 +1,6 @@
 # DiscGolfRules — pure disc golf scoring and baskets (D-069): what a disc hitting a basket does (caught in the
-# chains or tray, spat out, or bounced off the tray / pole), throw validation, score names, course pars and the
-# reward tier for a finished round. Depends on: DataLoader, data/discgolf/courses.json, DiscFlightRules (tuning).
+# chains or tray, spat out, or bounced off the tray / pole), throw validation, score names, course pars, the
+# reward tier for a finished round, and the group's throwing order (D-076). Depends on: DataLoader, data/discgolf/courses.json, DiscFlightRules (tuning).
 class_name DiscGolfRules
 extends RefCounted
 
@@ -97,4 +97,44 @@ static func reward_tiers(strokes: Array, course: Dictionary) -> PackedStringArra
 	out.append("par" if total <= par_total(course) else "finish")
 	if ace:
 		out.append("ace")
+	return out
+
+
+# Who throws next (D-076): anyone still on the tee goes first, in tee order; then whoever is furthest from the basket
+# ("away"), ties in tee order. state: peer -> {"throws": int, "away": metres to the basket}, only players who can
+# throw now. 0 when nobody can.
+static func next_thrower(order: Array, state: Dictionary) -> int:
+	var tee := 0
+	var tee_rank := 1 << 30
+	var away := 0
+	var away_m := -1.0
+	var away_rank := 1 << 30
+	for peer: int in state:
+		var rank := order.find(peer)
+		if rank < 0:
+			rank = 1 << 29
+		var s: Dictionary = state[peer]
+		if int(s.throws) == 0:
+			if rank < tee_rank:
+				tee = peer
+				tee_rank = rank
+		else:
+			var m := float(s.away)
+			if m > away_m + 0.01 or (absf(m - away_m) <= 0.01 and rank < away_rank):
+				away = peer
+				away_m = m
+				away_rank = rank
+	return tee if tee != 0 else away
+
+
+# Tee order for the next hole (D-076): best (lowest) score on the last hole first, ties in random order.
+# scores: peer -> strokes. Hole 1 (all 0) comes out random.
+static func tee_order(scores: Dictionary, rng: RandomNumberGenerator) -> Array:
+	var keyed: Array = []
+	for peer: int in scores:
+		keyed.append([int(scores[peer]), rng.randf(), peer])
+	keyed.sort_custom(func(a: Array, b: Array) -> bool: return a[0] < b[0] or (a[0] == b[0] and a[1] < b[1]))
+	var out: Array = []
+	for k: Array in keyed:
+		out.append(k[2])
 	return out

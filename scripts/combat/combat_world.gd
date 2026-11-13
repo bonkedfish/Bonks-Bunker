@@ -4,7 +4,7 @@
 # shooter's view tick (clamped by NetClock), tests the shot with CombatRules, and checks walls with a
 # world-only raycast. Clients never decide hits.
 # Depends on: CombatRules, NetClock (group "net_clock"), TracerPool (group "tracers"), HUD (group "hud"),
-#             ZombieDirector (group "zombie_director", for attack noise).
+#             ZombieDirector (group "zombie_director", for attack noise), Sfx (shot / melee-hit sounds, D-077).
 extends Node3D
 
 const WORLD_MASK := 1   # static level geometry
@@ -47,7 +47,7 @@ func host_fire(shooter: Node, weapon: Dictionary, origin: Vector3, dir: Vector3,
 	var killed := false
 	if best:
 		killed = _damage(best, shooter, float(weapon.damage))
-	_fx_shot.rpc(origin, origin + dir * best_dist, shooter.peer_id)
+	_fx_shot.rpc(origin, origin + dir * best_dist, shooter.peer_id, "%s_fire" % weapon.get("id", "gun"))
 	return killed
 
 
@@ -56,6 +56,8 @@ func host_melee(shooter: Node, weapon: Dictionary, origin: Vector3, dir: Vector3
 	var tick := _clock.rewind_tick(view_tick, _tuning.max_rewind_seconds)
 	_make_noise(origin, weapon)
 	var killed := false
+	var hit_any := false
+	var hit_at := Vector3.ZERO
 	for target in get_tree().get_nodes_in_group("hittable"):
 		if target == shooter or target.health.is_dead() or (not hits_teammates and target.team == shooter.team):
 			continue
@@ -67,6 +69,11 @@ func host_melee(shooter: Node, weapon: Dictionary, origin: Vector3, dir: Vector3
 		if _world_blocked(origin, base + Vector3.UP * cap.w * 0.5):
 			continue
 		killed = _damage(target, shooter, float(weapon.damage)) or killed
+		if not hit_any:
+			hit_any = true
+			hit_at = base + Vector3.UP * cap.w * 0.6
+	if hit_any:
+		_fx_melee_hit.rpc(hit_at, "%s_hit" % weapon.get("id", "melee"))
 	return killed
 
 
@@ -114,14 +121,22 @@ func local_tracer(player: Node, weapon: Dictionary) -> void:
 
 
 @rpc("authority", "call_local", "unreliable")
-func _fx_shot(from: Vector3, to: Vector3, shooter_peer: int) -> void:
+func _fx_shot(from: Vector3, to: Vector3, shooter_peer: int, sound: String) -> void:
 	if shooter_peer == multiplayer.get_unique_id():
 		if not multiplayer.is_server():
-			return  # already drawn locally by local_tracer
+			return  # already drawn and heard locally (local_tracer, WeaponHolder.client_step)
 		var me := get_tree().get_first_node_in_group("local_player")
 		if me:
 			from = me.muzzle_position()
+		Sfx.play_local(sound)
+	else:
+		Sfx.play_at(sound, from)
 	_tracers.show_tracer(from, to)
+
+
+@rpc("authority", "call_local", "unreliable")
+func _fx_melee_hit(at: Vector3, sound: String) -> void:
+	Sfx.play_at(sound, at)
 
 
 @rpc("authority", "call_local", "reliable")

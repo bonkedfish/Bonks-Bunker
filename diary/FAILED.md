@@ -94,3 +94,12 @@ Approach — why it failed — what replaced it.
   horizontal distance.
 - 2026-11-12 Quick eat (G) "didn't work": it does in game standing still; walking cancels it (D-046, kept) silently,
   and with the inventory open the key was ignored. Now works with the bag open and says "Stand still".
+- (2026-11-12) Getting each release under GitHub's 2 GiB file cap by compressing harder: NO GAIN. World cells are
+  already compressed binary resources (header RSCC); zlib and LZMA shrink them ~1%, and the Windows zip came out only
+  ~7% smaller than the pck. Size has to come from less data (every land cell carries ~1.9 MB even when empty), not
+  from compression.
+
+- 2026-11-13 Ace replay hid the HUD by setting its `visible` = false: the HUD shows itself again every frame while a
+  local player exists (hud.gd `_process`), so it stayed up. Fix: hud.gd hides itself while `player.cutscene`.
+- 2026-11-13 Two chats edited the project at once (disc golf + sound) and both took D-076; the sound chat moved to
+  D-077. Before writing a shared file (player.gd, director, diary), re-stage it and merge, never commit an old copy.

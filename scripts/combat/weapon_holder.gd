@@ -4,7 +4,9 @@
 #       It is the only place attacks happen (through CombatWorld). Slot/ammo/reload replicate as net_*.
 # Owning client: client_step() mirrors attack timing locally for instant feedback only (kick, tracer, swing).
 # Fire and reload are edge-triggered on the host (held flag 0 -> 1), so one dropped packet doesn't lose a click.
-# Depends on: WeaponDB, CombatRules, CombatWorld (group "combat_world"), Viewmodel, InventoryHolder, parent Player.
+# Sounds (D-077): the local player hears their own fire / dry click / reload / swing here; others hear shots and
+# melee hits through CombatWorld.
+# Depends on: WeaponDB, CombatRules, CombatWorld (group "combat_world"), Viewmodel, InventoryHolder, parent Player, Sfx.
 class_name WeaponHolder
 extends Node
 
@@ -35,6 +37,7 @@ var _switch_time := 0.25
 var _local_time := 0.0
 var _local_next_attack := 0.0
 var _local_fire_prev := false
+var _local_reloading_prev := false
 
 var _combat: Node
 @onready var _player: CharacterBody3D = get_parent()
@@ -104,6 +107,8 @@ func host_step(flags: int, aim_yaw: float, aim_pitch: float, view_tick: float, d
 			_start_reload(w)
 		if fire_pressed and _reload_end == 0.0 and _sim_time >= _next_attack:
 			if _mags[_slot] <= 0:
+				if _player.is_local:
+					Sfx.play_local(_sound(w, "dry"))
 				_start_reload(w)
 			else:
 				_mags[_slot] -= 1
@@ -117,6 +122,7 @@ func host_step(flags: int, aim_yaw: float, aim_pitch: float, view_tick: float, d
 			_next_attack = _sim_time + float(w.swing_interval)
 			if _player.is_local:
 				viewmodel.swing(float(w.windup))
+				Sfx.play_local(_sound(w, "swing"))
 		if _swing_at >= 0.0 and _sim_time >= _swing_at:
 			_swing_at = -1.0
 			_combat.host_melee(_player, w, eye, dir, view_tick)
@@ -127,6 +133,8 @@ func _start_reload(w: Dictionary) -> void:
 	if _reload_end > 0.0 or _mags[_slot] >= int(w.mag_size) or _spare_ammo(w) <= 0:
 		return
 	_reload_end = _sim_time + float(w.reload_time)
+	if _player.is_local:
+		Sfx.play_local(_sound(w, "reload"))
 
 
 func _finish_reload(w: Dictionary) -> void:
@@ -153,17 +161,29 @@ func client_step(flags: int, slot: int, delta: float, dead: bool) -> void:
 	var fire_down := (flags & FLAG_FIRE) != 0
 	var pressed := fire_down and not _local_fire_prev
 	_local_fire_prev = fire_down
+	if net_reloading and not _local_reloading_prev and not weapon_in_slot(net_slot).is_empty():
+		Sfx.play_local(_sound(weapon_in_slot(net_slot), "reload"))
+	_local_reloading_prev = net_reloading
 	if dead or not pressed or _local_time < _local_next_attack:
 		return
 	var w := weapon_in_slot(slot)
 	if w.is_empty():
 		return
 	if w.kind == "gun":
+		if net_slot == slot and net_mag <= 0 and not net_reloading:
+			Sfx.play_local(_sound(w, "dry"))
 		if net_reloading or net_mag <= 0 or net_slot != slot:
 			return
 		_local_next_attack = _local_time + float(w.fire_interval)
 		viewmodel.kick()
+		Sfx.play_local(_sound(w, "fire"))
 		_combat.local_tracer(_player, w)
 	else:
 		_local_next_attack = _local_time + float(w.swing_interval)
 		viewmodel.swing(float(w.windup))
+		Sfx.play_local(_sound(w, "swing"))
+
+
+# Sound event id for this weapon (D-077): "<weapon id>_<what>", e.g. pistol_9mm_fire.
+static func _sound(w: Dictionary, what: String) -> String:
+	return "%s_%s" % [w.get("id", "gun"), what]

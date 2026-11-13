@@ -4,7 +4,8 @@
 # above turn_start of its full speed it rolls right (turn < 0), below fade_start (and once it has slowed to
 # fade_after_slow of its launch speed) it rolls left (fade) — mirrored for
 # forehand — and the roll tilts the lift sideways, which is the curve. Tree crowns: canopy_hit() (ellipsoid test).
-# Ground, trunks and the basket are the caller's job (DiscGolfDirector with physics rays, DiscGolfRules for baskets).
+# Wind (D-076): Flight.wind (m/s) — drag works on the speed through the air, so the disc drifts with it; next_wind()
+# rolls the next shift, wind_from() names where it comes from. Ground, trunks and the basket are the caller's job (DiscGolfDirector with physics rays, DiscGolfRules for baskets).
 # One Flight object per throw; step() allocates nothing. Depends on: DataLoader, data/discgolf/discs.json,
 # data/tuning/disc_golf.json.
 class_name DiscFlightRules
@@ -24,8 +25,12 @@ const TUNING_SCHEMA := {"note": TYPE_STRING, "lift_base": TYPE_FLOAT, "lift_glid
 	"canopy_bare_density": TYPE_FLOAT, "canopy_slow": TYPE_ARRAY, "catch_radius_m": TYPE_FLOAT,
 	"tray_low_m": TYPE_FLOAT, "chains_low_m": TYPE_FLOAT, "chains_high_m": TYPE_FLOAT, "catch_max_mps": TYPE_FLOAT,
 	"pole_radius_m": TYPE_FLOAT, "start_radius_m": TYPE_FLOAT, "box_use_m": TYPE_FLOAT, "lie_radius_m": TYPE_FLOAT,
-	"tee_radius_m": TYPE_FLOAT, "max_strokes": TYPE_FLOAT, "leave_m": TYPE_FLOAT, "rewards": TYPE_DICTIONARY}
+	"tee_radius_m": TYPE_FLOAT, "max_strokes": TYPE_FLOAT, "leave_m": TYPE_FLOAT, "wind_max_mph": TYPE_FLOAT,
+	"wind_shift_s": TYPE_ARRAY, "wind_turn_max_deg": TYPE_FLOAT, "wind_effect": TYPE_FLOAT, "ace_slowmo": TYPE_FLOAT,
+	"ace_slowmo_s": TYPE_FLOAT, "rewards": TYPE_DICTIONARY}
 const G := 9.8
+const MPH := 0.44704  # m/s
+const COMPASS := ["N", "NE", "E", "SE", "S", "SW", "W", "NW"]
 
 static var _discs: Dictionary = {}
 static var _tuning: Dictionary = {}
@@ -44,6 +49,7 @@ class Flight:
 	var turn := 0.0
 	var fade := 0.0
 	var time := 0.0
+	var wind := Vector3.ZERO  # m/s, horizontal, the way the air moves
 
 
 static func discs() -> Dictionary:
@@ -107,7 +113,8 @@ static func step(f: Flight, dt: float, t: Dictionary) -> void:
 	var ratio := minf(v / f.v0, 1.2)
 	var lift := f.lift_max * ratio * ratio
 	var side := lift * sin(f.roll)
-	var acc := Vector3(side * left.x, lift * cos(f.roll) - G, side * left.y) - f.vel * (f.k_drag * v)
+	var air := f.vel - f.wind
+	var acc := Vector3(side * left.x, lift * cos(f.roll) - G, side * left.y) - air * (f.k_drag * air.length())
 	f.vel += acc * dt
 	f.pos += f.vel * dt
 	f.time += dt
@@ -151,3 +158,22 @@ static func power_for(table: PackedFloat32Array, metres: float) -> float:
 		if table[i] >= metres:
 			return (i - 1 + inverse_lerp(table[i - 1], table[i], metres)) / 20.0
 	return 1.0
+
+
+# The wind after a shift (D-076), m/s in map x / z, the way it blows. From calm: a random speed up to wind_max_mph and
+# a random direction; otherwise the speed moves by up to 40% of the max and the direction turns by up to
+# wind_turn_max_deg.
+static func next_wind(prev: Vector2, rng: RandomNumberGenerator, t: Dictionary) -> Vector2:
+	var top := float(t.wind_max_mph) * MPH
+	if prev.length() < 0.05:
+		return Vector2.from_angle(rng.randf() * TAU) * rng.randf_range(0.0, top)
+	var speed := clampf(prev.length() + rng.randf_range(-0.4, 0.4) * top, 0.0, top)
+	return Vector2.from_angle(prev.angle() + deg_to_rad(rng.randf_range(-1.0, 1.0) * float(t.wind_turn_max_deg))) * speed
+
+
+# Compass point the wind comes FROM ("NW"), or "calm". Map -z is north, +x east.
+static func wind_from(w: Vector2) -> String:
+	if w.length() < 0.05:
+		return "calm"
+	var bearing := fposmod(rad_to_deg(atan2(-w.x, w.y)), 360.0)
+	return COMPASS[roundi(bearing / 45.0) % 8]

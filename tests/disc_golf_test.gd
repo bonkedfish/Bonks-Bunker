@@ -4,6 +4,9 @@
 # (aim at the basket, power from the reach table, walk to each lie) until it is scored, the rest of the card is
 # scored directly to test finishing (rewards, best score, round over). Screenshots into res://tests/_look/
 # (dg_tee1, dg_basket, dg_power, dg_card) plus frame time / draw calls at the course.
+# D-076: throwing order and wind (pure), your turn / wind in the round, a throw out of turn refused, the tracer
+# shown in flight and gone once you walk up to the disc, the ace on hole 5 plays the replay (everyone locked,
+# zombies frozen, HUD hidden; dg_ace.png) and lets go after.
 # Results: tests/_look/disc_golf_result.txt. Depends on: scenes/main.tscn, DiscFlightRules, DiscGolfRules,
 # DiscGolfDirector, DiscCourse, DiscThrower.
 extends Node
@@ -46,6 +49,15 @@ func _ready() -> void:
 	_check("E at the box starts a round with you in it", dg.round_active and dg.card.has(me))
 	_check("discs handed out", player.inventory.count("disc_driver") == 1 and player.inventory.count("disc_mid") == 1 and player.inventory.count("disc_putter") == 1)
 	_check("zombies can't spawn in the park", dg.blocks_spawn(course.basket_position(4)))
+	var mph := dg.wind.length() / DiscFlightRules.MPH
+	_check("your throw at the start, wind %.1f mph from %s" % [mph, DiscFlightRules.wind_from(dg.wind)], dg.turn == me and mph <= 15.01)
+	dg.turn = 999  # someone else's throw: yours is refused
+	_stand(player, course.tee_position(0), course.basket_position(0))
+	dg.request_throw("disc_driver", 0.5, player.yaw, 0.0, 0.0, false)
+	await get_tree().create_timer(0.2).timeout
+	_check("throw out of turn refused", not dg.is_flying(me) and int(dg.card[me].throws) == 0 and dg.waiting_turn())
+	dg._host_next_turn()
+	_check("turn back to you", dg.turn == me and not dg.waiting_turn())
 	# Tee 1 view + power HUD.
 	_stand(player, course.tee_position(0), course.basket_position(0))
 	player.disc._next_disc()
@@ -63,6 +75,8 @@ func _ready() -> void:
 		var basket := course.basket_position(0)
 		_stand(player, lie, basket)
 		await get_tree().create_timer(0.4).timeout
+		if throws == 1:
+			_check("tracer gone once you walked up to the disc", not dg._visual[me].tracer.visible)
 		var dist := Vector2(lie.x, lie.z).distance_to(Vector2(basket.x, basket.z))
 		if throws == 0:
 			start_d = dist
@@ -80,6 +94,7 @@ func _ready() -> void:
 		await get_tree().create_timer(0.15).timeout
 		_check("throw %d accepted (%s, %.0f m, power %.2f)" % [throws, disc, dist, power], dg.is_flying(me))
 		if throws == 1:
+			_check("tracer behind the disc in flight", dg._visual[me].tracer.visible)
 			await get_tree().create_timer(1.0).timeout
 			await _shot("dg_flight.png")
 		while dg.is_flying(me) or dg._in_flight.has(me):
@@ -89,6 +104,7 @@ func _ready() -> void:
 		var left := Vector2(after.lie.x, after.lie.z).distance_to(Vector2(basket.x, basket.z)) if int(after.hole) == 0 else 0.0
 		_say("  landed: %.1f m from the basket, hole %d, throws %d" % [left, int(after.hole) + 1, int(after.throws)])
 	_check("hole 1 scored in %d (started %.0f m out)" % [int(dg.card[me].strokes[0]), start_d], int(dg.card[me].strokes[0]) > 0 and int(dg.card[me].hole) == 1)
+
 	_check("lie moved to tee 2", Vector2(dg.card[me].lie.x, dg.card[me].lie.z).distance_to(Vector2(course.tee_position(1).x, course.tee_position(1).z)) < 0.1)
 	# A throw from far away is refused.
 	player.global_position = course.tee_position(1) + Vector3(20, 1, 0)
@@ -106,7 +122,30 @@ func _ready() -> void:
 	var before: int = player.inventory.count("disc_golden_ace")
 	for h in range(1, 9):
 		dg.card[me].throws = 1 if h == 4 else 3
-		dg._host_land(me, Vector3.ZERO, true)
+		if h != 4:
+			dg._host_land(me, Vector3.ZERO, true)
+			continue
+		var tee := course.tee_position(4) + Vector3.UP * 1.4  # an ace on hole 5: a made-up arc into the chains
+		var cup := course.basket_position(4) + Vector3.UP * 0.62
+		var path := PackedVector3Array()
+		var rolls := PackedFloat32Array()
+		for i in 91:
+			path.append(tee.lerp(cup, i / 90.0) + Vector3.UP * sin(PI * i / 90.0) * 8.0)
+			rolls.append(0.2 * sin(PI * i / 90.0))
+		_stand(player, course.tee_position(4), course.basket_position(4))
+		dg._host_land(me, cup, true, [path, rolls, "disc_driver", false])
+		await get_tree().create_timer(2.2).timeout
+		var zs := preload("res://scripts/ai/zombie.gd")
+		var hud: CanvasItem = get_tree().get_first_node_in_group("hud")
+		_check("ace replay on: you're locked, invulnerable, zombies frozen, HUD hidden", dg._replay != null and dg._replay.playing
+			and player.cutscene and player.health.invulnerable and zs.frozen and not hud.visible)
+		await _shot("dg_ace.png")
+		for i in 40:
+			if not dg._replay.playing:
+				break
+			await get_tree().create_timer(0.25).timeout
+		_check("replay over: unlocked, zombies move, HUD back", not dg._replay.playing and not player.cutscene
+			and not player.health.invulnerable and not zs.frozen and hud.visible and player.camera.current)
 	await get_tree().create_timer(0.5).timeout
 	var total := 0
 	for s: Variant in dg.card[me].strokes:
@@ -189,6 +228,31 @@ func _pure() -> void:
 	var miss := DiscGolfRules.basket_contact(Vector3(0.6, 1.0, 0.0), Vector3(0.8, 1.0, 0.0), 8.0, t)
 	_check("basket: chains catch / fast spits / tray side bounces / wide misses",
 		slow == DiscGolfRules.Basket.CATCH and fast == DiscGolfRules.Basket.SPIT and side == DiscGolfRules.Basket.BOUNCE and miss == DiscGolfRules.Basket.NONE)
+	# D-076: throwing order, wind.
+	var order := [11, 22, 33]
+	_check("on the tee: tee order first",
+		DiscGolfRules.next_thrower(order, {11: {"throws": 1, "away": 50.0}, 22: {"throws": 0, "away": 60.0}, 33: {"throws": 0, "away": 60.0}}) == 22)
+	_check("after the tee shots: furthest from the basket",
+		DiscGolfRules.next_thrower(order, {11: {"throws": 1, "away": 20.0}, 22: {"throws": 1, "away": 35.0}, 33: {"throws": 2, "away": 3.0}}) == 22)
+	_check("nobody can throw: 0", DiscGolfRules.next_thrower(order, {}) == 0)
+	var rng := RandomNumberGenerator.new()
+	var firsts := {}
+	for i in 40:
+		var o := DiscGolfRules.tee_order({11: 4, 22: 2, 33: 2, 44: 5}, rng)
+		firsts[o[0]] = true
+		if o[2] != 11 or o[3] != 44:
+			firsts["bad"] = true
+	_check("tee order: best score first, ties random (%s)" % str(firsts.keys()), firsts.has(22) and firsts.has(33) and not firsts.has("bad"))
+	_check("wind names: blowing to the SE is from the NW", DiscFlightRules.wind_from(Vector2(1, 1)) == "NW" and DiscFlightRules.wind_from(Vector2(0, -1)) == "S")
+	var calm := _lateral("disc_driver", 0.0, false)
+	var breezy := _lateral("disc_driver", 0.0, false, Vector2(15.0 * DiscFlightRules.MPH, 0.0))
+	_check("15 mph crosswind drifts a full drive %.1f m east" % (breezy - calm), breezy - calm > 2.0 and breezy - calm < 15.0)
+	var w := Vector2.ZERO
+	var top := 0.0
+	for i in 200:
+		w = DiscFlightRules.next_wind(w, rng, t)
+		top = maxf(top, w.length() / DiscFlightRules.MPH)
+	_check("wind stays at or under 15 mph (max seen %.1f)" % top, top <= 15.01 and top > 8.0)
 	var putt_power := DiscFlightRules.power_for(DiscFlightRules.reach_table(discs.disc_putter, t), 4.0)
 	var putt := DiscFlightRules.launch(discs.disc_putter, putt_power, Vector3(0, 1.4, 0), 0.0, DiscFlightRules.launch_pitch(0.0, t), 0.0, false, t)
 	while putt.pos.z > -4.0 and putt.time < 5.0:
@@ -203,9 +267,10 @@ func _pure() -> void:
 
 
 # Sideways landing offset (+X = right of a throw toward -Z) for a full-power throw.
-func _lateral(id: String, tilt: float, forehand: bool) -> float:
+func _lateral(id: String, tilt: float, forehand: bool, wind := Vector2.ZERO) -> float:
 	var t := DiscFlightRules.tuning()
 	var f := DiscFlightRules.launch(DiscFlightRules.discs()[id], 1.0, Vector3(0, 1.4, 0), 0.0, DiscFlightRules.launch_pitch(0.0, t), tilt, forehand, t)
+	f.wind = Vector3(wind.x, 0.0, wind.y)
 	while f.pos.y > 0.0 and f.time < 15.0:
 		DiscFlightRules.step(f, 1.0 / 60.0, t)
 	return f.pos.x

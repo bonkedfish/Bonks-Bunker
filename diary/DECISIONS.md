@@ -219,3 +219,22 @@ Locked unless flagged. Each entry: decision — reason.
   world/generated/cells/ (2.4 GB) and builds are gitignored; cells are rebuilt by build_cells.tscn. Files over
   1.9 GB are split into .001/.002 parts (GitHub caps release files at 2 GiB). Repo default: Bonks-Bunker, private
   (data/release/release.json). — User picked A.
+- **D-076** (2026-11-13) Disc golf group play, replaces the D-069 build note "each player plays their own disc, no
+  turn order". One thrower at a time, shown to every player. Tee order = best score on the previous hole first,
+  ties random (hole 1 random). Mid-hole: the player furthest from the basket throws next ("away", the real rule).
+  All tee shots go before any second shot. The group moves to the next tee when everyone has holed out or picked up.
+  White see-through tracer behind each thrown disc, kept until its thrower walks up to the disc. Basket: on-screen
+  marker (arrow + feet, shows through trees, pinned to the screen edge) and a glowing band. The minimap shows the
+  tee pad as well as the basket. Ace = kill-cam replay on every screen: all players locked and invulnerable,
+  zombies frozen for the replay, then play resumes. Wind: 0-15 mph, shifts about every 30 s during a round, small
+  effect on flight, speed and direction on the HUD. — User (options: freeze everyone / away from basket /
+  breezier shifting wind / on-screen marker).
+- **D-077** (2026-11-13) Sound. Recorded CC0 sound files (option B of A synthesize / B CC0 pack - the user downloads
+  them; nothing is synthesized), played by an `Sfx` autoload from data (event ID -> folder of variant files, tuning
+  in data/audio/sounds.json) with pooled 3D voices (option A of A autoload+data / B per-scene players). Ambience =
+  looping wind bed + random distant one-shots every 15-60 s, 40-120 m away (option A of A / B single loop). SFX and
+  Ambience volume sliders in Settings (yes). Scope asked: eerie open ambience, all weapon sounds, consuming items,
+  jumping, taking damage, disc hitting the chains. - User.
+  Build notes (inside the approved design): a landing thud goes with jump; the disc clanking off the tray/pole is a
+  second basket sound; jump/land/reload/dry click are heard by that player only; shots, melee hits, hurt, item use
+  and basket hits are heard by everyone nearby. No hurt sound for hunger/thirst damage.

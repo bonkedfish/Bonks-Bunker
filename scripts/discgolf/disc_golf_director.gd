@@ -8,9 +8,15 @@
 #          rolls the reward tables (par or better / finish / ace) and updates the world best (quest flags
 #          "dg_best_<course>", "dg_rounds_<course>", saved with the world). Players who wander leave_m outside the
 #          course drop out. While a round runs, zombies in the park are cleared and none spawn there.
-#   Every peer: the scorecard (`card`, synced whole on change), disc flights played back from the host's path
-#          (one pooled disc per player, left lying at the lie), the disc golf HUD, minimap target.
-# Depends on: DiscFlightRules, DiscGolfRules, DiscCourse (group "disc_courses"), LootDB, LootRules, ItemDB, LifeState,
+#          Group play (D-076): one thrower at a time (`turn`): tee shots first in tee order (best score on the last
+#          hole first, ties random), then whoever is furthest from the basket (DiscGolfRules.next_thrower); a hole
+#          is done when everyone has holed out or picked up, then the group moves to the next tee. Late joiners
+#          start at the group's hole. Wind (`wind`, D-076) shifts every wind_shift_s during a round and goes into
+#          every flight. An ace starts the AceReplay on every peer.
+#   Every peer: the scorecard (`card` + `turn`, synced whole on change), disc flights played back from the host's
+#          path (one pooled disc per player, left lying at the lie) with a DiscTracer line kept until the thrower
+#          walks up to the disc, the ace replay, the disc golf HUD, minimap basket + tee.
+# Depends on: DiscFlightRules, DiscGolfRules, DiscTracer, AceReplay, DiscCourse (group "disc_courses"), LootDB, LootRules, ItemDB, LifeState,
 # Players (group "players"), ZombieDirector (group "zombie_director"), WorldStreamer (group "world_streamer"),
 # QuestDirector (group "quests"), HUD (group "hud"), DiscGolfHud.
 class_name DiscGolfDirector
@@ -26,18 +32,24 @@ const TOAST_SECONDS := 4.0
 
 var round_active := false
 var round_course := ""
-# peer id -> {hole, throws, strokes: Array[int], lie: Vector3, done, left}
+# peer id -> {hole, throws, strokes: Array[int], lie: Vector3, out (finished this hole), done, left}
 var card: Dictionary = {}
+var turn := 0             # peer whose throw it is (0 = nobody can throw right now)
+var wind := Vector2.ZERO  # m/s in map x / z, the way it blows (D-076)
 
 var _t: Dictionary
 var _rng := RandomNumberGenerator.new()
 var _check := 0.0
-var _in_flight: Dictionary = {}  # host: peer -> [seconds left, rest: Vector3, holed: bool]
+var _in_flight: Dictionary = {}  # host: peer -> [seconds left, rest: Vector3, holed: bool, shot: [path, rolls, disc, forehand]]
+var _order: Array = []           # host: tee order for the current hole (peers)
+var _wind_left := 0.0            # host: seconds to the next wind shift
+var _announced := []             # host: [peer, hole, throws] of the last throw announced
 var _trees: Array = []           # host: [base: Vector3, height, bare], gathered again after cells load
 var _tree_grid: Dictionary = {}  # host: Vector2i -> Array of indexes into _trees
 var _trees_dirty := true         # host: a cell overlapping the course loaded since the trees were gathered
 var _visual: Dictionary = {}     # peer -> {node: MeshInstance3D, path, rolls, t, hand}
 var _disc_mesh: Dictionary = {}  # disc id -> CylinderMesh
+var _replay: AceReplay
 
 
 func _ready() -> void:
@@ -75,6 +87,30 @@ func local_target() -> Vector3:
 	if not round_active or e.is_empty() or e.done or e.left or c == null:
 		return Vector3.INF
 	return c.basket_position(int(e.hole))
+
+
+# Tee pad of the local player's current hole, or Vector3.INF when not playing (minimap, D-076).
+func local_tee() -> Vector3:
+	var e := my_entry()
+	var c := course_node()
+	if not round_active or e.is_empty() or e.done or e.left or c == null:
+		return Vector3.INF
+	return c.tee_position(int(e.hole))
+
+
+# True while you're playing a hole and it isn't your throw (D-076).
+func waiting_turn() -> bool:
+	var e := my_entry()
+	return round_active and not e.is_empty() and not e.done and not e.left and turn != multiplayer.get_unique_id()
+
+
+# "Wait - P2 is throwing" for whoever can't throw yet.
+func wait_text() -> String:
+	if my_entry().get("out", false):
+		return "Done this hole - waiting for the group"
+	if turn == 0:
+		return "Waiting for the group"
+	return "Wait - %s %s" % [player_label(turn), "is throwing" if not is_flying(turn) else "- disc in flight"]
 
 
 func is_flying(peer: int) -> bool:
@@ -118,8 +154,11 @@ func request_start(course_id: String) -> void:
 	if round_active and round_course == course_id:
 		var e: Dictionary = card.get(p.peer_id, {})
 		if e.is_empty() or e.done or e.left:
-			_host_join(p, c)
-			_say.rpc("%s joined the round at hole 1" % player_label(p.peer_id))
+			var hole := _group_hole()
+			_host_join(p, c, hole)
+			_order.append(p.peer_id)
+			_say_p.rpc(p.peer_id, "{p} joined the round at hole %s" % DiscGolfRules.hole_label(c.course, hole))
+			_host_next_turn()
 			_host_sync()
 		return
 	card.clear()
@@ -129,11 +168,14 @@ func request_start(course_id: String) -> void:
 	for q in get_tree().get_nodes_in_group("players"):
 		if "disc" in q and not q.health.is_dead() and q.global_position.distance_to(c.box_position()) <= float(_t.start_radius_m):
 			_host_join(q, c)
+	_order = DiscGolfRules.tee_order(_scores(0), _rng)  # hole 1: random
 	_host_clear_zombies()
 	if _trees_dirty:
 		_gather_trees(c)  # once at the start (a few tens of ms), so throws don't hitch
-	_host_sync()
+	_host_new_wind(true)
 	_say.rpc("Round on at %s: %d holes, par %d. Press 3 for your discs." % [c.course.name, c.hole_count(), DiscGolfRules.par_total(c.course)])
+	_host_next_turn()
+	_host_sync()
 
 
 @rpc("any_peer", "call_local", "reliable")
@@ -143,7 +185,10 @@ func request_throw(disc_id: String, power: float, yaw: float, pitch: float, tilt
 		return
 	var e: Dictionary = card[p.peer_id]
 	var c := course_node()
-	if e.done or e.left or c == null or p.life.net_state != LifeState.ALIVE:
+	if e.done or e.left or e.out or c == null or p.life.net_state != LifeState.ALIVE:
+		return
+	if p.peer_id != turn or not _in_flight.is_empty():  # one thrower at a time (D-076)
+		_say_turn.rpc_id(p.peer_id, turn)
 		return
 	if not DiscFlightRules.is_disc(disc_id) or p.inventory.count(disc_id) <= 0:
 		return
@@ -154,9 +199,10 @@ func request_throw(disc_id: String, power: float, yaw: float, pitch: float, tilt
 	var from: Vector3 = p.global_position + Vector3.UP * float(_t.launch_height_m)
 	var f := DiscFlightRules.launch(DiscFlightRules.discs()[disc_id], cl.x, from, yaw,
 		DiscFlightRules.launch_pitch(clampf(pitch, -1.5, 1.5), _t), cl.y, forehand, _t)
+	f.wind = Vector3(wind.x, 0.0, wind.y) * float(_t.wind_effect)
 	var out := _simulate(f, c.basket_position(int(e.hole)), c)
 	e.throws = int(e.throws) + 1
-	_in_flight[p.peer_id] = [_duration(out[0]) + 0.2, out[2], out[3]]
+	_in_flight[p.peer_id] = [_duration(out[0]) + 0.2, out[2], out[3], [out[0], out[1], disc_id, forehand]]
 	_play.rpc(p.peer_id, disc_id, out[0], out[1], forehand)
 
 
@@ -170,7 +216,11 @@ func _physics_process(delta: float) -> void:
 		fl[0] = float(fl[0]) - delta
 		if float(fl[0]) <= 0.0:
 			_in_flight.erase(peer)
-			_host_land(peer, fl[1], fl[2])
+			_host_land(peer, fl[1], fl[2], fl[3])
+	if round_active:
+		_wind_left -= delta
+		if _wind_left <= 0.0:
+			_host_new_wind(false)
 	_check -= delta
 	if _check > 0.0:
 		return
@@ -178,19 +228,23 @@ func _physics_process(delta: float) -> void:
 	if round_active:
 		_host_check_players()
 		_host_clear_zombies()
+		if _host_next_turn():  # the thrower went down, or got back up
+			_host_sync()
 
 
-func _host_join(p: Node, c: DiscCourse) -> void:
+func _host_join(p: Node, c: DiscCourse, hole := 0) -> void:
 	for id: String in DiscFlightRules.discs():
 		if p.inventory.count(id) <= 0:
 			p.inventory.host_add(id, 1)
 	var strokes: Array = []
 	strokes.resize(c.hole_count())
 	strokes.fill(0)
-	card[p.peer_id] = {"hole": 0, "throws": 0, "strokes": strokes, "lie": c.tee_position(0), "done": false, "left": false}
+	card[p.peer_id] = {"hole": hole, "throws": 0, "strokes": strokes, "lie": c.tee_position(hole), "out": false, "done": false, "left": false}
 
 
-func _host_land(peer: int, rest: Vector3, holed: bool) -> void:
+# A disc has come to rest (its flight has played out on screen). shot = [path, rolls, disc id, forehand] for the ace
+# replay.
+func _host_land(peer: int, rest: Vector3, holed: bool, shot: Array = []) -> void:
 	if not card.has(peer):
 		return
 	var e: Dictionary = card[peer]
@@ -199,20 +253,88 @@ func _host_land(peer: int, rest: Vector3, holed: bool) -> void:
 	if holed or int(e.throws) >= int(_t.max_strokes):
 		var par := int(c.course.holes[hole].par)
 		e.strokes[hole] = int(e.throws)
+		e.out = true
+		e.lie = c.basket_position(hole) if holed else rest
 		var what := DiscGolfRules.score_name(int(e.throws), par) if holed else "picked up at %d" % int(e.throws)
-		_say.rpc("%s - hole %s: %s" % [player_label(peer), DiscGolfRules.hole_label(c.course, hole), what])
+		_say_p.rpc(peer, "{p} - hole %s: %s" % [DiscGolfRules.hole_label(c.course, hole), what])
+		if holed and int(e.throws) == 1 and shot.size() >= 4:
+			var ft := roundi(_flat(shot[0][0]).distance_to(_flat(c.basket_position(hole))) * 3.28084)
+			_ace.rpc(peer, shot[2], shot[0], shot[1], shot[3], hole, ft)
+	else:
+		e.lie = rest
+	_host_advance(c)
+	_host_next_turn()
+	_host_settle()
+	_host_sync()
+
+
+# When everyone still playing has finished the hole: tee order from its scores, everyone to the next tee (or done).
+func _host_advance(c: DiscCourse) -> void:
+	var playing: Array = []
+	for peer: int in card:
+		var e: Dictionary = card[peer]
+		if not e.done and not e.left:
+			if not e.out:
+				return
+			playing.append(peer)
+	if playing.is_empty():
+		return
+	var hole := int(card[playing[0]].hole)
+	_order = DiscGolfRules.tee_order(_scores(hole), _rng)
+	for peer: int in playing:
+		var e: Dictionary = card[peer]
 		e.hole = hole + 1
 		e.throws = 0
+		e.out = false
 		if int(e.hole) >= c.hole_count():
 			e.done = true
 			e.lie = c.basket_position(hole)
 			_host_finish(peer, c)
 		else:
 			e.lie = c.tee_position(int(e.hole))
-	else:
-		e.lie = rest
-	_host_settle()
-	_host_sync()
+
+
+# Who throws now. Returns true if it changed (_host_sync announces it).
+func _host_next_turn() -> bool:
+	if not _in_flight.is_empty():
+		return false
+	var prev := turn
+	var c := course_node()
+	var state := {}
+	if round_active and c != null:
+		for peer: int in card:
+			var e: Dictionary = card[peer]
+			var p := _player(peer)
+			if e.done or e.left or e.out or p == null or p.life.net_state != LifeState.ALIVE:
+				continue
+			state[peer] = {"throws": int(e.throws), "away": _flat(e.lie).distance_to(_flat(c.basket_position(int(e.hole))))}
+	turn = DiscGolfRules.next_thrower(_order, state)
+	return turn != prev
+
+
+# Strokes on `hole` of everyone still in the round (players without a score yet count 0).
+func _scores(hole: int) -> Dictionary:
+	var out := {}
+	for peer: int in card:
+		var e: Dictionary = card[peer]
+		if not e.left:
+			out[peer] = int(e.strokes[hole])
+	return out
+
+
+# The hole the group is on (late joiners start here).
+func _group_hole() -> int:
+	for e: Dictionary in card.values():
+		if not e.done and not e.left:
+			return int(e.hole)
+	return 0
+
+
+func _host_new_wind(first: bool) -> void:
+	wind = DiscFlightRules.next_wind(Vector2.ZERO if first else wind, _rng, _t)
+	var shift: Array = _t.wind_shift_s
+	_wind_left = _rng.randf_range(float(shift[0]), float(shift[1]))
+	_set_wind.rpc(wind, not first)
 
 
 func _host_finish(peer: int, c: DiscCourse) -> void:
@@ -221,9 +343,13 @@ func _host_finish(peer: int, c: DiscCourse) -> void:
 	for s: Variant in e.strokes:
 		total += int(s)
 	var par := DiscGolfRules.par_total(c.course)
+	var complete: bool = not e.strokes.has(0)  # joined late: no par reward, no record
+	var tiers := DiscGolfRules.reward_tiers(e.strokes, c.course)
+	if not complete:
+		tiers[0] = "finish"
 	var got := {}
 	var p := _player(peer)
-	for tier: String in DiscGolfRules.reward_tiers(e.strokes, c.course):
+	for tier: String in tiers:
 		var items := LootRules.roll(LootDB.get_table(str(_t.rewards[tier])), _rng)
 		for id: String in items:
 			got[id] = int(got.get(id, 0)) + int(items[id])
@@ -232,10 +358,10 @@ func _host_finish(peer: int, c: DiscCourse) -> void:
 	var names := PackedStringArray()
 	for id: String in got:
 		names.append("%s x%d" % [ItemDB.get_item(id).get("name", id), got[id]])
-	_say.rpc("%s finished %s: %d (%s)%s" % [player_label(peer), c.course.name, total, DiscGolfRules.to_par_text(total, par),
+	_say_p.rpc(peer, "{p} finished %s: %d (%s)%s" % [c.course.name, total, DiscGolfRules.to_par_text(total, par),
 		("  -  " + ", ".join(names)) if not names.is_empty() else ""])
 	var quests := get_tree().get_first_node_in_group("quests")
-	if quests:
+	if quests and complete:
 		var best_flag := "dg_best_" + c.course_id
 		var best := int(quests.flags.get(best_flag, 0))
 		if best == 0 or total < best:
@@ -262,9 +388,11 @@ func _host_check_players() -> void:
 		elif not e.done and not e.left and not area.has_point(_flat(p.global_position)):
 			e.left = true
 			_in_flight.erase(peer)
-			_say.rpc("%s left the course - out of the round" % player_label(peer))
+			_say_p.rpc(peer, "{p} left the course - out of the round")
 			changed = true
 	if changed:
+		_host_advance(c)
+		_host_next_turn()
 		_host_settle()
 		_host_sync()
 
@@ -288,12 +416,18 @@ func _host_clear_zombies() -> void:
 
 
 func _host_sync() -> void:
-	_sync_card.rpc(round_active, round_course, card)
+	_sync_card.rpc(round_active, round_course, card, turn)
+	if turn != 0 and card.has(turn) and card.size() > 1:  # tell everyone who's up (not when playing alone)
+		var now := [turn, int(card[turn].hole), int(card[turn].throws)]
+		if now != _announced:
+			_announced = now
+			_say_turn.rpc(turn)
 
 
 func _on_peer_connected(peer: int) -> void:
 	if multiplayer.is_server():
-		_sync_card.rpc_id(peer, round_active, round_course, card)
+		_sync_card.rpc_id(peer, round_active, round_course, card, turn)
+		_set_wind.rpc_id(peer, wind, false)
 
 
 # The whole flight at once: returns [path, rolls, rest position, holed].
@@ -463,15 +597,48 @@ func _duration(path: PackedVector3Array) -> float:
 # --- every peer -------------------------------------------------------------------------------------
 
 @rpc("authority", "call_local", "reliable")
-func _sync_card(active: bool, course_id: String, new_card: Dictionary) -> void:
+func _sync_card(active: bool, course_id: String, new_card: Dictionary, new_turn: int) -> void:
 	round_active = active
 	round_course = course_id
 	card = new_card
+	turn = new_turn
 	for peer: int in _visual.keys():  # a disc teed off a new hole, or a player out of the round: put it away
 		var e: Dictionary = card.get(peer, {})
 		if (e.is_empty() or e.left or int(e.throws) == 0) and not is_flying(peer):
 			_visual[peer].node.visible = false
+			_visual[peer].tracer.visible = false
 	card_changed.emit()
+
+
+@rpc("authority", "call_local", "reliable")
+func _set_wind(new_wind: Vector2, announce: bool) -> void:
+	wind = new_wind
+	if announce and round_active and not my_entry().is_empty():
+		_toast("Wind shift: %d mph from the %s" % [roundi(wind.length() / DiscFlightRules.MPH), DiscFlightRules.wind_from(wind)])
+
+
+@rpc("authority", "call_local", "reliable")
+func _say_turn(peer: int) -> void:
+	if peer == 0 or my_entry().is_empty() or not card.has(peer):
+		return
+	var e: Dictionary = card[peer]
+	var where := "on the tee" if int(e.get("throws", 0)) == 0 else "away"
+	_toast("Your throw (%s)" % where if peer == multiplayer.get_unique_id() else "%s is throwing (%s)" % [player_label(peer), where])
+
+
+@rpc("authority", "call_local", "reliable")
+func _ace(peer: int, disc_id: String, path: PackedVector3Array, rolls: PackedFloat32Array, forehand: bool, hole: int, ft: int) -> void:
+	var c := course_node()
+	if c == null:
+		return
+	if _replay == null:
+		_replay = AceReplay.new()
+		add_child(_replay)
+	var who := player_label(peer)
+	var hole_text := DiscGolfRules.hole_label(c.course, hole)
+	_replay.play(path, rolls, _mesh_for(disc_id), forehand, c.basket_position(hole),
+		"%s ACED HOLE %s  -  %d ft" % ["YOU" if who == "You" else who.to_upper(), hole_text, ft],
+		"%s  -  hole %s  -  %d ft  -  %s" % [who, hole_text, ft, ItemDB.get_item(disc_id).get("name", disc_id)])
 
 
 @rpc("authority", "call_local", "reliable")
@@ -479,10 +646,13 @@ func _play(peer: int, disc_id: String, path: PackedVector3Array, rolls: PackedFl
 	if not _visual.has(peer):
 		var mi := MeshInstance3D.new()
 		add_child(mi)
-		_visual[peer] = {"node": mi}
+		var line := DiscTracer.new()
+		add_child(line)
+		_visual[peer] = {"node": mi, "tracer": line}
 	var v: Dictionary = _visual[peer]
 	v.node.mesh = _mesh_for(disc_id)
 	v.node.visible = true
+	v.tracer.show_path(path)
 	v.path = path
 	v.rolls = rolls
 	v.t = 0.0
@@ -491,6 +661,16 @@ func _play(peer: int, disc_id: String, path: PackedVector3Array, rolls: PackedFl
 
 @rpc("authority", "call_local", "reliable")
 func _say(text: String) -> void:
+	_toast(text)
+
+
+# Like _say, with {p} = that player's name as each peer calls them ("You", "Host", "P2").
+@rpc("authority", "call_local", "reliable")
+func _say_p(peer: int, text: String) -> void:
+	_toast(text.replace("{p}", player_label(peer)))
+
+
+func _toast(text: String) -> void:
 	var hud := get_tree().get_first_node_in_group("hud")
 	if hud:
 		hud.show_toast(text, TOAST_SECONDS)
@@ -503,9 +683,14 @@ func _process(delta: float) -> void:
 			continue
 		var path: PackedVector3Array = v.path
 		var dur := _duration(path)
+		if v.tracer.visible and float(v.t) >= dur:  # the line stays until the thrower walks up to the disc
+			var thrower := _player(peer)
+			if thrower and _flat(thrower.global_position).distance_to(_flat(path[path.size() - 1])) <= float(_t.lie_radius_m):
+				v.tracer.visible = false
 		if float(v.t) >= dur + 1.0:
 			continue
 		v.t = float(v.t) + delta
+		v.tracer.set_progress(clampf(float(v.t) / dur, 0.0, 1.0) if dur > 0.0 else 1.0)
 		var k := clampf(float(v.t) / dur, 0.0, 1.0) * (path.size() - 1) if dur > 0.0 else float(path.size() - 1)
 		var i := mini(int(k), path.size() - 2) if path.size() > 1 else 0
 		var a := path[i]

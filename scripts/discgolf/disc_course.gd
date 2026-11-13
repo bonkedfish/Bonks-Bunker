@@ -1,6 +1,6 @@
 # DiscCourse — one disc golf course in the world (D-069), the landmark scene scenes/disc_course.tscn placed by
 # LandmarkLoader (data/map/landmarks.json "centennial_dgc"). Builds from data/discgolf/courses.json at load:
-# a Mach II-style basket per hole (pole, tray, chains, yellow band, hole number; one shared vertex-coloured mesh),
+# a Mach II-style basket per hole (pole, tray, chains, glowing yellow band (D-076), hole number; one shared vertex-coloured mesh),
 # an asphalt tee pad with a sign (hole, par, length) and the course box at hole 1 (E: start / join a round).
 # Course data is in map coordinates; each piece drops onto the ground with a ray when its cell has loaded.
 # Group "disc_courses". Course box body: group "course_boxes" (display_name, course_id) on the interactable layer.
@@ -209,7 +209,6 @@ func _make_meshes() -> void:
 	_tube(st, Vector3.ZERO, 1.45, 0.03, 0.03, 8, dark)                     # pole
 	_tube(st, Vector3(0, 0.5, 0), 0.22, 0.33, 0.33, 20, metal)            # tray wall
 	_cap(st, Vector3(0, 0.5, 0), 0.33, 20, dark)                           # tray floor
-	_tube(st, Vector3(0, 1.25, 0), 0.08, 0.3, 0.3, 20, yellow)            # top band
 	_cap(st, Vector3(0, 1.4, 0), 0.12, 10, metal)                          # cap plate
 	_tube(st, Vector3(0, 1.33, 0), 0.07, 0.03, 0.12, 10, metal)           # cap cone
 	for i in 16:  # outer chains: band down to the tray, pinched toward the pole
@@ -223,6 +222,18 @@ func _make_meshes() -> void:
 	st.generate_normals()
 	_basket_mesh = st.commit()
 	_basket_mesh.surface_set_material(0, _vc_material())
+	var band := SurfaceTool.new()  # top band: its own glowing surface so the basket stands out (D-076)
+	band.begin(Mesh.PRIMITIVE_TRIANGLES)
+	_tube(band, Vector3(0, 1.25, 0), 0.08, 0.3, 0.3, 20, yellow)
+	band.generate_normals()
+	band.commit(_basket_mesh)
+	var glow := StandardMaterial3D.new()
+	glow.albedo_color = yellow
+	glow.emission_enabled = true
+	glow.emission = yellow
+	glow.emission_energy_multiplier = 2.0
+	glow.cull_mode = BaseMaterial3D.CULL_DISABLED
+	_basket_mesh.surface_set_material(1, glow)
 	_pad_mesh = BoxMesh.new()
 	_pad_mesh.size = Vector3(1.5, 0.06, 3.6)
 	var asphalt := StandardMaterial3D.new()

@@ -1,6 +1,6 @@
 # Minimap — top-left corner map (D-067): the same pipeline map picture as the M map, turned so the way you face is
 # always up, about view_m across. Shows landmark / bar markers, teammates, Bonk and a diamond per tracked quest
-# objective (pinned to the edge when it's off the map), your disc golf basket during a round, street names
+# objective (pinned to the edge when it's off the map), your disc golf basket and tee pad during a round (D-076), street names
 # (upright, from the map meta, D-070), plus a north tick. Hidden when you have no body or a
 # full-screen window (map, quest book, inventory, pause) is open. Redraws 20x a second. Presentation only.
 # Depends on: world/generated/map/world_map.json (+ texture), Player (groups "local_player", "players"), Bonk
@@ -114,8 +114,15 @@ func _draw() -> void:
 			var d := 7.0
 			draw_colored_polygon(PackedVector2Array([p + Vector2(0, -d - 2), p + Vector2(d + 2, 0), p + Vector2(0, d + 2), p + Vector2(-d - 2, 0)]), Color(0, 0, 0))
 			draw_colored_polygon(PackedVector2Array([p + Vector2(0, -d), p + Vector2(d, 0), p + Vector2(0, d), p + Vector2(-d, 0)]), Color(1.0, 0.8, 0.2))
-	# Disc golf: your current hole's basket (D-069).
+	# Disc golf: your current hole's tee pad (D-076) and basket (D-069).
 	var dg := get_tree().get_first_node_in_group("disc_golf")
+	var tee: Vector3 = dg.local_tee() if dg else Vector3.INF
+	if tee != Vector3.INF:
+		var tp := _screen(tee, c, yaw)
+		if Rect2(Vector2.ZERO, size).has_point(tp):
+			draw_rect(Rect2(tp - Vector2(6, 6), Vector2(12, 12)), Color(0, 0, 0))
+			draw_rect(Rect2(tp - Vector2(4.5, 4.5), Vector2(9, 9)), Color(0.85, 0.85, 0.85))
+			draw_string(_font, tp + Vector2(-3.5, 4.0), "T", HORIZONTAL_ALIGNMENT_LEFT, -1, 10, Color(0.1, 0.1, 0.1))
 	var target: Vector3 = dg.local_target() if dg else Vector3.INF
 	if target != Vector3.INF:
 		var bp := _screen(target, c, yaw)
