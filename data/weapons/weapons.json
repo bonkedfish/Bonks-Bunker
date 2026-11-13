@@ -1,0 +1,23 @@
+{
+	"pistol_9mm": {
+		"name": "9mm Pistol",
+		"kind": "gun",
+		"damage": 25.0,
+		"fire_interval": 0.2,
+		"range": 80.0,
+		"mag_size": 12.0,
+		"ammo_item": "ammo_9mm",
+		"reload_time": 1.4,
+		"noise_radius": 35.0
+	},
+	"bat_baseball": {
+		"name": "Baseball Bat",
+		"kind": "melee",
+		"damage": 40.0,
+		"windup": 0.2,
+		"swing_interval": 0.75,
+		"range": 2.2,
+		"arc_degrees": 80.0,
+		"noise_radius": 3.0
+	}
+}

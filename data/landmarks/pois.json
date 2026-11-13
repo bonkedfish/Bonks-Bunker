@@ -1,0 +1,41 @@
+{
+	"note": "Small walk-in POIs between the big landmarks (D-056). tools/landmarks/build_pois.tscn picks OSM buildings whose shop/amenity tag maps to a style below (area within area_m2, at least min_spacing_m apart, away from landmarks, round-robin over styles up to max_count), turns each to face its nearest street, builds world/landmarks/poi_<n>.scn and writes data/map/pois.json (merged with data/map/landmarks.json by the loader and build_cells). Re-run, then build_cells.",
+	"out_dir": "res://world/landmarks",
+	"out_list": "res://data/map/pois.json",
+	"seed": 5150,
+	"max_count": 16,
+	"min_spacing_m": 220.0,
+	"landmark_clearance_m": 140.0,
+	"area_m2": [90.0, 1600.0],
+	"size_clamp": {"width": [9.0, 26.0], "depth": [8.0, 20.0]},
+	"tags": {
+		"fuel": "gas_station", "convenience": "store", "variety_store": "store", "supermarket": "store",
+		"department_store": "store", "garden_centre": "store", "general": "store",
+		"pharmacy": "pharmacy", "clinic": "pharmacy", "veterinary": "pharmacy", "doctors": "pharmacy",
+		"fast_food": "diner", "restaurant": "diner", "cafe": "diner", "pub": "diner", "bar": "diner",
+		"car_repair": "garage", "motorsports": "garage", "caravan": "garage", "car_parts": "garage",
+		"post_office": "office", "bank": "office", "social_centre": "office"
+	},
+	"styles": {
+		"gas_station": {"sign": "GAS", "wall": "siding", "accent": [0.75, 0.15, 0.1], "loot": "poi_gas", "canopy": true},
+		"store": {"sign": "STORE", "wall": "brick", "accent": [0.85, 0.7, 0.15], "loot": "poi_store"},
+		"pharmacy": {"sign": "PHARMACY", "wall": "brick", "accent": [0.15, 0.45, 0.75], "loot": "poi_pharmacy"},
+		"diner": {"sign": "DINER", "wall": "siding", "accent": [0.8, 0.35, 0.1], "loot": "poi_diner"},
+		"garage": {"sign": "AUTO REPAIR", "wall": "concrete", "accent": [0.3, 0.3, 0.32], "loot": "poi_garage"},
+		"office": {"sign": "OFFICE", "wall": "brick", "accent": [0.25, 0.3, 0.45], "loot": "house_cabinet"}
+	},
+	"materials": {
+		"brick": {"texture": "brick_red", "tile_m": 2.0, "color": [0.9, 0.75, 0.68], "visible_m": 450.0},
+		"siding": {"texture": "siding_painted", "tile_m": 2.5, "color": [0.9, 0.88, 0.82], "visible_m": 450.0},
+		"concrete": {"texture": "concrete_cracked", "tile_m": 3.0, "color": [0.82, 0.8, 0.76], "visible_m": 450.0},
+		"floor": {"texture": "concrete_slab", "tile_m": 3.0, "color": [1.1, 1.05, 1.0], "visible_m": 200.0},
+		"roof": {"color": [0.28, 0.28, 0.28], "roughness": 0.9, "visible_m": 450.0},
+		"glass": {"color": [0.16, 0.2, 0.22], "metallic": 0.4, "roughness": 0.1, "alpha": 0.55, "visible_m": 300.0},
+		"accent": {"color": [0.8, 0.3, 0.1], "roughness": 0.6, "visible_m": 450.0},
+		"shelf": {"color": [0.55, 0.55, 0.58], "metallic": 0.5, "roughness": 0.5, "visible_m": 120.0},
+		"wood": {"texture": "planks_weathered", "tile_m": 1.0, "color": [0.75, 0.55, 0.38], "visible_m": 120.0},
+		"seat": {"color": [0.6, 0.12, 0.1], "roughness": 0.6, "visible_m": 120.0},
+		"steel": {"color": [0.3, 0.3, 0.32], "metallic": 0.6, "roughness": 0.5, "visible_m": 300.0},
+		"debris": {"color": [0.5, 0.45, 0.38], "roughness": 1.0, "shadows": false, "visible_m": 80.0}
+	}
+}

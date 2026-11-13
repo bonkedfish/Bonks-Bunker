@@ -1,0 +1,10 @@
+{
+	"enemy_id": "zombie_shambler",
+	"cell_cap": 4.0,
+	"spawn_interval": 2.0,
+	"min_spawn_distance": 15.0,
+	"far_spawn_distance": 35.0,
+	"perception_hz": 5.0,
+	"corpse_seconds": 1.0,
+	"pool_size": 24.0
+}

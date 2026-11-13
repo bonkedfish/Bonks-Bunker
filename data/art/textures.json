@@ -1,0 +1,21 @@
+{
+	"source": "Poly Haven (polyhaven.com), CC0",
+	"api_files_url": "https://api.polyhaven.com/files/%s",
+	"resolution": "2k",
+	"format": "jpg",
+	"maps": {"albedo": ["Diffuse"], "normal": ["nor_gl"], "arm": ["arm"], "roughness": ["Rough"]},
+	"out_dir": "res://assets/textures",
+	"user_agent": "KearneyRPG-asset-import/0.1 (personal Godot game project)",
+	"textures": {
+		"brick_red": {"polyhaven_id": "red_bricks_04", "use": "brick walls"},
+		"siding_painted": {"polyhaven_id": "wood_peeling_paint_weathered", "use": "house siding"},
+		"planks_weathered": {"polyhaven_id": "weathered_brown_planks", "use": "sheds, fences"},
+		"concrete_cracked": {"polyhaven_id": "cracked_concrete", "use": "commercial walls, foundations"},
+		"pavement": {"polyhaven_id": "pavement_05", "use": "sidewalks"},
+		"road_cracked": {"polyhaven_id": "road_damaged", "use": "roads"},
+		"concrete_slab": {"polyhaven_id": "concrete_floor_damaged_01", "use": "sidewalks, driveways"},
+		"grass_dry": {"polyhaven_id": "withered_grass", "use": "lawns, open ground"},
+		"gravel": {"polyhaven_id": "gravel_road", "use": "alleys"},
+		"roof_shingles": {"polyhaven_id": "grey_roof_01", "use": "pitched roofs"}
+	}
+}

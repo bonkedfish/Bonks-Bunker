@@ -1,0 +1,583 @@
+{
+	"barks": {
+		"idle": [
+			"I counted the cracks in the bunker ceiling for five years. Four hundred and twelve. I named them.",
+			"Smell that? That's freedom. Also something died. Mostly freedom though.",
+			"If the world ends twice, does it un-end? Asking for me.",
+			"Somebody remind me to tell you guys the plan. I have a plan. I think I have a plan.",
+			"You ever notice there's no birds? I noticed. I'm noticing it right now. Loudly.",
+			"Five years and the first thing I want is a Runza. Is that weird? That's not weird.",
+			"Every radio in town is just static. Same static. Every channel. Huh.",
+			"I had a dream I was a sandwich. Everyone was eating me. Worst part? I was delicious.",
+			"Fun fact: if you say 'bunker' fifty times it stops sounding like a word. I did that. Day 212.",
+			"I'm not lost. I'm exploring with enthusiasm.",
+			"You know what the apocalypse needs? A loyalty card. Tenth canned beans free.",
+			"I've been thinking. Which is new. I don't love it.",
+			"If a zombie falls in the forest and nobody's around, I still scream. That's just me.",
+			"Five years of board games with nobody. I won every single one. Still a little suspicious of myself.",
+			"Smell that? Rain. Or radiation. One of the R's.",
+			"I've got a feeling about today. It's either a good feeling or I'm hungry.",
+			"Legally, I think I'm the mayor now. Nobody voted against me.",
+			"Step one: survive. Step two: I'll tell you when we get there. Step three is classified.",
+			"I wonder if the Runza on 2nd Avenue is still standing. I'd fight a zombie for a Runza. Two zombies.",
+			"Somebody tell the Platte River it's allowed to be a normal river again.",
+			"I counted. We've walked eleven thousand steps today. Or forty. I lost count at forty.",
+			"You ever look at a stop sign and think, who's gonna enforce that? Me. I am.",
+			"Note to self: stop leaving notes to self. Signed, self.",
+			"I used to think the end of the world would be louder. It's mostly wind and me talking.",
+			"The trick to survival is: stay hydrated, stay alert, and never trust a man in a clean shirt.",
+			"If we find a working ice cream machine I'm moving in. Don't wait up.",
+			"I'm basically a tactical genius. I just don't show it. Strategically."
+		],
+		"combat_start": [
+			"ZOMBIE! Okay. Okay. I've trained for this. In my mind.",
+			"Big ugly at twelve o'clock! Or... whatever o'clock that is.",
+			"Everybody stay calm! I'm not calm! But you should be!",
+			"Fight in the doorway, they can only come one at a time. ...What? I read stuff.",
+			"Contact! Contact! ...I've always wanted to say that.",
+			"Dead guy, two o'clock! Or ten. One of the o'clocks!",
+			"Here they come! Remember the plan! There's no plan! GO!",
+			"Okay buddy, you picked the wrong survivors."
+		],
+		"kill": [
+			"And STAY dead!",
+			"Headshot! ...Was that a headshot? I'm counting it.",
+			"That one owed me money.",
+			"Bonk: one. Apocalypse: zero.",
+			"Down he goes! Nobody tell his mom.",
+			"That's one for the scoreboard. I keep a scoreboard. It's on my arm.",
+			"Rest in pieces, pal.",
+			"Bonk delivers!"
+		],
+		"reload": [
+			"Reloading! Cover me! Or don't, I'm not your boss!",
+			"Hold on, the bullets fell out of the gun part.",
+			"Changing mags! Don't look at me, I'm shy!",
+			"Reload! Reload! The clicky part is empty!"
+		],
+		"downed": [
+			"I'm fine! I'm lying down on purpose!",
+			"Ow. Strategic ow.",
+			"Tell the bunker I loved it...",
+			"Tell them... tell them I was cool...",
+			"I see a light. Oh wait it's the sun. Still bad."
+		],
+		"self_revive": [
+			"Bonk is BACK, baby!",
+			"Took a power nap. Feeling incredible.",
+			"Nobody came. Cool. Cool cool cool. I'm up.",
+			"You can't kill a Bonk. Scientists have tried. One scientist. Me.",
+			"I'm back! Did I miss anything? Was it me dying?"
+		],
+		"revived_by_player": [
+			"You saved me! I'm putting you in my will. It's just a spoon.",
+			"Knew you'd come. I calculated it. Sixty-forty.",
+			"My hero. Don't tell anyone I said that.",
+			"You came back for me! I knew you would. I wrote it down. Somewhere.",
+			"Hero move. I'm buying you a soda when soda exists again."
+		],
+		"player_downed": [
+			"Man down! Somebody pick 'em up!",
+			"Get UP! We need you for the plan!",
+			"Hold on buddy! Somebody hold E on them! That's the rule!",
+			"NO NO NO get up! You owe me a rematch!",
+			"Hang on, I'm coming! Slowly! But coming!"
+		],
+		"friendly_fire": [
+			"HEY! Friendly fire! Emphasis on FRIENDLY!",
+			"Wrong guy! I'm the good guy!",
+			"I felt that in my soul. And my leg.",
+			"Ow! Again?! I'm on YOUR team! Check the jersey!",
+			"That's going on the group chat. There's no group chat. That's going in my heart."
+		],
+		"busy": [
+			"One at a time! My brain only has one tab open.",
+			"Hold up, I'm in a conversation. A great one. With myself."
+		],
+		"landmark_archway": [
+			"The Archway! Built over a highway on purpose. Like a bridge that's also a museum. Peak human achievement.",
+			"Whoa. The Archway. I came here on a field trip once and got lost in the buffalo exhibit for two hours."
+		],
+		"landmark_chillers_hq": [
+			"The student union! Smells like... yep. That's them. That's definitely them.",
+			"UNK! I took one class here. Bowling. I got a B. The B stood for Bonk."
+		],
+		"landmark_kearney_high": [
+			"Kearney High. Go Bearcats. I still have nightmares about the vending machine.",
+			"Back to school. Everybody check your locker for a five-year-old sandwich."
+		],
+		"landmark_yanney_tower": [
+			"The Yanney tower! Every kid in town climbed this. Every kid in town also fell up the stairs.",
+			"From up there you can see everything. Including all the stuff that wants to eat us."
+		],
+		"landmark_yanney_gardens": [
+			"The gardens. Still pretty. The flowers didn't even notice the apocalypse. Respect.",
+			"Nobody touch the roses. Those roses have survived more than we have."
+		],
+		"landmark_bonk_house": [
+			"Home sweet bunker. Wipe your feet. Or don't, the floor's seen worse.",
+			"The old house. Mom's going to be so mad about the lawn."
+		],
+		"boss": [
+			"Uh. That one's big. That one's BIG. Everybody use your outside voices and your inside guns.",
+			"That's not a regular zombie. That's a manager.",
+			"Boss fight! I'm so not ready! Let's go!"
+		],
+		"high": [
+			"Are you... are you okay? Your eyes are doing a thing. Cool thing. Weird thing.",
+			"Meekachu's stuff, huh. Don't drive. Don't skateboard. Okay, skateboard a little.",
+			"Buddy you're walking like the floor owes you money."
+		],
+		"meepo": [
+			"Is that a MEEPO? Five years in a bunker and that thing still holds a charge? Legend.",
+			"Hey! Wait up! Some of us run on legs and beans!",
+			"Do a kickflip! ...Please don't do a kickflip."
+		]
+	},
+	"trees": {
+		"bonk_talk": {
+			"start": "start",
+			"nodes": {
+				"start": {
+					"speaker": "Bonk",
+					"text": "Five years. FIVE. Years. And we're out. What's up? Talk to me. I've been talking to a water heater.",
+					"choices": [
+						{
+							"text": "Bonk, focus. What's the plan?",
+							"next": "plan"
+						},
+						{
+							"text": "Let's just talk.",
+							"next": "talk"
+						},
+						{
+							"text": "Meekachu says you still have his lighter.",
+							"next": "lighter",
+							"requires": [
+								"sq_lighter_start",
+								"!sq_lighter_bonk"
+							]
+						},
+						{
+							"text": "Hunter Conner is dead.",
+							"next": "after_hunter",
+							"requires": [
+								"boss_hunter_conner_dead",
+								"!mq_bonk_hunter"
+							]
+						},
+						{
+							"text": "Later.",
+							"next": "bye"
+						}
+					]
+				},
+				"plan": {
+					"speaker": "Bonk",
+					"text": "The plan is simple. Step one: find out who's still alive. Step two: I'll tell you step two when we get there. It's a surprise.",
+					"choices": [
+						{
+							"text": "Is there actually a step two?",
+							"next": "step_two"
+						},
+						{
+							"text": "Where do we start?",
+							"next": "where"
+						}
+					]
+				},
+				"step_two": {
+					"speaker": "Bonk",
+					"text": "Okay, fine. Five years of static on every radio channel. Same static, same rhythm. That's not fallout. That's somebody. Step two is finding out who. Biggest antenna in the county's bolted to the Archway, out over the interstate. That's where I'd look. If I were smart. Which I'm not.",
+					"choices": [
+						{
+							"text": "...That's actually smart, Bonk.",
+							"next": "smart"
+						},
+						{
+							"text": "Back up a second.",
+							"next": "more"
+						}
+					],
+					"flag": "mq_bonk_static"
+				},
+				"smart": {
+					"speaker": "Bonk",
+					"text": "Smart? Me? No no no. I just like radios. Forget I said anything. Look, a raccoon!",
+					"choices": [
+						{
+							"text": "There's no raccoon.",
+							"next": "more"
+						}
+					]
+				},
+				"where": {
+					"speaker": "Bonk",
+					"text": "UNK. If anybody made it, it's Micah. That man survived a whole semester on cereal and vibes.",
+					"choices": [
+						{
+							"text": "Micah Torres? You think he's alive?",
+							"next": "micah"
+						},
+						{
+							"text": "Got it.",
+							"next": "more"
+						}
+					]
+				},
+				"micah": {
+					"speaker": "Bonk",
+					"text": "Alive? Micah's indestructible. Last text he sent before the bombs: 'bro the sky looks weird.' Visionary.",
+					"choices": [
+						{
+							"text": "Alright. UNK it is.",
+							"next": "more"
+						}
+					]
+				},
+				"world": {
+					"speaker": "Bonk",
+					"text": "Ended? Nah. It's just paused. Like a microwave. Somebody opened the door mid-cook.",
+					"choices": [
+						{
+							"text": "That's not how anything works.",
+							"next": "works"
+						},
+						{
+							"text": "Sure, Bonk.",
+							"next": "more"
+						}
+					]
+				},
+				"works": {
+					"speaker": "Bonk",
+					"text": "Is it not? ...Huh. Then I'm scared now. Thanks for that.",
+					"choices": [
+						{
+							"text": "Sorry.",
+							"next": "more"
+						}
+					]
+				},
+				"okay": {
+					"speaker": "Bonk",
+					"text": "Me? Great. I talked to the bunker's water heater for five years. His name is Dale. Dale's a good listener.",
+					"choices": [
+						{
+							"text": "Should we check on Dale?",
+							"next": "dale"
+						},
+						{
+							"text": "Glad you're okay, man.",
+							"next": "more"
+						}
+					]
+				},
+				"dale": {
+					"speaker": "Bonk",
+					"text": "Dale's fine. Dale doesn't need us. Dale never needed anybody.",
+					"choices": [
+						{
+							"text": "...Okay.",
+							"next": "more"
+						}
+					]
+				},
+				"more": {
+					"speaker": "Bonk",
+					"text": "Anything else? I've got thoughts. So many thoughts.",
+					"choices": [
+						{
+							"text": "What's the plan again?",
+							"next": "plan"
+						},
+						{
+							"text": "Let's just talk.",
+							"next": "talk"
+						},
+						{
+							"text": "Meekachu says you still have his lighter.",
+							"next": "lighter",
+							"requires": [
+								"sq_lighter_start",
+								"!sq_lighter_bonk"
+							]
+						},
+						{
+							"text": "Hunter Conner is dead.",
+							"next": "after_hunter",
+							"requires": [
+								"boss_hunter_conner_dead",
+								"!mq_bonk_hunter"
+							]
+						},
+						{
+							"text": "Let's move.",
+							"next": "bye"
+						}
+					]
+				},
+				"bye": {
+					"speaker": "Bonk",
+					"text": "Right behind you. Probably. Unless I see a raccoon.",
+					"end": true
+				},
+				"lighter": {
+					"speaker": "Bonk",
+					"text": "His LIGHTER? ...Oh. Oh no. Five years. I've had it for five years. It was in the bunker the whole time. I lit the stove with it every single day. Do NOT tell him about the stove. Here. Tell him it was safe. Tell him Dale kept it warm.",
+					"give": {
+						"meekachus_lighter": 1
+					},
+					"flag": "sq_lighter_bonk",
+					"choices": [
+						{
+							"text": "He's going to ask about the stove.",
+							"next": "lighter_2"
+						},
+						{
+							"text": "Thanks, Bonk.",
+							"next": "more"
+						}
+					]
+				},
+				"lighter_2": {
+					"speaker": "Bonk",
+					"text": "Then we lie. Together. As friends.",
+					"choices": [
+						{
+							"text": "...Okay.",
+							"next": "more"
+						}
+					]
+				},
+				"after_hunter": {
+					"speaker": "Bonk",
+					"text": "...He had a quota, you said. Quotas come from somebody with a clipboard. I've been thinking about the clipboard for five years. I just didn't know it was a clipboard. ...We're going to go find it, aren't we. Okay. Okay! Step three! There's a step three now!",
+					"flag": "mq_bonk_hunter",
+					"choices": [
+						{
+							"text": "There was always a step three, wasn't there.",
+							"next": "after_hunter_2"
+						},
+						{
+							"text": "Step three.",
+							"next": "more"
+						}
+					]
+				},
+				"after_hunter_2": {
+					"speaker": "Bonk",
+					"text": "What? No. I just like radios. Look, a raccoon!",
+					"choices": [
+						{
+							"text": "...Sure, Bonk.",
+							"next": "more"
+						}
+					]
+				},
+				"bunker": {
+					"speaker": "Bonk",
+					"text": "The bunker? Best five years of my life. Also the only five years of my life I remember clearly. I named the generator Gerald. Gerald and I had a falling out in year three.",
+					"choices": [
+						{
+							"text": "What happened with Gerald?",
+							"next": "gerald"
+						},
+						{
+							"text": "Okay, Bonk.",
+							"next": "more"
+						}
+					]
+				},
+				"gerald": {
+					"speaker": "Bonk",
+					"text": "He stopped working right when I needed him most. Like a real coworker. We made up. I hit him with a wrench. That's how generators apologize.",
+					"choices": [
+						{
+							"text": "That's not how anything works.",
+							"next": "more"
+						}
+					]
+				},
+				"five_years": {
+					"speaker": "Bonk",
+					"text": "What did I do for five years? Let's see. Read every book twice. Learned the harmonica. Unlearned the harmonica. Built a scale model of Kearney out of cans. Then ate the cans. Well. What was in them.",
+					"choices": [
+						{
+							"text": "You built a model of the town?",
+							"next": "model"
+						},
+						{
+							"text": "That's a lot of beans.",
+							"next": "more"
+						}
+					]
+				},
+				"model": {
+					"speaker": "Bonk",
+					"text": "Every street. Every house. I wanted to remember where everything was in case we ever got out. And look. We got out. I know where the pharmacy is. I know where the gun store is. I know where the good mailboxes are. Step two was always 'know the map', man.",
+					"choices": [
+						{
+							"text": "...Bonk, that's actually genius.",
+							"next": "genius"
+						},
+						{
+							"text": "The good mailboxes?",
+							"next": "more"
+						}
+					]
+				},
+				"genius": {
+					"speaker": "Bonk",
+					"text": "Shhh. Don't say that out loud. If people find out I'm a genius they'll expect things. I work best when expectations are on the floor. Under the floor. In a bunker.",
+					"choices": [
+						{
+							"text": "Your secret's safe.",
+							"next": "more"
+						}
+					]
+				},
+				"advice": {
+					"speaker": "Bonk",
+					"text": "Advice? Okay. One: the dead hear gunshots, so if you can bonk it, bonk it. Two: loot everything, especially cars, people left good stuff in cars. Three: if a guy in a clean shirt offers you a ride, that's a no.",
+					"choices": [
+						{
+							"text": "Any more?",
+							"next": "advice_2"
+						},
+						{
+							"text": "Thanks, Bonk.",
+							"next": "more"
+						}
+					]
+				},
+				"advice_2": {
+					"speaker": "Bonk",
+					"text": "Four: eat when you're hungry, drink when you're thirsty, cry when you're sad, but do all three in a safe room. Five: there's a Meepo in the bunker. I charged it every day for five years. Don't ask why. You know why. Because it's cool.",
+					"choices": [
+						{
+							"text": "There's a WHAT in the bunker?",
+							"next": "meepo"
+						},
+						{
+							"text": "Got it.",
+							"next": "more"
+						}
+					]
+				},
+				"meepo": {
+					"speaker": "Bonk",
+					"text": "An electric longboard! A Meepo! It's by the storage shelves. Grab it, hop on, go fast. Can't shoot while you're riding, obviously, you'll fall off and die and then you'll be a zombie on a skateboard and honestly? Still cool.",
+					"choices": [
+						{
+							"text": "I'm taking it.",
+							"next": "more"
+						}
+					]
+				},
+				"evan_opinion": {
+					"speaker": "Bonk",
+					"text": "Evan? Jerkin' Jenkins? Love that guy. He's crazy, but he's crazy in a direction, you know? Most crazy people are just spinning. Evan's crazy is pointed at something.",
+					"choices": [
+						{
+							"text": "Do you believe him? About the machine?",
+							"next": "evan_believe"
+						},
+						{
+							"text": "Yeah.",
+							"next": "more"
+						}
+					]
+				},
+				"evan_believe": {
+					"speaker": "Bonk",
+					"text": "...Yeah. I do. The static on the radios? It never changed. Not once in five years. Static changes. That static had a rhythm. Somebody was talking the whole time. We just didn't speak the language.",
+					"choices": [
+						{
+							"text": "That's creepy, Bonk.",
+							"next": "more"
+						}
+					]
+				},
+				"meek_opinion": {
+					"speaker": "Bonk",
+					"text": "Meekachu! The man, the myth, the beanbag. People think he's just a stoner. He carried forty-two kids out of a basement. Stoner and hero aren't opposites, man. Sometimes they're roommates.",
+					"choices": [
+						{
+							"text": "You two go way back?",
+							"next": "meek_back"
+						},
+						{
+							"text": "True.",
+							"next": "more"
+						}
+					]
+				},
+				"meek_back": {
+					"speaker": "Bonk",
+					"text": "Way back. He taught me to skateboard. I taught him how to pronounce 'quinoa'. Neither of us learned anything. Best friendship I've ever had. Don't tell the rest of you.",
+					"choices": [
+						{
+							"text": "Ha. Okay.",
+							"next": "more"
+						}
+					]
+				},
+				"scared": {
+					"speaker": "Bonk",
+					"text": "Scared? Of course I'm scared. I've been scared since the flash. Here's the thing though. Scared people who stick together are basically brave. It's math. I did the math. On the cans.",
+					"choices": [
+						{
+							"text": "Thanks, Bonk. Really.",
+							"next": "more"
+						}
+					]
+				},
+				"talk": {
+					"speaker": "Bonk",
+					"text": "Talk? I LOVE talk. It's my second favorite thing after not getting eaten. Hit me.",
+					"choices": [
+						{
+							"text": "The whole world ended, man.",
+							"next": "world"
+						},
+						{
+							"text": "You doing okay?",
+							"next": "okay"
+						},
+						{
+							"text": "Tell me about the bunker.",
+							"next": "bunker"
+						},
+						{
+							"text": "What did you do for five years?",
+							"next": "five_years"
+						},
+						{
+							"text": "Got any survival advice?",
+							"next": "advice"
+						},
+						{
+							"text": "What do you think of Evan?",
+							"next": "evan_opinion",
+							"requires": "mq_met_evan"
+						},
+						{
+							"text": "What do you think of Meekachu?",
+							"next": "meek_opinion",
+							"requires": "mq_reach_chillers"
+						},
+						{
+							"text": "Are you scared?",
+							"next": "scared"
+						},
+						{
+							"text": "Never mind.",
+							"next": "more"
+						}
+					]
+				}
+			}
+		}
+	}
+}

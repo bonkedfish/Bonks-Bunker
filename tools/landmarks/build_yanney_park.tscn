@@ -1,0 +1,6 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://tools/landmarks/build_yanney_park.gd" id="1_yanney"]
+
+[node name="BuildYanneyPark" type="Node"]
+script = ExtResource("1_yanney")

@@ -1,0 +1,477 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/main.gd" id="1_main"]
+[ext_resource type="Script" path="res://scripts/ui/debug_overlay.gd" id="2_debug"]
+[ext_resource type="Script" path="res://scripts/net/net_clock.gd" id="3_clock"]
+[ext_resource type="Script" path="res://scripts/combat/combat_world.gd" id="4_combat"]
+[ext_resource type="Script" path="res://scripts/fx/tracer_pool.gd" id="5_tracers"]
+[ext_resource type="Script" path="res://scripts/ui/hud.gd" id="6_hud"]
+[ext_resource type="PackedScene" path="res://scenes/training_dummy.tscn" id="7_dummy"]
+[ext_resource type="Script" path="res://scripts/ai/nav_region.gd" id="8_nav"]
+[ext_resource type="Script" path="res://scripts/ai/zombie_director.gd" id="9_zombies"]
+[ext_resource type="PackedScene" path="res://scenes/loot_container.tscn" id="10_container"]
+[ext_resource type="Script" path="res://scripts/ui/inventory_ui.gd" id="11_inventory_ui"]
+[ext_resource type="Script" path="res://scripts/ui/loot_ui.gd" id="12_loot_ui"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_dust"]
+sky_top_color = Color(0.36, 0.38, 0.4, 1)
+sky_horizon_color = Color(0.72, 0.6, 0.46, 1)
+ground_bottom_color = Color(0.18, 0.16, 0.14, 1)
+ground_horizon_color = Color(0.72, 0.6, 0.46, 1)
+
+[sub_resource type="Sky" id="Sky_dust"]
+sky_material = SubResource("ProceduralSkyMaterial_dust")
+
+[sub_resource type="Environment" id="Environment_wasteland"]
+background_mode = 2
+sky = SubResource("Sky_dust")
+ambient_light_source = 3
+tonemap_mode = 2
+fog_enabled = true
+fog_light_color = Color(0.62, 0.55, 0.45, 1)
+fog_density = 0.008
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ground"]
+albedo_color = Color(0.36, 0.34, 0.3, 1)
+roughness = 1.0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_block"]
+albedo_color = Color(0.55, 0.53, 0.5, 1)
+roughness = 0.9
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_accent"]
+albedo_color = Color(0.5, 0.36, 0.28, 1)
+roughness = 0.9
+
+[sub_resource type="NavigationMesh" id="NavigationMesh_yard"]
+geometry_parsed_geometry_type = 1
+geometry_source_geometry_mode = 1
+geometry_source_group_name = &"navmesh_source"
+cell_size = 0.25
+cell_height = 0.25
+agent_height = 1.75
+agent_radius = 0.5
+agent_max_climb = 0.5
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_clock"]
+properties/0/path = NodePath(".:net_tick")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+
+[node name="Main" type="Node3D"]
+script = ExtResource("1_main")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_wasteland")
+
+[node name="Sun" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.866025, -0.383022, 0.321394, 0, 0.642788, 0.766044, -0.5, -0.663414, 0.55667, 0, 20, 0)
+light_color = Color(1, 0.92, 0.8, 1)
+shadow_enabled = true
+directional_shadow_max_distance = 80.0
+
+[node name="GrayBox" type="Node3D" parent="." groups=["navmesh_source"]]
+
+[node name="Ground" type="CSGBox3D" parent="GrayBox"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+use_collision = true
+size = Vector3(120, 1, 120)
+material = SubResource("StandardMaterial3D_ground")
+
+[node name="CrateSmall" type="CSGBox3D" parent="GrayBox"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0.5, -6)
+use_collision = true
+material = SubResource("StandardMaterial3D_accent")
+
+[node name="CrateTall" type="CSGBox3D" parent="GrayBox"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 1, -6)
+use_collision = true
+size = Vector3(1.5, 2, 1.5)
+material = SubResource("StandardMaterial3D_accent")
+
+[node name="CrouchGap" type="CSGBox3D" parent="GrayBox"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 1.75, -8)
+use_collision = true
+size = Vector3(4, 0.5, 3)
+material = SubResource("StandardMaterial3D_block")
+
+[node name="CrouchGapLeft" type="CSGBox3D" parent="GrayBox"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.25, 1, -8)
+use_collision = true
+size = Vector3(0.5, 2, 3)
+material = SubResource("StandardMaterial3D_block")
+
+[node name="CrouchGapRight" type="CSGBox3D" parent="GrayBox"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.75, 1, -8)
+use_collision = true
+size = Vector3(0.5, 2, 3)
+material = SubResource("StandardMaterial3D_block")
+
+[node name="Ramp" type="CSGBox3D" parent="GrayBox"]
+transform = Transform3D(1, 0, 0, 0, 0.965926, -0.258819, 0, 0.258819, 0.965926, 14, 1.2, 0)
+use_collision = true
+size = Vector3(4, 0.4, 10)
+material = SubResource("StandardMaterial3D_block")
+
+[node name="Platform" type="CSGBox3D" parent="GrayBox"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14, 1.25, -9)
+use_collision = true
+size = Vector3(6, 2.5, 8)
+material = SubResource("StandardMaterial3D_block")
+
+[node name="Wall" type="CSGBox3D" parent="GrayBox"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, -16)
+use_collision = true
+size = Vector3(20, 4, 0.5)
+material = SubResource("StandardMaterial3D_block")
+
+[node name="Step1" type="CSGBox3D" parent="GrayBox"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14, 0.15, 2)
+use_collision = true
+size = Vector3(3, 0.3, 1)
+material = SubResource("StandardMaterial3D_block")
+
+[node name="Step2" type="CSGBox3D" parent="GrayBox"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14, 0.45, 1)
+use_collision = true
+size = Vector3(3, 0.3, 1)
+material = SubResource("StandardMaterial3D_block")
+
+[node name="Step3" type="CSGBox3D" parent="GrayBox"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14, 0.75, 0)
+use_collision = true
+size = Vector3(3, 0.3, 1)
+material = SubResource("StandardMaterial3D_block")
+
+[node name="NetClock" type="Node" parent="." groups=["net_clock"]]
+script = ExtResource("3_clock")
+
+[node name="Sync" type="MultiplayerSynchronizer" parent="NetClock"]
+replication_interval = 0.05
+replication_config = SubResource("SceneReplicationConfig_clock")
+
+[node name="Combat" type="Node3D" parent="." groups=["combat_world"]]
+script = ExtResource("4_combat")
+
+[node name="Tracers" type="Node3D" parent="." groups=["tracers"]]
+script = ExtResource("5_tracers")
+
+[node name="Dummies" type="Node3D" parent="."]
+
+[node name="DummyLeft" parent="Dummies" instance=ExtResource("7_dummy")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 0, -4)
+
+[node name="DummyRight" parent="Dummies" instance=ExtResource("7_dummy")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 0, 2)
+
+[node name="DummyMoving" parent="Dummies" instance=ExtResource("7_dummy")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -11)
+sweep_distance = 3.5
+
+[node name="Containers" type="Node3D" parent="." groups=["navmesh_source"]]
+
+[node name="AmmoCrate" parent="Containers" instance=ExtResource("10_container")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 8)
+container_id = "yard_ammo_crate_1"
+display_name = "Ammo Crate"
+loot_table = "ammo_cache"
+size = Vector3(0.9, 0.5, 0.6)
+color = Color(0.3, 0.36, 0.22, 1)
+
+[node name="Toolbox" parent="Containers" instance=ExtResource("10_container")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0, 7)
+container_id = "yard_toolbox_1"
+display_name = "Toolbox"
+loot_table = "toolbox"
+size = Vector3(0.7, 0.35, 0.35)
+color = Color(0.65, 0.12, 0.1, 1)
+
+[node name="KitchenCabinet" parent="Containers" instance=ExtResource("10_container")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9, 0, -1)
+container_id = "yard_cabinet_1"
+display_name = "Kitchen Cabinet"
+loot_table = "house_cabinet"
+size = Vector3(1.2, 0.9, 0.6)
+color = Color(0.55, 0.45, 0.32, 1)
+
+[node name="Fridge" parent="Containers" instance=ExtResource("10_container")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.5, 0, -1)
+container_id = "yard_fridge_1"
+display_name = "Fridge"
+loot_table = "fridge"
+size = Vector3(0.8, 1.8, 0.7)
+color = Color(0.82, 0.82, 0.78, 1)
+
+[node name="JunkPile" parent="Containers" instance=ExtResource("10_container")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9, 0, 9)
+container_id = "yard_junk_pile_1"
+display_name = "Junk Pile"
+loot_table = "junk_pile"
+size = Vector3(1.4, 0.6, 1.2)
+color = Color(0.35, 0.3, 0.28, 1)
+
+[node name="Navigation" type="NavigationRegion3D" parent="."]
+navigation_mesh = SubResource("NavigationMesh_yard")
+script = ExtResource("8_nav")
+
+[node name="ZombieSpawns" type="Node3D" parent="."]
+
+[node name="BehindWallLeft" type="Marker3D" parent="ZombieSpawns"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0.1, -22)
+
+[node name="BehindWallMid" type="Marker3D" parent="ZombieSpawns"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, -22)
+
+[node name="BehindWallRight" type="Marker3D" parent="ZombieSpawns"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0.1, -22)
+
+[node name="FarNW" type="Marker3D" parent="ZombieSpawns"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -45, 0.1, -45)
+
+[node name="FarNE" type="Marker3D" parent="ZombieSpawns"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 45, 0.1, -45)
+
+[node name="FarSW" type="Marker3D" parent="ZombieSpawns"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -45, 0.1, 45)
+
+[node name="FarSE" type="Marker3D" parent="ZombieSpawns"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 45, 0.1, 45)
+
+[node name="FarSouth" type="Marker3D" parent="ZombieSpawns"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 50)
+
+[node name="Zombies" type="Node3D" parent="." groups=["zombie_director"]]
+script = ExtResource("9_zombies")
+spawn_points_path = NodePath("../ZombieSpawns")
+
+[node name="Players" type="Node3D" parent="."]
+
+[node name="PlayerSpawner" type="MultiplayerSpawner" parent="."]
+_spawnable_scenes = PackedStringArray("res://scenes/player.tscn")
+spawn_path = NodePath("../Players")
+
+[node name="SpawnPoints" type="Node3D" parent="."]
+
+[node name="Spawn1" type="Marker3D" parent="SpawnPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 4)
+
+[node name="Spawn2" type="Marker3D" parent="SpawnPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0.1, 4)
+
+[node name="Spawn3" type="Marker3D" parent="SpawnPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0.1, 4)
+
+[node name="Spawn4" type="Marker3D" parent="SpawnPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 6)
+
+[node name="Spawn5" type="Marker3D" parent="SpawnPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0.1, 6)
+
+[node name="Spawn6" type="Marker3D" parent="SpawnPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0.1, 6)
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="DebugOverlay" type="Label" parent="UI"]
+offset_left = 12.0
+offset_top = 8.0
+offset_right = 640.0
+offset_bottom = 80.0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+script = ExtResource("2_debug")
+
+[node name="HUD" type="Control" parent="UI" groups=["hud"]]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("6_hud")
+
+[node name="Crosshair" type="Label" parent="UI/HUD"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 20
+text = "+"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HitMarker" type="Label" parent="UI/HUD"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 30
+text = "x"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Health" type="Label" parent="UI/HUD"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 16.0
+offset_top = -48.0
+offset_right = 256.0
+offset_bottom = -16.0
+grow_vertical = 0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 22
+
+[node name="Ammo" type="Label" parent="UI/HUD"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -476.0
+offset_top = -48.0
+offset_right = -16.0
+offset_bottom = -16.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 22
+horizontal_alignment = 2
+
+[node name="Death" type="Label" parent="UI/HUD"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -250.0
+offset_top = 40.0
+offset_right = 250.0
+offset_bottom = 130.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 0.3, 0.25, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 5
+theme_override_font_sizes/font_size = 28
+horizontal_alignment = 1
+
+[node name="InventoryUI" type="Control" parent="UI"]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("11_inventory_ui")
+
+[node name="LootUI" type="Control" parent="UI"]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("12_loot_ui")
+
+[node name="LobbyLabel" type="Label" parent="UI"]
+visible = false
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -260.0
+offset_top = 8.0
+offset_right = -12.0
+offset_bottom = 34.0
+grow_horizontal = 0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+horizontal_alignment = 2
+
+[node name="Menu" type="ColorRect" parent="UI"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.55)
+
+[node name="Center" type="CenterContainer" parent="UI/Menu"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="PanelContainer" parent="UI/Menu/Center"]
+custom_minimum_size = Vector2(340, 0)
+layout_mode = 2
+
+[node name="VBox" type="VBoxContainer" parent="UI/Menu/Center/Panel"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Title" type="Label" parent="UI/Menu/Center/Panel/VBox"]
+layout_mode = 2
+text = "KEARNEY — co-op test"
+horizontal_alignment = 1
+
+[node name="CodeLabel" type="Label" parent="UI/Menu/Center/Panel/VBox"]
+layout_mode = 2
+text = "Lobby code (for Join)"
+
+[node name="LobbyCode" type="LineEdit" parent="UI/Menu/Center/Panel/VBox"]
+layout_mode = 2
+placeholder_text = "e.g. K7QPX"
+max_length = 5
+
+[node name="HostButton" type="Button" parent="UI/Menu/Center/Panel/VBox"]
+layout_mode = 2
+text = "Host"
+
+[node name="JoinButton" type="Button" parent="UI/Menu/Center/Panel/VBox"]
+layout_mode = 2
+text = "Join"
+
+[node name="Status" type="Label" parent="UI/Menu/Center/Panel/VBox"]
+layout_mode = 2
+autowrap_mode = 3
+
+[node name="Controls" type="Label" parent="UI/Menu/Center/Panel/VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "WASD move · Mouse look · Space jump · Shift sprint · Ctrl/C crouch
+Esc frees mouse · click to recapture · F3 perf overlay"

@@ -1,0 +1,19 @@
+{
+	"walk_speed": 4.5,
+	"sprint_speed": 7.0,
+	"crouch_speed": 2.2,
+	"jump_velocity": 4.6,
+	"ground_accel": 12.0,
+	"air_accel": 2.0,
+	"stand_height": 1.8,
+	"crouch_height": 1.1,
+	"eye_offset": 0.12,
+	"mouse_sensitivity": 0.0025,
+	"wade_depth": 0.5,
+	"swim_depth": 1.2,
+	"swim_float_depth": 1.4,
+	"wade_speed_mult": 0.6,
+	"swim_speed_mult": 0.45,
+	"swim_vertical_speed": 1.5,
+	"swim_buoyancy": 2.0
+}

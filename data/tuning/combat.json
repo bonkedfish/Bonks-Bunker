@@ -1,0 +1,14 @@
+{
+	"player_max_health": 100.0,
+	"friendly_fire_multiplier": 0.25,
+	"respawn_seconds": 5.0,
+	"bleed_out_seconds": 30.0,
+	"revive_seconds": 3.0,
+	"revive_range": 2.0,
+	"revive_health": 30.0,
+	"max_rewind_seconds": 0.35,
+	"switch_time": 0.25,
+	"dummy_max_health": 150.0,
+	"dummy_reset_seconds": 3.0,
+	"loadout": ["pistol_9mm", "bat_baseball"]
+}

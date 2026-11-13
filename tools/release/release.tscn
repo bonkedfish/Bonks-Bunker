@@ -1,0 +1,6 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://tools/release/release.gd" id="1_release"]
+
+[node name="Release" type="Node"]
+script = ExtResource("1_release")

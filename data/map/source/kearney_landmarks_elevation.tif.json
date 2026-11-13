@@ -1,0 +1,11 @@
+{
+	"bbox": [
+		-99.1502955577444,
+		40.6607704,
+		-99.0266148422556,
+		40.7088966
+	],
+	"height": 1330,
+	"source": "https://elevation.nationalmap.gov/arcgis/rest/services/3DEPElevation/ImageServer/exportImage",
+	"width": 3418
+}

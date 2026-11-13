@@ -1,0 +1,20 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/inventory/loot_container.gd" id="1_container"]
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_container"]
+properties/0/path = NodePath(".:net_remaining")
+properties/0/spawn = true
+properties/0/replication_mode = 2
+
+[node name="LootContainer" type="StaticBody3D"]
+collision_layer = 9
+collision_mask = 0
+script = ExtResource("1_container")
+
+[node name="Mesh" type="MeshInstance3D" parent="."]
+
+[node name="Collider" type="CollisionShape3D" parent="."]
+
+[node name="Sync" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_container")

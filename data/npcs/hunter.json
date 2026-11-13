@@ -1,0 +1,18 @@
+{
+	"note": "Quest NPC (D-054). Lines in data/dialogue (barks prefixed hunter_).",
+	"display_name": "Hunter Conner",
+	"dialogue_tree": "hunter_talk",
+	"bark_prefix": "hunter_",
+	"model": "survivor_shaun",
+	"talk_range": 3.0,
+	"subtitle_range": 30.0,
+	"greet_range": 20.0,
+	"face_range": 25.0,
+	"turn_speed": 3.0,
+	"bark_cooldown": 8.0,
+	"idle_bark_min": 30.0,
+	"idle_bark_max": 70.0,
+	"hide_requires": [
+		"hunter_fight"
+	]
+}

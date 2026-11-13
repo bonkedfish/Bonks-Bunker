@@ -1,0 +1,17 @@
+# Godot 4+ specific ignores
+.godot/
+/android/
+
+# Release builds (tools/release) and old local exports
+/build/
+/*.exe
+/*.pck
+/*.dll
+*.TMP
+/copy_result.txt
+
+# Generated world cells: rebuild with tools/map_import/build_cells.tscn (sources are in data/map/source)
+/world/generated/cells/
+
+# Test screenshots and logs
+/tests/_look/

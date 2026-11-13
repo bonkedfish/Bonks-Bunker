@@ -1,0 +1,104 @@
+{
+	"note": "Yanney Heritage Park landmark layout (D-047). Map coords = local metres from 810 17th Ave (x east, z south), from OSM + satellite + photos. Each piece becomes its own landmark scene (world/landmarks/yanney_<piece>.scn) placed by data/map/landmarks.json at the same point. Overgrown post-apocalyptic condition.",
+	"out_dir": "res://world/landmarks",
+	"plants_path": "res://data/landmarks/yanney_plants.json",
+	"seed": 4711,
+	"materials": {
+		"brick": {"texture": "brick_red", "tile_m": 2.0, "color": [0.92, 0.78, 0.72]},
+		"concrete": {"texture": "concrete_cracked", "tile_m": 3.0, "color": [0.86, 0.84, 0.8]},
+		"path": {"texture": "concrete_slab", "tile_m": 3.0, "color": [1.8, 1.9, 2.2], "shadows": false},
+		"gravel": {"texture": "gravel", "tile_m": 3.0, "shadows": false},
+		"planks": {"texture": "planks_weathered", "tile_m": 2.0},
+		"grass": {"texture": "grass_dry", "tile_m": 4.0, "color": [0.9, 0.9, 0.85]},
+		"soil": {"color": [0.3, 0.25, 0.19], "roughness": 1.0, "shadows": false},
+		"steel": {"color": [0.27, 0.22, 0.19], "metallic": 0.5, "roughness": 0.7},
+		"rust": {"color": [0.42, 0.22, 0.12], "metallic": 0.3, "roughness": 0.85},
+		"roof_metal": {"color": [0.62, 0.62, 0.6], "metallic": 0.4, "roughness": 0.6},
+		"shell_blue": {"color": [0.16, 0.24, 0.36], "metallic": 0.3, "roughness": 0.6},
+		"stone": {"texture": "concrete_cracked", "tile_m": 1.5, "color": [0.72, 0.62, 0.5]},
+		"glass": {"color": [0.16, 0.2, 0.22], "metallic": 0.4, "roughness": 0.1, "alpha": 0.75},
+		"water": {"color": [0.2, 0.24, 0.18], "roughness": 0.15, "metallic": 0.2, "alpha": 0.9, "shadows": false},
+		"paint_red": {"color": [0.55, 0.13, 0.1], "roughness": 0.8},
+		"paint_yellow": {"color": [0.66, 0.55, 0.22], "roughness": 0.8},
+		"paint_blue": {"color": [0.22, 0.36, 0.5], "roughness": 0.8},
+		"paint_dark": {"color": [0.07, 0.07, 0.07], "roughness": 0.8},
+		"flowers": {"shader": "res://shaders/wild_flowers.gdshader", "visible_m": 160.0, "shadows": false}
+	},
+	"palettes": {
+		"wild": [[0.5, 0.43, 0.2], [0.4, 0.38, 0.18], [0.55, 0.5, 0.3], [0.33, 0.35, 0.16]],
+		"rose": [[0.55, 0.12, 0.12], [0.62, 0.3, 0.32], [0.45, 0.1, 0.15], [0.38, 0.35, 0.16]],
+		"pollinator": [[0.48, 0.3, 0.55], [0.7, 0.55, 0.15], [0.42, 0.38, 0.17], [0.6, 0.36, 0.5]],
+		"native": [[0.62, 0.48, 0.15], [0.5, 0.42, 0.2], [0.4, 0.2, 0.35], [0.45, 0.4, 0.22]],
+		"annual": [[0.7, 0.35, 0.1], [0.7, 0.6, 0.2], [0.6, 0.2, 0.3], [0.4, 0.38, 0.17]],
+		"xeriscape": [[0.55, 0.5, 0.33], [0.45, 0.42, 0.28], [0.62, 0.52, 0.25]],
+		"edibles": [[0.3, 0.33, 0.14], [0.4, 0.33, 0.17], [0.5, 0.42, 0.22]]
+	},
+	"tower": {
+		"map_xz": [-327, 42],
+		"core_m": 4.6,
+		"deck_y": 21.0,
+		"flights": 16,
+		"flight_run_m": 2.0,
+		"landing_m": 1.2,
+		"cage_width_m": 4.0,
+		"deck_half_m": 4.0,
+		"roof_posts_m": 2.6,
+		"roof_rise_m": 1.9,
+		"pad_half_m": 7.0
+	},
+	"amphitheater": {
+		"map_xz": [-280, 122],
+		"faces_map_xz": [-299, 92],
+		"stage": [20.0, 14.0, 1.0],
+		"bowl_inner_m": 9.0,
+		"tiers": 7,
+		"tier_tread_m": 3.0,
+		"tier_rise_m": 0.45,
+		"tier_ramp_m": 0.9,
+		"bowl_half_angle_deg": 55.0
+	},
+	"erc": {
+		"map_xz": [-347, 205],
+		"long_axis_map": [-12, 22],
+		"size": [25.0, 12.0, 5.0],
+		"roof_rise_m": 3.2,
+		"dock_from_map": [-334, 205],
+		"dock_to_map": [-300, 205],
+		"dock_head_m": 22.0,
+		"boats": 4
+	},
+	"splashground": {
+		"map_xz": [-383, 257],
+		"radius_m": 17.0
+	},
+	"gardens": {
+		"map_xz": [-375, -190],
+		"half_extent": [95.0, 90.0],
+		"courtyard": [-10.0, 10.0, 50.0, 45.0],
+		"pond": [-20.0, 0.0, 9.0, 5.5],
+		"path_width_m": 2.6,
+		"paths": [[[-92, 28], [62, 28]], [[20, -88], [20, 88]], [[-55, 50], [-20, 0]], [[-60, -30], [-20, 0]], [[-15, -55], [20, -20]],
+			[[30, -45], [20, -20]], [[65, -20], [62, 28]], [[5, 70], [20, 45]], [[60, 70], [20, 50]], [[-92, -60], [-60, -30]],
+			[[-20, 0], [20, 0]]],
+		"gardens": [
+			{"name": "Rose Garden", "centre": [-55, 50], "radius": 26.0, "style": "rosette", "petals": 6, "palette": "rose"},
+			{"name": "Pollinator Garden", "centre": [-60, -30], "radius": 18.0, "style": "spiral", "palette": "pollinator"},
+			{"name": "Nebraska Native Garden", "centre": [-15, -55], "radius": 20.0, "style": "rosette", "petals": 5, "palette": "native"},
+			{"name": "Annual Garden", "centre": [30, -45], "radius": 16.0, "style": "rosette", "petals": 6, "palette": "annual"},
+			{"name": "Lilac & Hydrangea Garden", "centre": [65, -20], "radius": 15.0, "style": "shrubs", "palette": "wild"},
+			{"name": "Xeriscape Garden", "centre": [5, 70], "radius": 14.0, "style": "gravel", "palette": "xeriscape"},
+			{"name": "Edibles Garden", "centre": [60, 72], "size": [30.0, 18.0], "style": "grid", "palette": "edibles"}
+		],
+		"poppies": [[-8, 8], [52, 8], [-8, 47], [40, 50], [-35, 25]],
+		"pavilion": {"centre": [76, 10], "size": [30.0, 18.0], "height": 6.0, "glass_broken": 0.4},
+		"perimeter_tree_spacing_m": 11.0
+	},
+	"park_trees": [
+		{"rect": [-470, -60, -400, 60], "count": 40},
+		{"rect": [-470, 160, -410, 330], "count": 35},
+		{"rect": [-370, 230, -215, 330], "count": 30},
+		{"rect": [-125, -60, -95, 450], "count": 45},
+		{"rect": [-300, -60, -215, 20], "count": 25},
+		{"rect": [-480, 340, -200, 560], "count": 60}
+	]
+}

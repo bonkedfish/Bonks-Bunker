@@ -1,0 +1,6 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://tools/map_import/build_cells.gd" id="1_cells"]
+
+[node name="BuildCells" type="Node"]
+script = ExtResource("1_cells")

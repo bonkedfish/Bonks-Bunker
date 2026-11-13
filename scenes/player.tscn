@@ -1,0 +1,180 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/player/player.gd" id="1_player"]
+[ext_resource type="Script" path="res://scripts/combat/health.gd" id="2_health"]
+[ext_resource type="Script" path="res://scripts/combat/weapon_holder.gd" id="3_weapons"]
+[ext_resource type="Script" path="res://scripts/player/viewmodel.gd" id="4_viewmodel"]
+[ext_resource type="Script" path="res://scripts/combat/life_state.gd" id="5_life"]
+[ext_resource type="Script" path="res://scripts/inventory/inventory_holder.gd" id="6_inventory"]
+[ext_resource type="Script" path="res://scripts/visual/character_animator.gd" id="7_anim"]
+[ext_resource type="Script" path="res://scripts/player/needs.gd" id="8_needs"]
+[ext_resource type="Script" path="res://scripts/player/item_use.gd" id="9_use"]
+[ext_resource type="Script" path="res://scripts/player/active_effects.gd" id="10_effects"]
+[ext_resource type="Script" path="res://scripts/player/meepo_rider.gd" id="11_meepo"]
+[ext_resource type="Script" path="res://scripts/player/disc_thrower.gd" id="12_disc"]
+[ext_resource type="Script" path="res://scripts/player/sport_input.gd" id="13_sport"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_body"]
+resource_local_to_scene = true
+radius = 0.35
+height = 1.8
+
+[sub_resource type="BoxMesh" id="BoxMesh_pistol"]
+size = Vector3(0.05, 0.1, 0.24)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_gunmetal"]
+albedo_color = Color(0.16, 0.16, 0.17, 1)
+metallic = 0.6
+roughness = 0.55
+
+[sub_resource type="BoxMesh" id="BoxMesh_bat"]
+size = Vector3(0.06, 0.8, 0.06)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wood"]
+albedo_color = Color(0.55, 0.38, 0.22, 1)
+roughness = 0.8
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_player"]
+properties/0/path = NodePath(".:net_position")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath(".:net_yaw")
+properties/1/spawn = true
+properties/1/replication_mode = 1
+properties/2/path = NodePath(".:net_pitch")
+properties/2/spawn = true
+properties/2/replication_mode = 1
+properties/3/path = NodePath(".:net_crouched")
+properties/3/spawn = true
+properties/3/replication_mode = 1
+properties/4/path = NodePath(".:net_ack_seq")
+properties/4/spawn = true
+properties/4/replication_mode = 1
+properties/5/path = NodePath("Health:current")
+properties/5/spawn = true
+properties/5/replication_mode = 2
+properties/6/path = NodePath("Weapons:net_slot")
+properties/6/spawn = true
+properties/6/replication_mode = 2
+properties/7/path = NodePath("Weapons:net_mag")
+properties/7/spawn = true
+properties/7/replication_mode = 2
+properties/8/path = NodePath("Weapons:net_reserve")
+properties/8/spawn = true
+properties/8/replication_mode = 2
+properties/9/path = NodePath("Weapons:net_reloading")
+properties/9/spawn = true
+properties/9/replication_mode = 2
+properties/10/path = NodePath("Life:net_state")
+properties/10/spawn = true
+properties/10/replication_mode = 2
+properties/11/path = NodePath("Life:net_bleed_left")
+properties/11/spawn = true
+properties/11/replication_mode = 1
+properties/12/path = NodePath("Life:net_revive_progress")
+properties/12/spawn = true
+properties/12/replication_mode = 1
+properties/13/path = NodePath("Inventory:net_items")
+properties/13/spawn = true
+properties/13/replication_mode = 2
+properties/14/path = NodePath("Needs:net_hunger")
+properties/14/spawn = true
+properties/14/replication_mode = 2
+properties/15/path = NodePath("Needs:net_thirst")
+properties/15/spawn = true
+properties/15/replication_mode = 2
+properties/16/path = NodePath("ItemUse:net_use_item")
+properties/16/spawn = true
+properties/16/replication_mode = 2
+properties/17/path = NodePath("ItemUse:net_use_progress")
+properties/17/spawn = true
+properties/17/replication_mode = 1
+properties/18/path = NodePath("Effects:net_effects")
+properties/18/spawn = true
+properties/18/replication_mode = 2
+properties/19/path = NodePath("Meepo:net_riding")
+properties/19/spawn = true
+properties/19/replication_mode = 2
+properties/20/path = NodePath("Meepo:net_battery")
+properties/20/spawn = true
+properties/20/replication_mode = 2
+
+[node name="Player" type="CharacterBody3D"]
+collision_layer = 2
+collision_mask = 19
+script = ExtResource("1_player")
+
+[node name="Collider" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+shape = SubResource("CapsuleShape3D_body")
+
+[node name="Body" type="Node3D" parent="."]
+script = ExtResource("7_anim")
+
+[node name="Head" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.68, 0)
+
+[node name="Camera3D" type="Camera3D" parent="Head"]
+near = 0.05
+far = 2000.0
+
+[node name="Viewmodel" type="Node3D" parent="Head/Camera3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.22, -0.2, -0.42)
+script = ExtResource("4_viewmodel")
+
+[node name="Arms" type="Node3D" parent="Head/Camera3D/Viewmodel"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.22, 0.2, 0.42)
+script = ExtResource("7_anim")
+
+[node name="Pistol" type="MeshInstance3D" parent="Head/Camera3D/Viewmodel"]
+visible = false
+cast_shadow = 0
+mesh = SubResource("BoxMesh_pistol")
+surface_material_override/0 = SubResource("StandardMaterial3D_gunmetal")
+
+[node name="Muzzle" type="Marker3D" parent="Head/Camera3D/Viewmodel/Pistol"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.03, -0.13)
+
+[node name="Bat" type="Node3D" parent="Head/Camera3D/Viewmodel"]
+transform = Transform3D(1, 0, 0, 0, 0.825336, 0.564642, 0, -0.564642, 0.825336, 0.04, -0.05, 0.05)
+visible = false
+
+[node name="BatMesh" type="MeshInstance3D" parent="Head/Camera3D/Viewmodel/Bat"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.36, 0)
+cast_shadow = 0
+mesh = SubResource("BoxMesh_bat")
+surface_material_override/0 = SubResource("StandardMaterial3D_wood")
+
+[node name="Health" type="Node" parent="."]
+script = ExtResource("2_health")
+
+[node name="Weapons" type="Node" parent="."]
+script = ExtResource("3_weapons")
+
+[node name="Life" type="Node" parent="."]
+script = ExtResource("5_life")
+
+[node name="Inventory" type="Node" parent="."]
+script = ExtResource("6_inventory")
+
+[node name="Needs" type="Node" parent="."]
+script = ExtResource("8_needs")
+
+[node name="ItemUse" type="Node" parent="."]
+script = ExtResource("9_use")
+
+[node name="Effects" type="Node" parent="."]
+script = ExtResource("10_effects")
+
+[node name="Meepo" type="Node3D" parent="."]
+script = ExtResource("11_meepo")
+
+[node name="Sync" type="MultiplayerSynchronizer" parent="."]
+replication_interval = 0.05
+replication_config = SubResource("SceneReplicationConfig_player")
+
+[node name="Disc" type="Node" parent="."]
+script = ExtResource("12_disc")
+
+[node name="Sport" type="Node" parent="."]
+script = ExtResource("13_sport")

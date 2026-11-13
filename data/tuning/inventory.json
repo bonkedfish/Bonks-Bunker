@@ -1,0 +1,8 @@
+{
+	"carry_capacity": 60.0,
+	"overweight_speed_multiplier": 0.5,
+	"stuck_ratio": 1.25,
+	"stuck_speed_multiplier": 0.15,
+	"interact_range": 2.5,
+	"starting_items": { "ammo_9mm": 36.0 }
+}

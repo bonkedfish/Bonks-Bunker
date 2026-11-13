@@ -1,0 +1,28 @@
+{
+	"source": "Poly Haven (polyhaven.com), CC0",
+	"api_files_url": "https://api.polyhaven.com/files/%s",
+	"resolution": "2k",
+	"out_dir": "res://assets/models",
+	"user_agent": "KearneyRPG-asset-import/0.1 (personal Godot game project)",
+	"models": {
+		"shrub_a": {"polyhaven_id": "shrub_02", "use": "yard bushes"},
+		"shrub_b": {"polyhaven_id": "shrub_03", "use": "yard bushes"},
+		"shrub_c": {"polyhaven_id": "shrub_04", "use": "yard bushes"},
+		"dead_trunk": {"polyhaven_id": "dead_tree_trunk_02", "use": "fallen trees"},
+		"stump": {"polyhaven_id": "tree_stump_01", "use": "cut trees"},
+		"grass_clump": {"polyhaven_id": "grass_medium_02", "use": "tall grass clumps"},
+		"covered_car": {"polyhaven_id": "covered_car", "use": "abandoned car under a tarp"},
+		"power_poles": {"polyhaven_id": "modular_electricity_poles", "use": "power poles along streets/alleys"},
+		"street_lamp": {"polyhaven_id": "street_lamp_01", "use": "street lights"},
+		"hydrant": {"polyhaven_id": "fire_hydrant", "use": "hydrants at corners"},
+		"trash_can": {"polyhaven_id": "metal_trash_can", "use": "curb/alley trash cans"},
+		"road_barrier": {"polyhaven_id": "concrete_road_barrier", "use": "barriers on bigger roads"},
+		"chainlink": {"polyhaven_id": "modular_chainlink_fence", "use": "fence pieces"},
+		"tyre": {"polyhaven_id": "old_tyre", "use": "debris"},
+		"wheel_rim": {"polyhaven_id": "rusted_wheel_rim_01", "use": "debris"},
+		"utility_box": {"polyhaven_id": "utility_box_01", "use": "utility boxes"},
+		"trashbag": {"polyhaven_id": "trashbag", "use": "debris"},
+		"cardboard_box": {"polyhaven_id": "cardboard_box_01", "use": "debris"},
+		"barrel": {"polyhaven_id": "Barrel_01", "use": "debris"}
+	}
+}

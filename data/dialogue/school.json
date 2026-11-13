@@ -1,0 +1,242 @@
+{
+	"barks": {
+		"hunter_idle": [
+			"Twenty-two. Three short. They don't like it when I'm short.",
+			"I can hear you in my hallway.",
+			"Clean shirt. Hot water. Dry roof. I earned those."
+		],
+		"hunter_greet": [
+			"Walk. Don't run. I like the ones who walk in."
+		],
+		"hunter_busy": [
+			"One at a time. Single file. You remember single file."
+		],
+		"hunter_fight_aggro": [
+			"Bell's rung. You're late.",
+			"Twenty-three. Twenty-four. I'm counting you already."
+		],
+		"hunter_fight_enrage": [
+			"You're RUINING my attendance record!",
+			"Okay. Okay! No more warnings. Straight to expulsion!"
+		],
+		"hunter_fight_death": [
+			"...They said... the shirt would... stay clean...",
+			"Tell them... I filled... the number..."
+		],
+		"wren_idle": [
+			"...Nine hundred and four. Nine hundred and five.",
+			"Don't run. They chase runners."
+		],
+		"wren_greet": [
+			"Who's there? ...You're walking. They never walk."
+		],
+		"wren_busy": [
+			"One of you at a time. Please."
+		]
+	},
+	"trees": {
+		"hunter_talk": {
+			"start": "start",
+			"nodes": {
+				"start": {
+					"speaker": "Hunter",
+					"text": "Stop. Right there. No running in the gym. ...I'm kidding. Run if you want. They always run. I like the ones who walk in. Shows respect. Hunter Conner. Senior hall monitor, Kearney High. Collector, Buffalo County. You're the bunker people.",
+					"choices": [
+						{
+							"text": "You've been taking people.",
+							"next": "taking"
+						},
+						{
+							"text": "We're here for Wren. And the keycard.",
+							"next": "wren"
+						},
+						{
+							"text": "Why are you doing this?",
+							"next": "why"
+						},
+						{
+							"text": "(Draw your weapon.)",
+							"next": "fight"
+						}
+					]
+				},
+				"taking": {
+					"speaker": "Hunter",
+					"text": "COLLECTING. Taking is when you don't have paperwork. Twenty-two so far. I keep count, see? Up on the wall. The people downstairs give me a number and I fill the number, and I get a clean shirt, hot water, and I don't get rained on. Do you know what I'd have done for hot water in year two? ...Same thing I'm doing now, turns out.",
+					"choices": [
+						{
+							"text": "Those are people, Hunter.",
+							"next": "people"
+						},
+						{
+							"text": "(Draw your weapon.)",
+							"next": "fight"
+						}
+					]
+				},
+				"people": {
+					"speaker": "Hunter",
+					"text": "They're a QUOTA. I learned that here, actually. Fourth period. You've got a hall pass or you don't. The whole world's a hallway now, and somebody has to stand in it and ask where you think you're going.",
+					"choices": [
+						{
+							"text": "Why work for them?",
+							"next": "why"
+						},
+						{
+							"text": "(Draw your weapon.)",
+							"next": "fight"
+						}
+					]
+				},
+				"why": {
+					"speaker": "Hunter",
+					"text": "Because they're going to win. I've seen downstairs. It's not a bunker, it's a COUNTRY. Lights. Floors you could eat off. They turned the sky off because they could. You think you and a stoner and a guy in a tinfoil hat are going to turn it back on? I picked the side with the door that locks. That's not evil. That's attendance.",
+					"choices": [
+						{
+							"text": "You could still walk away from this.",
+							"next": "walk"
+						},
+						{
+							"text": "(Draw your weapon.)",
+							"next": "fight"
+						}
+					]
+				},
+				"walk": {
+					"speaker": "Hunter",
+					"text": "...Huh. Nobody's ever said that. They beg, mostly. ...No. See, they sent this cycle's list up early. You're on it. All of you. 'Bunker group. Five years unexposed.' Clean lungs. You're worth more than Wren, and I didn't even have to go looking. You walked in.",
+					"choices": [
+						{
+							"text": "(Draw your weapon.)",
+							"next": "fight"
+						}
+					]
+				},
+				"wren": {
+					"speaker": "Hunter",
+					"text": "The immune girl. Best thing I ever collected. They're sending a special truck. And the card... you'd have to take that off my body. Which, I mean. You're welcome to try. I haven't had a real fight since the wrestling coach turned.",
+					"choices": [
+						{
+							"text": "Why are you doing this?",
+							"next": "why"
+						},
+						{
+							"text": "(Draw your weapon.)",
+							"next": "fight"
+						}
+					]
+				},
+				"fight": {
+					"speaker": "Hunter",
+					"text": "FINALLY. Somebody with a hall pass. HALL MONITORS! Lock the doors. Detention is in session.",
+					"flag": "hunter_fight",
+					"end": true
+				}
+			}
+		},
+		"wren_talk": {
+			"start": "start",
+			"starts": [
+				{
+					"requires": "boss_hunter_conner_dead",
+					"node": "free"
+				},
+				{
+					"requires": "mq_wren",
+					"node": "again"
+				}
+			],
+			"nodes": {
+				"start": {
+					"speaker": "Wren",
+					"text": "...You're not him. You're not a Hall Monitor either, you WALKED, they never walk. Who are you? Did Meekachu send you? Tell me Meekachu sent you.",
+					"flag": "mq_wren",
+					"choices": [
+						{
+							"text": "He did. We're getting you out.",
+							"next": "out"
+						},
+						{
+							"text": "Are there others?",
+							"next": "others"
+						}
+					]
+				},
+				"out": {
+					"speaker": "Wren",
+					"text": "The cage door's been open for a week. That's not what keeps me here. HE keeps me here. I got as far as the cafeteria once. He was waiting. He wasn't even mad. He said 'detention's not over' and walked me back. He likes it when you try.",
+					"choices": [
+						{
+							"text": "Where is he?",
+							"next": "where"
+						}
+					]
+				},
+				"others": {
+					"speaker": "Wren",
+					"text": "There were six of us. The trucks came for the other five the first night. He kept me back. Said the people downstairs wanted me 'fresh.' I don't get sick in the storms. I never told anyone but my brother. ...I never told anyone but my brother.",
+					"choices": [
+						{
+							"text": "Where's Hunter now?",
+							"next": "where"
+						}
+					]
+				},
+				"where": {
+					"speaker": "Wren",
+					"text": "The gym. He sleeps in the gym, under a wall of tally marks. He's got a card on a chain around his neck with an eagle on it. He touches it when he's thinking. You'll have to go through the halls. And the cafeteria, if you're stupid. Don't go in the auditorium. Something in there still thinks it's the mascot.",
+					"choices": [
+						{
+							"text": "Anything we can do for you first?",
+							"next": "favor",
+							"requires": "!sq_hall_start"
+						},
+						{
+							"text": "Stay here. We'll come back.",
+							"next": "stay"
+						}
+					]
+				},
+				"favor": {
+					"speaker": "Wren",
+					"text": "Kill the Hall Monitors. As many as you can. Two weeks I've listened to them sprint past this door. And Big Darlene, in the kitchen. And the thing in the auditorium. If this is ever going to be a school again, somebody has to clear it out. ...It's not going to be a school again. I know. Kill them anyway.",
+					"flag": "sq_hall_start",
+					"choices": [
+						{
+							"text": "Consider it done.",
+							"next": "stay"
+						}
+					]
+				},
+				"stay": {
+					"speaker": "Wren",
+					"text": "I'm not going anywhere until he's dead. I mean that both ways.",
+					"end": true
+				},
+				"again": {
+					"speaker": "Wren",
+					"text": "Is he dead yet? ...Then why are you talking to me? The gym. Go.",
+					"choices": [
+						{
+							"text": "Tell me about him again.",
+							"next": "where"
+						},
+						{
+							"text": "Going.",
+							"next": "stay"
+						}
+					]
+				},
+				"free": {
+					"speaker": "Wren",
+					"text": "...I heard it. I heard the shooting, and then I heard him stop talking. He never stops talking. ...It's really over? Okay. Okay. I'm walking home. Across the whole town. By myself. In the daylight. Tell my brother I'm coming. He'll want to clean up. He won't clean up.",
+					"flag": "mq_wren",
+					"end": true,
+					"flags": [
+						"wren_free"
+					]
+				}
+			}
+		}
+	}
+}

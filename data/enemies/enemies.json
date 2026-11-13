@@ -1,0 +1,351 @@
+{
+	"zombie_shambler": {
+		"name": "Shambler",
+		"max_health": 80.0,
+		"walk_speed": 1.0,
+		"chase_speed": 1.9,
+		"turn_speed": 4.0,
+		"sight_range": 22.0,
+		"sight_fov_degrees": 140.0,
+		"close_sense_range": 3.0,
+		"lose_interest_seconds": 8.0,
+		"attack_range": 1.4,
+		"attack_reach": 1.8,
+		"attack_windup": 0.6,
+		"attack_cooldown": 1.5,
+		"attack_damage": 15.0,
+		"wander_radius": 8.0,
+		"wander_pause": 3.0,
+		"models": [
+			"zombie_basic",
+			"zombie_chubby",
+			"zombie_arm",
+			"zombie_ribcage"
+		]
+	},
+	"hall_monitor": {
+		"name": "Hall Monitor",
+		"max_health": 55.0,
+		"walk_speed": 1.6,
+		"chase_speed": 5.4,
+		"turn_speed": 7.0,
+		"sight_range": 28.0,
+		"sight_fov_degrees": 140.0,
+		"close_sense_range": 3.0,
+		"lose_interest_seconds": 12.0,
+		"attack_range": 1.4,
+		"attack_reach": 1.8,
+		"attack_windup": 0.35,
+		"attack_cooldown": 0.9,
+		"attack_damage": 10.0,
+		"wander_radius": 10.0,
+		"wander_pause": 1.5,
+		"models": [
+			"zombie_arm",
+			"zombie_basic"
+		],
+		"scale": 0.92,
+		"tint": [
+			0.95,
+			0.5,
+			0.1,
+			0.35
+		]
+	},
+	"linebacker": {
+		"name": "Linebacker",
+		"max_health": 320.0,
+		"walk_speed": 0.9,
+		"chase_speed": 2.6,
+		"turn_speed": 3.0,
+		"sight_range": 22.0,
+		"sight_fov_degrees": 140.0,
+		"close_sense_range": 3.0,
+		"lose_interest_seconds": 8.0,
+		"attack_range": 1.7,
+		"attack_reach": 2.3,
+		"attack_windup": 0.8,
+		"attack_cooldown": 1.8,
+		"attack_damage": 34.0,
+		"wander_radius": 5.0,
+		"wander_pause": 3.0,
+		"models": [
+			"zombie_chubby"
+		],
+		"scale": 1.28,
+		"tint": [
+			0.1,
+			0.2,
+			0.6,
+			0.35
+		]
+	},
+	"lunch_lady": {
+		"name": "Lunch Lady",
+		"max_health": 90.0,
+		"walk_speed": 0.9,
+		"chase_speed": 1.6,
+		"turn_speed": 4.0,
+		"sight_range": 26.0,
+		"sight_fov_degrees": 140.0,
+		"close_sense_range": 3.0,
+		"lose_interest_seconds": 8.0,
+		"attack_range": 15.0,
+		"attack_reach": 1.8,
+		"attack_windup": 0.9,
+		"attack_cooldown": 2.2,
+		"attack_damage": 14.0,
+		"wander_radius": 4.0,
+		"wander_pause": 3.0,
+		"models": [
+			"zombie_ribcage"
+		],
+		"tint": [
+			0.35,
+			0.8,
+			0.25,
+			0.35
+		],
+		"ranged": {
+			"damage": 13.0,
+			"range": 22.0,
+			"noise_radius": 6.0,
+			"spread_degrees": 5.0
+		}
+	},
+	"bearcat": {
+		"name": "The Bearcat",
+		"max_health": 1100.0,
+		"walk_speed": 1.4,
+		"chase_speed": 4.4,
+		"turn_speed": 5.0,
+		"sight_range": 40.0,
+		"sight_fov_degrees": 140.0,
+		"close_sense_range": 3.0,
+		"lose_interest_seconds": 30.0,
+		"attack_range": 2.2,
+		"attack_reach": 3.0,
+		"attack_windup": 0.55,
+		"attack_cooldown": 1.3,
+		"attack_damage": 30.0,
+		"wander_radius": 6.0,
+		"wander_pause": 3.0,
+		"models": [
+			"zombie_chubby"
+		],
+		"scale": 1.7,
+		"tint": [
+			0.95,
+			0.75,
+			0.1,
+			0.4
+		],
+		"boss": true,
+		"enrage": {
+			"below": 0.4,
+			"speed_mult": 1.3,
+			"cooldown_mult": 0.6
+		},
+		"drops": {
+			"ammo_9mm": 30,
+			"bandage": 2,
+			"molly": 1
+		}
+	},
+	"big_darlene": {
+		"name": "Big Darlene",
+		"max_health": 900.0,
+		"walk_speed": 0.8,
+		"chase_speed": 1.5,
+		"turn_speed": 4.0,
+		"sight_range": 40.0,
+		"sight_fov_degrees": 140.0,
+		"close_sense_range": 3.0,
+		"lose_interest_seconds": 30.0,
+		"attack_range": 20.0,
+		"attack_reach": 2.4,
+		"attack_windup": 0.7,
+		"attack_cooldown": 1.4,
+		"attack_damage": 28.0,
+		"wander_radius": 3.0,
+		"wander_pause": 3.0,
+		"models": [
+			"zombie_ribcage"
+		],
+		"scale": 1.45,
+		"tint": [
+			0.3,
+			0.85,
+			0.2,
+			0.45
+		],
+		"boss": true,
+		"ranged": {
+			"damage": 16.0,
+			"range": 28.0,
+			"noise_radius": 8.0,
+			"spread_degrees": 4.0
+		},
+		"enrage": {
+			"below": 0.35,
+			"speed_mult": 1.6,
+			"cooldown_mult": 0.5
+		},
+		"drops": {
+			"canned_beans": 4,
+			"painkillers": 2,
+			"ammo_9mm": 20
+		}
+	},
+	"hunter_conner": {
+		"name": "Hunter Conner",
+		"max_health": 1500.0,
+		"walk_speed": 1.8,
+		"chase_speed": 3.6,
+		"turn_speed": 8.0,
+		"sight_range": 60.0,
+		"sight_fov_degrees": 200.0,
+		"close_sense_range": 8.0,
+		"lose_interest_seconds": 60.0,
+		"attack_range": 26.0,
+		"attack_reach": 2.2,
+		"attack_windup": 0.55,
+		"attack_cooldown": 1.25,
+		"attack_damage": 26.0,
+		"wander_radius": 4.0,
+		"wander_pause": 2.0,
+		"models": [
+			"survivor_shaun"
+		],
+		"scale": 1.12,
+		"tint": [
+			0.5,
+			0.05,
+			0.05,
+			0.3
+		],
+		"boss": true,
+		"armed": true,
+		"ranged": {
+			"damage": 17.0,
+			"range": 70.0,
+			"noise_radius": 40.0,
+			"spread_degrees": 3.2
+		},
+		"enrage": {
+			"below": 0.5,
+			"speed_mult": 1.35,
+			"cooldown_mult": 0.55
+		},
+		"bark_prefix": "hunter_fight_",
+		"subtitle_range": 45.0,
+		"drops": {
+			"eagle_keycard": 1,
+			"ammo_9mm": 45,
+			"painkillers": 2
+		}
+	},
+	"raider_gunner": {
+		"name": "Raider",
+		"max_health": 110.0,
+		"walk_speed": 1.4,
+		"chase_speed": 3.2,
+		"turn_speed": 7.0,
+		"sight_range": 34.0,
+		"sight_fov_degrees": 160.0,
+		"close_sense_range": 4.0,
+		"lose_interest_seconds": 15.0,
+		"attack_range": 18.0,
+		"attack_reach": 1.8,
+		"attack_windup": 0.45,
+		"attack_cooldown": 1.1,
+		"attack_damage": 12.0,
+		"wander_radius": 6.0,
+		"wander_pause": 4.0,
+		"models": [
+			"raider_gunner_m",
+			"raider_scout_f"
+		],
+		"faction": "raiders",
+		"armed": true,
+		"ranged": {
+			"damage": 9.0,
+			"range": 30.0,
+			"noise_radius": 20.0,
+			"spread_degrees": 6.0
+		},
+		"kill_count_as": "raider",
+		"bark_prefix": "raider_",
+		"subtitle_range": 25.0
+	},
+	"raider_brute": {
+		"name": "Raider Brute",
+		"max_health": 180.0,
+		"walk_speed": 1.3,
+		"chase_speed": 4.6,
+		"turn_speed": 7.0,
+		"sight_range": 30.0,
+		"sight_fov_degrees": 160.0,
+		"close_sense_range": 4.0,
+		"lose_interest_seconds": 15.0,
+		"attack_range": 1.6,
+		"attack_reach": 2.1,
+		"attack_windup": 0.5,
+		"attack_cooldown": 1.2,
+		"attack_damage": 22.0,
+		"wander_radius": 6.0,
+		"wander_pause": 4.0,
+		"models": [
+			"raider_brute_m",
+			"raider_brute_f"
+		],
+		"faction": "raiders",
+		"weapon_slot": 1,
+		"kill_count_as": "raider",
+		"bark_prefix": "raider_",
+		"subtitle_range": 25.0
+	},
+	"copperhead": {
+		"name": "Copperhead",
+		"max_health": 1400.0,
+		"walk_speed": 1.6,
+		"chase_speed": 3.8,
+		"turn_speed": 8.0,
+		"sight_range": 50.0,
+		"sight_fov_degrees": 200.0,
+		"close_sense_range": 8.0,
+		"lose_interest_seconds": 60.0,
+		"attack_range": 22.0,
+		"attack_reach": 2.2,
+		"attack_windup": 0.5,
+		"attack_cooldown": 1.0,
+		"attack_damage": 30.0,
+		"wander_radius": 3.0,
+		"wander_pause": 3.0,
+		"models": [
+			"raider_boss"
+		],
+		"scale": 1.12,
+		"faction": "raiders",
+		"armed": true,
+		"boss": true,
+		"ranged": {
+			"damage": 15.0,
+			"range": 30.0,
+			"noise_radius": 25.0,
+			"spread_degrees": 4.0
+		},
+		"enrage": {
+			"below": 0.5,
+			"speed_mult": 1.4,
+			"cooldown_mult": 0.55
+		},
+		"drops": {
+			"ammo_9mm": 40,
+			"bandage": 3,
+			"molly": 1
+		},
+		"bark_prefix": "copperhead_",
+		"subtitle_range": 40.0
+	}
+}

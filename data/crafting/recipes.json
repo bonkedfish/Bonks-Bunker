@@ -1,0 +1,7 @@
+{
+	"bandage_from_tape": { "name": "Patch-up Bandage", "needs": { "duct_tape": 1 }, "gives": { "bandage": 1 } },
+	"handload_9mm": { "name": "Hand-load 9mm Rounds", "needs": { "scrap_metal": 2 }, "gives": { "ammo_9mm": 10 } },
+	"scrap_wrench": { "name": "Break Down Wrench", "needs": { "wrench": 1 }, "gives": { "scrap_metal": 2 } },
+	"scrap_battery": { "name": "Strip Car Battery", "needs": { "car_battery": 1 }, "gives": { "scrap_metal": 3 } },
+	"taped_bat": { "name": "Make a Baseball Bat", "needs": { "scrap_metal": 3, "duct_tape": 1 }, "gives": { "bat_baseball": 1 } }
+}

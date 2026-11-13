@@ -1,0 +1,19 @@
+{
+	"app_id": "WLLkShNUapYwcqA",
+	"session_code_characters": "ABCDEFGHJKLMNPQRSTUVWXYZ23456789",
+	"signaling_timeout": 4.0,
+	"signaling_attempts": 4.0,
+	"trackers": [
+		"wss://tracker.androodev.com",
+		"wss://tracker.openwebtorrent.com",
+		"wss://tracker.files.fm:7073/announce",
+		"wss://tracker.btorrent.xyz/",
+		"wss://tracker.ghostchu-services.top:443/announce"
+	],
+	"stun_servers": [
+		"stun:stun.l.google.com:19302",
+		"stun:stun1.l.google.com:19302",
+		"stun:stun.cloudflare.com:3478"
+	],
+	"turn_servers": []
+}

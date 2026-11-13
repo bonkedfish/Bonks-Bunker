@@ -1,0 +1,299 @@
+{
+	"meepo_dock": {
+		"rolls_min": 1.0, "rolls_max": 1.0,
+		"entries": [
+			{ "item": "meepo", "weight": 1.0, "min": 4.0, "max": 4.0 }
+		]
+	},
+	"khs_science_kit": {
+		"rolls_min": 1.0, "rolls_max": 1.0,
+		"entries": [
+			{ "item": "chem_lab_kit", "weight": 1.0, "min": 1.0, "max": 1.0 }
+		]
+	},
+	"khs_nurse": {
+		"rolls_min": 3.0, "rolls_max": 5.0,
+		"entries": [
+			{ "item": "bandage", "weight": 4.0, "min": 1.0, "max": 3.0 },
+			{ "item": "painkillers", "weight": 3.0, "min": 1.0, "max": 2.0 },
+			{ "item": "water_bottle", "weight": 1.0, "min": 1.0, "max": 2.0 }
+		]
+	},
+	"hunter_locker": {
+		"rolls_min": 4.0, "rolls_max": 6.0,
+		"entries": [
+			{ "item": "ammo_9mm", "weight": 4.0, "min": 12.0, "max": 30.0 },
+			{ "item": "painkillers", "weight": 2.0, "min": 1.0, "max": 2.0 },
+			{ "item": "bandage", "weight": 2.0, "min": 2.0, "max": 4.0 },
+			{ "item": "pistol_9mm", "weight": 1.0, "min": 1.0, "max": 1.0 },
+			{ "item": "duct_tape", "weight": 1.0, "min": 1.0, "max": 3.0 }
+		]
+	},
+	"chiller_stash": {
+		"rolls_min": 2.0, "rolls_max": 4.0,
+		"entries": [
+			{ "item": "kush_joint", "weight": 3.0, "min": 1.0, "max": 3.0 },
+			{ "item": "magic_mushrooms", "weight": 1.5, "min": 1.0, "max": 2.0 },
+			{ "item": "acid_tab", "weight": 0.7, "min": 1.0, "max": 1.0 },
+			{ "item": "molly", "weight": 0.7, "min": 1.0, "max": 1.0 },
+			{ "item": "water_bottle", "weight": 2.0, "min": 1.0, "max": 2.0 },
+			{ "item": "canned_beans", "weight": 2.0, "min": 1.0, "max": 2.0 },
+			{ "item": "ammo_9mm", "weight": 1.5, "min": 5.0, "max": 12.0 }
+		]
+	},
+	"archway_exhibit": {
+		"rolls_min": 2.0, "rolls_max": 4.0,
+		"entries": [
+			{ "item": "canned_beans", "weight": 2.0, "min": 1.0, "max": 2.0 },
+			{ "item": "water_bottle", "weight": 2.0, "min": 1.0, "max": 2.0 },
+			{ "item": "bandage", "weight": 2.0, "min": 1.0, "max": 2.0 },
+			{ "item": "duct_tape", "weight": 2.0, "min": 1.0, "max": 2.0 },
+			{ "item": "scrap_metal", "weight": 2.0, "min": 1.0, "max": 3.0 },
+			{ "item": "ammo_9mm", "weight": 2.0, "min": 4.0, "max": 10.0 },
+			{ "item": "painkillers", "weight": 0.7, "min": 1.0, "max": 1.0 }
+		]
+	},
+	"archway_gift_shop": {
+		"rolls_min": 2.0, "rolls_max": 4.0,
+		"entries": [
+			{ "item": "water_bottle", "weight": 3.0, "min": 1.0, "max": 3.0 },
+			{ "item": "canned_beans", "weight": 2.0, "min": 1.0, "max": 2.0 },
+			{ "item": "duct_tape", "weight": 2.0, "min": 1.0, "max": 2.0 },
+			{ "item": "bandage", "weight": 2.0, "min": 1.0, "max": 3.0 },
+			{ "item": "painkillers", "weight": 1.0, "min": 1.0, "max": 1.0 }
+		]
+	},
+	"archway_diner": {
+		"rolls_min": 2.0, "rolls_max": 4.0,
+		"entries": [
+			{ "item": "canned_beans", "weight": 3.0, "min": 1.0, "max": 3.0 },
+			{ "item": "water_bottle", "weight": 3.0, "min": 1.0, "max": 3.0 },
+			{ "item": "evans_jerky", "weight": 1.5, "min": 1.0, "max": 2.0 }
+		]
+	},
+	"evan_stash": {
+		"rolls_min": 3.0, "rolls_max": 5.0,
+		"entries": [
+			{ "item": "ammo_9mm", "weight": 3.0, "min": 10.0, "max": 25.0 },
+			{ "item": "painkillers", "weight": 1.5, "min": 1.0, "max": 2.0 },
+			{ "item": "bandage", "weight": 2.0, "min": 2.0, "max": 3.0 },
+			{ "item": "duct_tape", "weight": 1.5, "min": 1.0, "max": 2.0 },
+			{ "item": "evans_jerky", "weight": 2.0, "min": 1.0, "max": 3.0 },
+			{ "item": "pistol_9mm", "weight": 0.4, "min": 1.0, "max": 1.0 }
+		]
+	},
+	"house_cabinet": {
+		"rolls_min": 1.0, "rolls_max": 3.0,
+		"entries": [
+			{ "item": "canned_beans", "weight": 3.0, "min": 1.0, "max": 2.0 },
+			{ "item": "water_bottle", "weight": 3.0, "min": 1.0, "max": 2.0 },
+			{ "item": "bandage", "weight": 2.0, "min": 1.0, "max": 2.0 },
+			{ "item": "duct_tape", "weight": 1.0, "min": 1.0, "max": 1.0 },
+			{ "item": "", "weight": 2.0, "min": 0.0, "max": 0.0 }
+		]
+	},
+	"fridge": {
+		"rolls_min": 1.0, "rolls_max": 2.0,
+		"entries": [
+			{ "item": "canned_beans", "weight": 2.0, "min": 1.0, "max": 3.0 },
+			{ "item": "water_bottle", "weight": 3.0, "min": 1.0, "max": 3.0 },
+			{ "item": "", "weight": 1.0, "min": 0.0, "max": 0.0 }
+		]
+	},
+	"toolbox": {
+		"rolls_min": 2.0, "rolls_max": 3.0,
+		"entries": [
+			{ "item": "scrap_metal", "weight": 3.0, "min": 1.0, "max": 3.0 },
+			{ "item": "duct_tape", "weight": 2.0, "min": 1.0, "max": 2.0 },
+			{ "item": "wrench", "weight": 1.0, "min": 1.0, "max": 1.0 },
+			{ "item": "ammo_9mm", "weight": 1.0, "min": 3.0, "max": 8.0 }
+		]
+	},
+	"ammo_cache": {
+		"rolls_min": 1.0, "rolls_max": 2.0,
+		"entries": [
+			{ "item": "ammo_9mm", "weight": 5.0, "min": 6.0, "max": 18.0 },
+			{ "item": "painkillers", "weight": 1.0, "min": 1.0, "max": 1.0 }
+		]
+	},
+	"junk_pile": {
+		"rolls_min": 3.0, "rolls_max": 5.0,
+		"entries": [
+			{ "item": "car_battery", "weight": 2.0, "min": 1.0, "max": 1.0 },
+			{ "item": "cinder_block", "weight": 3.0, "min": 1.0, "max": 2.0 },
+			{ "item": "scrap_metal", "weight": 3.0, "min": 1.0, "max": 3.0 }
+		]
+	},
+	"poi_gas": {
+		"rolls_min": 1.0, "rolls_max": 3.0,
+		"entries": [
+			{ "item": "water_bottle", "weight": 3.0, "min": 1.0, "max": 2.0 },
+			{ "item": "canned_beans", "weight": 2.0, "min": 1.0, "max": 2.0 },
+			{ "item": "car_battery", "weight": 1.0, "min": 1.0, "max": 1.0 },
+			{ "item": "duct_tape", "weight": 2.0, "min": 1.0, "max": 1.0 },
+			{ "item": "scrap_metal", "weight": 2.0, "min": 1.0, "max": 3.0 },
+			{ "item": "", "weight": 2.0, "min": 0.0, "max": 0.0 }
+		]
+	},
+	"poi_store": {
+		"rolls_min": 1.0, "rolls_max": 3.0,
+		"entries": [
+			{ "item": "canned_beans", "weight": 4.0, "min": 1.0, "max": 3.0 },
+			{ "item": "water_bottle", "weight": 4.0, "min": 1.0, "max": 2.0 },
+			{ "item": "duct_tape", "weight": 1.0, "min": 1.0, "max": 1.0 },
+			{ "item": "bandage", "weight": 1.0, "min": 1.0, "max": 1.0 },
+			{ "item": "", "weight": 2.0, "min": 0.0, "max": 0.0 }
+		]
+	},
+	"poi_pharmacy": {
+		"rolls_min": 1.0, "rolls_max": 3.0,
+		"entries": [
+			{ "item": "bandage", "weight": 4.0, "min": 1.0, "max": 3.0 },
+			{ "item": "painkillers", "weight": 3.0, "min": 1.0, "max": 2.0 },
+			{ "item": "water_bottle", "weight": 1.0, "min": 1.0, "max": 1.0 },
+			{ "item": "", "weight": 2.0, "min": 0.0, "max": 0.0 }
+		]
+	},
+	"poi_diner": {
+		"rolls_min": 1.0, "rolls_max": 2.0,
+		"entries": [
+			{ "item": "canned_beans", "weight": 3.0, "min": 1.0, "max": 2.0 },
+			{ "item": "water_bottle", "weight": 3.0, "min": 1.0, "max": 2.0 },
+			{ "item": "scrap_metal", "weight": 1.0, "min": 1.0, "max": 1.0 },
+			{ "item": "", "weight": 2.0, "min": 0.0, "max": 0.0 }
+		]
+	},
+	"poi_garage": {
+		"rolls_min": 1.0, "rolls_max": 3.0,
+		"entries": [
+			{ "item": "scrap_metal", "weight": 4.0, "min": 1.0, "max": 3.0 },
+			{ "item": "wrench", "weight": 2.0, "min": 1.0, "max": 1.0 },
+			{ "item": "car_battery", "weight": 2.0, "min": 1.0, "max": 1.0 },
+			{ "item": "duct_tape", "weight": 2.0, "min": 1.0, "max": 1.0 },
+			{ "item": "ammo_9mm", "weight": 1.0, "min": 3.0, "max": 8.0 },
+			{ "item": "", "weight": 2.0, "min": 0.0, "max": 0.0 }
+		]
+	},
+	"porch": {
+		"rolls_min": 1.0, "rolls_max": 1.0,
+		"entries": [
+			{ "item": "canned_beans", "weight": 1.0, "min": 1.0, "max": 1.0 },
+			{ "item": "water_bottle", "weight": 1.0, "min": 1.0, "max": 1.0 },
+			{ "item": "duct_tape", "weight": 1.0, "min": 1.0, "max": 1.0 },
+			{ "item": "bandage", "weight": 1.0, "min": 1.0, "max": 1.0 },
+			{ "item": "", "weight": 4.0, "min": 0.0, "max": 0.0 }
+		]
+	},
+	"trash": {
+		"rolls_min": 1.0, "rolls_max": 2.0,
+		"entries": [
+			{ "item": "scrap_metal", "weight": 3.0, "min": 1.0, "max": 2.0 },
+			{ "item": "duct_tape", "weight": 1.0, "min": 1.0, "max": 1.0 },
+			{ "item": "canned_beans", "weight": 1.0, "min": 1.0, "max": 1.0 },
+			{ "item": "", "weight": 4.0, "min": 0.0, "max": 0.0 }
+		]
+	},
+	"car_trunk": {
+		"rolls_min": 1.0, "rolls_max": 2.0,
+		"entries": [
+			{ "item": "scrap_metal", "weight": 2.0, "min": 1.0, "max": 2.0 },
+			{ "item": "car_battery", "weight": 1.0, "min": 1.0, "max": 1.0 },
+			{ "item": "wrench", "weight": 1.0, "min": 1.0, "max": 1.0 },
+			{ "item": "water_bottle", "weight": 2.0, "min": 1.0, "max": 1.0 },
+			{ "item": "ammo_9mm", "weight": 1.0, "min": 2.0, "max": 6.0 },
+			{ "item": "bandage", "weight": 1.0, "min": 1.0, "max": 1.0 },
+			{ "item": "", "weight": 3.0, "min": 0.0, "max": 0.0 }
+		]
+	},
+	"bar_register": {
+		"rolls_min": 1.0, "rolls_max": 2.0,
+		"entries": [
+			{ "item": "ammo_9mm", "weight": 2.0, "min": 3.0, "max": 8.0 },
+			{ "item": "duct_tape", "weight": 1.0, "min": 1.0, "max": 1.0 },
+			{ "item": "painkillers", "weight": 1.0, "min": 1.0, "max": 1.0 },
+			{ "item": "", "weight": 3.0, "min": 0.0, "max": 0.0 }
+		]
+	},
+	"bar_shelf": {
+		"rolls_min": 1.0, "rolls_max": 3.0,
+		"entries": [
+			{ "item": "water_bottle", "weight": 3.0, "min": 1.0, "max": 2.0 },
+			{ "item": "canned_beans", "weight": 1.0, "min": 1.0, "max": 1.0 },
+			{ "item": "molly", "weight": 0.6, "min": 1.0, "max": 1.0 },
+			{ "item": "kush_joint", "weight": 1.0, "min": 1.0, "max": 2.0 },
+			{ "item": "", "weight": 2.0, "min": 0.0, "max": 0.0 }
+		]
+	},
+	"bar_merch": {
+		"rolls_min": 1.0, "rolls_max": 2.0,
+		"entries": [
+			{ "item": "duct_tape", "weight": 2.0, "min": 1.0, "max": 1.0 },
+			{ "item": "scrap_metal", "weight": 2.0, "min": 1.0, "max": 2.0 },
+			{ "item": "water_bottle", "weight": 1.0, "min": 1.0, "max": 1.0 },
+			{ "item": "acid_tab", "weight": 0.5, "min": 1.0, "max": 1.0 },
+			{ "item": "", "weight": 2.0, "min": 0.0, "max": 0.0 }
+		]
+	},
+	"raider_stash": {
+		"rolls_min": 2.0, "rolls_max": 4.0,
+		"entries": [
+			{ "item": "ammo_9mm", "weight": 3.0, "min": 4.0, "max": 10.0 },
+			{ "item": "canned_beans", "weight": 2.0, "min": 1.0, "max": 2.0 },
+			{ "item": "water_bottle", "weight": 2.0, "min": 1.0, "max": 2.0 },
+			{ "item": "bandage", "weight": 2.0, "min": 1.0, "max": 2.0 },
+			{ "item": "scrap_metal", "weight": 1.0, "min": 1.0, "max": 3.0 },
+			{ "item": "black_tar", "weight": 0.4, "min": 1.0, "max": 1.0 },
+			{ "item": "kush_joint", "weight": 0.8, "min": 1.0, "max": 2.0 }
+		]
+	},
+	"raider_ammo": {
+		"rolls_min": 1.0, "rolls_max": 3.0,
+		"entries": [
+			{ "item": "ammo_9mm", "weight": 5.0, "min": 6.0, "max": 15.0 },
+			{ "item": "bandage", "weight": 1.0, "min": 1.0, "max": 1.0 },
+			{ "item": "duct_tape", "weight": 1.0, "min": 1.0, "max": 1.0 }
+		]
+	},
+	"copperhead_stash": {
+		"rolls_min": 4.0, "rolls_max": 6.0,
+		"entries": [
+			{ "item": "ammo_9mm", "weight": 4.0, "min": 10.0, "max": 25.0 },
+			{ "item": "bandage", "weight": 2.0, "min": 2.0, "max": 3.0 },
+			{ "item": "painkillers", "weight": 2.0, "min": 1.0, "max": 2.0 },
+			{ "item": "molly", "weight": 1.0, "min": 1.0, "max": 2.0 },
+			{ "item": "acid_tab", "weight": 1.0, "min": 1.0, "max": 1.0 },
+			{ "item": "car_battery", "weight": 0.5, "min": 1.0, "max": 1.0 },
+			{ "item": "canned_beans", "weight": 1.0, "min": 2.0, "max": 3.0 }
+		]
+	},
+	"dg_finish": {
+		"rolls_min": 1.0,
+		"rolls_max": 2.0,
+		"entries": [
+			{ "item": "canned_beans", "weight": 3.0, "min": 1.0, "max": 1.0 },
+			{ "item": "water_bottle", "weight": 3.0, "min": 1.0, "max": 1.0 },
+			{ "item": "bandage", "weight": 2.0, "min": 1.0, "max": 2.0 },
+			{ "item": "ammo_9mm", "weight": 2.0, "min": 4.0, "max": 8.0 }
+		]
+	},
+	"dg_par": {
+		"rolls_min": 2.0,
+		"rolls_max": 3.0,
+		"entries": [
+			{ "item": "canned_beans", "weight": 2.0, "min": 1.0, "max": 2.0 },
+			{ "item": "water_bottle", "weight": 2.0, "min": 1.0, "max": 2.0 },
+			{ "item": "bandage", "weight": 2.0, "min": 2.0, "max": 3.0 },
+			{ "item": "painkillers", "weight": 2.0, "min": 1.0, "max": 1.0 },
+			{ "item": "ammo_9mm", "weight": 3.0, "min": 8.0, "max": 15.0 },
+			{ "item": "evans_jerky", "weight": 1.0, "min": 1.0, "max": 1.0 },
+			{ "item": "duct_tape", "weight": 1.0, "min": 1.0, "max": 1.0 }
+		]
+	},
+	"dg_ace": {
+		"rolls_min": 1.0,
+		"rolls_max": 1.0,
+		"entries": [
+			{ "item": "disc_golden_ace", "weight": 1.0, "min": 1.0, "max": 1.0 }
+		]
+	}
+}

@@ -1,0 +1,6 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://tools/landmarks/build_kearney_high.gd" id="1_khs"]
+
+[node name="BuildKearneyHigh" type="Node"]
+script = ExtResource("1_khs")

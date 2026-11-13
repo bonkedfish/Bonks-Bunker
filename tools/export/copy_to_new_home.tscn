@@ -1,0 +1,6 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://tools/export/copy_to_new_home.gd" id="1_copy"]
+
+[node name="CopyToNewHome" type="Node"]
+script = ExtResource("1_copy")

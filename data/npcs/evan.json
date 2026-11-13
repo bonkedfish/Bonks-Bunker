@@ -1,0 +1,17 @@
+{
+	"note": "Evan \"Jerkin'\" Jenkins (D-049): unhinged but friendly hermit living in the Archway. Never fights, can't be hurt. Lines in data/dialogue/evan.json (barks prefixed evan_).",
+	"display_name": "Evan \"Jerkin'\" Jenkins",
+	"dialogue_tree": "evan_talk",
+	"bark_prefix": "evan_",
+	"model": "survivor_shaun",
+	"talk_range": 3.0,
+	"subtitle_range": 20.0,
+	"greet_range": 12.0,
+	"face_range": 8.0,
+	"turn_speed": 4.0,
+	"bark_cooldown": 6.0,
+	"idle_bark_min": 18.0,
+	"idle_bark_max": 40.0,
+	"hat_color": [0.75, 0.76, 0.78],
+	"hat_y": 1.7
+}

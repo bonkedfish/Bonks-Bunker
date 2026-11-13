@@ -1,0 +1,12 @@
+{
+	"note": "Meepo electric longboard (D-057). ride_speed m/s (walk 4.5, sprint 7.0); ride_accel = how fast you reach it (board feel); battery 0-100 drains battery_drain_per_s while rolling faster than 1 m/s, recharges recharge_per_s within charger_range_m of a Meepo dock (group meepo_chargers). A hit of knockoff_damage or more throws you off. No shooting while riding. D-065: drain 0.055/s = ~30 min of riding per charge; recharge is instant at the dock. D-068: cruise 15 m/s; holding sprint boosts to boost_speed and drains boost_drain_mult x faster.",
+	"ride_speed": 15.0,
+	"ride_accel": 3.5,
+	"battery_drain_per_s": 0.055,
+	"recharge_per_s": 1000.0,
+	"charger_range_m": 8.0,
+	"knockoff_damage": 15.0,
+	"min_battery": 2.0,
+	"boost_speed": 20.0,
+	"boost_drain_mult": 3.0
+}

@@ -1,0 +1,21 @@
+{
+	"_comment": "Generated-building looks (D-041 phase 1). Read by tools/map_import/build_cells.gd via BuildingLooks; re-run build_cells after editing.",
+	"textures_dir": "res://assets/textures",
+	"looks": {
+		"siding": {"texture": "siding_painted", "tile_m": 1.6, "lap_spacing_m": 0.2, "windows": true, "tint": [1.0, 1.0, 1.0], "tint_variation": 0.2, "recolor": 0.8, "paint": [[0.85, 0.83, 0.77], [0.6, 0.66, 0.7]]},
+		"brick": {"texture": "brick_red", "tile_m": 2.5, "lap_spacing_m": 0.0, "windows": true, "tint": [1.0, 1.0, 1.0], "tint_variation": 0.15},
+		"planks": {"texture": "planks_weathered", "tile_m": 1.8, "lap_spacing_m": 0.0, "windows": false, "tint": [1.0, 1.0, 1.0], "tint_variation": 0.2},
+		"concrete": {"texture": "concrete_cracked", "tile_m": 3.0, "lap_spacing_m": 0.0, "windows": true, "tint": [0.95, 0.94, 0.9], "tint_variation": 0.15}
+	},
+	"classes": {
+		"shed": {"max_area_m2": 40, "osm_tags": ["shed", "garage", "garages", "carport", "hut"], "looks": {"planks": 1.0}, "roof": "gable", "pitch_deg": 20},
+		"house": {"max_area_m2": 400, "osm_tags": ["house", "residential", "detached", "semidetached_house", "bungalow", "static_caravan"], "looks": {"siding": 0.75, "brick": 0.25}, "roof": "gable", "pitch_deg": 30},
+		"large": {"max_area_m2": 1000000, "osm_tags": [], "looks": {"brick": 0.4, "concrete": 0.6}, "roof": "flat", "pitch_deg": 0}
+	},
+	"gable_min_rectangularity": 0.85,
+	"gable_overhang_m": 0.35,
+	"min_wall_height_m": 2.6,
+	"roof_colors": [[0.16, 0.16, 0.17], [0.24, 0.2, 0.17], [0.3, 0.17, 0.14], [0.2, 0.23, 0.21], [0.33, 0.32, 0.3]],
+	"flat_roof_color": [0.36, 0.35, 0.33],
+	"window": {"spacing_m": 3.2, "floor_height_m": 3.0, "width_m": 1.1, "height_m": 1.3, "sill_m": 1.2, "boarded_fraction": 0.25, "broken_fraction": 0.2}
+}

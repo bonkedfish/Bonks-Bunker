@@ -1,0 +1,664 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/world/static_mesh_merger.gd" id="1_merge"]
+[ext_resource type="PackedScene" path="res://scenes/loot_container.tscn" id="2_container"]
+[ext_resource type="PackedScene" path="res://scenes/workbench.tscn" id="3_workbench"]
+
+[sub_resource type="StandardMaterial3D" id="Mat_concrete"]
+albedo_color = Color(0.5, 0.5, 0.48, 1)
+roughness = 0.9
+
+[sub_resource type="StandardMaterial3D" id="Mat_bunker_floor"]
+albedo_color = Color(0.38, 0.37, 0.35, 1)
+roughness = 0.9
+
+[sub_resource type="StandardMaterial3D" id="Mat_metal"]
+albedo_color = Color(0.3, 0.32, 0.3, 1)
+roughness = 0.5
+metallic = 0.5
+
+[sub_resource type="StandardMaterial3D" id="Mat_wood"]
+albedo_color = Color(0.5, 0.36, 0.24, 1)
+roughness = 0.9
+
+[sub_resource type="StandardMaterial3D" id="Mat_fabric"]
+albedo_color = Color(0.4, 0.42, 0.32, 1)
+roughness = 0.9
+
+[sub_resource type="StandardMaterial3D" id="Mat_steps"]
+albedo_color = Color(0.45, 0.45, 0.43, 1)
+roughness = 0.9
+
+[sub_resource type="BoxShape3D" id="Shape_0"]
+size = Vector3(14.6, 0.3, 10.6)
+
+[sub_resource type="BoxMesh" id="Mesh_1"]
+size = Vector3(14.6, 0.3, 10.6)
+
+[sub_resource type="BoxShape3D" id="Shape_2"]
+size = Vector3(8.3, 0.3, 10.6)
+
+[sub_resource type="BoxMesh" id="Mesh_3"]
+size = Vector3(8.3, 0.3, 10.6)
+
+[sub_resource type="BoxShape3D" id="Shape_4"]
+size = Vector3(6.3, 0.3, 4.5)
+
+[sub_resource type="BoxMesh" id="Mesh_5"]
+size = Vector3(6.3, 0.3, 4.5)
+
+[sub_resource type="BoxShape3D" id="Shape_6"]
+size = Vector3(0.3, 3.0, 10.6)
+
+[sub_resource type="BoxMesh" id="Mesh_7"]
+size = Vector3(0.3, 3.0, 10.6)
+
+[sub_resource type="BoxShape3D" id="Shape_8"]
+size = Vector3(14.0, 3.0, 0.3)
+
+[sub_resource type="BoxMesh" id="Mesh_9"]
+size = Vector3(14.0, 3.0, 0.3)
+
+[sub_resource type="BoxShape3D" id="Shape_10"]
+size = Vector3(6.0, 4.0, 0.2)
+
+[sub_resource type="BoxMesh" id="Mesh_11"]
+size = Vector3(6.0, 4.0, 0.2)
+
+[sub_resource type="BoxShape3D" id="Shape_12"]
+size = Vector3(7.211, 0.2, 1.6)
+
+[sub_resource type="BoxMesh" id="Mesh_13"]
+size = Vector3(0.375, 0.25, 1.6)
+
+[sub_resource type="BoxShape3D" id="Shape_14"]
+size = Vector3(6.2, 0.6, 0.2)
+
+[sub_resource type="BoxMesh" id="Mesh_15"]
+size = Vector3(6.2, 0.6, 0.2)
+
+[sub_resource type="BoxShape3D" id="Shape_16"]
+size = Vector3(0.2, 0.6, 2.4)
+
+[sub_resource type="BoxMesh" id="Mesh_17"]
+size = Vector3(0.2, 0.6, 2.4)
+
+[sub_resource type="BoxShape3D" id="Shape_18"]
+size = Vector3(0.08, 1.8, 1.6)
+
+[sub_resource type="BoxMesh" id="Mesh_19"]
+size = Vector3(0.08, 1.8, 1.6)
+
+[sub_resource type="BoxShape3D" id="Shape_20"]
+size = Vector3(0.2, 3.0, 1.4)
+
+[sub_resource type="BoxMesh" id="Mesh_21"]
+size = Vector3(0.2, 3.0, 1.4)
+
+[sub_resource type="BoxShape3D" id="Shape_22"]
+size = Vector3(0.2, 0.8, 1.4)
+
+[sub_resource type="BoxMesh" id="Mesh_23"]
+size = Vector3(0.2, 0.8, 1.4)
+
+[sub_resource type="BoxShape3D" id="Shape_24"]
+size = Vector3(0.2, 3.0, 1.3)
+
+[sub_resource type="BoxMesh" id="Mesh_25"]
+size = Vector3(0.2, 3.0, 1.3)
+
+[sub_resource type="BoxShape3D" id="Shape_26"]
+size = Vector3(0.2, 3.0, 4.3)
+
+[sub_resource type="BoxMesh" id="Mesh_27"]
+size = Vector3(0.2, 3.0, 4.3)
+
+[sub_resource type="BoxShape3D" id="Shape_28"]
+size = Vector3(1.6, 0.75, 0.9)
+
+[sub_resource type="BoxMesh" id="Mesh_29"]
+size = Vector3(1.6, 0.75, 0.9)
+
+[sub_resource type="BoxShape3D" id="Shape_30"]
+size = Vector3(2.0, 0.45, 0.9)
+
+[sub_resource type="BoxMesh" id="Mesh_31"]
+size = Vector3(2.0, 0.45, 0.9)
+
+[sub_resource type="BoxShape3D" id="Shape_32"]
+size = Vector3(2.0, 0.2, 0.9)
+
+[sub_resource type="BoxMesh" id="Mesh_33"]
+size = Vector3(2.0, 0.2, 0.9)
+
+[sub_resource type="BoxShape3D" id="Shape_34"]
+size = Vector3(0.08, 1.7, 0.08)
+
+[sub_resource type="BoxMesh" id="Mesh_35"]
+size = Vector3(0.08, 1.7, 0.08)
+
+[sub_resource type="BoxShape3D" id="Shape_36"]
+size = Vector3(0.5, 2.0, 2.5)
+
+[sub_resource type="BoxMesh" id="Mesh_37"]
+size = Vector3(0.5, 2.0, 2.5)
+
+[sub_resource type="BoxShape3D" id="Shape_38"]
+size = Vector3(1.6, 1.2, 1.0)
+
+[sub_resource type="BoxMesh" id="Mesh_39"]
+size = Vector3(1.6, 1.2, 1.0)
+
+[sub_resource type="BoxShape3D" id="Shape_40"]
+size = Vector3(0.6, 0.9, 0.6)
+
+[sub_resource type="BoxMesh" id="Mesh_41"]
+size = Vector3(0.6, 0.9, 0.6)
+
+[node name="BonkBunker" type="Node3D"]
+script = ExtResource("1_merge")
+
+[node name="Floor_1" type="StaticBody3D" parent="."]
+transform = Transform3D(1.000000, -0.000000, 0, 0.000000, 1.000000, 0, 0, 0, 1, 0.000, -4.150, 0.000)
+
+[node name="Shape" type="CollisionShape3D" parent="Floor_1"]
+shape = SubResource("Shape_0")
+
+[node name="Mesh" type="MeshInstance3D" parent="Floor_1"]
+mesh = SubResource("Mesh_1")
+surface_material_override/0 = SubResource("Mat_bunker_floor")
+
+[node name="Roof_2" type="StaticBody3D" parent="."]
+transform = Transform3D(1.000000, -0.000000, 0, 0.000000, 1.000000, 0, 0, 0, 1, -3.150, -0.850, 0.000)
+
+[node name="Shape" type="CollisionShape3D" parent="Roof_2"]
+shape = SubResource("Shape_2")
+
+[node name="Mesh" type="MeshInstance3D" parent="Roof_2"]
+mesh = SubResource("Mesh_3")
+surface_material_override/0 = SubResource("Mat_concrete")
+
+[node name="Roof_3" type="StaticBody3D" parent="."]
+transform = Transform3D(1.000000, -0.000000, 0, 0.000000, 1.000000, 0, 0, 0, 1, 4.150, -0.850, 3.050)
+
+[node name="Shape" type="CollisionShape3D" parent="Roof_3"]
+shape = SubResource("Shape_4")
+
+[node name="Mesh" type="MeshInstance3D" parent="Roof_3"]
+mesh = SubResource("Mesh_5")
+surface_material_override/0 = SubResource("Mat_concrete")
+
+[node name="Roof_4" type="StaticBody3D" parent="."]
+transform = Transform3D(1.000000, -0.000000, 0, 0.000000, 1.000000, 0, 0, 0, 1, 4.150, -0.850, -3.050)
+
+[node name="Shape" type="CollisionShape3D" parent="Roof_4"]
+shape = SubResource("Shape_4")
+
+[node name="Mesh" type="MeshInstance3D" parent="Roof_4"]
+mesh = SubResource("Mesh_5")
+surface_material_override/0 = SubResource("Mat_concrete")
+
+[node name="OuterWest_5" type="StaticBody3D" parent="."]
+transform = Transform3D(1.000000, -0.000000, 0, 0.000000, 1.000000, 0, 0, 0, 1, -7.150, -2.500, 0.000)
+
+[node name="Shape" type="CollisionShape3D" parent="OuterWest_5"]
+shape = SubResource("Shape_6")
+
+[node name="Mesh" type="MeshInstance3D" parent="OuterWest_5"]
+mesh = SubResource("Mesh_7")
+surface_material_override/0 = SubResource("Mat_concrete")
+
+[node name="OuterEast_6" type="StaticBody3D" parent="."]
+transform = Transform3D(1.000000, -0.000000, 0, 0.000000, 1.000000, 0, 0, 0, 1, 7.150, -2.500, 0.000)
+
+[node name="Shape" type="CollisionShape3D" parent="OuterEast_6"]
+shape = SubResource("Shape_6")
+
+[node name="Mesh" type="MeshInstance3D" parent="OuterEast_6"]
+mesh = SubResource("Mesh_7")
+surface_material_override/0 = SubResource("Mat_concrete")
+
+[node name="OuterNorth_7" type="StaticBody3D" parent="."]
+transform = Transform3D(1.000000, -0.000000, 0, 0.000000, 1.000000, 0, 0, 0, 1, 0.000, -2.500, -5.150)
+
+[node name="Shape" type="CollisionShape3D" parent="OuterNorth_7"]
+shape = SubResource("Shape_8")
+
+[node name="Mesh" type="MeshInstance3D" parent="OuterNorth_7"]
+mesh = SubResource("Mesh_9")
+surface_material_override/0 = SubResource("Mat_concrete")
+
+[node name="OuterSouth_8" type="StaticBody3D" parent="."]
+transform = Transform3D(1.000000, -0.000000, 0, 0.000000, 1.000000, 0, 0, 0, 1, 0.000, -2.500, 5.150)
+
+[node name="Shape" type="CollisionShape3D" parent="OuterSouth_8"]
+shape = SubResource("Shape_8")
+
+[node name="Mesh" type="MeshInstance3D" parent="OuterSouth_8"]
+mesh = SubResource("Mesh_9")
+surface_material_override/0 = SubResource("Mat_concrete")
+
+[node name="StairWall_9" type="StaticBody3D" parent="."]
+transform = Transform3D(1.000000, -0.000000, 0, 0.000000, 1.000000, 0, 0, 0, 1, 4.000, -2.000, -0.900)
+
+[node name="Shape" type="CollisionShape3D" parent="StairWall_9"]
+shape = SubResource("Shape_10")
+
+[node name="Mesh" type="MeshInstance3D" parent="StairWall_9"]
+mesh = SubResource("Mesh_11")
+surface_material_override/0 = SubResource("Mat_concrete")
+
+[node name="StairWall_10" type="StaticBody3D" parent="."]
+transform = Transform3D(1.000000, -0.000000, 0, 0.000000, 1.000000, 0, 0, 0, 1, 4.000, -2.000, 0.900)
+
+[node name="Shape" type="CollisionShape3D" parent="StairWall_10"]
+shape = SubResource("Shape_10")
+
+[node name="Mesh" type="MeshInstance3D" parent="StairWall_10"]
+mesh = SubResource("Mesh_11")
+surface_material_override/0 = SubResource("Mat_concrete")
+
+[node name="Ramp_11" type="StaticBody3D" parent="."]
+transform = Transform3D(0.832050, -0.554700, 0, 0.554700, 0.832050, 0, 0, 0, 1, 4.055, -2.083, 0.000)
+
+[node name="Shape" type="CollisionShape3D" parent="Ramp_11"]
+shape = SubResource("Shape_12")
+
+[node name="Step_12" type="MeshInstance3D" parent="."]
+transform = Transform3D(1.000000, -0.000000, 0, 0.000000, 1.000000, 0, 0, 0, 1, 6.812, -0.375, 0.000)
+mesh = SubResource("Mesh_13")
+surface_material_override/0 = SubResource("Mat_steps")
+
+[node name="Step_13" type="MeshInstance3D" parent="."]
+transform = Transform3D(1.000000, -0.000000, 0, 0.000000, 1.000000, 0, 0, 0, 1, 6.438, -0.625, 0.000)
+mesh = SubResource("Mesh_13")
+surface_material_override/0 = SubResource("Mat_steps")
+
+[node name="Step_14" type="MeshInstance3D" parent="."]
+transform = Transform3D(1.000000, -0.000000, 0, 0.000000, 1.000000, 0, 0, 0, 1, 6.062, -0.875, 0.000)
+mesh = SubResource("Mesh_13")
+surface_material_override/0 = SubResource("Mat_steps")
+
+[node name="Step_15" type="MeshInstance3D" parent="."]
+transform = Transform3D(1.000000, -0.000000, 0, 0.000000, 1.000000, 0, 0, 0, 1, 5.688, -1.125, 0.000)
+mesh = SubResource("Mesh_13")
+surface_material_override/0 = SubResource("Mat_steps")
+
+[node name="Step_16" type="MeshInstance3D" parent="."]
+transform = Transform3D(1.000000, -0.000000, 0, 0.000000, 1.000000, 0, 0, 0, 1, 5.312, -1.375, 0.000)
+mesh = SubResource("Mesh_13")
+surface_material_override/0 = SubResource("Mat_steps")
+
+[node name="Step_17" type="MeshInstance3D" parent="."]
+transform = Transform3D(1.000000, -0.000000, 0, 0.000000, 1.000000, 0, 0, 0, 1, 4.938, -1.625, 0.000)
+mesh = SubResource("Mesh_13")
+surface_material_override/0 = SubResource("Mat_steps")
+
+[node name="Step_18" type="MeshInstance3D" parent="."]
+transform = Transform3D(1.000000, -0.000000, 0, 0.000000, 1.000000, 0, 0, 0, 1, 4.562, -1.875, 0.000)
+mesh = SubResource("Mesh_13")
+surface_material_override/0 = SubResource("Mat_steps")
+
+[node name="Step_19" type="MeshInstance3D" parent="."]
+transform = Transform3D(1.000000, -0.000000, 0, 0.000000, 1.000000, 0, 0, 0, 1, 4.188, -2.125, 0.000)
+mesh = SubResource("Mesh_13")
+surface_material_override/0 = SubResource("Mat_steps")
+
+[node name="Step_20" type="MeshInstance3D" parent="."]
+transform = Transform3D(1.000000, -0.000000, 0, 0.000000, 1.000000, 0, 0, 0, 1, 3.812, -2.375, 0.000)
+mesh = SubResource("Mesh_13")
+surface_material_override/0 = SubResource("Mat_steps")
+
+[node name="Step_21" type="MeshInstance3D" parent="."]
+transform = Transform3D(1.000000, -0.000000, 0, 0.000000, 1.000000, 0, 0, 0, 1, 3.438, -2.625, 0.000)
+mesh = SubResource("Mesh_13")
+surface_material_override/0 = SubResource("Mat_steps")
+
+[node name="Step_22" type="MeshInstance3D" parent="."]
+transform = Transform3D(1.000000, -0.000000, 0, 0.000000, 1.000000, 0, 0, 0, 1, 3.062, -2.875, 0.000)
+mesh = SubResource("Mesh_13")
+surface_material_override/0 = SubResource("Mat_steps")
+
+[node name="Step_23" type="MeshInstance3D" parent="."]
+transform = Transform3D(1.000000, -0.000000, 0, 0.000000, 1.000000, 0, 0, 0, 1, 2.688, -3.125, 0.000)
+mesh = SubResource("Mesh_13")
+surface_material_override/0 = SubResource("Mat_steps")
+
+[node name="Step_24" type="MeshInstance3D" parent="."]
+transform = Transform3D(1.000000, -0.000000, 0, 0.000000, 1.000000, 0, 0, 0, 1, 2.312, -3.375, 0.000)
+mesh = SubResource("Mesh_13")
+surface_material_override/0 = SubResource("Mat_steps")
+
+[node name="Step_25" type="MeshInstance3D" parent="."]
+transform = Transform3D(1.000000, -0.000000, 0, 0.000000, 1.000000, 0, 0, 0, 1, 1.938, -3.625, 0.000)
+mesh = SubResource("Mesh_13")
+surface_material_override/0 = SubResource("Mat_steps")
+
+[node name="Step_26" type="MeshInstance3D" parent="."]
+transform = Transform3D(1.000000, -0.000000, 0, 0.000000, 1.000000, 0, 0, 0, 1, 1.562, -3.875, 0.000)
+mesh = SubResource("Mesh_13")
+surface_material_override/0 = SubResource("Mat_steps")
+
+[node name="Step_27" type="MeshInstance3D" parent="."]
+transform = Transform3D(1.000000, -0.000000, 0, 0.000000, 1.000000, 0, 0, 0, 1, 1.188, -4.125, 0.000)
+mesh = SubResource("Mesh_13")
+surface_material_override/0 = SubResource("Mat_steps")
+
+[node name="Curb_28" type="StaticBody3D" parent="."]
+transform = Transform3D(1.000000, -0.000000, 0, 0.000000, 1.000000, 0, 0, 0, 1, 3.950, 0.300, 1.100)
+
+[node name="Shape" type="CollisionShape3D" parent="Curb_28"]
+shape = SubResource("Shape_14")
+
+[node name="Mesh" type="MeshInstance3D" parent="Curb_28"]
+mesh = SubResource("Mesh_15")
+surface_material_override/0 = SubResource("Mat_concrete")
+
+[node name="Curb_29" type="StaticBody3D" parent="."]
+transform = Transform3D(1.000000, -0.000000, 0, 0.000000, 1.000000, 0, 0, 0, 1, 3.950, 0.300, -1.100)
+
+[node name="Shape" type="CollisionShape3D" parent="Curb_29"]
+shape = SubResource("Shape_14")
+
+[node name="Mesh" type="MeshInstance3D" parent="Curb_29"]
+mesh = SubResource("Mesh_15")
+surface_material_override/0 = SubResource("Mat_concrete")
+
+[node name="Curb_30" type="StaticBody3D" parent="."]
+transform = Transform3D(1.000000, -0.000000, 0, 0.000000, 1.000000, 0, 0, 0, 1, 0.750, 0.300, 0.000)
+
+[node name="Shape" type="CollisionShape3D" parent="Curb_30"]
+shape = SubResource("Shape_16")
+
+[node name="Mesh" type="MeshInstance3D" parent="Curb_30"]
+mesh = SubResource("Mesh_17")
+surface_material_override/0 = SubResource("Mat_concrete")
+
+[node name="HatchDoor_31" type="StaticBody3D" parent="."]
+transform = Transform3D(0.939373, 0.342898, 0, -0.342898, 0.939373, 0, 0, 0, 1, 0.600, 1.050, 0.000)
+
+[node name="Shape" type="CollisionShape3D" parent="HatchDoor_31"]
+shape = SubResource("Shape_18")
+
+[node name="Mesh" type="MeshInstance3D" parent="HatchDoor_31"]
+mesh = SubResource("Mesh_19")
+surface_material_override/0 = SubResource("Mat_metal")
+
+[node name="StorageWall_32" type="StaticBody3D" parent="."]
+transform = Transform3D(1.000000, -0.000000, 0, 0.000000, 1.000000, 0, 0, 0, 1, 1.000, -2.500, 1.600)
+
+[node name="Shape" type="CollisionShape3D" parent="StorageWall_32"]
+shape = SubResource("Shape_20")
+
+[node name="Mesh" type="MeshInstance3D" parent="StorageWall_32"]
+mesh = SubResource("Mesh_21")
+surface_material_override/0 = SubResource("Mat_concrete")
+
+[node name="StorageWall_33" type="StaticBody3D" parent="."]
+transform = Transform3D(1.000000, -0.000000, 0, 0.000000, 1.000000, 0, 0, 0, 1, 1.000, -1.400, 3.000)
+
+[node name="Shape" type="CollisionShape3D" parent="StorageWall_33"]
+shape = SubResource("Shape_22")
+
+[node name="Mesh" type="MeshInstance3D" parent="StorageWall_33"]
+mesh = SubResource("Mesh_23")
+surface_material_override/0 = SubResource("Mat_concrete")
+
+[node name="StorageWall_34" type="StaticBody3D" parent="."]
+transform = Transform3D(1.000000, -0.000000, 0, 0.000000, 1.000000, 0, 0, 0, 1, 1.000, -2.500, 4.350)
+
+[node name="Shape" type="CollisionShape3D" parent="StorageWall_34"]
+shape = SubResource("Shape_24")
+
+[node name="Mesh" type="MeshInstance3D" parent="StorageWall_34"]
+mesh = SubResource("Mesh_25")
+surface_material_override/0 = SubResource("Mat_concrete")
+
+[node name="GeneratorWall_35" type="StaticBody3D" parent="."]
+transform = Transform3D(1.000000, -0.000000, 0, 0.000000, 1.000000, 0, 0, 0, 1, 1.000, -2.500, -4.350)
+
+[node name="Shape" type="CollisionShape3D" parent="GeneratorWall_35"]
+shape = SubResource("Shape_24")
+
+[node name="Mesh" type="MeshInstance3D" parent="GeneratorWall_35"]
+mesh = SubResource("Mesh_25")
+surface_material_override/0 = SubResource("Mat_concrete")
+
+[node name="GeneratorWall_36" type="StaticBody3D" parent="."]
+transform = Transform3D(1.000000, -0.000000, 0, 0.000000, 1.000000, 0, 0, 0, 1, 1.000, -1.400, -3.000)
+
+[node name="Shape" type="CollisionShape3D" parent="GeneratorWall_36"]
+shape = SubResource("Shape_22")
+
+[node name="Mesh" type="MeshInstance3D" parent="GeneratorWall_36"]
+mesh = SubResource("Mesh_23")
+surface_material_override/0 = SubResource("Mat_concrete")
+
+[node name="GeneratorWall_37" type="StaticBody3D" parent="."]
+transform = Transform3D(1.000000, -0.000000, 0, 0.000000, 1.000000, 0, 0, 0, 1, 1.000, -2.500, -1.600)
+
+[node name="Shape" type="CollisionShape3D" parent="GeneratorWall_37"]
+shape = SubResource("Shape_20")
+
+[node name="Mesh" type="MeshInstance3D" parent="GeneratorWall_37"]
+mesh = SubResource("Mesh_21")
+surface_material_override/0 = SubResource("Mat_concrete")
+
+[node name="BunkWall_38" type="StaticBody3D" parent="."]
+transform = Transform3D(1.000000, -0.000000, 0, 0.000000, 1.000000, 0, 0, 0, 1, -3.000, -2.500, -2.850)
+
+[node name="Shape" type="CollisionShape3D" parent="BunkWall_38"]
+shape = SubResource("Shape_26")
+
+[node name="Mesh" type="MeshInstance3D" parent="BunkWall_38"]
+mesh = SubResource("Mesh_27")
+surface_material_override/0 = SubResource("Mat_concrete")
+
+[node name="BunkWall_39" type="StaticBody3D" parent="."]
+transform = Transform3D(1.000000, -0.000000, 0, 0.000000, 1.000000, 0, 0, 0, 1, -3.000, -1.400, 0.000)
+
+[node name="Shape" type="CollisionShape3D" parent="BunkWall_39"]
+shape = SubResource("Shape_22")
+
+[node name="Mesh" type="MeshInstance3D" parent="BunkWall_39"]
+mesh = SubResource("Mesh_23")
+surface_material_override/0 = SubResource("Mat_concrete")
+
+[node name="BunkWall_40" type="StaticBody3D" parent="."]
+transform = Transform3D(1.000000, -0.000000, 0, 0.000000, 1.000000, 0, 0, 0, 1, -3.000, -2.500, 2.850)
+
+[node name="Shape" type="CollisionShape3D" parent="BunkWall_40"]
+shape = SubResource("Shape_26")
+
+[node name="Mesh" type="MeshInstance3D" parent="BunkWall_40"]
+mesh = SubResource("Mesh_27")
+surface_material_override/0 = SubResource("Mat_concrete")
+
+[node name="Workbench" parent="." instance=ExtResource("3_workbench")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.0, -4.0, 3.9)
+
+[node name="BunkLow_42" type="StaticBody3D" parent="."]
+transform = Transform3D(1.000000, -0.000000, 0, 0.000000, 1.000000, 0, 0, 0, 1, -5.900, -3.775, -3.600)
+
+[node name="Shape" type="CollisionShape3D" parent="BunkLow_42"]
+shape = SubResource("Shape_30")
+
+[node name="Mesh" type="MeshInstance3D" parent="BunkLow_42"]
+mesh = SubResource("Mesh_31")
+surface_material_override/0 = SubResource("Mat_fabric")
+
+[node name="BunkHigh_43" type="StaticBody3D" parent="."]
+transform = Transform3D(1.000000, -0.000000, 0, 0.000000, 1.000000, 0, 0, 0, 1, -5.900, -2.500, -3.600)
+
+[node name="Shape" type="CollisionShape3D" parent="BunkHigh_43"]
+shape = SubResource("Shape_32")
+
+[node name="Mesh" type="MeshInstance3D" parent="BunkHigh_43"]
+mesh = SubResource("Mesh_33")
+surface_material_override/0 = SubResource("Mat_fabric")
+
+[node name="BunkPost_44" type="StaticBody3D" parent="."]
+transform = Transform3D(1.000000, -0.000000, 0, 0.000000, 1.000000, 0, 0, 0, 1, -4.950, -3.150, -3.200)
+
+[node name="Shape" type="CollisionShape3D" parent="BunkPost_44"]
+shape = SubResource("Shape_34")
+
+[node name="Mesh" type="MeshInstance3D" parent="BunkPost_44"]
+mesh = SubResource("Mesh_35")
+surface_material_override/0 = SubResource("Mat_metal")
+
+[node name="BunkLow_45" type="StaticBody3D" parent="."]
+transform = Transform3D(1.000000, -0.000000, 0, 0.000000, 1.000000, 0, 0, 0, 1, -5.900, -3.775, 3.600)
+
+[node name="Shape" type="CollisionShape3D" parent="BunkLow_45"]
+shape = SubResource("Shape_30")
+
+[node name="Mesh" type="MeshInstance3D" parent="BunkLow_45"]
+mesh = SubResource("Mesh_31")
+surface_material_override/0 = SubResource("Mat_fabric")
+
+[node name="BunkHigh_46" type="StaticBody3D" parent="."]
+transform = Transform3D(1.000000, -0.000000, 0, 0.000000, 1.000000, 0, 0, 0, 1, -5.900, -2.500, 3.600)
+
+[node name="Shape" type="CollisionShape3D" parent="BunkHigh_46"]
+shape = SubResource("Shape_32")
+
+[node name="Mesh" type="MeshInstance3D" parent="BunkHigh_46"]
+mesh = SubResource("Mesh_33")
+surface_material_override/0 = SubResource("Mat_fabric")
+
+[node name="BunkPost_47" type="StaticBody3D" parent="."]
+transform = Transform3D(1.000000, -0.000000, 0, 0.000000, 1.000000, 0, 0, 0, 1, -4.950, -3.150, 4.000)
+
+[node name="Shape" type="CollisionShape3D" parent="BunkPost_47"]
+shape = SubResource("Shape_34")
+
+[node name="Mesh" type="MeshInstance3D" parent="BunkPost_47"]
+mesh = SubResource("Mesh_35")
+surface_material_override/0 = SubResource("Mat_metal")
+
+[node name="Shelf_48" type="StaticBody3D" parent="."]
+transform = Transform3D(1.000000, -0.000000, 0, 0.000000, 1.000000, 0, 0, 0, 1, 6.600, -3.000, 3.200)
+
+[node name="Shape" type="CollisionShape3D" parent="Shelf_48"]
+shape = SubResource("Shape_36")
+
+[node name="Mesh" type="MeshInstance3D" parent="Shelf_48"]
+mesh = SubResource("Mesh_37")
+surface_material_override/0 = SubResource("Mat_metal")
+
+[node name="Generator_49" type="StaticBody3D" parent="."]
+transform = Transform3D(1.000000, -0.000000, 0, 0.000000, 1.000000, 0, 0, 0, 1, 4.500, -3.400, -3.800)
+
+[node name="Shape" type="CollisionShape3D" parent="Generator_49"]
+shape = SubResource("Shape_38")
+
+[node name="Mesh" type="MeshInstance3D" parent="Generator_49"]
+mesh = SubResource("Mesh_39")
+surface_material_override/0 = SubResource("Mat_metal")
+
+[node name="FuelDrum_50" type="StaticBody3D" parent="."]
+transform = Transform3D(1.000000, -0.000000, 0, 0.000000, 1.000000, 0, 0, 0, 1, 6.400, -3.550, -4.400)
+
+[node name="Shape" type="CollisionShape3D" parent="FuelDrum_50"]
+shape = SubResource("Shape_40")
+
+[node name="Mesh" type="MeshInstance3D" parent="FuelDrum_50"]
+mesh = SubResource("Mesh_41")
+surface_material_override/0 = SubResource("Mat_metal")
+
+[node name="FuelDrum_51" type="StaticBody3D" parent="."]
+transform = Transform3D(1.000000, -0.000000, 0, 0.000000, 1.000000, 0, 0, 0, 1, 6.400, -3.550, -3.600)
+
+[node name="Shape" type="CollisionShape3D" parent="FuelDrum_51"]
+shape = SubResource("Shape_40")
+
+[node name="Mesh" type="MeshInstance3D" parent="FuelDrum_51"]
+mesh = SubResource("Mesh_41")
+surface_material_override/0 = SubResource("Mat_metal")
+
+[node name="Loot" type="Node3D" parent="."]
+
+[node name="AmmoCrate" parent="Loot" instance=ExtResource("2_container")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.0, -4.0, 4.5)
+container_id = "bonk_bunker_ammo_crate"
+display_name = "Ammo Crate"
+loot_table = "ammo_cache"
+size = Vector3(0.9, 0.5, 0.6)
+color = Color(0.3, 0.36, 0.22, 1)
+
+[node name="Toolbox" parent="Loot" instance=ExtResource("2_container")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.2, -3.1, -4.6)
+container_id = "bonk_bunker_toolbox"
+display_name = "Toolbox"
+loot_table = "toolbox"
+size = Vector3(0.7, 0.35, 0.35)
+color = Color(0.65, 0.12, 0.1, 1)
+
+[node name="SupplyLocker" parent="Loot" instance=ExtResource("2_container")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.2, -4.0, -4.6)
+container_id = "bonk_bunker_supply_locker"
+display_name = "Supply Locker"
+loot_table = "house_cabinet"
+size = Vector3(0.8, 1.8, 0.5)
+color = Color(0.35, 0.4, 0.35, 1)
+
+[node name="MeepoDock" parent="Loot" groups=["meepo_chargers"] instance=ExtResource("2_container")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.2, -4.0, 2.2)
+container_id = "bonk_bunker_meepo_dock"
+display_name = "Meepo Charging Dock"
+loot_table = "meepo_dock"
+size = Vector3(1.1, 0.35, 0.45)
+color = Color(0.1, 0.45, 0.55, 1)
+
+[node name="JunkPile" parent="Loot" instance=ExtResource("2_container")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.0, 0.0, 7.5)
+container_id = "bonk_backyard_junk_pile"
+display_name = "Junk Pile"
+loot_table = "junk_pile"
+size = Vector3(1.4, 0.6, 1.2)
+color = Color(0.35, 0.3, 0.28, 1)
+
+[node name="MainLight" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.0, -1.5, 0.0)
+light_color = Color(1.0, 0.85, 0.65, 1)
+light_energy = 1.0
+omni_range = 6.0
+
+[node name="BunkLight" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.0, -1.5, 0.0)
+light_color = Color(1.0, 0.85, 0.65, 1)
+light_energy = 0.7
+omni_range = 5.0
+
+[node name="StorageLight" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.0, -1.5, 3.0)
+light_color = Color(1.0, 0.85, 0.65, 1)
+light_energy = 0.8
+omni_range = 5.0
+
+[node name="GeneratorLight" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.0, -1.5, -3.0)
+light_color = Color(0.7, 0.85, 1.0, 1)
+light_energy = 0.8
+omni_range = 5.0
+
+[node name="PlayerSpawns" type="Node3D" parent="." groups=["player_spawns"]]
+
+[node name="Spawn1" type="Marker3D" parent="PlayerSpawns"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.2, -3.9, -3.0)
+
+[node name="Spawn2" type="Marker3D" parent="PlayerSpawns"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.2, -3.9, 3.0)
+
+[node name="Spawn3" type="Marker3D" parent="PlayerSpawns"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2, -3.9, -3.0)
+
+[node name="Spawn4" type="Marker3D" parent="PlayerSpawns"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2, -3.9, 3.0)
+
+[node name="Spawn5" type="Marker3D" parent="PlayerSpawns"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.2, -3.9, -1.6)
+
+[node name="Spawn6" type="Marker3D" parent="PlayerSpawns"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.2, -3.9, 1.6)

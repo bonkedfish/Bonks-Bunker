@@ -1,0 +1,8 @@
+{
+	"note": "LairDirector (D-055): placed enemies at landmark spawn markers (group lair_spawns). A marker wakes when a living player is within activate_m and goes back to sleep (full health again) when everyone is beyond deactivate_m. Killed mobs come back after respawn_seconds; killed bosses never do (saved as quest flags).",
+	"pool_size": 32.0,
+	"activate_m": 42.0,
+	"deactivate_m": 95.0,
+	"respawn_seconds": 900.0,
+	"check_seconds": 0.5
+}

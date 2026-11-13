@@ -1,0 +1,1202 @@
+{
+	"note": "Kearney High School landmark (D-055): Hunter Conner's holding pen. Local metres: origin = map (-1500, -90), x east, z south. Rectilinear version of the real curved building (OSM way 1024257250): north classroom wing A, hub B (cafeteria + lobby), west wing C (auditorium, gym, weight room). One walkable storey; walls go up to roof_y, ceilings at ceiling_y except the auditorium and gym. Enemy spawn markers, NPCs, loot, lights and signs are data. Built by tools/landmarks/build_kearney_high.tscn -> world/landmarks/kearney_high.scn.",
+	"out_path": "res://world/landmarks/kearney_high.scn",
+	"seed": 2702,
+	"materials": {
+		"brick": {
+			"texture": "brick_red",
+			"tile_m": 2.0,
+			"color": [
+				0.8,
+				0.68,
+				0.6
+			]
+		},
+		"concrete": {
+			"texture": "concrete_cracked",
+			"tile_m": 3.0,
+			"color": [
+				0.8,
+				0.78,
+				0.75
+			]
+		},
+		"floor": {
+			"texture": "concrete_slab",
+			"tile_m": 3.0,
+			"color": [
+				1.2,
+				1.15,
+				1.05
+			]
+		},
+		"court": {
+			"texture": "planks_weathered",
+			"tile_m": 2.5,
+			"color": [
+				1.1,
+				0.85,
+				0.55
+			]
+		},
+		"wall": {
+			"color": [
+				0.62,
+				0.6,
+				0.52
+			],
+			"roughness": 0.95
+		},
+		"ceiling": {
+			"color": [
+				0.5,
+				0.5,
+				0.47
+			],
+			"roughness": 1.0
+		},
+		"roof": {
+			"color": [
+				0.3,
+				0.3,
+				0.3
+			],
+			"roughness": 0.9
+		},
+		"glass": {
+			"color": [
+				0.16,
+				0.2,
+				0.22
+			],
+			"metallic": 0.4,
+			"roughness": 0.1,
+			"alpha": 0.7
+		},
+		"locker": {
+			"color": [
+				0.15,
+				0.25,
+				0.5
+			],
+			"metallic": 0.4,
+			"roughness": 0.6,
+			"visible_m": 120.0
+		},
+		"gold": {
+			"color": [
+				0.8,
+				0.65,
+				0.15
+			],
+			"metallic": 0.5,
+			"roughness": 0.5,
+			"visible_m": 120.0
+		},
+		"desk": {
+			"texture": "planks_weathered",
+			"tile_m": 1.0,
+			"color": [
+				0.8,
+				0.65,
+				0.45
+			],
+			"visible_m": 90.0
+		},
+		"steel": {
+			"color": [
+				0.3,
+				0.3,
+				0.32
+			],
+			"metallic": 0.6,
+			"roughness": 0.5,
+			"visible_m": 150.0
+		},
+		"board": {
+			"color": [
+				0.08,
+				0.14,
+				0.1
+			],
+			"roughness": 0.9,
+			"shadows": false,
+			"visible_m": 90.0
+		},
+		"paper": {
+			"color": [
+				0.85,
+				0.82,
+				0.72
+			],
+			"roughness": 1.0,
+			"shadows": false,
+			"visible_m": 60.0
+		},
+		"blood": {
+			"color": [
+				0.28,
+				0.03,
+				0.03
+			],
+			"roughness": 0.7,
+			"shadows": false,
+			"visible_m": 90.0
+		},
+		"seat": {
+			"color": [
+				0.4,
+				0.08,
+				0.1
+			],
+			"roughness": 1.0,
+			"visible_m": 120.0
+		},
+		"curtain": {
+			"color": [
+				0.45,
+				0.05,
+				0.08
+			],
+			"roughness": 1.0,
+			"visible_m": 150.0
+		},
+		"mat": {
+			"color": [
+				0.1,
+				0.15,
+				0.4
+			],
+			"roughness": 1.0,
+			"visible_m": 120.0
+		},
+		"table": {
+			"color": [
+				0.7,
+				0.7,
+				0.68
+			],
+			"metallic": 0.2,
+			"roughness": 0.6,
+			"visible_m": 120.0
+		},
+		"book": {
+			"color": [
+				0.35,
+				0.2,
+				0.12
+			],
+			"roughness": 1.0,
+			"visible_m": 90.0
+		}
+	},
+	"dims": {
+		"ceiling_y": 4.0,
+		"roof_y": 8.5,
+		"floor_y": 0.12,
+		"wall_m": 0.3,
+		"door_h": 2.8,
+		"wing_a": [
+			0,
+			-112,
+			120,
+			-72
+		],
+		"corridor_a": [
+			-95,
+			-89
+		],
+		"room_w": 12.0,
+		"hub_b": [
+			-60,
+			-110,
+			0,
+			-10
+		],
+		"lobby_z": -40.0,
+		"wing_c": [
+			-97,
+			-10,
+			-39,
+			148
+		],
+		"corridor_c": [
+			-51,
+			-46
+		],
+		"auditorium_z": [
+			-10,
+			40
+		],
+		"gym_z": [
+			40,
+			122
+		]
+	},
+	"signs": [
+		{
+			"text": "KEARNEY HIGH SCHOOL",
+			"pos": [
+				0.25,
+				6.4,
+				-25
+			],
+			"yaw_deg": 90,
+			"size": 150,
+			"color": [
+				0.9,
+				0.8,
+				0.4
+			]
+		},
+		{
+			"text": "HOME OF THE BEARCATS",
+			"pos": [
+				-13,
+				3.2,
+				-39.8
+			],
+			"yaw_deg": 0,
+			"size": 60,
+			"color": [
+				0.9,
+				0.75,
+				0.2
+			]
+		},
+		{
+			"text": "DETENTION",
+			"pos": [
+				6,
+				3.2,
+				-94.8
+			],
+			"yaw_deg": 0,
+			"size": 50,
+			"color": [
+				0.75,
+				0.1,
+				0.1
+			]
+		},
+		{
+			"text": "QUOTA\nIIII  IIII  IIII  IIII  II",
+			"pos": [
+				-96.8,
+				5.0,
+				81
+			],
+			"yaw_deg": 90,
+			"size": 110,
+			"color": [
+				0.75,
+				0.1,
+				0.1
+			]
+		},
+		{
+			"text": "NO RUNNING IN THE HALLS",
+			"pos": [
+				60,
+				3.3,
+				-94.8
+			],
+			"yaw_deg": 0,
+			"size": 40,
+			"color": [
+				0.85,
+				0.8,
+				0.7
+			]
+		}
+	],
+	"lights": [
+		{
+			"pos": [
+				20,
+				3.5,
+				-92
+			],
+			"color": [
+				0.9,
+				0.9,
+				0.8
+			],
+			"range": 14,
+			"energy": 1.2
+		},
+		{
+			"pos": [
+				60,
+				3.5,
+				-92
+			],
+			"color": [
+				0.9,
+				0.9,
+				0.8
+			],
+			"range": 14,
+			"energy": 1.2
+		},
+		{
+			"pos": [
+				100,
+				3.5,
+				-92
+			],
+			"color": [
+				0.9,
+				0.9,
+				0.8
+			],
+			"range": 14,
+			"energy": 1.2
+		},
+		{
+			"pos": [
+				6,
+				3.4,
+				-104
+			],
+			"color": [
+				1.0,
+				0.5,
+				0.4
+			],
+			"range": 10,
+			"energy": 1.4
+		},
+		{
+			"pos": [
+				60,
+				3.4,
+				-80
+			],
+			"color": [
+				1.0,
+				0.8,
+				0.55
+			],
+			"range": 12,
+			"energy": 1.2
+		},
+		{
+			"pos": [
+				102,
+				3.4,
+				-80
+			],
+			"color": [
+				0.6,
+				1.0,
+				0.7
+			],
+			"range": 10,
+			"energy": 1.2
+		},
+		{
+			"pos": [
+				-30,
+				3.5,
+				-25
+			],
+			"color": [
+				1.0,
+				0.85,
+				0.6
+			],
+			"range": 16,
+			"energy": 1.4
+		},
+		{
+			"pos": [
+				-42,
+				3.5,
+				-60
+			],
+			"color": [
+				0.7,
+				1.0,
+				0.6
+			],
+			"range": 18,
+			"energy": 1.3
+		},
+		{
+			"pos": [
+				-16,
+				3.5,
+				-88
+			],
+			"color": [
+				0.7,
+				1.0,
+				0.6
+			],
+			"range": 18,
+			"energy": 1.3
+		},
+		{
+			"pos": [
+				-48.5,
+				3.5,
+				25
+			],
+			"color": [
+				0.9,
+				0.9,
+				0.8
+			],
+			"range": 14,
+			"energy": 1.1
+		},
+		{
+			"pos": [
+				-48.5,
+				3.5,
+				75
+			],
+			"color": [
+				0.9,
+				0.9,
+				0.8
+			],
+			"range": 14,
+			"energy": 1.1
+		},
+		{
+			"pos": [
+				-48.5,
+				3.5,
+				125
+			],
+			"color": [
+				0.9,
+				0.9,
+				0.8
+			],
+			"range": 14,
+			"energy": 1.1
+		},
+		{
+			"pos": [
+				-80,
+				7.0,
+				15
+			],
+			"color": [
+				1.0,
+				0.75,
+				0.3
+			],
+			"range": 26,
+			"energy": 1.8
+		},
+		{
+			"pos": [
+				-74,
+				7.5,
+				60
+			],
+			"color": [
+				1.0,
+				0.35,
+				0.3
+			],
+			"range": 28,
+			"energy": 2.0
+		},
+		{
+			"pos": [
+				-74,
+				7.5,
+				100
+			],
+			"color": [
+				1.0,
+				0.35,
+				0.3
+			],
+			"range": 28,
+			"energy": 2.0
+		},
+		{
+			"pos": [
+				-74,
+				3.4,
+				135
+			],
+			"color": [
+				0.8,
+				0.85,
+				1.0
+			],
+			"range": 14,
+			"energy": 1.2
+		}
+	],
+	"npcs": [
+		{
+			"npc_id": "wren",
+			"pos": [
+				6,
+				0.12,
+				-106
+			],
+			"yaw_deg": 180,
+			"name": "Wren"
+		},
+		{
+			"npc_id": "hunter",
+			"pos": [
+				-74,
+				0.12,
+				81
+			],
+			"yaw_deg": 90,
+			"name": "HunterNpc"
+		}
+	],
+	"spawns": [
+		[
+			"hall_a1",
+			"hall_monitor",
+			[
+				22,
+				-92
+			]
+		],
+		[
+			"hall_a2",
+			"hall_monitor",
+			[
+				44,
+				-92
+			]
+		],
+		[
+			"hall_a3",
+			"hall_monitor",
+			[
+				66,
+				-93
+			]
+		],
+		[
+			"hall_a4",
+			"hall_monitor",
+			[
+				88,
+				-91
+			]
+		],
+		[
+			"hall_a5",
+			"hall_monitor",
+			[
+				108,
+				-92
+			]
+		],
+		[
+			"hall_a6",
+			"hall_monitor",
+			[
+				30,
+				-100
+			]
+		],
+		[
+			"class_n2",
+			"zombie_shambler",
+			[
+				30,
+				-104
+			]
+		],
+		[
+			"class_n4",
+			"zombie_shambler",
+			[
+				54,
+				-103
+			]
+		],
+		[
+			"class_n6",
+			"hall_monitor",
+			[
+				78,
+				-104
+			]
+		],
+		[
+			"class_n8",
+			"zombie_shambler",
+			[
+				102,
+				-104
+			]
+		],
+		[
+			"class_s1",
+			"zombie_shambler",
+			[
+				18,
+				-80
+			]
+		],
+		[
+			"class_s3",
+			"zombie_shambler",
+			[
+				42,
+				-80
+			]
+		],
+		[
+			"library_1",
+			"zombie_shambler",
+			[
+				56,
+				-78
+			]
+		],
+		[
+			"library_2",
+			"hall_monitor",
+			[
+				64,
+				-86
+			]
+		],
+		[
+			"lab_1",
+			"lunch_lady",
+			[
+				100,
+				-82
+			]
+		],
+		[
+			"lobby_1",
+			"zombie_shambler",
+			[
+				-20,
+				-30
+			]
+		],
+		[
+			"lobby_2",
+			"zombie_shambler",
+			[
+				-40,
+				-18
+			]
+		],
+		[
+			"cafe_1",
+			"lunch_lady",
+			[
+				-12,
+				-55
+			]
+		],
+		[
+			"cafe_2",
+			"lunch_lady",
+			[
+				-48,
+				-52
+			]
+		],
+		[
+			"cafe_3",
+			"lunch_lady",
+			[
+				-20,
+				-84
+			]
+		],
+		[
+			"cafe_4",
+			"lunch_lady",
+			[
+				-46,
+				-81
+			]
+		],
+		[
+			"cafe_boss",
+			"big_darlene",
+			[
+				-30,
+				-104
+			]
+		],
+		[
+			"hall_c1",
+			"hall_monitor",
+			[
+				-48.5,
+				10
+			]
+		],
+		[
+			"hall_c2",
+			"hall_monitor",
+			[
+				-48.5,
+				55
+			]
+		],
+		[
+			"hall_c3",
+			"hall_monitor",
+			[
+				-48.5,
+				100
+			]
+		],
+		[
+			"hall_c4",
+			"linebacker",
+			[
+				-48.5,
+				130
+			]
+		],
+		[
+			"east_c2",
+			"zombie_shambler",
+			[
+				-42.5,
+				35
+			]
+		],
+		[
+			"east_c4",
+			"linebacker",
+			[
+				-42.5,
+				95
+			]
+		],
+		[
+			"weights_1",
+			"linebacker",
+			[
+				-66,
+				135
+			]
+		],
+		[
+			"weights_2",
+			"linebacker",
+			[
+				-86,
+				137
+			]
+		],
+		[
+			"weights_3",
+			"linebacker",
+			[
+				-90,
+				142
+			]
+		],
+		[
+			"aud_1",
+			"zombie_shambler",
+			[
+				-60,
+				15
+			]
+		],
+		[
+			"aud_2",
+			"zombie_shambler",
+			[
+				-70,
+				15
+			]
+		],
+		[
+			"aud_3",
+			"zombie_shambler",
+			[
+				-78.7,
+				0
+			]
+		],
+		[
+			"aud_boss",
+			"bearcat",
+			[
+				-90,
+				15
+			]
+		],
+		[
+			"gym_boss",
+			"hunter_conner",
+			[
+				-74,
+				81
+			],
+			"hunter_fight"
+		],
+		[
+			"gym_guard_1",
+			"hall_monitor",
+			[
+				-56,
+				62
+			],
+			"hunter_fight"
+		],
+		[
+			"gym_guard_2",
+			"hall_monitor",
+			[
+				-56,
+				103
+			],
+			"hunter_fight"
+		]
+	],
+	"loot": [
+		{
+			"id": "lobby_trophy_case",
+			"name": "Trophy Case",
+			"table": "archway_gift_shop",
+			"pos": [
+				-58.8,
+				0.12,
+				-25
+			],
+			"size": [
+				0.6,
+				1.9,
+				3.0
+			]
+		},
+		{
+			"id": "lobby_desk",
+			"name": "Reception Desk",
+			"table": "house_cabinet",
+			"pos": [
+				-30,
+				0.12,
+				-14
+			],
+			"size": [
+				3.0,
+				1.0,
+				0.8
+			]
+		},
+		{
+			"id": "office_safe",
+			"name": "Principal's Safe",
+			"table": "ammo_cache",
+			"pos": [
+				10.8,
+				0.12,
+				-110.8
+			],
+			"size": [
+				0.8,
+				1.0,
+				0.8
+			]
+		},
+		{
+			"id": "office_files",
+			"name": "Confiscated Items",
+			"table": "chiller_stash",
+			"pos": [
+				1.2,
+				0.12,
+				-110.8
+			],
+			"size": [
+				1.2,
+				1.2,
+				0.6
+			]
+		},
+		{
+			"id": "locker_a1",
+			"name": "Student Lockers",
+			"table": "house_cabinet",
+			"pos": [
+				12,
+				0.12,
+				-94.6
+			],
+			"size": [
+				2.4,
+				1.9,
+				0.4
+			]
+		},
+		{
+			"id": "locker_a2",
+			"name": "Student Lockers",
+			"table": "archway_exhibit",
+			"pos": [
+				60,
+				0.12,
+				-89.4
+			],
+			"size": [
+				2.4,
+				1.9,
+				0.4
+			]
+		},
+		{
+			"id": "locker_a3",
+			"name": "Student Lockers",
+			"table": "house_cabinet",
+			"pos": [
+				96,
+				0.12,
+				-94.6
+			],
+			"size": [
+				2.4,
+				1.9,
+				0.4
+			]
+		},
+		{
+			"id": "teacher_desk_n3",
+			"name": "Teacher's Desk",
+			"table": "house_cabinet",
+			"pos": [
+				42,
+				0.12,
+				-110
+			],
+			"size": [
+				1.6,
+				0.8,
+				0.8
+			]
+		},
+		{
+			"id": "teacher_desk_s2",
+			"name": "Teacher's Desk",
+			"table": "archway_exhibit",
+			"pos": [
+				30,
+				0.12,
+				-74
+			],
+			"size": [
+				1.6,
+				0.8,
+				0.8
+			]
+		},
+		{
+			"id": "library_desk",
+			"name": "Librarian's Desk",
+			"table": "archway_gift_shop",
+			"pos": [
+				70,
+				0.12,
+				-74
+			],
+			"size": [
+				1.8,
+				1.0,
+				0.8
+			]
+		},
+		{
+			"id": "science_kit",
+			"name": "Science Lab Cabinet",
+			"table": "khs_science_kit",
+			"pos": [
+				106.8,
+				0.12,
+				-78
+			],
+			"size": [
+				0.7,
+				1.9,
+				1.6
+			]
+		},
+		{
+			"id": "science_drawers",
+			"name": "Lab Drawers",
+			"table": "toolbox",
+			"pos": [
+				98,
+				0.12,
+				-73.4
+			],
+			"size": [
+				1.6,
+				0.9,
+				0.6
+			]
+		},
+		{
+			"id": "cafe_fridge",
+			"name": "Walk-in Fridge",
+			"table": "fridge",
+			"pos": [
+				-56,
+				0.12,
+				-107
+			],
+			"size": [
+				1.4,
+				2.0,
+				1.4
+			]
+		},
+		{
+			"id": "cafe_pantry",
+			"name": "Cafeteria Pantry",
+			"table": "archway_diner",
+			"pos": [
+				-4,
+				0.12,
+				-107
+			],
+			"size": [
+				1.4,
+				2.0,
+				1.4
+			]
+		},
+		{
+			"id": "cafe_vending",
+			"name": "Vending Machine",
+			"table": "archway_diner",
+			"pos": [
+				-1,
+				0.12,
+				-48
+			],
+			"size": [
+				1.0,
+				1.9,
+				1.0
+			]
+		},
+		{
+			"id": "nurse_cabinet",
+			"name": "Nurse's Cabinet",
+			"table": "khs_nurse",
+			"pos": [
+				-39.8,
+				0.12,
+				5
+			],
+			"size": [
+				0.6,
+				1.8,
+				1.6
+			]
+		},
+		{
+			"id": "locker_room_1",
+			"name": "Locker Room Lockers",
+			"table": "house_cabinet",
+			"pos": [
+				-39.8,
+				0.12,
+				65
+			],
+			"size": [
+				0.5,
+				1.9,
+				2.4
+			]
+		},
+		{
+			"id": "storage_c5",
+			"name": "Janitor's Closet",
+			"table": "toolbox",
+			"pos": [
+				-39.9,
+				0.12,
+				128
+			],
+			"size": [
+				0.6,
+				1.6,
+				1.6
+			]
+		},
+		{
+			"id": "aud_props",
+			"name": "Prop Box",
+			"table": "junk_pile",
+			"pos": [
+				-94,
+				1.1,
+				28
+			],
+			"size": [
+				1.4,
+				0.9,
+				1.0
+			]
+		},
+		{
+			"id": "weights_lockers",
+			"name": "Team Lockers",
+			"table": "archway_exhibit",
+			"pos": [
+				-74,
+				0.12,
+				147.2
+			],
+			"size": [
+				3.0,
+				1.9,
+				0.5
+			]
+		},
+		{
+			"id": "gym_footlocker",
+			"name": "Hunter's Footlocker",
+			"table": "hunter_locker",
+			"pos": [
+				-95.5,
+				0.12,
+				45
+			],
+			"size": [
+				1.4,
+				0.8,
+				0.8
+			]
+		},
+		{
+			"id": "gym_evidence",
+			"name": "Evidence Crate (Taken)",
+			"table": "chiller_stash",
+			"pos": [
+				-95.5,
+				0.12,
+				118
+			],
+			"size": [
+				1.2,
+				1.0,
+				1.0
+			]
+		}
+	]
+}

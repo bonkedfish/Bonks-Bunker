@@ -1,0 +1,6 @@
+{
+	"note": "Throwable discs (D-069), keyed by item id (data/items/items.json). Flight numbers on the usual speed / glide / turn / fade scale (turn < 0 = drifts right on a right-hand backhand at full speed, fade = hooks left as it slows); full_speed_mps = launch speed at full power. Tuned in DiscFlightRules for ~110 m / 80 m / 55 m at full power on flat ground. color = RGB of the plastic.",
+	"disc_driver": {"speed": 12.0, "glide": 5.0, "turn": -1.0, "fade": 3.0, "full_speed_mps": 39.0, "color": [0.92, 0.28, 0.16]},
+	"disc_mid": {"speed": 5.0, "glide": 5.0, "turn": 0.0, "fade": 1.0, "full_speed_mps": 29.0, "color": [0.98, 0.78, 0.18]},
+	"disc_putter": {"speed": 2.0, "glide": 3.0, "turn": 0.0, "fade": 1.0, "full_speed_mps": 23.0, "color": [0.25, 0.6, 0.98]}
+}

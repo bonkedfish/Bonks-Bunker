@@ -1,0 +1,14 @@
+{
+	"note": "Disc golf (D-069). Flight (DiscFlightRules): lift = g x (lift_base + lift_glide x glide) x (1 - lift_power + lift_power x power) x (speed / launch speed)^2, quadratic drag drag / (1 + drag_speed x disc speed); above turn_start of full speed the disc rolls right by turn x turn_rate_deg/s, below fade_start (once slowed to fade_after_slow of its launch speed, so putts fly straight) it rolls left by fade x fade_rate_deg/s (mirrored for forehand); the roll tilts lift sideways. The HUD power mark (reach) is where the disc comes down to aim_height_m (the chains) on flat ground. Launch pitch = camera pitch + launch_pitch_add_deg, clamped. Canopy: tree crowns (from the planted trees) knock the disc down at canopy_hits_per_m. Basket (Mach II-ish, metres above its base): caught inside catch_radius_m between tray_low_m and chains_high_m when slower than catch_max_mps, else it spits out. Rounds: start within start_radius_m of the box, throw within lie_radius_m of your disc (tee_radius_m of the tee), max_strokes per hole then pick up, abandon leave_m outside the course bounds. Rewards: loot tables by result.",
+	"lift_base": 0.85, "lift_glide": 0.035, "lift_power": 0.3,
+	"drag": 0.007, "drag_speed": 0.06,
+	"turn_start": 0.85, "turn_rate_deg": 20.0, "fade_start": 0.7, "fade_rate_deg": 60.0, "fade_after_slow": 0.85, "max_roll_deg": 80.0,
+	"launch_height_m": 1.4, "aim_height_m": 1.0, "launch_pitch_add_deg": 8.0, "pitch_min_deg": -10.0, "pitch_max_deg": 35.0,
+	"tilt_max_deg": 40.0, "tilt_step_deg": 5.0, "charge_seconds": 1.4,
+	"step_hz": 60.0, "sample_hz": 30.0, "max_flight_s": 15.0,
+	"restitution": 0.35, "slide_friction": 7.0, "max_slide_s": 1.5,
+	"canopy_hits_per_m": 0.18, "canopy_bare_density": 0.4, "canopy_slow": [0.15, 0.45],
+	"catch_radius_m": 0.32, "tray_low_m": 0.5, "chains_low_m": 0.72, "chains_high_m": 1.32, "catch_max_mps": 20.0, "pole_radius_m": 0.06,
+	"start_radius_m": 40.0, "box_use_m": 4.0, "lie_radius_m": 3.0, "tee_radius_m": 3.5, "max_strokes": 8, "leave_m": 60.0,
+	"rewards": {"finish": "dg_finish", "par": "dg_par", "ace": "dg_ace"}
+}

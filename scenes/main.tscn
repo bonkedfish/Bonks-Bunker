@@ -1,0 +1,346 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/main.gd" id="1_main"]
+[ext_resource type="Script" path="res://scripts/ui/debug_overlay.gd" id="2_debug"]
+[ext_resource type="Script" path="res://scripts/net/net_clock.gd" id="3_clock"]
+[ext_resource type="Script" path="res://scripts/combat/combat_world.gd" id="4_combat"]
+[ext_resource type="Script" path="res://scripts/fx/tracer_pool.gd" id="5_tracers"]
+[ext_resource type="Script" path="res://scripts/ui/hud.gd" id="6_hud"]
+[ext_resource type="Script" path="res://scripts/ai/zombie_director.gd" id="9_zombies"]
+[ext_resource type="Script" path="res://scripts/ui/inventory_ui.gd" id="11_inventory_ui"]
+[ext_resource type="Script" path="res://scripts/ui/loot_ui.gd" id="12_loot_ui"]
+[ext_resource type="Script" path="res://scripts/world/world_streamer.gd" id="13_world"]
+[ext_resource type="Script" path="res://scripts/world/landmark_loader.gd" id="14_landmarks"]
+[ext_resource type="Script" path="res://scripts/dialogue/dialogue_director.gd" id="16_dialogue"]
+[ext_resource type="Script" path="res://scripts/ui/subtitle_ui.gd" id="17_subtitles"]
+[ext_resource type="Script" path="res://scripts/save/save_director.gd" id="18_saves"]
+[ext_resource type="Script" path="res://scripts/ui/start_menu.gd" id="19_start_menu"]
+[ext_resource type="Script" path="res://scripts/ui/settings_menu.gd" id="20_settings"]
+[ext_resource type="Script" path="res://scripts/world/atmosphere.gd" id="21_atmos"]
+[ext_resource type="Script" path="res://scripts/inventory/world_drops.gd" id="22_drops"]
+[ext_resource type="Script" path="res://scripts/ui/crafting_ui.gd" id="23_crafting"]
+[ext_resource type="Script" path="res://scripts/ui/world_map_ui.gd" id="24_world_map"]
+[ext_resource type="Script" path="res://scripts/quests/quest_director.gd" id="25_quests"]
+[ext_resource type="Script" path="res://scripts/ui/quest_book_ui.gd" id="26_quest_book"]
+[ext_resource type="Script" path="res://scripts/ai/lair_director.gd" id="27_lairs"]
+[ext_resource type="Script" path="res://scripts/discgolf/disc_golf_director.gd" id="28_discgolf"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_dust"]
+sky_top_color = Color(0.36, 0.38, 0.4, 1)
+sky_horizon_color = Color(0.72, 0.6, 0.46, 1)
+ground_bottom_color = Color(0.18, 0.16, 0.14, 1)
+ground_horizon_color = Color(0.72, 0.6, 0.46, 1)
+
+[sub_resource type="Sky" id="Sky_dust"]
+sky_material = SubResource("ProceduralSkyMaterial_dust")
+
+[sub_resource type="Environment" id="Environment_wasteland"]
+background_mode = 2
+sky = SubResource("Sky_dust")
+ambient_light_source = 3
+tonemap_mode = 2
+fog_enabled = true
+fog_light_color = Color(0.62, 0.55, 0.45, 1)
+fog_density = 0.008
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_clock"]
+properties/0/path = NodePath(".:net_tick")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+
+[node name="Main" type="Node3D"]
+script = ExtResource("1_main")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_wasteland")
+
+[node name="Sun" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.866025, -0.383022, 0.321394, 0, 0.642788, 0.766044, -0.5, -0.663414, 0.55667, 0, 20, 0)
+light_color = Color(1, 0.92, 0.8, 1)
+shadow_enabled = true
+directional_shadow_max_distance = 80.0
+
+[node name="Atmosphere" type="Node" parent="."]
+script = ExtResource("21_atmos")
+
+[node name="NetClock" type="Node" parent="." groups=["net_clock"]]
+script = ExtResource("3_clock")
+
+[node name="Sync" type="MultiplayerSynchronizer" parent="NetClock"]
+replication_interval = 0.05
+replication_config = SubResource("SceneReplicationConfig_clock")
+
+[node name="Combat" type="Node3D" parent="." groups=["combat_world"]]
+script = ExtResource("4_combat")
+
+[node name="Tracers" type="Node3D" parent="." groups=["tracers"]]
+script = ExtResource("5_tracers")
+
+[node name="World" type="Node3D" parent="." groups=["world_streamer"]]
+script = ExtResource("13_world")
+
+[node name="Landmarks" type="Node3D" parent="."]
+script = ExtResource("14_landmarks")
+
+[node name="Quests" type="Node" parent="." groups=["quests"]]
+script = ExtResource("25_quests")
+
+[node name="NPCs" type="Node3D" parent="."]
+
+[node name="NpcSpawner" type="MultiplayerSpawner" parent="."]
+_spawnable_scenes = PackedStringArray("res://scenes/bonk.tscn")
+spawn_path = NodePath("../NPCs")
+
+[node name="Dialogue" type="Node" parent="." groups=["dialogue"]]
+script = ExtResource("16_dialogue")
+
+[node name="Drops" type="Node3D" parent="." groups=["world_drops"]]
+script = ExtResource("22_drops")
+
+[node name="Saves" type="Node" parent="." groups=["save_director"]]
+script = ExtResource("18_saves")
+
+[node name="Zombies" type="Node3D" parent="." groups=["zombie_director"]]
+script = ExtResource("9_zombies")
+
+[node name="Lairs" type="Node3D" parent="." groups=["lair_director"]]
+script = ExtResource("27_lairs")
+
+[node name="DiscGolf" type="Node3D" parent="." groups=["disc_golf"]]
+script = ExtResource("28_discgolf")
+
+[node name="Players" type="Node3D" parent="."]
+
+[node name="PlayerSpawner" type="MultiplayerSpawner" parent="."]
+_spawnable_scenes = PackedStringArray("res://scenes/player.tscn")
+spawn_path = NodePath("../Players")
+
+[node name="SpawnPoints" type="Node3D" parent="."]
+
+[node name="Spawn1" type="Marker3D" parent="SpawnPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 4)
+
+[node name="Spawn2" type="Marker3D" parent="SpawnPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0.1, 4)
+
+[node name="Spawn3" type="Marker3D" parent="SpawnPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0.1, 4)
+
+[node name="Spawn4" type="Marker3D" parent="SpawnPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 6)
+
+[node name="Spawn5" type="Marker3D" parent="SpawnPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0.1, 6)
+
+[node name="Spawn6" type="Marker3D" parent="SpawnPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0.1, 6)
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="DebugOverlay" type="RichTextLabel" parent="UI"]
+offset_left = 12.0
+offset_top = 8.0
+offset_right = 900.0
+offset_bottom = 140.0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+script = ExtResource("2_debug")
+
+[node name="HUD" type="Control" parent="UI" groups=["hud"]]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("6_hud")
+
+[node name="Crosshair" type="Label" parent="UI/HUD"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 20
+text = "+"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HitMarker" type="Label" parent="UI/HUD"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 30
+text = "x"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Health" type="Label" parent="UI/HUD"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 16.0
+offset_top = -48.0
+offset_right = 256.0
+offset_bottom = -16.0
+grow_vertical = 0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 22
+
+[node name="Ammo" type="Label" parent="UI/HUD"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -476.0
+offset_top = -48.0
+offset_right = -16.0
+offset_bottom = -16.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 22
+horizontal_alignment = 2
+
+[node name="Death" type="Label" parent="UI/HUD"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -250.0
+offset_top = 40.0
+offset_right = 250.0
+offset_bottom = 130.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 0.3, 0.25, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 5
+theme_override_font_sizes/font_size = 28
+horizontal_alignment = 1
+
+[node name="InventoryUI" type="Control" parent="UI"]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("11_inventory_ui")
+
+[node name="LootUI" type="Control" parent="UI"]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("12_loot_ui")
+
+[node name="CraftingUI" type="Control" parent="UI"]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("23_crafting")
+
+[node name="WorldMapUI" type="Control" parent="UI"]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("24_world_map")
+
+[node name="QuestBookUI" type="Control" parent="UI" groups=["quest_book"]]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("26_quest_book")
+
+[node name="Subtitles" type="Control" parent="UI" groups=["subtitles"]]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("17_subtitles")
+
+[node name="LobbyLabel" type="Label" parent="UI"]
+visible = false
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -260.0
+offset_top = 8.0
+offset_right = -12.0
+offset_bottom = 34.0
+grow_horizontal = 0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+horizontal_alignment = 2
+
+[node name="Menu" type="ColorRect" parent="UI"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.55)
+script = ExtResource("19_start_menu")
+
+[node name="Settings" type="Control" parent="UI" groups=["settings_menu"]]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("20_settings")

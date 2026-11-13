@@ -1,0 +1,538 @@
+{
+	"note": "Quests (D-054). File order = story order. Shape documented in scripts/rules/quest_rules.gd. Flags are set by dialogue nodes (\"flag\"), boss deaths (boss_<enemy_id>_dead), kill counters (kills_<enemy_id>), and by the host for reach_m / have objectives. Act 1 is playable; Acts 2-4 are the story outline (locked_note) and are not built yet. All names and numbers are placeholders: edit freely.",
+	"quests": {
+		"mq1_static": {
+			"name": "Five Years of Static",
+			"act": 1,
+			"main": true,
+			"start": "auto",
+			"summary": "Five years underground, and every radio channel plays the same static, in the same rhythm. Bonk says that's not fallout. That's somebody. Find out who is still transmitting in a dead town.",
+			"objectives": [
+				{
+					"text": "Ask Bonk what the plan is (and whether there is a step two)",
+					"flag": "mq_bonk_static"
+				},
+				{
+					"text": "Follow the static to the biggest antenna in town: the Archway over I-80",
+					"flag": "mq_reach_archway",
+					"at": {
+						"landmark": "archway",
+						"offset": [
+							0,
+							0,
+							-46
+						]
+					},
+					"reach_m": 110.0
+				},
+				{
+					"text": "Find whoever is living inside the Archway",
+					"flag": "mq_met_evan",
+					"at": {
+						"landmark": "archway",
+						"offset": [
+							2,
+							9,
+							47
+						]
+					}
+				},
+				{
+					"text": "Get Evan to tell you about the machine under the escalator",
+					"flag": "mq_evan_ack",
+					"at": {
+						"landmark": "archway",
+						"offset": [
+							2,
+							9,
+							47
+						]
+					}
+				}
+			],
+			"reward": {
+				"ammo_9mm": 20,
+				"evans_jerky": 2
+			}
+		},
+		"mq2_collector": {
+			"name": "The Collector",
+			"act": 1,
+			"main": true,
+			"start": "mq1_static_done",
+			"summary": "The machine in the Archway answered the bomb with one word: ACKNOWLEDGED. It is still sending. Shutting it off takes a Suit's keycard, and the Suits only come up to the surface for one thing: people. Someone in town has been keeping count of who they take.",
+			"objectives": [
+				{
+					"text": "Ask Evan how the machine can be shut off",
+					"flag": "mq_evan_key",
+					"at": {
+						"landmark": "archway",
+						"offset": [
+							2,
+							9,
+							47
+						]
+					}
+				},
+				{
+					"text": "Go to the Chillers in the student union at UNK",
+					"flag": "mq_reach_chillers",
+					"at": {
+						"landmark": "chillers_hq",
+						"offset": [
+							0,
+							0,
+							24
+						]
+					},
+					"reach_m": 70.0
+				},
+				{
+					"text": "Ask Meekachu who the Suits have taken",
+					"flag": "mq_meek_taken",
+					"at": {
+						"landmark": "chillers_hq",
+						"offset": [
+							-39,
+							0.6,
+							0
+						]
+					}
+				},
+				{
+					"text": "Ask Meekachu about the one who does the taking",
+					"flag": "mq_meek_hunter",
+					"at": {
+						"landmark": "chillers_hq",
+						"offset": [
+							-39,
+							0.6,
+							0
+						]
+					}
+				}
+			],
+			"reward": {
+				"kush_joint": 2,
+				"bandage": 2
+			}
+		},
+		"mq3_detention": {
+			"name": "Detention",
+			"act": 1,
+			"main": true,
+			"start": "mq2_collector_done",
+			"summary": "The Suits don't do their own collecting. They gave a badge, a rifle and a quota to Hunter Conner, and Hunter turned Kearney High into his holding pen. He carries an eagle keycard. The last person he took might still be inside.",
+			"objectives": [
+				{
+					"text": "Get inside Kearney High School (main doors, east side)",
+					"flag": "mq_reach_khs",
+					"at": {
+						"landmark": "kearney_high",
+						"offset": [
+							-8,
+							0,
+							-25
+						]
+					},
+					"reach_m": 14.0
+				},
+				{
+					"text": "Find the people Hunter is holding (front office, north hall)",
+					"flag": "mq_wren",
+					"at": {
+						"landmark": "kearney_high",
+						"offset": [
+							6,
+							0,
+							-104
+						]
+					}
+				},
+				{
+					"text": "Confront Hunter Conner in the gym",
+					"flag": "hunter_fight",
+					"at": {
+						"landmark": "kearney_high",
+						"offset": [
+							-74,
+							0,
+							82
+						]
+					}
+				},
+				{
+					"text": "Put Hunter Conner down",
+					"flag": "boss_hunter_conner_dead",
+					"at": {
+						"landmark": "kearney_high",
+						"offset": [
+							-74,
+							0,
+							82
+						]
+					}
+				},
+				{
+					"text": "Take the eagle keycard off his body",
+					"flag": "mq_have_keycard",
+					"have": {
+						"eagle_keycard": 1
+					},
+					"at": {
+						"landmark": "kearney_high",
+						"offset": [
+							-74,
+							0,
+							82
+						]
+					}
+				}
+			],
+			"reward": {
+				"ammo_9mm": 40,
+				"bandage": 3,
+				"painkillers": 2
+			}
+		},
+		"mq4_acknowledged": {
+			"name": "Acknowledged",
+			"act": 1,
+			"main": true,
+			"start": "mq3_detention_done",
+			"summary": "You have a Suit's keycard. Evan has sat on top of that machine for five years like a hen on an egg. Time to find out what it has been saying, and who it has been saying it to.",
+			"objectives": [
+				{
+					"text": "Bring the eagle keycard to Evan at the Archway",
+					"flag": "mq_evan_card",
+					"at": {
+						"landmark": "archway",
+						"offset": [
+							2,
+							9,
+							47
+						]
+					}
+				},
+				{
+					"text": "Tell Meekachu what the machine printed",
+					"flag": "mq_meek_printout",
+					"at": {
+						"landmark": "chillers_hq",
+						"offset": [
+							-39,
+							0.6,
+							0
+						]
+					}
+				},
+				{
+					"text": "Talk to Gus, the janitor who followed the trucks south",
+					"flag": "mq_gus",
+					"at": {
+						"landmark": "chillers_hq",
+						"offset": [
+							-6,
+							0,
+							43
+						]
+					}
+				}
+			],
+			"reward": {
+				"ammo_9mm": 60,
+				"painkillers": 3,
+				"kush_joint": 3
+			}
+		},
+		"mq5_south": {
+			"name": "Act 2: South of the River",
+			"act": 2,
+			"main": true,
+			"start": "mq4_acknowledged_done",
+			"summary": "The trucks come up from the south and the tire tracks stop where the road eats them. Gus has stood on that spot. SITE GRANARY is under it. Dr. Halvorsen walked that way with her storm notebook and a crowbar.",
+			"locked_note": "Story outline only, not playable in this build. Planned: cross the Platte with Gus, find the truck hatch, follow Halvorsen's trail, first look inside a Suit facility, learn that the immune are being used to calibrate the storms.",
+			"objectives": []
+		},
+		"mq6_soup": {
+			"name": "Act 3: S.O.U.P.",
+			"act": 3,
+			"main": true,
+			"start": "mq5_south_done",
+			"summary": "Sustained Operational Something. The storms are a machine, the machine has a schedule, and the schedule has an off switch somewhere under Kearney.",
+			"locked_note": "Story outline only. Planned: Halvorsen's notebook, the storm relay network (the Archway is one of several), turning relays off one by one while the Suits hunt the party, Evan's choice.",
+			"objectives": []
+		},
+		"mq7_clean_shirts": {
+			"name": "Act 4: Clean Shirts",
+			"act": 4,
+			"main": true,
+			"start": "mq6_soup_done",
+			"summary": "They went down on a Tuesday in clean shirts. Go down after them.",
+			"locked_note": "Story outline only. Planned: the descent into the Suits' facility, the people they took, the Director, and the decision about what the world heals into. Bonk was going somewhere nobody else had thought of the whole time.",
+			"objectives": []
+		},
+		"sq_lighter": {
+			"name": "Before the World Ended",
+			"act": 1,
+			"main": false,
+			"start": "sq_lighter_start",
+			"summary": "Bonk borrowed Meekachu's lighter before the bombs fell. Meekachu has not forgotten. Meekachu is not mad. Meekachu is a little mad.",
+			"objectives": [
+				{
+					"text": "Ask Bonk about Meekachu's lighter",
+					"flag": "sq_lighter_bonk"
+				},
+				{
+					"text": "Return the lighter to Meekachu",
+					"flag": "sq_lighter_done",
+					"at": {
+						"landmark": "chillers_hq",
+						"offset": [
+							-39,
+							0.6,
+							0
+						]
+					}
+				}
+			],
+			"reward": {
+				"kush_joint": 4,
+				"molly": 1
+			}
+		},
+		"sq_jerky": {
+			"name": "Forty Jerky and an Apology",
+			"act": 1,
+			"main": false,
+			"start": "sq_jerky_start",
+			"summary": "Evan owes Meekachu forty jerky and an apology. Meekachu will settle for some of the jerky and any of the apology.",
+			"objectives": [
+				{
+					"text": "Get the jerky (and an apology) out of Evan",
+					"flag": "sq_jerky_evan",
+					"at": {
+						"landmark": "archway",
+						"offset": [
+							2,
+							9,
+							47
+						]
+					}
+				},
+				{
+					"text": "Deliver 5 of Jerkin's Mystery Jerky to Meekachu",
+					"flag": "sq_jerky_done",
+					"at": {
+						"landmark": "chillers_hq",
+						"offset": [
+							-39,
+							0.6,
+							0
+						]
+					}
+				}
+			],
+			"reward": {
+				"magic_mushrooms": 2,
+				"acid_tab": 1
+			}
+		},
+		"sq_lab": {
+			"name": "Lab Supplies",
+			"act": 1,
+			"main": false,
+			"start": "sq_lab_start",
+			"summary": "Patches cooks the Chillers' chemistry with a camping stove and a dream. The science lab at Kearney High still has a proper kit. The science lab at Kearney High also still has faculty.",
+			"objectives": [
+				{
+					"text": "Find the chem lab kit in Kearney High's science lab (north hall, east end)",
+					"flag": "sq_lab_have",
+					"have": {
+						"chem_lab_kit": 1
+					},
+					"at": {
+						"landmark": "kearney_high",
+						"offset": [
+							104,
+							0,
+							-78
+						]
+					}
+				},
+				{
+					"text": "Bring the kit to Patches at the Chillers' camp",
+					"flag": "sq_lab_done",
+					"at": {
+						"landmark": "chillers_hq",
+						"offset": [
+							3,
+							0,
+							36
+						]
+					}
+				}
+			],
+			"reward": {
+				"acid_tab": 2,
+				"molly": 2,
+				"painkillers": 2
+			}
+		},
+		"sq_wren": {
+			"name": "Skyler's Sister",
+			"act": 1,
+			"main": false,
+			"start": "mq_wren",
+			"summary": "Wren was taken from the Chillers two weeks ago. She is alive, locked in the front office of Kearney High, and she is not leaving while Hunter is still walking the halls.",
+			"objectives": [
+				{
+					"text": "Kill Hunter Conner so Wren can walk out",
+					"flag": "boss_hunter_conner_dead",
+					"at": {
+						"landmark": "kearney_high",
+						"offset": [
+							-74,
+							0,
+							82
+						]
+					}
+				},
+				{
+					"text": "Tell Skyler his sister is alive (grow room, Chillers HQ)",
+					"flag": "sq_wren_skyler",
+					"at": {
+						"landmark": "chillers_hq",
+						"offset": [
+							24,
+							0,
+							-10
+						]
+					}
+				}
+			],
+			"reward": {
+				"kush_joint": 2,
+				"ammo_9mm": 30,
+				"bandage": 2
+			}
+		},
+		"sq_hall_pass": {
+			"name": "Hall Pass",
+			"act": 1,
+			"main": false,
+			"start": "sq_hall_start",
+			"summary": "Hunter's Hall Monitors run the corridors of Kearney High. Wren has listened to them sprint past her door for two weeks. She would like that to stop.",
+			"objectives": [
+				{
+					"text": "Kill 8 Hall Monitors",
+					"flag": "kills_hall_monitor",
+					"count": 8,
+					"at": {
+						"landmark": "kearney_high",
+						"offset": [
+							60,
+							0,
+							-92
+						]
+					}
+				}
+			],
+			"reward": {
+				"ammo_9mm": 30,
+				"painkillers": 1
+			}
+		},
+		"sq_faculty": {
+			"name": "Faculty Meeting",
+			"act": 1,
+			"main": false,
+			"start": "sq_hall_start",
+			"ordered": false,
+			"summary": "Two things in Kearney High are worse than the Hall Monitors: whatever is still wearing the Bearcat mascot suit in the auditorium, and Big Darlene, who never stopped serving lunch.",
+			"objectives": [
+				{
+					"text": "Kill the Bearcat in the auditorium",
+					"flag": "boss_bearcat_dead",
+					"at": {
+						"landmark": "kearney_high",
+						"offset": [
+							-74,
+							0,
+							15
+						]
+					}
+				},
+				{
+					"text": "Kill Big Darlene in the cafeteria",
+					"flag": "boss_big_darlene_dead",
+					"at": {
+						"landmark": "kearney_high",
+						"offset": [
+							-30,
+							0,
+							-95
+						]
+					}
+				}
+			],
+			"reward": {
+				"ammo_9mm": 50,
+				"bandage": 3,
+				"black_tar": 1
+			}
+		},
+		"sq_last_call": {
+			"name": "Last Call",
+			"act": 1,
+			"main": false,
+			"start": "auto",
+			"summary": "Raiders have walled off the bar blocks on Central Avenue, and anyone who walks onto the bricks comes back lighter or doesn't come back. They answer to Copperhead, who runs fights in the basement of Copperfields and calls the whole street his tab. Somebody should close it out.",
+			"objectives": [
+				{
+					"text": "Scout the raider barricade on Central Avenue near 21st Street",
+					"flag": "lc_scouted",
+					"at": {
+						"landmark": "copperfields",
+						"offset": [
+							27,
+							0,
+							-130
+						]
+					},
+					"reach_m": 45.0
+				},
+				{
+					"text": "Thin out the raiders in the downtown bars (12)",
+					"flag": "kills_raider",
+					"count": 12,
+					"at": {
+						"landmark": "copperfields",
+						"offset": [
+							0,
+							0,
+							-24
+						]
+					}
+				},
+				{
+					"text": "Go down into the Pit under Copperfields and kill Copperhead",
+					"flag": "boss_copperhead_dead",
+					"at": {
+						"landmark": "copperfields",
+						"offset": [
+							-2,
+							-3.3,
+							-3
+						]
+					}
+				}
+			],
+			"reward": {
+				"ammo_9mm": 60,
+				"bandage": 3,
+				"molly": 1
+			}
+		}
+	}
+}

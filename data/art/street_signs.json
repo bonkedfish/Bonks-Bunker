@@ -1,0 +1,18 @@
+{
+	"note": "Street name signs (D-070): one per intersection of two differently named streets of these kinds (dedupe_m keeps one per street pair nearby), on the corner curb_offset_m past the curb. Green blades with white names, shortened with abbreviations. Labels drawn within visible_m.",
+	"kinds": ["primary", "secondary", "tertiary", "residential", "unclassified", "living_street", "trunk"],
+	"dedupe_m": 40.0,
+	"curb_offset_m": 1.2,
+	"post_height_m": 2.9,
+	"blade_length_m": 0.9,
+	"blade_height_m": 0.16,
+	"post_color": [0.55, 0.57, 0.58],
+	"blade_color": [0.05, 0.36, 0.18],
+	"text_color": [0.96, 0.96, 0.94],
+	"font_size": 40,
+	"pixel_size": 0.0028,
+	"visible_m": 45.0,
+	"abbreviations": {"Street": "St", "Avenue": "Ave", "Road": "Rd", "Drive": "Dr", "Boulevard": "Blvd", "Place": "Pl", "Lane": "Ln",
+		"Court": "Ct", "Circle": "Cir", "Highway": "Hwy", "Parkway": "Pkwy", "Terrace": "Ter", "Trail": "Trl", "Way": "Way",
+		"West": "W", "East": "E", "North": "N", "South": "S"}
+}

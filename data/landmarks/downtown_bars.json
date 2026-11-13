@@ -1,0 +1,3897 @@
+{
+	"note": "Downtown bars (D-059) + raider district (D-062). Built by tools/landmarks/build_downtown_bars.tscn -> world/landmarks/<bar>.scn; each bar is a landmark in data/map/landmarks.json (map_xz/rotation_deg here are copied there). Local frame per bar: origin = footprint middle at street level, front = -z (the street), x across the front. Levels: ground (floor 0.12), basement (-3.3) or upstairs (4.3). Stairs: from = bottom end, to = top end. Spawns: [key, enemy, level, [x, z, extra_y], yaw_deg]. Positions are estimates from the addresses: edit freely, re-run, then build_cells.",
+	"out_dir": "res://world/landmarks",
+	"seed": 2121,
+	"materials": {
+		"brick_red": {
+			"texture": "brick_red",
+			"tile_m": 2.0,
+			"color": [
+				0.85,
+				0.68,
+				0.6
+			],
+			"visible_m": 600.0
+		},
+		"brick_dark": {
+			"texture": "brick_red",
+			"tile_m": 2.0,
+			"color": [
+				0.55,
+				0.45,
+				0.42
+			],
+			"visible_m": 600.0
+		},
+		"brick_tan": {
+			"texture": "brick_red",
+			"tile_m": 2.0,
+			"color": [
+				1.05,
+				0.95,
+				0.8
+			],
+			"visible_m": 600.0
+		},
+		"plaster_dark": {
+			"texture": "concrete_cracked",
+			"tile_m": 3.0,
+			"color": [
+				0.45,
+				0.47,
+				0.5
+			],
+			"visible_m": 600.0
+		},
+		"plaster": {
+			"color": [
+				0.62,
+				0.58,
+				0.52
+			],
+			"roughness": 0.95
+		},
+		"concrete": {
+			"texture": "concrete_slab",
+			"tile_m": 3.0,
+			"color": [
+				0.9,
+				0.88,
+				0.85
+			]
+		},
+		"floor_wood": {
+			"texture": "planks_weathered",
+			"tile_m": 1.5,
+			"color": [
+				0.7,
+				0.5,
+				0.36
+			],
+			"visible_m": 150.0
+		},
+		"floor_tile": {
+			"texture": "concrete_slab",
+			"tile_m": 1.0,
+			"color": [
+				0.55,
+				0.52,
+				0.5
+			],
+			"visible_m": 150.0
+		},
+		"roof": {
+			"color": [
+				0.25,
+				0.25,
+				0.26
+			],
+			"roughness": 0.9
+		},
+		"trim_copper": {
+			"color": [
+				0.55,
+				0.32,
+				0.18
+			],
+			"metallic": 0.5,
+			"roughness": 0.5
+		},
+		"trim_stone": {
+			"color": [
+				0.75,
+				0.72,
+				0.66
+			],
+			"roughness": 0.8
+		},
+		"trim_black": {
+			"color": [
+				0.08,
+				0.08,
+				0.09
+			],
+			"roughness": 0.7
+		},
+		"trim_red": {
+			"color": [
+				0.45,
+				0.08,
+				0.07
+			],
+			"roughness": 0.7
+		},
+		"glass": {
+			"color": [
+				0.16,
+				0.2,
+				0.22
+			],
+			"metallic": 0.4,
+			"roughness": 0.1,
+			"alpha": 0.5
+		},
+		"glass_dark": {
+			"color": [
+				0.08,
+				0.09,
+				0.1
+			],
+			"metallic": 0.4,
+			"roughness": 0.15,
+			"visible_m": 400.0
+		},
+		"awning_0": {
+			"color": [
+				0.45,
+				0.12,
+				0.1
+			],
+			"roughness": 1.0,
+			"visible_m": 300.0
+		},
+		"awning_1": {
+			"color": [
+				0.12,
+				0.25,
+				0.18
+			],
+			"roughness": 1.0,
+			"visible_m": 300.0
+		},
+		"awning_2": {
+			"color": [
+				0.15,
+				0.18,
+				0.3
+			],
+			"roughness": 1.0,
+			"visible_m": 300.0
+		},
+		"wood": {
+			"texture": "planks_weathered",
+			"tile_m": 1.0,
+			"color": [
+				0.75,
+				0.55,
+				0.38
+			],
+			"visible_m": 120.0
+		},
+		"wood_dark": {
+			"texture": "planks_weathered",
+			"tile_m": 1.0,
+			"color": [
+				0.4,
+				0.27,
+				0.18
+			],
+			"visible_m": 150.0
+		},
+		"leather_red": {
+			"color": [
+				0.45,
+				0.08,
+				0.07
+			],
+			"roughness": 0.6,
+			"visible_m": 100.0
+		},
+		"leather_black": {
+			"color": [
+				0.07,
+				0.07,
+				0.08
+			],
+			"roughness": 0.55,
+			"visible_m": 100.0
+		},
+		"felt": {
+			"color": [
+				0.08,
+				0.32,
+				0.15
+			],
+			"roughness": 1.0,
+			"visible_m": 80.0
+		},
+		"steel": {
+			"color": [
+				0.32,
+				0.32,
+				0.34
+			],
+			"metallic": 0.6,
+			"roughness": 0.45,
+			"visible_m": 300.0
+		},
+		"rust": {
+			"color": [
+				0.42,
+				0.22,
+				0.12
+			],
+			"metallic": 0.3,
+			"roughness": 0.85,
+			"visible_m": 300.0
+		},
+		"metal_dark": {
+			"color": [
+				0.1,
+				0.1,
+				0.11
+			],
+			"metallic": 0.3,
+			"roughness": 0.6,
+			"visible_m": 100.0
+		},
+		"glass_green": {
+			"color": [
+				0.1,
+				0.35,
+				0.12
+			],
+			"metallic": 0.3,
+			"roughness": 0.2,
+			"visible_m": 40.0,
+			"shadows": false
+		},
+		"glass_amber": {
+			"color": [
+				0.5,
+				0.28,
+				0.06
+			],
+			"metallic": 0.3,
+			"roughness": 0.2,
+			"visible_m": 40.0,
+			"shadows": false
+		},
+		"glass_clear": {
+			"color": [
+				0.6,
+				0.65,
+				0.65
+			],
+			"metallic": 0.3,
+			"roughness": 0.2,
+			"visible_m": 40.0,
+			"shadows": false
+		},
+		"neon_pink": {
+			"color": [
+				1.0,
+				0.2,
+				0.6
+			],
+			"emission": [
+				1.0,
+				0.2,
+				0.6,
+				3.0
+			],
+			"shadows": false,
+			"visible_m": 80.0
+		},
+		"drum": {
+			"color": [
+				0.8,
+				0.78,
+				0.72
+			],
+			"roughness": 0.6,
+			"visible_m": 80.0
+		},
+		"mattress": {
+			"color": [
+				0.55,
+				0.52,
+				0.45
+			],
+			"roughness": 1.0,
+			"visible_m": 80.0
+		},
+		"canvas": {
+			"color": [
+				0.42,
+				0.45,
+				0.3
+			],
+			"roughness": 1.0,
+			"visible_m": 250.0
+		},
+		"canvas_b": {
+			"color": [
+				0.5,
+				0.35,
+				0.22
+			],
+			"roughness": 1.0,
+			"visible_m": 250.0
+		},
+		"mat_blue": {
+			"color": [
+				0.12,
+				0.18,
+				0.38
+			],
+			"roughness": 1.0,
+			"shadows": false,
+			"visible_m": 80.0
+		},
+		"rope": {
+			"color": [
+				0.75,
+				0.15,
+				0.1
+			],
+			"roughness": 0.9,
+			"visible_m": 80.0
+		},
+		"porcelain": {
+			"color": [
+				0.85,
+				0.85,
+				0.82
+			],
+			"roughness": 0.3,
+			"visible_m": 60.0
+		},
+		"sandbag": {
+			"color": [
+				0.55,
+				0.48,
+				0.34
+			],
+			"roughness": 1.0,
+			"visible_m": 300.0
+		},
+		"tyre": {
+			"color": [
+				0.06,
+				0.06,
+				0.06
+			],
+			"roughness": 0.9,
+			"visible_m": 200.0
+		},
+		"car_0": {
+			"color": [
+				0.35,
+				0.12,
+				0.08
+			],
+			"metallic": 0.3,
+			"roughness": 0.7,
+			"visible_m": 400.0
+		},
+		"car_1": {
+			"color": [
+				0.25,
+				0.3,
+				0.35
+			],
+			"metallic": 0.3,
+			"roughness": 0.7,
+			"visible_m": 400.0
+		},
+		"car_2": {
+			"color": [
+				0.6,
+				0.55,
+				0.42
+			],
+			"metallic": 0.3,
+			"roughness": 0.7,
+			"visible_m": 400.0
+		},
+		"fire": {
+			"color": [
+				1.0,
+				0.5,
+				0.1
+			],
+			"emission": [
+				1.0,
+				0.45,
+				0.1,
+				4.0
+			],
+			"shadows": false,
+			"visible_m": 300.0
+		},
+		"debris": {
+			"color": [
+				0.45,
+				0.4,
+				0.34
+			],
+			"roughness": 1.0,
+			"shadows": false,
+			"visible_m": 60.0
+		}
+	},
+	"bars": {
+		"copperfields": {
+			"note": "13 E 21st St. Front (-z) faces 21st St (south); local +x is west (Central Ave side). Raider HQ: Copperhead in the basement 'Pit'.",
+			"map_xz": [
+				1873.0,
+				-1578.0
+			],
+			"rotation_deg": 180.0,
+			"w": 24.0,
+			"d": 22.0,
+			"second": "basement",
+			"facade": "brick_red",
+			"trim": "trim_copper",
+			"front": {
+				"door": [
+					0.0,
+					1.0
+				],
+				"windows": [
+					[
+						-11.2,
+						-1.6
+					],
+					[
+						1.6,
+						11.2
+					]
+				]
+			},
+			"upper_windows": [
+				[
+					-10,
+					-7.5
+				],
+				[
+					-5.5,
+					-3
+				],
+				[
+					3,
+					5.5
+				],
+				[
+					7.5,
+					10
+				]
+			],
+			"side_px": [
+				[
+					-9,
+					-3
+				],
+				[
+					1,
+					7
+				]
+			],
+			"back_door": -2.0,
+			"stairs": {
+				"from": [
+					10.0,
+					9.4
+				],
+				"to": [
+					3.0,
+					9.4
+				],
+				"w": 1.6
+			},
+			"partitions": [
+				{
+					"level": "ground",
+					"axis": "x",
+					"at": 5.0,
+					"from": -11.82,
+					"to": 11.82,
+					"doors": [
+						[
+							0.0,
+							1.2
+						]
+					]
+				},
+				{
+					"level": "ground",
+					"axis": "z",
+					"at": -4.0,
+					"from": 5.1,
+					"to": 10.82,
+					"doors": [
+						[
+							8.0,
+							0.9
+						]
+					]
+				},
+				{
+					"level": "basement",
+					"axis": "x",
+					"at": -5.0,
+					"from": -11.82,
+					"to": -6.0
+				},
+				{
+					"level": "basement",
+					"axis": "z",
+					"at": -6.0,
+					"from": -10.82,
+					"to": -5.0,
+					"doors": [
+						[
+							-8.0,
+							0.9
+						]
+					]
+				}
+			],
+			"furniture": [
+				{
+					"type": "counter",
+					"from": [
+						-8.6,
+						-6
+					],
+					"to": [
+						-8.6,
+						3
+					]
+				},
+				{
+					"type": "back_bar",
+					"from": [
+						-11.4,
+						-6
+					],
+					"to": [
+						-11.4,
+						3
+					]
+				},
+				{
+					"type": "stools",
+					"from": [
+						-7.7,
+						-5.5
+					],
+					"to": [
+						-7.7,
+						2.5
+					],
+					"n": 8
+				},
+				{
+					"type": "booth",
+					"pos": [
+						10.4,
+						-8.5
+					]
+				},
+				{
+					"type": "booth",
+					"pos": [
+						10.4,
+						-4.5
+					]
+				},
+				{
+					"type": "booth",
+					"pos": [
+						10.4,
+						-0.5
+					]
+				},
+				{
+					"type": "booth",
+					"pos": [
+						10.4,
+						3.0
+					]
+				},
+				{
+					"type": "pool_table",
+					"pos": [
+						2.0,
+						-5.0
+					]
+				},
+				{
+					"type": "pool_table",
+					"pos": [
+						2.0,
+						0.5
+					],
+					"yaw": 4
+				},
+				{
+					"type": "table",
+					"pos": [
+						-4.0,
+						-8.0
+					],
+					"chairs": 3
+				},
+				{
+					"type": "table",
+					"pos": [
+						-4.5,
+						-2.0
+					],
+					"chairs": 3
+				},
+				{
+					"type": "table",
+					"pos": [
+						6.0,
+						-8.0
+					],
+					"chairs": 3
+				},
+				{
+					"type": "jukebox",
+					"pos": [
+						6.0,
+						4.4
+					]
+				},
+				{
+					"type": "dartboard",
+					"pos": [
+						11.8,
+						4.0
+					],
+					"yaw": 90
+				},
+				{
+					"type": "tv",
+					"pos": [
+						-11.75,
+						-1.0
+					],
+					"yaw": 90,
+					"y": 2.8
+				},
+				{
+					"type": "debris",
+					"pos": [
+						0,
+						-2
+					],
+					"size": [
+						18,
+						12
+					],
+					"n": 25
+				},
+				{
+					"type": "stalls",
+					"pos": [
+						-10.5,
+						9.5
+					],
+					"n": 3
+				},
+				{
+					"type": "crates",
+					"pos": [
+						-2.0,
+						7.2
+					],
+					"n": 4
+				},
+				{
+					"type": "kegs",
+					"from": [
+						5.5,
+						6.2
+					],
+					"to": [
+						10.5,
+						6.2
+					],
+					"n": 5
+				},
+				{
+					"type": "ring",
+					"level": "basement",
+					"pos": [
+						-2.0,
+						-3.0
+					],
+					"size": [
+						7,
+						7
+					]
+				},
+				{
+					"type": "bunk",
+					"level": "basement",
+					"pos": [
+						10.5,
+						-9.0
+					]
+				},
+				{
+					"type": "bunk",
+					"level": "basement",
+					"pos": [
+						10.5,
+						-6.0
+					]
+				},
+				{
+					"type": "bunk",
+					"level": "basement",
+					"pos": [
+						10.5,
+						-3.0
+					]
+				},
+				{
+					"type": "couch",
+					"level": "basement",
+					"pos": [
+						-9.0,
+						6.0
+					],
+					"mat": "leather_red"
+				},
+				{
+					"type": "crates",
+					"level": "basement",
+					"pos": [
+						-9.0,
+						-8.5
+					],
+					"n": 5
+				},
+				{
+					"type": "crates",
+					"level": "basement",
+					"pos": [
+						4.0,
+						7.0
+					],
+					"n": 4
+				},
+				{
+					"type": "kegs",
+					"level": "basement",
+					"from": [
+						-11.2,
+						0
+					],
+					"to": [
+						-11.2,
+						4
+					],
+					"n": 4
+				},
+				{
+					"type": "shelf",
+					"level": "basement",
+					"pos": [
+						-11.4,
+						-3.0
+					],
+					"yaw": 90,
+					"w": 2.0
+				},
+				{
+					"type": "fire_barrel",
+					"level": "basement",
+					"pos": [
+						6.0,
+						2.0
+					]
+				},
+				{
+					"type": "table",
+					"level": "basement",
+					"pos": [
+						-6.0,
+						6.0
+					],
+					"chairs": 3
+				},
+				{
+					"type": "debris",
+					"level": "basement",
+					"pos": [
+						0,
+						0
+					],
+					"size": [
+						20,
+						18
+					],
+					"n": 30
+				}
+			],
+			"loot": [
+				{
+					"id": "register",
+					"name": "Register",
+					"table": "bar_register",
+					"level": "ground",
+					"pos": [
+						-8.6,
+						2.0
+					],
+					"size": [
+						0.45,
+						0.3,
+						0.4
+					],
+					"y": 1.16
+				},
+				{
+					"id": "liquor",
+					"name": "Liquor Shelf",
+					"table": "bar_shelf",
+					"level": "ground",
+					"pos": [
+						-11.3,
+						-2.0
+					],
+					"size": [
+						0.5,
+						1.0,
+						2.0
+					]
+				},
+				{
+					"id": "lost_found",
+					"name": "Lost & Found Box",
+					"table": "porch",
+					"level": "ground",
+					"pos": [
+						-6.0,
+						4.4
+					],
+					"size": [
+						0.6,
+						0.5,
+						0.6
+					]
+				},
+				{
+					"id": "keg_locker",
+					"name": "Keg Room Locker",
+					"table": "raider_stash",
+					"level": "ground",
+					"pos": [
+						11.4,
+						7.6
+					],
+					"size": [
+						0.6,
+						1.8,
+						0.6
+					]
+				},
+				{
+					"id": "medicine",
+					"name": "Medicine Cabinet",
+					"table": "poi_pharmacy",
+					"level": "ground",
+					"pos": [
+						-5.0,
+						10.6
+					],
+					"size": [
+						0.5,
+						0.5,
+						0.2
+					],
+					"y": 1.2
+				},
+				{
+					"id": "strongbox",
+					"name": "Copperhead's Strongbox",
+					"table": "copperhead_stash",
+					"level": "basement",
+					"pos": [
+						-10.5,
+						-9.5
+					],
+					"size": [
+						1.0,
+						0.7,
+						0.6
+					]
+				},
+				{
+					"id": "ammo",
+					"name": "Ammo Crate",
+					"table": "raider_ammo",
+					"level": "basement",
+					"pos": [
+						10.5,
+						1.5
+					],
+					"size": [
+						0.9,
+						0.6,
+						0.6
+					]
+				},
+				{
+					"id": "footlocker_a",
+					"name": "Footlocker",
+					"table": "raider_stash",
+					"level": "basement",
+					"pos": [
+						8.6,
+						-9.0
+					],
+					"size": [
+						0.8,
+						0.5,
+						0.5
+					]
+				},
+				{
+					"id": "footlocker_b",
+					"name": "Footlocker",
+					"table": "raider_stash",
+					"level": "basement",
+					"pos": [
+						8.6,
+						-3.0
+					],
+					"size": [
+						0.8,
+						0.5,
+						0.5
+					]
+				},
+				{
+					"id": "purse",
+					"name": "Fight Purse",
+					"table": "raider_stash",
+					"level": "basement",
+					"pos": [
+						-2.0,
+						1.5
+					],
+					"size": [
+						0.6,
+						0.4,
+						0.5
+					]
+				}
+			],
+			"spawns": [
+				[
+					"g1",
+					"raider_gunner",
+					"ground",
+					[
+						0.0,
+						-3.0
+					]
+				],
+				[
+					"g2",
+					"raider_brute",
+					"ground",
+					[
+						-6.0,
+						0.0
+					]
+				],
+				[
+					"g3",
+					"raider_gunner",
+					"ground",
+					[
+						7.0,
+						2.0
+					]
+				],
+				[
+					"boss",
+					"copperhead",
+					"basement",
+					[
+						-2.0,
+						-3.0
+					],
+					180
+				],
+				[
+					"b1",
+					"raider_brute",
+					"basement",
+					[
+						5.0,
+						-6.0
+					]
+				],
+				[
+					"b2",
+					"raider_gunner",
+					"basement",
+					[
+						4.0,
+						5.0
+					]
+				],
+				[
+					"b3",
+					"raider_brute",
+					"basement",
+					[
+						-9.0,
+						3.0
+					]
+				],
+				[
+					"t1",
+					"raider_gunner",
+					"ground",
+					[
+						14.0,
+						-142.0,
+						3.98
+					]
+				],
+				[
+					"t2",
+					"raider_gunner",
+					"ground",
+					[
+						14.0,
+						88.0,
+						3.98
+					]
+				],
+				[
+					"c1",
+					"raider_brute",
+					"ground",
+					[
+						2.0,
+						-25.0
+					]
+				],
+				[
+					"c2",
+					"raider_gunner",
+					"ground",
+					[
+						-14.0,
+						-26.0
+					]
+				],
+				[
+					"c3",
+					"raider_gunner",
+					"ground",
+					[
+						22.0,
+						-128.0
+					]
+				],
+				[
+					"c4",
+					"raider_brute",
+					"ground",
+					[
+						22.0,
+						76.0
+					]
+				],
+				[
+					"c5",
+					"raider_gunner",
+					"ground",
+					[
+						-38.0,
+						-24.0
+					]
+				],
+				[
+					"c6",
+					"raider_gunner",
+					"ground",
+					[
+						40.0,
+						-20.0
+					]
+				]
+			],
+			"lights": [
+				{
+					"level": "ground",
+					"pos": [
+						-7,
+						3.5,
+						-2
+					],
+					"color": [
+						1.0,
+						0.72,
+						0.45
+					],
+					"energy": 1.4,
+					"range": 11
+				},
+				{
+					"level": "ground",
+					"pos": [
+						3,
+						3.5,
+						-5
+					],
+					"color": [
+						1.0,
+						0.72,
+						0.45
+					],
+					"energy": 1.2,
+					"range": 9
+				},
+				{
+					"level": "ground",
+					"pos": [
+						3,
+						3.5,
+						1.5
+					],
+					"color": [
+						1.0,
+						0.72,
+						0.45
+					],
+					"energy": 1.2,
+					"range": 9
+				},
+				{
+					"level": "ground",
+					"pos": [
+						-8,
+						3.3,
+						8
+					],
+					"color": [
+						0.9,
+						0.75,
+						0.55
+					],
+					"energy": 0.8,
+					"range": 6
+				},
+				{
+					"level": "ground",
+					"pos": [
+						5,
+						3.3,
+						8
+					],
+					"color": [
+						0.9,
+						0.75,
+						0.55
+					],
+					"energy": 0.8,
+					"range": 7
+				},
+				{
+					"level": "basement",
+					"pos": [
+						-2,
+						2.5,
+						-3
+					],
+					"color": [
+						1.0,
+						0.35,
+						0.2
+					],
+					"energy": 2.4,
+					"range": 10
+				},
+				{
+					"level": "basement",
+					"pos": [
+						8,
+						2.5,
+						-5
+					],
+					"color": [
+						1.0,
+						0.72,
+						0.45
+					],
+					"energy": 1.0,
+					"range": 8
+				},
+				{
+					"level": "basement",
+					"pos": [
+						-9,
+						2.5,
+						-8
+					],
+					"color": [
+						1.0,
+						0.72,
+						0.45
+					],
+					"energy": 1.0,
+					"range": 6
+				},
+				{
+					"level": "basement",
+					"pos": [
+						5,
+						2.5,
+						5
+					],
+					"color": [
+						1.0,
+						0.55,
+						0.2
+					],
+					"energy": 1.4,
+					"range": 8
+				},
+				{
+					"level": "ground",
+					"pos": [
+						0,
+						1.5,
+						-23
+					],
+					"color": [
+						1.0,
+						0.55,
+						0.2
+					],
+					"energy": 2.0,
+					"range": 9
+				},
+				{
+					"level": "ground",
+					"pos": [
+						-20,
+						1.5,
+						-24
+					],
+					"color": [
+						1.0,
+						0.55,
+						0.2
+					],
+					"energy": 2.0,
+					"range": 9
+				}
+			],
+			"signs": [
+				{
+					"text": "COPPERFIELDS",
+					"pos": [
+						0,
+						4.75,
+						-11.28
+					],
+					"size": 80,
+					"color": [
+						0.9,
+						0.6,
+						0.35
+					]
+				},
+				{
+					"text": "COPPERFIELDS",
+					"pos": [
+						12.28,
+						4.75,
+						0
+					],
+					"yaw_deg": 90,
+					"size": 80,
+					"color": [
+						0.9,
+						0.6,
+						0.35
+					]
+				},
+				{
+					"text": "RAIDER TERRITORY\nTURN BACK",
+					"pos": [
+						0,
+						6.6,
+						-11.28
+					],
+					"size": 60,
+					"color": [
+						0.85,
+						0.12,
+						0.08
+					]
+				},
+				{
+					"text": "THE PIT",
+					"pos": [
+						-2,
+						-1.3,
+						-10.79
+					],
+					"yaw_deg": 0,
+					"size": 90,
+					"color": [
+						1.0,
+						0.25,
+						0.15
+					],
+					"glow": true,
+					"visible_m": 40.0
+				}
+			],
+			"annex": [
+				[
+					-30,
+					-11,
+					-12,
+					11,
+					6.8,
+					"nz"
+				],
+				[
+					-30,
+					14,
+					12,
+					81,
+					7.0,
+					"px"
+				]
+			],
+			"outdoor": [
+				{
+					"type": "sandbags",
+					"from": [
+						41,
+						-138
+					],
+					"to": [
+						29.5,
+						-138
+					]
+				},
+				{
+					"type": "sandbags",
+					"from": [
+						24.5,
+						-138
+					],
+					"to": [
+						13,
+						-138
+					]
+				},
+				{
+					"type": "car_wreck",
+					"pos": [
+						27.0,
+						-142.5
+					],
+					"yaw": 80,
+					"mat": "car_1"
+				},
+				{
+					"type": "tower",
+					"pos": [
+						14.0,
+						-142.0
+					],
+					"h": 4.0
+				},
+				{
+					"type": "scrap_wall",
+					"from": [
+						41,
+						84
+					],
+					"to": [
+						29.5,
+						84
+					]
+				},
+				{
+					"type": "scrap_wall",
+					"from": [
+						24.5,
+						84
+					],
+					"to": [
+						13,
+						84
+					]
+				},
+				{
+					"type": "car_wreck",
+					"pos": [
+						27.0,
+						88.5
+					],
+					"yaw": 100,
+					"mat": "car_0"
+				},
+				{
+					"type": "tower",
+					"pos": [
+						14.0,
+						88.0
+					],
+					"h": 4.0
+				},
+				{
+					"type": "sandbags",
+					"from": [
+						-42,
+						-13
+					],
+					"to": [
+						-42,
+						-22
+					]
+				},
+				{
+					"type": "sandbags",
+					"from": [
+						-42,
+						-27
+					],
+					"to": [
+						-42,
+						-34
+					]
+				},
+				{
+					"type": "car_wreck",
+					"pos": [
+						-45.0,
+						-24.5
+					],
+					"yaw": 0,
+					"mat": "car_2"
+				},
+				{
+					"type": "sandbags",
+					"from": [
+						45,
+						-13
+					],
+					"to": [
+						45,
+						-22
+					]
+				},
+				{
+					"type": "sandbags",
+					"from": [
+						45,
+						-27
+					],
+					"to": [
+						45,
+						-34
+					]
+				},
+				{
+					"type": "fire_barrel",
+					"pos": [
+						0,
+						-23
+					]
+				},
+				{
+					"type": "fire_barrel",
+					"pos": [
+						-20,
+						-24
+					]
+				},
+				{
+					"type": "tent",
+					"pos": [
+						8,
+						-29
+					],
+					"yaw": 0
+				},
+				{
+					"type": "tent",
+					"pos": [
+						-12,
+						-30
+					],
+					"yaw": 15,
+					"mat": "canvas_b"
+				},
+				{
+					"type": "car_wreck",
+					"pos": [
+						18,
+						-19
+					],
+					"yaw": 85,
+					"mat": "car_1"
+				},
+				{
+					"type": "crates",
+					"pos": [
+						-5,
+						-31
+					],
+					"n": 4
+				},
+				{
+					"type": "debris",
+					"pos": [
+						0,
+						-24
+					],
+					"size": [
+						40,
+						12
+					],
+					"n": 30
+				}
+			],
+			"landmark": {
+				"replaces_osm_ways": [
+					1339896636
+				],
+				"exclusions": [
+					[
+						-17.1,
+						22.4,
+						3
+					]
+				],
+				"terrain_pad": [
+					-31,
+					-13,
+					13,
+					82
+				],
+				"no_plant_rects": [
+					[
+						-31,
+						-12,
+						13,
+						82
+					]
+				],
+				"ground_holes": [
+					[
+						3.0,
+						8.6,
+						10.0,
+						10.2
+					]
+				]
+			}
+		},
+		"brix": {
+			"note": "Across 21st St from Copperfields (south side). Front (-z) faces 21st St (north); local axes = map axes. Upstairs is the raiders' lookout.",
+			"map_xz": [
+				1878.0,
+				-1532.0
+			],
+			"rotation_deg": 0.0,
+			"w": 20.0,
+			"d": 22.0,
+			"second": "upstairs",
+			"facade": "brick_tan",
+			"trim": "trim_black",
+			"front": {
+				"door": [
+					-3.0,
+					1.0
+				],
+				"windows": [
+					[
+						-9.6,
+						-4.6
+					],
+					[
+						-1.4,
+						9.6
+					]
+				]
+			},
+			"upper_windows": [
+				[
+					-9,
+					-6.5
+				],
+				[
+					-4.5,
+					-1.5
+				],
+				[
+					1.5,
+					4.5
+				],
+				[
+					6.5,
+					9
+				]
+			],
+			"back_door": 2.0,
+			"stairs": {
+				"from": [
+					8.6,
+					-7.5
+				],
+				"to": [
+					8.6,
+					1.0
+				],
+				"w": 1.6
+			},
+			"partitions": [
+				{
+					"level": "ground",
+					"axis": "x",
+					"at": 5.0,
+					"from": -9.82,
+					"to": 9.82,
+					"doors": [
+						[
+							4.0,
+							1.2
+						]
+					]
+				},
+				{
+					"level": "ground",
+					"axis": "z",
+					"at": -2.0,
+					"from": 5.1,
+					"to": 10.82,
+					"doors": [
+						[
+							8.0,
+							0.9
+						]
+					]
+				},
+				{
+					"level": "upstairs",
+					"axis": "x",
+					"at": 4.0,
+					"from": -9.82,
+					"to": 9.82,
+					"doors": [
+						[
+							-5.0,
+							1.0
+						],
+						[
+							4.0,
+							1.0
+						]
+					]
+				},
+				{
+					"level": "upstairs",
+					"axis": "z",
+					"at": -1.0,
+					"from": 4.1,
+					"to": 10.82
+				}
+			],
+			"furniture": [
+				{
+					"type": "counter",
+					"from": [
+						-6.6,
+						-6
+					],
+					"to": [
+						-6.6,
+						3
+					]
+				},
+				{
+					"type": "back_bar",
+					"from": [
+						-9.4,
+						-6
+					],
+					"to": [
+						-9.4,
+						3
+					]
+				},
+				{
+					"type": "stools",
+					"from": [
+						-5.7,
+						-5.5
+					],
+					"to": [
+						-5.7,
+						2.5
+					],
+					"n": 7
+				},
+				{
+					"type": "table",
+					"pos": [
+						-1,
+						-7
+					],
+					"chairs": 3
+				},
+				{
+					"type": "table",
+					"pos": [
+						3,
+						-7
+					],
+					"chairs": 3
+				},
+				{
+					"type": "table",
+					"pos": [
+						-1,
+						-2
+					],
+					"chairs": 4
+				},
+				{
+					"type": "table",
+					"pos": [
+						3,
+						-2
+					],
+					"chairs": 3
+				},
+				{
+					"type": "table",
+					"pos": [
+						1,
+						2.5
+					],
+					"chairs": 3
+				},
+				{
+					"type": "couch",
+					"pos": [
+						4.8,
+						-9.9
+					],
+					"yaw": 180,
+					"mat": "leather_red"
+				},
+				{
+					"type": "tv",
+					"pos": [
+						-9.8,
+						-8.0
+					],
+					"yaw": 90,
+					"y": 2.6
+				},
+				{
+					"type": "debris",
+					"pos": [
+						0,
+						-3
+					],
+					"size": [
+						14,
+						12
+					],
+					"n": 20
+				},
+				{
+					"type": "stalls",
+					"pos": [
+						-9.4,
+						9.5
+					],
+					"n": 3
+				},
+				{
+					"type": "shelf",
+					"pos": [
+						4.0,
+						10.5
+					],
+					"w": 2.0
+				},
+				{
+					"type": "crates",
+					"pos": [
+						8.0,
+						8.0
+					],
+					"n": 3
+				},
+				{
+					"type": "sandbags",
+					"level": "upstairs",
+					"from": [
+						-9.2,
+						-10.2
+					],
+					"to": [
+						6.2,
+						-10.2
+					],
+					"rows": 2
+				},
+				{
+					"type": "bunk",
+					"level": "upstairs",
+					"pos": [
+						-8.5,
+						-3.0
+					]
+				},
+				{
+					"type": "bunk",
+					"level": "upstairs",
+					"pos": [
+						-6.5,
+						-3.0
+					]
+				},
+				{
+					"type": "couch",
+					"level": "upstairs",
+					"pos": [
+						2.0,
+						-1.0
+					],
+					"mat": "leather_black"
+				},
+				{
+					"type": "crates",
+					"level": "upstairs",
+					"pos": [
+						5.0,
+						2.5
+					],
+					"n": 3
+				},
+				{
+					"type": "table",
+					"level": "upstairs",
+					"pos": [
+						-3.0,
+						0.0
+					],
+					"chairs": 2
+				},
+				{
+					"type": "debris",
+					"level": "upstairs",
+					"pos": [
+						0,
+						-2
+					],
+					"size": [
+						16,
+						12
+					],
+					"n": 20
+				},
+				{
+					"type": "shelf",
+					"level": "upstairs",
+					"pos": [
+						-5.0,
+						10.5
+					],
+					"w": 2.0
+				},
+				{
+					"type": "crates",
+					"level": "upstairs",
+					"pos": [
+						-8.0,
+						7.0
+					],
+					"n": 4
+				},
+				{
+					"type": "bunk",
+					"level": "upstairs",
+					"pos": [
+						2.0,
+						8.0
+					],
+					"yaw": 90
+				},
+				{
+					"type": "bunk",
+					"level": "upstairs",
+					"pos": [
+						5.0,
+						8.0
+					],
+					"yaw": 90
+				},
+				{
+					"type": "bunk",
+					"level": "upstairs",
+					"pos": [
+						8.0,
+						8.0
+					],
+					"yaw": 90
+				}
+			],
+			"loot": [
+				{
+					"id": "wine",
+					"name": "Wine Rack",
+					"table": "bar_shelf",
+					"level": "ground",
+					"pos": [
+						-9.4,
+						-2.0
+					],
+					"size": [
+						0.5,
+						1.8,
+						2.2
+					]
+				},
+				{
+					"id": "register",
+					"name": "Register",
+					"table": "bar_register",
+					"level": "ground",
+					"pos": [
+						-6.6,
+						1.5
+					],
+					"size": [
+						0.45,
+						0.3,
+						0.4
+					],
+					"y": 1.16
+				},
+				{
+					"id": "fridge",
+					"name": "Kitchen Fridge",
+					"table": "fridge",
+					"level": "ground",
+					"pos": [
+						0.2,
+						10.3
+					],
+					"size": [
+						1.0,
+						1.9,
+						0.8
+					]
+				},
+				{
+					"id": "pantry",
+					"name": "Pantry",
+					"table": "poi_diner",
+					"level": "ground",
+					"pos": [
+						8.6,
+						10.4
+					],
+					"size": [
+						1.6,
+						1.9,
+						0.6
+					]
+				},
+				{
+					"id": "ammo",
+					"name": "Ammo Crate",
+					"table": "raider_ammo",
+					"level": "upstairs",
+					"pos": [
+						2.5,
+						2.6
+					],
+					"size": [
+						0.9,
+						0.6,
+						0.6
+					]
+				},
+				{
+					"id": "stash",
+					"name": "Stash Shelf",
+					"table": "raider_stash",
+					"level": "upstairs",
+					"pos": [
+						-5.0,
+						9.8
+					],
+					"size": [
+						1.8,
+						1.9,
+						0.5
+					]
+				},
+				{
+					"id": "footlocker",
+					"name": "Footlocker",
+					"table": "raider_stash",
+					"level": "upstairs",
+					"pos": [
+						5.0,
+						9.5
+					],
+					"size": [
+						0.8,
+						0.5,
+						0.5
+					]
+				},
+				{
+					"id": "lookout_bag",
+					"name": "Lookout's Bag",
+					"table": "raider_ammo",
+					"level": "upstairs",
+					"pos": [
+						-4.0,
+						-9.3
+					],
+					"size": [
+						0.6,
+						0.4,
+						0.4
+					]
+				}
+			],
+			"spawns": [
+				[
+					"g1",
+					"raider_brute",
+					"ground",
+					[
+						2.0,
+						-4.0
+					]
+				],
+				[
+					"g2",
+					"raider_gunner",
+					"ground",
+					[
+						-3.0,
+						1.0
+					]
+				],
+				[
+					"u1",
+					"raider_gunner",
+					"upstairs",
+					[
+						-6.0,
+						-9.2
+					]
+				],
+				[
+					"u2",
+					"raider_gunner",
+					"upstairs",
+					[
+						3.0,
+						-9.2
+					]
+				],
+				[
+					"u3",
+					"raider_brute",
+					"upstairs",
+					[
+						4.0,
+						6.5
+					]
+				]
+			],
+			"lights": [
+				{
+					"level": "ground",
+					"pos": [
+						-6,
+						3.5,
+						-2
+					],
+					"color": [
+						1.0,
+						0.72,
+						0.45
+					],
+					"energy": 1.3,
+					"range": 10
+				},
+				{
+					"level": "ground",
+					"pos": [
+						1,
+						3.5,
+						-5
+					],
+					"color": [
+						1.0,
+						0.72,
+						0.45
+					],
+					"energy": 1.1,
+					"range": 8
+				},
+				{
+					"level": "ground",
+					"pos": [
+						1,
+						3.5,
+						1
+					],
+					"color": [
+						1.0,
+						0.72,
+						0.45
+					],
+					"energy": 1.1,
+					"range": 8
+				},
+				{
+					"level": "ground",
+					"pos": [
+						-6,
+						3.3,
+						8
+					],
+					"color": [
+						0.9,
+						0.75,
+						0.55
+					],
+					"energy": 0.7,
+					"range": 6
+				},
+				{
+					"level": "ground",
+					"pos": [
+						4,
+						3.3,
+						8
+					],
+					"color": [
+						0.9,
+						0.75,
+						0.55
+					],
+					"energy": 0.8,
+					"range": 7
+				},
+				{
+					"level": "upstairs",
+					"pos": [
+						-4,
+						2.9,
+						-5
+					],
+					"color": [
+						0.9,
+						0.75,
+						0.55
+					],
+					"energy": 0.9,
+					"range": 8
+				},
+				{
+					"level": "upstairs",
+					"pos": [
+						4,
+						2.9,
+						-5
+					],
+					"color": [
+						0.9,
+						0.75,
+						0.55
+					],
+					"energy": 0.9,
+					"range": 8
+				},
+				{
+					"level": "upstairs",
+					"pos": [
+						-5,
+						2.9,
+						8
+					],
+					"color": [
+						0.9,
+						0.75,
+						0.55
+					],
+					"energy": 0.8,
+					"range": 6
+				},
+				{
+					"level": "upstairs",
+					"pos": [
+						5,
+						2.9,
+						8
+					],
+					"color": [
+						0.9,
+						0.75,
+						0.55
+					],
+					"energy": 0.8,
+					"range": 7
+				}
+			],
+			"signs": [
+				{
+					"text": "BRIX",
+					"pos": [
+						0,
+						4.75,
+						-11.28
+					],
+					"size": 90,
+					"color": [
+						0.85,
+						0.78,
+						0.65
+					]
+				}
+			],
+			"annex": [
+				[
+					-18,
+					-11,
+					-10,
+					11,
+					6.5,
+					"nz nx"
+				],
+				[
+					10,
+					-11,
+					21,
+					11,
+					6.0,
+					"nz"
+				],
+				[
+					-18,
+					14,
+					21,
+					110,
+					6.5,
+					"nx"
+				]
+			],
+			"outdoor": [],
+			"landmark": {
+				"replaces_osm_ways": [
+					1339896648
+				],
+				"exclusions": [
+					[
+						7.9,
+						12.9,
+						3
+					]
+				],
+				"terrain_pad": [
+					-19,
+					-13,
+					22,
+					111
+				],
+				"no_plant_rects": [
+					[
+						-19,
+						-12,
+						22,
+						111
+					]
+				]
+			}
+		},
+		"the_other_side": {
+			"note": "15 E 24th St, north side of 24th just east of the Museum of Nebraska Art (position estimated from the address). Front (-z) faces 24th St (south); local +x is west. Dive bar, raider armory in the basement.",
+			"map_xz": [
+				1935.0,
+				-1878.0
+			],
+			"rotation_deg": 180.0,
+			"w": 18.0,
+			"d": 24.0,
+			"second": "basement",
+			"facade": "plaster_dark",
+			"trim": "trim_black",
+			"floor": "floor_tile",
+			"front": {
+				"door": [
+					3.0,
+					1.0
+				],
+				"windows": [
+					[
+						-8.6,
+						1.6
+					],
+					[
+						4.4,
+						8.6
+					]
+				]
+			},
+			"upper_windows": [
+				[
+					-7,
+					-4.5
+				],
+				[
+					-2,
+					0.5
+				],
+				[
+					4.5,
+					7
+				]
+			],
+			"back_door": 0.0,
+			"stairs": {
+				"from": [
+					8.0,
+					10.2
+				],
+				"to": [
+					1.0,
+					10.2
+				],
+				"w": 1.5
+			},
+			"partitions": [
+				{
+					"level": "ground",
+					"axis": "x",
+					"at": 6.0,
+					"from": -8.82,
+					"to": 8.82,
+					"doors": [
+						[
+							0.0,
+							1.2
+						]
+					]
+				},
+				{
+					"level": "ground",
+					"axis": "z",
+					"at": -2.5,
+					"from": 6.1,
+					"to": 11.82,
+					"doors": [
+						[
+							9.0,
+							0.9
+						]
+					]
+				},
+				{
+					"level": "basement",
+					"axis": "x",
+					"at": 0.0,
+					"from": -8.82,
+					"to": 8.82,
+					"doors": [
+						[
+							-4.0,
+							1.2
+						],
+						[
+							4.5,
+							1.2
+						]
+					]
+				}
+			],
+			"furniture": [
+				{
+					"type": "counter",
+					"from": [
+						-6.2,
+						-7
+					],
+					"to": [
+						-6.2,
+						3
+					]
+				},
+				{
+					"type": "back_bar",
+					"from": [
+						-8.6,
+						-7
+					],
+					"to": [
+						-8.6,
+						3
+					]
+				},
+				{
+					"type": "stools",
+					"from": [
+						-5.3,
+						-6.5
+					],
+					"to": [
+						-5.3,
+						2.5
+					],
+					"n": 8
+				},
+				{
+					"type": "booth",
+					"pos": [
+						7.6,
+						-9.5
+					],
+					"mat": "leather_black"
+				},
+				{
+					"type": "booth",
+					"pos": [
+						7.6,
+						-5.5
+					],
+					"mat": "leather_black"
+				},
+				{
+					"type": "booth",
+					"pos": [
+						7.6,
+						-1.5
+					],
+					"mat": "leather_black"
+				},
+				{
+					"type": "booth",
+					"pos": [
+						7.6,
+						2.5
+					],
+					"mat": "leather_black"
+				},
+				{
+					"type": "pool_table",
+					"pos": [
+						1.5,
+						-4.0
+					]
+				},
+				{
+					"type": "table",
+					"pos": [
+						1.5,
+						2.0
+					],
+					"chairs": 3
+				},
+				{
+					"type": "jukebox",
+					"pos": [
+						-1.5,
+						5.4
+					]
+				},
+				{
+					"type": "dartboard",
+					"pos": [
+						8.8,
+						4.6
+					],
+					"yaw": 90
+				},
+				{
+					"type": "tv",
+					"pos": [
+						-8.75,
+						-9.0
+					],
+					"yaw": 90,
+					"y": 2.7
+				},
+				{
+					"type": "debris",
+					"pos": [
+						0,
+						-3
+					],
+					"size": [
+						14,
+						14
+					],
+					"n": 20
+				},
+				{
+					"type": "stalls",
+					"pos": [
+						-8.4,
+						10.0
+					],
+					"n": 2
+				},
+				{
+					"type": "crates",
+					"pos": [
+						5.0,
+						7.3
+					],
+					"n": 3
+				},
+				{
+					"type": "shelf",
+					"level": "basement",
+					"pos": [
+						-8.5,
+						-9.0
+					],
+					"yaw": 90,
+					"w": 2.0
+				},
+				{
+					"type": "shelf",
+					"level": "basement",
+					"pos": [
+						-8.5,
+						-5.0
+					],
+					"yaw": 90,
+					"w": 2.0
+				},
+				{
+					"type": "crates",
+					"level": "basement",
+					"pos": [
+						0.0,
+						-8.0
+					],
+					"n": 5
+				},
+				{
+					"type": "table",
+					"level": "basement",
+					"pos": [
+						3.0,
+						-3.0
+					],
+					"chairs": 2
+				},
+				{
+					"type": "bunk",
+					"level": "basement",
+					"pos": [
+						-7.5,
+						3.0
+					]
+				},
+				{
+					"type": "bunk",
+					"level": "basement",
+					"pos": [
+						-7.5,
+						7.0
+					]
+				},
+				{
+					"type": "couch",
+					"level": "basement",
+					"pos": [
+						-1.5,
+						11.0
+					],
+					"mat": "leather_black"
+				},
+				{
+					"type": "fire_barrel",
+					"level": "basement",
+					"pos": [
+						2.0,
+						5.0
+					]
+				},
+				{
+					"type": "debris",
+					"level": "basement",
+					"pos": [
+						0,
+						0
+					],
+					"size": [
+						16,
+						20
+					],
+					"n": 25
+				}
+			],
+			"loot": [
+				{
+					"id": "register",
+					"name": "Register",
+					"table": "bar_register",
+					"level": "ground",
+					"pos": [
+						-6.2,
+						2.2
+					],
+					"size": [
+						0.45,
+						0.3,
+						0.4
+					],
+					"y": 1.16
+				},
+				{
+					"id": "liquor",
+					"name": "Liquor Shelf",
+					"table": "bar_shelf",
+					"level": "ground",
+					"pos": [
+						-8.5,
+						-2.0
+					],
+					"size": [
+						0.5,
+						1.0,
+						2.0
+					]
+				},
+				{
+					"id": "cooler",
+					"name": "Cooler",
+					"table": "fridge",
+					"level": "ground",
+					"pos": [
+						-1.6,
+						6.6
+					],
+					"size": [
+						1.4,
+						1.0,
+						0.7
+					]
+				},
+				{
+					"id": "cabinet",
+					"name": "Bathroom Cabinet",
+					"table": "poi_pharmacy",
+					"level": "ground",
+					"pos": [
+						-3.2,
+						11.5
+					],
+					"size": [
+						0.5,
+						0.5,
+						0.2
+					],
+					"y": 1.2
+				},
+				{
+					"id": "gun_locker",
+					"name": "Gun Locker",
+					"table": "raider_ammo",
+					"level": "basement",
+					"pos": [
+						8.5,
+						-5.0
+					],
+					"size": [
+						0.6,
+						1.9,
+						1.2
+					]
+				},
+				{
+					"id": "armory",
+					"name": "Armory Shelf",
+					"table": "raider_stash",
+					"level": "basement",
+					"pos": [
+						-8.3,
+						-7.0
+					],
+					"size": [
+						0.6,
+						1.9,
+						1.6
+					]
+				},
+				{
+					"id": "crate",
+					"name": "Locked Crate",
+					"table": "raider_stash",
+					"level": "basement",
+					"pos": [
+						0.0,
+						-10.6
+					],
+					"size": [
+						1.0,
+						0.8,
+						0.8
+					]
+				},
+				{
+					"id": "footlocker",
+					"name": "Footlocker",
+					"table": "raider_stash",
+					"level": "basement",
+					"pos": [
+						-6.2,
+						5.0
+					],
+					"size": [
+						0.8,
+						0.5,
+						0.5
+					]
+				}
+			],
+			"spawns": [
+				[
+					"g1",
+					"raider_gunner",
+					"ground",
+					[
+						0.0,
+						-8.0
+					]
+				],
+				[
+					"g2",
+					"raider_brute",
+					"ground",
+					[
+						-3.0,
+						0.0
+					]
+				],
+				[
+					"b1",
+					"raider_gunner",
+					"basement",
+					[
+						2.0,
+						-6.0
+					]
+				],
+				[
+					"b2",
+					"raider_brute",
+					"basement",
+					[
+						-3.0,
+						6.0
+					]
+				],
+				[
+					"b3",
+					"raider_gunner",
+					"basement",
+					[
+						5.0,
+						3.0
+					]
+				],
+				[
+					"o1",
+					"raider_gunner",
+					"ground",
+					[
+						-4.0,
+						-17.5
+					]
+				]
+			],
+			"lights": [
+				{
+					"level": "ground",
+					"pos": [
+						-5,
+						3.5,
+						-3
+					],
+					"color": [
+						1.0,
+						0.35,
+						0.2
+					],
+					"energy": 1.2,
+					"range": 9
+				},
+				{
+					"level": "ground",
+					"pos": [
+						2,
+						3.5,
+						-4
+					],
+					"color": [
+						1.0,
+						0.72,
+						0.45
+					],
+					"energy": 1.1,
+					"range": 8
+				},
+				{
+					"level": "ground",
+					"pos": [
+						2,
+						3.5,
+						2
+					],
+					"color": [
+						1.0,
+						0.72,
+						0.45
+					],
+					"energy": 1.0,
+					"range": 8
+				},
+				{
+					"level": "ground",
+					"pos": [
+						-6,
+						3.3,
+						9
+					],
+					"color": [
+						0.9,
+						0.75,
+						0.55
+					],
+					"energy": 0.7,
+					"range": 6
+				},
+				{
+					"level": "ground",
+					"pos": [
+						4,
+						3.3,
+						9
+					],
+					"color": [
+						0.9,
+						0.75,
+						0.55
+					],
+					"energy": 0.7,
+					"range": 6
+				},
+				{
+					"level": "basement",
+					"pos": [
+						0,
+						2.5,
+						-6
+					],
+					"color": [
+						1.0,
+						0.72,
+						0.45
+					],
+					"energy": 1.0,
+					"range": 9
+				},
+				{
+					"level": "basement",
+					"pos": [
+						-4,
+						2.5,
+						6
+					],
+					"color": [
+						0.9,
+						0.75,
+						0.55
+					],
+					"energy": 0.9,
+					"range": 7
+				},
+				{
+					"level": "basement",
+					"pos": [
+						4,
+						2.5,
+						6
+					],
+					"color": [
+						1.0,
+						0.55,
+						0.2
+					],
+					"energy": 1.3,
+					"range": 7
+				},
+				{
+					"level": "ground",
+					"pos": [
+						2,
+						1.5,
+						-18
+					],
+					"color": [
+						1.0,
+						0.55,
+						0.2
+					],
+					"energy": 2.0,
+					"range": 9
+				}
+			],
+			"signs": [
+				{
+					"text": "THE OTHER SIDE",
+					"pos": [
+						0,
+						4.75,
+						-12.28
+					],
+					"size": 70,
+					"color": [
+						0.6,
+						0.8,
+						0.95
+					]
+				}
+			],
+			"annex": [],
+			"outdoor": [
+				{
+					"type": "sandbags",
+					"from": [
+						-8,
+						-16
+					],
+					"to": [
+						-1,
+						-16
+					]
+				},
+				{
+					"type": "sandbags",
+					"from": [
+						5,
+						-16
+					],
+					"to": [
+						9,
+						-16
+					]
+				},
+				{
+					"type": "fire_barrel",
+					"pos": [
+						2,
+						-18
+					]
+				},
+				{
+					"type": "car_wreck",
+					"pos": [
+						-12,
+						-19
+					],
+					"yaw": 90,
+					"mat": "car_2"
+				},
+				{
+					"type": "debris",
+					"pos": [
+						0,
+						-17
+					],
+					"size": [
+						16,
+						6
+					],
+					"n": 12
+				}
+			],
+			"landmark": {
+				"terrain_pad": [
+					-10,
+					-14,
+					10,
+					14
+				],
+				"no_plant_rects": [
+					[
+						-10,
+						-13,
+						10,
+						13
+					]
+				],
+				"ground_holes": [
+					[
+						1.0,
+						9.45,
+						8.0,
+						10.95
+					]
+				],
+				"exclusion_radius_m": 13.0
+			}
+		},
+		"gillies": {
+			"note": "1822 Central Ave, west side of Central between 18th and 19th. Front (-z) faces Central Ave (east); local +x is south. Music venue with a stage; raider bunks upstairs.",
+			"map_xz": [
+				1810.0,
+				-1118.5
+			],
+			"rotation_deg": -90.0,
+			"w": 23.0,
+			"d": 26.0,
+			"second": "upstairs",
+			"facade": "brick_dark",
+			"trim": "trim_red",
+			"front": {
+				"door": [
+					0.0,
+					1.1
+				],
+				"windows": [
+					[
+						-11.1,
+						-1.8
+					],
+					[
+						1.8,
+						11.1
+					]
+				]
+			},
+			"upper_windows": [
+				[
+					-10,
+					-7.5
+				],
+				[
+					-5.5,
+					-3
+				],
+				[
+					3,
+					5.5
+				],
+				[
+					7.5,
+					10
+				]
+			],
+			"back_door": -6.2,
+			"stairs": {
+				"from": [
+					-10.4,
+					-8.0
+				],
+				"to": [
+					-10.4,
+					1.0
+				],
+				"w": 1.6
+			},
+			"partitions": [
+				{
+					"level": "ground",
+					"axis": "z",
+					"at": 7.5,
+					"from": 8.0,
+					"to": 12.82,
+					"doors": [
+						[
+							9.2,
+							0.8
+						]
+					]
+				},
+				{
+					"level": "ground",
+					"axis": "x",
+					"at": 8.0,
+					"from": 7.5,
+					"to": 11.32
+				},
+				{
+					"level": "upstairs",
+					"axis": "x",
+					"at": 4.0,
+					"from": -11.32,
+					"to": 11.32,
+					"doors": [
+						[
+							-4.0,
+							1.0
+						],
+						[
+							5.0,
+							1.0
+						]
+					]
+				},
+				{
+					"level": "upstairs",
+					"axis": "z",
+					"at": 0.0,
+					"from": 4.1,
+					"to": 12.82
+				}
+			],
+			"furniture": [
+				{
+					"type": "stage",
+					"pos": [
+						0.0,
+						10.0
+					],
+					"size": [
+						10,
+						4.5
+					]
+				},
+				{
+					"type": "counter",
+					"from": [
+						8.2,
+						-9
+					],
+					"to": [
+						8.2,
+						4
+					]
+				},
+				{
+					"type": "back_bar",
+					"from": [
+						11.1,
+						-9
+					],
+					"to": [
+						11.1,
+						4
+					]
+				},
+				{
+					"type": "stools",
+					"from": [
+						7.3,
+						-8.5
+					],
+					"to": [
+						7.3,
+						3.5
+					],
+					"n": 9
+				},
+				{
+					"type": "table",
+					"pos": [
+						-2,
+						-6
+					],
+					"chairs": 4
+				},
+				{
+					"type": "table",
+					"pos": [
+						2.5,
+						-6
+					],
+					"chairs": 3
+				},
+				{
+					"type": "table",
+					"pos": [
+						-2,
+						-1
+					],
+					"chairs": 3
+				},
+				{
+					"type": "table",
+					"pos": [
+						2.5,
+						-1
+					],
+					"chairs": 4
+				},
+				{
+					"type": "couch",
+					"pos": [
+						-7.0,
+						-11.6
+					],
+					"yaw": 180,
+					"mat": "leather_black"
+				},
+				{
+					"type": "dartboard",
+					"pos": [
+						-11.4,
+						4.0
+					],
+					"yaw": -90
+				},
+				{
+					"type": "debris",
+					"pos": [
+						0,
+						-3
+					],
+					"size": [
+						16,
+						14
+					],
+					"n": 25
+				},
+				{
+					"type": "stalls",
+					"pos": [
+						8.4,
+						11.5
+					],
+					"n": 3
+				},
+				{
+					"type": "sandbags",
+					"level": "upstairs",
+					"from": [
+						-8.5,
+						-12.2
+					],
+					"to": [
+						10.5,
+						-12.2
+					],
+					"rows": 2
+				},
+				{
+					"type": "bunk",
+					"level": "upstairs",
+					"pos": [
+						3,
+						-3
+					]
+				},
+				{
+					"type": "bunk",
+					"level": "upstairs",
+					"pos": [
+						5,
+						-3
+					]
+				},
+				{
+					"type": "bunk",
+					"level": "upstairs",
+					"pos": [
+						7,
+						-3
+					]
+				},
+				{
+					"type": "bunk",
+					"level": "upstairs",
+					"pos": [
+						9,
+						-3
+					]
+				},
+				{
+					"type": "crates",
+					"level": "upstairs",
+					"pos": [
+						-6,
+						-2
+					],
+					"n": 4
+				},
+				{
+					"type": "table",
+					"level": "upstairs",
+					"pos": [
+						0,
+						-6
+					],
+					"chairs": 3
+				},
+				{
+					"type": "couch",
+					"level": "upstairs",
+					"pos": [
+						-6,
+						12.2
+					],
+					"mat": "leather_red"
+				},
+				{
+					"type": "table",
+					"level": "upstairs",
+					"pos": [
+						-6,
+						8
+					],
+					"chairs": 3
+				},
+				{
+					"type": "shelf",
+					"level": "upstairs",
+					"pos": [
+						-11.0,
+						8.0
+					],
+					"yaw": 90,
+					"w": 2.0
+				},
+				{
+					"type": "crates",
+					"level": "upstairs",
+					"pos": [
+						6,
+						8
+					],
+					"n": 5
+				},
+				{
+					"type": "shelf",
+					"level": "upstairs",
+					"pos": [
+						10.8,
+						9.0
+					],
+					"yaw": 90,
+					"w": 1.8
+				},
+				{
+					"type": "kegs",
+					"level": "upstairs",
+					"from": [
+						2,
+						12
+					],
+					"to": [
+						6,
+						12
+					],
+					"n": 3
+				},
+				{
+					"type": "debris",
+					"level": "upstairs",
+					"pos": [
+						0,
+						-3
+					],
+					"size": [
+						18,
+						12
+					],
+					"n": 20
+				}
+			],
+			"loot": [
+				{
+					"id": "register",
+					"name": "Register",
+					"table": "bar_register",
+					"level": "ground",
+					"pos": [
+						8.2,
+						3.0
+					],
+					"size": [
+						0.45,
+						0.3,
+						0.4
+					],
+					"y": 1.16
+				},
+				{
+					"id": "liquor",
+					"name": "Liquor Shelf",
+					"table": "bar_shelf",
+					"level": "ground",
+					"pos": [
+						11.0,
+						-3.0
+					],
+					"size": [
+						0.5,
+						1.0,
+						2.2
+					]
+				},
+				{
+					"id": "merch",
+					"name": "Merch Table",
+					"table": "bar_merch",
+					"level": "ground",
+					"pos": [
+						-7.5,
+						-3.0
+					],
+					"size": [
+						1.6,
+						0.8,
+						0.8
+					]
+				},
+				{
+					"id": "road_case",
+					"name": "Amp Road Case",
+					"table": "bar_merch",
+					"level": "ground",
+					"pos": [
+						4.0,
+						10.0
+					],
+					"size": [
+						1.0,
+						0.6,
+						0.6
+					],
+					"y": 0.6
+				},
+				{
+					"id": "stash",
+					"name": "Stash Shelf",
+					"table": "raider_stash",
+					"level": "upstairs",
+					"pos": [
+						10.6,
+						9.0
+					],
+					"size": [
+						0.6,
+						1.9,
+						1.8
+					]
+				},
+				{
+					"id": "fridge",
+					"name": "Green Room Fridge",
+					"table": "fridge",
+					"level": "upstairs",
+					"pos": [
+						-2.0,
+						12.2
+					],
+					"size": [
+						0.9,
+						1.7,
+						0.7
+					]
+				},
+				{
+					"id": "ammo",
+					"name": "Ammo Crate",
+					"table": "raider_ammo",
+					"level": "upstairs",
+					"pos": [
+						-6.0,
+						-0.4
+					],
+					"size": [
+						0.9,
+						0.6,
+						0.6
+					]
+				},
+				{
+					"id": "footlocker",
+					"name": "Footlocker",
+					"table": "raider_stash",
+					"level": "upstairs",
+					"pos": [
+						9.0,
+						-1.4
+					],
+					"size": [
+						0.8,
+						0.5,
+						0.5
+					]
+				}
+			],
+			"spawns": [
+				[
+					"g1",
+					"raider_brute",
+					"ground",
+					[
+						0.0,
+						5.0
+					]
+				],
+				[
+					"g2",
+					"raider_gunner",
+					"ground",
+					[
+						-3.0,
+						-9.0
+					]
+				],
+				[
+					"g3",
+					"raider_gunner",
+					"ground",
+					[
+						2.0,
+						10.5,
+						0.6
+					]
+				],
+				[
+					"u1",
+					"raider_gunner",
+					"upstairs",
+					[
+						-3.0,
+						-11.2
+					]
+				],
+				[
+					"u2",
+					"raider_gunner",
+					"upstairs",
+					[
+						6.0,
+						-11.2
+					]
+				],
+				[
+					"u3",
+					"raider_brute",
+					"upstairs",
+					[
+						6.0,
+						7.0
+					]
+				],
+				[
+					"o1",
+					"raider_gunner",
+					"ground",
+					[
+						-6.0,
+						-18.5
+					]
+				]
+			],
+			"lights": [
+				{
+					"level": "ground",
+					"pos": [
+						0,
+						3.6,
+						9
+					],
+					"color": [
+						1.0,
+						0.25,
+						0.7
+					],
+					"energy": 2.2,
+					"range": 9
+				},
+				{
+					"level": "ground",
+					"pos": [
+						-4,
+						3.5,
+						9
+					],
+					"color": [
+						0.3,
+						0.45,
+						1.0
+					],
+					"energy": 1.6,
+					"range": 8
+				},
+				{
+					"level": "ground",
+					"pos": [
+						8,
+						3.5,
+						-3
+					],
+					"color": [
+						1.0,
+						0.72,
+						0.45
+					],
+					"energy": 1.2,
+					"range": 10
+				},
+				{
+					"level": "ground",
+					"pos": [
+						0,
+						3.5,
+						-4
+					],
+					"color": [
+						1.0,
+						0.72,
+						0.45
+					],
+					"energy": 1.1,
+					"range": 9
+				},
+				{
+					"level": "ground",
+					"pos": [
+						9.5,
+						3.3,
+						10.5
+					],
+					"color": [
+						0.9,
+						0.75,
+						0.55
+					],
+					"energy": 0.6,
+					"range": 5
+				},
+				{
+					"level": "upstairs",
+					"pos": [
+						-3,
+						2.9,
+						-6
+					],
+					"color": [
+						0.9,
+						0.75,
+						0.55
+					],
+					"energy": 0.9,
+					"range": 8
+				},
+				{
+					"level": "upstairs",
+					"pos": [
+						5,
+						2.9,
+						-6
+					],
+					"color": [
+						0.9,
+						0.75,
+						0.55
+					],
+					"energy": 0.9,
+					"range": 8
+				},
+				{
+					"level": "upstairs",
+					"pos": [
+						-6,
+						2.9,
+						8
+					],
+					"color": [
+						1.0,
+						0.72,
+						0.45
+					],
+					"energy": 0.9,
+					"range": 7
+				},
+				{
+					"level": "upstairs",
+					"pos": [
+						6,
+						2.9,
+						8
+					],
+					"color": [
+						0.9,
+						0.75,
+						0.55
+					],
+					"energy": 0.8,
+					"range": 7
+				},
+				{
+					"level": "ground",
+					"pos": [
+						0,
+						1.5,
+						-19.5
+					],
+					"color": [
+						1.0,
+						0.55,
+						0.2
+					],
+					"energy": 2.0,
+					"range": 9
+				}
+			],
+			"signs": [
+				{
+					"text": "GILLIE'S",
+					"pos": [
+						0,
+						4.75,
+						-13.28
+					],
+					"size": 90,
+					"color": [
+						0.9,
+						0.3,
+						0.25
+					]
+				},
+				{
+					"text": "LIVE MUSIC  -  ALL AGES",
+					"pos": [
+						0,
+						3.0,
+						12.79
+					],
+					"yaw_deg": 180,
+					"size": 60,
+					"color": [
+						1.0,
+						0.3,
+						0.7
+					],
+					"glow": true,
+					"visible_m": 50.0
+				}
+			],
+			"annex": [
+				[
+					-26.5,
+					-13,
+					-11.5,
+					25,
+					6.0,
+					"nz"
+				],
+				[
+					-11.5,
+					16,
+					11.5,
+					25,
+					5.5,
+					""
+				]
+			],
+			"outdoor": [
+				{
+					"type": "sandbags",
+					"from": [
+						-10,
+						-17
+					],
+					"to": [
+						-2,
+						-17
+					]
+				},
+				{
+					"type": "sandbags",
+					"from": [
+						2,
+						-17
+					],
+					"to": [
+						10,
+						-17
+					]
+				},
+				{
+					"type": "car_wreck",
+					"pos": [
+						14,
+						-19
+					],
+					"yaw": 10,
+					"mat": "car_0"
+				},
+				{
+					"type": "fire_barrel",
+					"pos": [
+						0,
+						-19.5
+					]
+				},
+				{
+					"type": "debris",
+					"pos": [
+						0,
+						-18
+					],
+					"size": [
+						20,
+						6
+					],
+					"n": 12
+				}
+			],
+			"landmark": {
+				"replaces_osm_ways": [
+					1157525746,
+					1157525747,
+					1157525748,
+					1157525749
+				],
+				"exclusions": [
+					[
+						-10.0,
+						9.3,
+						3
+					]
+				],
+				"terrain_pad": [
+					-27.5,
+					-15,
+					12.5,
+					26
+				],
+				"no_plant_rects": [
+					[
+						-27.5,
+						-14,
+						12.5,
+						26
+					]
+				]
+			}
+		}
+	}
+}

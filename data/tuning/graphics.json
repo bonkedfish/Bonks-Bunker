@@ -1,0 +1,34 @@
+{
+	"tiers": {
+		"low": {
+			"render_scale": 0.67, "shadows": false, "shadow_distance": 0.0, "shadow_atlas": 1024,
+			"msaa": 0.0, "fxaa": true, "ssao": false, "view_distance": 250.0, "max_fps": 60.0
+		},
+		"medium": {
+			"render_scale": 0.85, "shadows": true, "shadow_distance": 50.0, "shadow_atlas": 2048,
+			"msaa": 0.0, "fxaa": true, "ssao": false, "view_distance": 500.0, "max_fps": 0.0
+		},
+		"high": {
+			"render_scale": 1.0, "shadows": true, "shadow_distance": 100.0, "shadow_atlas": 4096,
+			"msaa": 2.0, "fxaa": false, "ssao": true, "view_distance": 1000.0, "max_fps": 0.0
+		}
+	},
+	"auto": {
+		"high_gpu_keywords": ["RTX", "RX 6", "RX 7", "RX 9", "ARC A7", "ARC B5"],
+		"integrated_tier": "low",
+		"discrete_tier": "medium",
+		"high_tier": "high"
+	},
+	"budgets": {
+		"frame_ms": 16.7,
+		"draw_calls": 2000.0,
+		"primitives_k": 3000.0,
+		"ram_mb": 2048.0,
+		"vram_mb": 3072.0
+	},
+	"perf_log": {
+		"enabled": true,
+		"interval_seconds": 1.0,
+		"keep_files": 10.0
+	}
+}

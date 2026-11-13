@@ -1,0 +1,6 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://tests/yanney_look_test.gd" id="1_yanney"]
+
+[node name="YanneyLookTest" type="Node"]
+script = ExtResource("1_yanney")

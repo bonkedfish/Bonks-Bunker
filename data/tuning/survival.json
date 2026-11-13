@@ -1,0 +1,11 @@
+{
+	"max_need": 100.0,
+	"hunger_minutes_to_empty": 60.0,
+	"thirst_minutes_to_empty": 40.0,
+	"low_threshold": 25.0,
+	"low_heal_multiplier": 0.5,
+	"low_blocks_sprint": true,
+	"empty_damage_per_second": 0.5,
+	"respawn_need_floor": 50.0,
+	"cancel_move_speed": 1.0
+}

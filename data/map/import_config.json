@@ -1,0 +1,27 @@
+{
+	"area": {
+		"x_min_m": -3840.0,
+		"z_min_m": -2816.0,
+		"cells_x": 40.0,
+		"cells_z": 20.0,
+		"fetch_margin_m": 100.0
+	},
+	"area_name": "kearney_landmarks",
+	"build_batch_rows": 3.0,
+	"buildings_index_url": "https://bfppub.blob.core.windows.net/%24web/2026-08-13/dataset-links.csv",
+	"buildings_path": "res://data/map/source/kearney_landmarks.msbuildings.json",
+	"cell_size_m": 256.0,
+	"cells_dir": "res://world/generated/cells",
+	"center_lat": 40.6825183,
+	"center_lon": -99.1036165,
+	"center_query": "810 17th Avenue, Kearney, Nebraska",
+	"elevation_path": "res://data/map/source/kearney_landmarks_elevation.tif",
+	"elevation_pixel_m": 4.0,
+	"elevation_url": "https://elevation.nationalmap.gov/arcgis/rest/services/3DEPElevation/ImageServer/exportImage",
+	"far_terrain_step_m": 16.0,
+	"nominatim_url": "https://nominatim.openstreetmap.org/search",
+	"overpass_url": "https://overpass-api.de/api/interpreter",
+	"source_path": "res://data/map/source/kearney_landmarks.osm.json",
+	"terrain_step_m": 4.0,
+	"user_agent": "KearneyRPG-map-import/0.1 (personal Godot game project)"
+}

@@ -1,0 +1,37 @@
+{
+	"models_dir": "res://assets/models",
+	"out_dir": "res://world/generated/vegetation",
+	"block_m": 64.0,
+	"props": {
+		"shrub_a": {"gltf": "shrub_a/shrub_02.gltf", "variants": 2, "scale": [0.8, 1.2], "lod_ratio": 0.25, "visible_m": 70.0, "shadows": false},
+		"shrub_b": {"gltf": "shrub_b/shrub_03.gltf", "variants": 1, "scale": [2.5, 3.5], "lod_ratio": 0.3, "visible_m": 50.0, "shadows": false},
+		"shrub_c": {"gltf": "shrub_c/shrub_04.gltf", "variants": 1, "scale": [3.0, 4.0], "lod_ratio": 0.15, "visible_m": 50.0, "shadows": false},
+		"grass_clump": {"gltf": "grass_clump/grass_medium_02.gltf", "variants": 2, "scale": [4.5, 7.0], "lod_ratio": 0.5, "visible_m": 40.0, "shadows": false},
+		"stump": {"gltf": "stump/tree_stump_01.gltf", "variants": 1, "scale": [0.8, 1.1], "lod_ratio": 0.05, "visible_m": 120.0, "shadows": true, "collide_radius_m": 0.6},
+		"dead_trunk": {"gltf": "dead_trunk/dead_tree_trunk_02.gltf", "variants": 1, "scale": [1.0, 1.4], "lod_ratio": 0.03, "visible_m": 150.0, "shadows": true, "collide_box_m": [4.0, 0.9, 1.0]}
+	},
+	"trees": {
+		"leafy_variants": 3,
+		"bare_variants": 1,
+		"bare_fraction": 0.3,
+		"height_m": [7.0, 13.0],
+		"trunk_radius_m": [0.18, 0.35],
+		"canopy_colors": [[0.28, 0.32, 0.15], [0.36, 0.36, 0.17], [0.42, 0.37, 0.18]],
+		"bark_color": [0.29, 0.24, 0.19],
+		"visible_m": 300.0,
+		"collide": true
+	},
+	"placement": {
+		"street_tree_spacing_m": 14.0,
+		"street_tree_chance": 0.55,
+		"yard_trees_per_house": 0.8,
+		"yard_tree_ring_m": [5.0, 13.0],
+		"foundation_shrubs_per_house": 3,
+		"shrub_offset_m": 0.9,
+		"grass_clumps_per_cell": 500,
+		"stumps_per_cell": 4,
+		"dead_trunks_per_cell": 2,
+		"clearance_building_m": 1.2,
+		"clearance_road_m": 0.8
+	}
+}

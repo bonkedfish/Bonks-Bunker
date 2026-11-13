@@ -1,0 +1,156 @@
+{
+	"note": "In-game map (D-048): look and labels for tools/map_import/build_world_map.tscn. Labels by landmark id (data/map/landmarks.json) or lat/lon; size 'major' or 'minor'; \"below\": true draws the name under its dot.",
+	"metres_per_pixel": 2.0,
+	"out_texture": "res://world/generated/map/world_map.res",
+	"out_meta": "res://world/generated/map/world_map.json",
+	"colors": {
+		"background": [
+			0.36,
+			0.33,
+			0.25
+		],
+		"park": [
+			0.33,
+			0.36,
+			0.24
+		],
+		"water": [
+			0.16,
+			0.24,
+			0.25
+		],
+		"building": [
+			0.25,
+			0.22,
+			0.18
+		],
+		"road_casing": [
+			0.2,
+			0.18,
+			0.14
+		],
+		"road": [
+			0.72,
+			0.66,
+			0.52
+		],
+		"major_road": [
+			0.82,
+			0.72,
+			0.48
+		],
+		"path": [
+			0.55,
+			0.5,
+			0.4
+		]
+	},
+	"road_width_scale": 1.6,
+	"major_roads": [
+		"motorway",
+		"motorway_link",
+		"trunk",
+		"primary",
+		"primary_link",
+		"secondary"
+	],
+	"labels": [
+		{
+			"name": "Bonk's House",
+			"landmark": "bonk_house",
+			"size": "major"
+		},
+		{
+			"name": "Yanney Heritage Park",
+			"lat": 40.68198,
+			"lon": -99.1076,
+			"size": "major",
+			"below": true
+		},
+		{
+			"name": "The Gardens",
+			"landmark": "yanney_gardens",
+			"size": "minor"
+		},
+		{
+			"name": "Gottschalk Tower",
+			"landmark": "yanney_tower",
+			"size": "minor"
+		},
+		{
+			"name": "Amphitheater",
+			"landmark": "yanney_amphitheater",
+			"size": "minor"
+		},
+		{
+			"name": "UNK",
+			"lat": 40.69867,
+			"lon": -99.10381,
+			"size": "major"
+		},
+		{
+			"name": "Downtown Kearney",
+			"lat": 40.695002,
+			"lon": -99.084189,
+			"size": "major"
+		},
+		{
+			"name": "Great Platte River Road Archway",
+			"lat": 40.669747,
+			"lon": -99.038342,
+			"size": "major"
+		},
+		{
+			"name": "Platte River",
+			"lat": 40.677,
+			"lon": -99.09,
+			"size": "minor"
+		},
+		{
+			"name": "Interstate 80",
+			"lat": 40.669998,
+			"lon": -99.056233,
+			"size": "minor"
+		},
+		{
+			"name": "Kearney High School",
+			"landmark": "kearney_high",
+			"size": "major"
+		},
+		{
+			"name": "Copperfields (raiders)",
+			"landmark": "copperfields",
+			"size": "poi"
+		},
+		{
+			"name": "Brix (raiders)",
+			"landmark": "brix",
+			"size": "poi"
+		},
+		{
+			"name": "The Other Side (raiders)",
+			"landmark": "the_other_side",
+			"size": "poi"
+		},
+		{
+			"name": "Gillie's (raiders)",
+			"landmark": "gillies",
+			"size": "poi"
+		},
+		{
+			"name": "Centennial Park DGC",
+			"landmark": "centennial_dgc",
+			"size": "poi"
+		},
+		{
+			"name": "Cottonmill DGC",
+			"landmark": "cottonmill_dgc",
+			"size": "poi"
+		},
+		{
+			"name": "Drop Zone",
+			"landmark": "dropzone",
+			"size": "poi"
+		}
+	]
+}

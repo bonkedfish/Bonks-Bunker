@@ -1,0 +1,626 @@
+{
+	"barks": {
+		"evan_idle": [
+			"Batteries! Buying batteries! The hum needs batteries. Not the hum. ME. I need batteries.",
+			"3:12 in the morning. Every night it hums. You don't hear it? You will.",
+			"Clean shirts on a Tuesday. Never trust a clean shirt.",
+			"Prices are fair! The raccoon sets them! Take it up with the raccoon!",
+			"Gary says business is good. Gary's a wheel, but he's got instincts.",
+			"The eagles are listening. Wave at the eagles. Not like that. Casual.",
+			"Grass should be back by now. Five years. Somebody's salting the earth, man.",
+			"Jenkins Trading Post is OPEN. No refunds, no questions, no Suits.",
+			"Sixty-one... sixty-two... dang it. Lost count of the trucks again. There's no trucks. That's the problem."
+		],
+		"evan_greet": [
+			"Customers! Real ones! Wipe your boots, this is a place of business!",
+			"Hey hey! Come in, come in. You're not wearing a clean shirt? Good. GOOD.",
+			"Welcome to the Jenkins Trading Post! Don't touch the escalator."
+		],
+		"evan_busy": [
+			"One customer at a time! I've only got the one brain and it's already full of bees."
+		]
+	},
+	"trees": {
+		"evan_talk": {
+			"start": "start",
+			"nodes": {
+				"start": {
+					"speaker": "Evan",
+					"text": "FREEZE. Shirt check. ...Dirty. Okay, you're not a Suit. Welcome to the Jenkins Trading Post! Evan \"Jerkin'\" Jenkins, proprietor. Everything's for sale except the escalator.",
+					"choices": [
+						{
+							"text": "What are you selling?",
+							"next": "shop"
+						},
+						{
+							"text": "Who are you, really?",
+							"next": "who"
+						},
+						{
+							"text": "What's the deal with this place?",
+							"next": "archway"
+						},
+						{
+							"text": "Why do they call you Jerkin'?",
+							"next": "jerky"
+						},
+						{
+							"text": "I'm gonna go.",
+							"next": "bye"
+						}
+					],
+					"flag": "mq_met_evan"
+				},
+				"menu": {
+					"speaker": "Evan",
+					"text": "What else, what else? Talk fast, the hum starts at 3:12.",
+					"choices": [
+						{
+							"text": "[Eagle Keycard] I took this off the Suits' collector.",
+							"next": "card_1",
+							"requires": [
+								"mq_have_keycard",
+								"!mq_evan_card"
+							],
+							"cost": {
+								"eagle_keycard": 1
+							},
+							"cost_fail": "card_none"
+						},
+						{
+							"text": "How do we shut the machine off?",
+							"next": "turn_off",
+							"requires": [
+								"mq_evan_ack",
+								"!mq_evan_key"
+							]
+						},
+						{
+							"text": "Meekachu says you owe him forty jerky and an apology.",
+							"next": "apology",
+							"requires": [
+								"sq_jerky_start",
+								"!sq_jerky_evan"
+							]
+						},
+						{
+							"text": "What are you selling?",
+							"next": "shop"
+						},
+						{
+							"text": "Who are you, really?",
+							"next": "who"
+						},
+						{
+							"text": "What's the deal with this place?",
+							"next": "archway"
+						},
+						{
+							"text": "Why do you keep saying soup?",
+							"next": "soup"
+						},
+						{
+							"text": "Why do they call you Jerkin'?",
+							"next": "jerky"
+						},
+						{
+							"text": "I'm gonna go.",
+							"next": "bye"
+						}
+					]
+				},
+				"shop": {
+					"speaker": "Evan",
+					"text": "Jenkins Trading Post, established after the end of the world. All prices final. All prices set by the raccoon. Whatcha got?",
+					"choices": [
+						{
+							"text": "1 duct tape for 15 rounds of 9mm.",
+							"next": "sold_ammo",
+							"cost": {
+								"duct_tape": 1
+							},
+							"cost_fail": "broke"
+						},
+						{
+							"text": "3 scrap metal for painkillers.",
+							"next": "sold_pills",
+							"cost": {
+								"scrap_metal": 3
+							},
+							"cost_fail": "broke"
+						},
+						{
+							"text": "2 cans of beans for 3 jerky.",
+							"next": "sold_jerky",
+							"cost": {
+								"canned_beans": 2
+							},
+							"cost_fail": "broke"
+						},
+						{
+							"text": "1 wrench for 10 rounds.",
+							"next": "sold_wrench",
+							"cost": {
+								"wrench": 1
+							},
+							"cost_fail": "broke"
+						},
+						{
+							"text": "1 car battery for... that pistol?",
+							"next": "sold_pistol",
+							"cost": {
+								"car_battery": 1
+							},
+							"cost_fail": "broke"
+						},
+						{
+							"text": "Nothing right now.",
+							"next": "menu"
+						}
+					]
+				},
+				"sold_ammo": {
+					"speaker": "Evan",
+					"text": "Fifteen rounds of genuine escalator ammo. Still warm. Why is it warm. Don't answer that.",
+					"give": {
+						"ammo_9mm": 15
+					},
+					"give_every_time": true,
+					"choices": [
+						{
+							"text": "Another deal.",
+							"next": "shop"
+						},
+						{
+							"text": "That's all.",
+							"next": "menu"
+						}
+					]
+				},
+				"sold_pills": {
+					"speaker": "Evan",
+					"text": "Painkillers. For pain. Also for rattling real loud to scare raccoons. Mostly pain.",
+					"give": {
+						"painkillers": 1
+					},
+					"give_every_time": true,
+					"choices": [
+						{
+							"text": "Another deal.",
+							"next": "shop"
+						},
+						{
+							"text": "That's all.",
+							"next": "menu"
+						}
+					]
+				},
+				"sold_jerky": {
+					"speaker": "Evan",
+					"text": "Beans! The musical fruit! Here's three strips of my finest. Chew slow, it fights back a little.",
+					"give": {
+						"evans_jerky": 3
+					},
+					"give_every_time": true,
+					"choices": [
+						{
+							"text": "Another deal.",
+							"next": "shop"
+						},
+						{
+							"text": "That's all.",
+							"next": "menu"
+						}
+					]
+				},
+				"sold_wrench": {
+					"speaker": "Evan",
+					"text": "A wrench! For the machine. I mean for the ESCALATOR. Ten rounds. Pleasure.",
+					"give": {
+						"ammo_9mm": 10
+					},
+					"give_every_time": true,
+					"choices": [
+						{
+							"text": "Another deal.",
+							"next": "shop"
+						},
+						{
+							"text": "That's all.",
+							"next": "menu"
+						}
+					]
+				},
+				"sold_pistol": {
+					"speaker": "Evan",
+					"text": "A BATTERY. Oh, she's heavy, she's beautiful. The hum thanks you. I thank you. Take the pistol, I can't shoot anyway, my hands are full of bees.",
+					"give": {
+						"pistol_9mm": 1
+					},
+					"give_every_time": true,
+					"choices": [
+						{
+							"text": "Another deal.",
+							"next": "shop"
+						},
+						{
+							"text": "That's all.",
+							"next": "menu"
+						}
+					]
+				},
+				"broke": {
+					"speaker": "Evan",
+					"text": "You don't HAVE that. I can see your pockets, man. I see everything. ...Mostly pockets.",
+					"choices": [
+						{
+							"text": "Right. Sorry.",
+							"next": "shop"
+						}
+					]
+				},
+				"who": {
+					"speaker": "Evan",
+					"text": "Evan Jenkins. Maintenance, Level Two. I fixed the escalator. ...And the other machine. The one under the escalator. Forget I said that. I'm a businessman now.",
+					"choices": [
+						{
+							"text": "What machine?",
+							"next": "machine"
+						},
+						{
+							"text": "Who did you work for?",
+							"next": "employer"
+						},
+						{
+							"text": "Okay, businessman.",
+							"next": "menu"
+						}
+					]
+				},
+				"employer": {
+					"speaker": "Evan",
+					"text": "The Suits. The Office. The Folks With Clipboards. They never said their name. Names are how you get found. Their badges had a little eagle on 'em. Same eagle as on the towers. Funny, right? It's not funny.",
+					"choices": [
+						{
+							"text": "The eagles on the towers?",
+							"next": "eagles"
+						},
+						{
+							"text": "Tell me about the machine.",
+							"next": "machine"
+						},
+						{
+							"text": "Back up.",
+							"next": "menu"
+						}
+					]
+				},
+				"eagles": {
+					"speaker": "Evan",
+					"text": "Bronze. Hollow. Ever wonder why a museum puts antennas inside its eagles? I didn't. I was paid not to wonder. Real good money, that not-wondering money.",
+					"choices": [
+						{
+							"text": "Antennas for what?",
+							"next": "machine"
+						},
+						{
+							"text": "Huh.",
+							"next": "menu"
+						}
+					]
+				},
+				"machine": {
+					"speaker": "Evan",
+					"text": "It listened. Every radio, every phone, every baby monitor from here to Lincoln, all running through a room under this deck. Then one day it stopped listening and started TALKING.",
+					"choices": [
+						{
+							"text": "Talking to who?",
+							"next": "machine_talk"
+						},
+						{
+							"text": "That's insane.",
+							"next": "insane"
+						}
+					]
+				},
+				"insane": {
+					"speaker": "Evan",
+					"text": "Oh, a hundred percent. I'm insane. Ask Gary. But insane and WRONG are different words, friend. Look 'em up. The dictionary's in the gift shop. The raccoon's using it as a bed.",
+					"choices": [
+						{
+							"text": "Fine. Who was it talking to?",
+							"next": "machine_talk"
+						},
+						{
+							"text": "Let's change the subject.",
+							"next": "menu"
+						}
+					]
+				},
+				"machine_talk": {
+					"speaker": "Evan",
+					"text": "To the sky, man. Four days before the flash. I saw the printout. One word: ACKNOWLEDGED. Who acknowledges a bomb? Somebody who ordered one.",
+					"choices": [
+						{
+							"text": "You're saying they knew?",
+							"next": "knew"
+						},
+						{
+							"text": "I need to sit down.",
+							"next": "menu"
+						}
+					],
+					"flag": "mq_evan_ack"
+				},
+				"knew": {
+					"speaker": "Evan",
+					"text": "Knew? They had a SCHEDULE. They had snacks. The Suits went down into their holes on a Tuesday, clean shirts, every one. The flash came Friday. I was fixing the escalator. Nobody tells the escalator guy anything.",
+					"choices": [
+						{
+							"text": "Where did they go?",
+							"next": "holes"
+						},
+						{
+							"text": "Why are you telling me this?",
+							"next": "why_tell"
+						}
+					]
+				},
+				"holes": {
+					"speaker": "Evan",
+					"text": "Down. Under. There's more under Kearney than basements, friend. You think the world's slow to heal by accident? Five years. Grass should be back. GRASS. Something's keeping it sick.",
+					"choices": [
+						{
+							"text": "Keeping it sick how?",
+							"next": "soup"
+						},
+						{
+							"text": "That's enough for now.",
+							"next": "menu"
+						}
+					]
+				},
+				"why_tell": {
+					"speaker": "Evan",
+					"text": "'Cause you crawled out of a hole too, didn't you? I can tell. You've got bunker skin. Hole people gotta stick together. Also you look like you've got duct tape.",
+					"choices": [
+						{
+							"text": "So where did the Suits go?",
+							"next": "holes"
+						},
+						{
+							"text": "Fair.",
+							"next": "menu"
+						}
+					]
+				},
+				"soup": {
+					"speaker": "Evan",
+					"text": "S-O-U-P. The deck taps it out every night. Took me two years to crack it. It's not soup. It's S.O.U.P. Sustained... Operational... something. Something. I had the binder. The raccoon ate the binder.",
+					"choices": [
+						{
+							"text": "What does it do?",
+							"next": "soup_2"
+						},
+						{
+							"text": "The raccoon ate it?",
+							"next": "raccoon"
+						}
+					]
+				},
+				"raccoon": {
+					"speaker": "Evan",
+					"text": "He runs the gift shop. Sets my prices. Charges in bottle caps. I told him it's not THAT kind of apocalypse and he bit me. Which, fair. He's read the binder, though. He knows. Look at his little eyes.",
+					"choices": [
+						{
+							"text": "Back to the soup.",
+							"next": "soup_2"
+						},
+						{
+							"text": "Okay.",
+							"next": "menu"
+						}
+					]
+				},
+				"soup_2": {
+					"speaker": "Evan",
+					"text": "The storms. The glowing ones that roll in off the river. Weather doesn't come on a timetable, man. Those storms keep the dirt hot, the dead walking, and the living scared and SMALL. Small people don't build anything. That's the whole plan. Keep everybody small.",
+					"choices": [
+						{
+							"text": "How do you know all this?",
+							"next": "how_know"
+						},
+						{
+							"text": "That's dark, Evan.",
+							"next": "menu"
+						}
+					]
+				},
+				"how_know": {
+					"speaker": "Evan",
+					"text": "'Cause the machine under the escalator still hums. Every night, 3:12. Still sending. I sit on top of it like a hen on an egg. If anybody ever comes to turn it off... well. I'd sell 'em a flashlight.",
+					"choices": [
+						{
+							"text": "Can we turn it off?",
+							"next": "turn_off"
+						},
+						{
+							"text": "Okay, Evan.",
+							"next": "menu"
+						}
+					]
+				},
+				"turn_off": {
+					"speaker": "Evan",
+					"text": "Ha! With what? You need a Suit key, and Suit keys are wherever the Suits are, and the Suits are DOWN. ...'Cept one. They keep a guy up top. A collector. I don't know his name, I know his boots. Ask the college kids at UNK, they count who goes missing. And if you ever find a little card with an eagle on it, you bring it to old Evan FIRST.",
+					"choices": [
+						{
+							"text": "Deal.",
+							"next": "menu"
+						}
+					],
+					"flag": "mq_evan_key"
+				},
+				"archway": {
+					"speaker": "Evan",
+					"text": "The Archway! Pioneers, buffalo, Pony Express, gift shop. Also the best-built building in Nebraska. Nobody ever asked why a museum needs walls that thick. Nobody ever asked why the escalator goes DOWN on Sundays.",
+					"choices": [
+						{
+							"text": "Escalators go down all the time.",
+							"next": "escalator"
+						},
+						{
+							"text": "Who built it like that?",
+							"next": "employer"
+						},
+						{
+							"text": "Okay.",
+							"next": "menu"
+						}
+					]
+				},
+				"escalator": {
+					"speaker": "Evan",
+					"text": "Not THAT far down. ...It's broken now. I broke it. On purpose. Best day of my life. Don't tell the Suits. Don't tell Gary either, Gary's a snitch.",
+					"choices": [
+						{
+							"text": "Who's Gary?",
+							"next": "gary"
+						},
+						{
+							"text": "Your secret's safe.",
+							"next": "menu"
+						}
+					]
+				},
+				"gary": {
+					"speaker": "Evan",
+					"text": "Gary's the wagon wheel. Business partner. Great listener, terrible at cards, snitches to the eagles. ...Honestly, it's real nice talking to somebody with a face. Come back anytime. I mean it.",
+					"choices": [
+						{
+							"text": "We will, buddy.",
+							"next": "menu"
+						}
+					]
+				},
+				"jerky": {
+					"speaker": "Evan",
+					"text": "JERKY, man! Best jerky in Buffalo County, smoked right here on the Pony Express exhibit. Don't ask what kind.",
+					"choices": [
+						{
+							"text": "Can I try some?",
+							"next": "jerky_gift"
+						},
+						{
+							"text": "...What kind is it?",
+							"next": "jerky_kind"
+						},
+						{
+							"text": "Back up.",
+							"next": "menu"
+						}
+					]
+				},
+				"jerky_gift": {
+					"speaker": "Evan",
+					"text": "Two strips, on the house. First taste is free. That's how the Suits did it too, now that I think about it. Huh.",
+					"give": {
+						"evans_jerky": 2
+					},
+					"choices": [
+						{
+							"text": "Thanks, Evan.",
+							"next": "menu"
+						}
+					]
+				},
+				"jerky_kind": {
+					"speaker": "Evan",
+					"text": "It's beef. Probably. It came out of a box marked 'beef' in the diner. I trust boxes. Boxes have never lied to me. Unlike clipboards.",
+					"choices": [
+						{
+							"text": "Good enough.",
+							"next": "menu"
+						}
+					]
+				},
+				"bye": {
+					"speaker": "Evan",
+					"text": "Go with God! Or go with Gary. Gary can't go, he's a wheel. And if you see a clean shirt, RUN.",
+					"end": true
+				},
+				"card_none": {
+					"speaker": "Evan",
+					"text": "You HAD it? You had it and you PUT IT DOWN somewhere? Go get it. Go get it go get it go get it.",
+					"choices": [
+						{
+							"text": "On it.",
+							"next": "menu"
+						}
+					]
+				},
+				"card_1": {
+					"speaker": "Evan",
+					"text": "...Is that. Don't. Don't wave it around, the eagles can see. ...That's real. That's a Level Four. Whose... no. Don't tell me whose. I know whose. I know his boots. ...He's not gonna need 'em anymore, is he.",
+					"choices": [
+						{
+							"text": "No. He isn't.",
+							"next": "card_2"
+						}
+					]
+				},
+				"card_2": {
+					"speaker": "Evan",
+					"text": "Okay. Okay okay okay. Five years I've sat on this egg. Hold my hat. Don't actually hold my hat. ...There's a panel by the escalator. There. Card goes in the dark part. ...It's printing. It hasn't printed in FIVE YEARS. It's PRINTING.",
+					"choices": [
+						{
+							"text": "What does it say?",
+							"next": "card_3"
+						}
+					]
+				},
+				"card_3": {
+					"speaker": "Evan",
+					"text": "RELAY 7 OF 9. STATUS NOMINAL. STORM CYCLE 261 CONFIRMED. COLLECTION, KEARNEY: 14 DAYS. DELIVER TO SITE GRANARY. Then a list. Names. Every name they ever took out of this town. ...Halvorsen's on it twice. Once under TAKEN. Once under STAFF.",
+					"flag": "mq_evan_card",
+					"choices": [
+						{
+							"text": "Staff?",
+							"next": "card_4"
+						}
+					]
+				},
+				"card_4": {
+					"speaker": "Evan",
+					"text": "I don't KNOW, man, I fix escalators! ...Nine relays. NINE. I thought it was just mine. And they're coming back up in fourteen days, and their collector's not gonna be there to meet them. They're gonna come LOOKING. Take the printout to the college kid. He counts people. He'll know what a list of names is for.",
+					"choices": [
+						{
+							"text": "We'll take it to Meekachu.",
+							"next": "menu"
+						}
+					]
+				},
+				"apology": {
+					"speaker": "Evan",
+					"text": "FORTY? It was thirty-eight! ...Fine. FINE. Five strips. It's all I've got smoked. And tell him... tell him I'm sorry I called his plants 'salad.' They are not salad. They are very respected plants. I was having a day.",
+					"give": {
+						"evans_jerky": 5
+					},
+					"flag": "sq_jerky_evan",
+					"choices": [
+						{
+							"text": "I'll tell him.",
+							"next": "menu"
+						}
+					]
+				}
+			},
+			"starts": [
+				{
+					"requires": "mq_met_evan",
+					"node": "menu"
+				}
+			]
+		}
+	}
+}

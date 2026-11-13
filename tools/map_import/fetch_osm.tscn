@@ -1,0 +1,6 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://tools/map_import/fetch_osm.gd" id="1_fetch"]
+
+[node name="FetchOSM" type="Node"]
+script = ExtResource("1_fetch")

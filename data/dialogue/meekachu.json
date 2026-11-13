@@ -1,0 +1,1061 @@
+{
+	"barks": {
+		"meekachu_idle": [
+			"Bro. Bro. What if the bombs were just... the sky sneezing. ...No. No, that's dumb. Unless?",
+			"Somebody hit the grow lights, I can feel them looking at me.",
+			"The storms taste purple tonight. Everybody inside. Inside, inside, inside.",
+			"I've been sitting in this chair for six hours and I have never been more prepared for anything.",
+			"Chillers! Hydrate! I'm serious! Water is the original drug!",
+			"You ever think the dead are just... really, really tired? Same, bro. Same.",
+			"Where's my lighter. Who has my lighter. BONK has my lighter. Since before the world ended. He knows."
+		],
+		"meekachu_greet": [
+			"Yooo, new faces! Welcome to UNK, the last chill place on Earth. Wipe your feet, we just vacuumed. In 2021.",
+			"Ayyy, friends of friends! Come in, come in. Don't step on Patches, he's meditating. Or asleep. Or both.",
+			"Whoa. Whoa. Are you real? ...Okay you're real. Cool. Come sit, come sit."
+		],
+		"meekachu_busy": [
+			"Hold on hold on, one conversation at a time, my brain is like... one of those old dial-up modems, bro."
+		],
+		"chiller_idle": [
+			"Shhh. Quiet. The dead hear everything. Except vibes. They can't hear vibes.",
+			"Meekachu says the union is sacred ground. I think he means the couches.",
+			"I used to major in philosophy. Now I'm just... majoring in this couch.",
+			"Grow lights are flickering again. Somebody find a battery before Meekachu cries.",
+			"Last finals week of all time, bro. I never even got my grade back."
+		],
+		"chiller_greet": [
+			"Oh hey. You here for Meekachu? He's on the throne. Always on the throne.",
+			"Welcome to the Chillers, friend. No guns out inside. House rules."
+		],
+		"chiller_busy": [
+			"Gimme a sec, man, I'm talking. I think. Was I talking?"
+		],
+		"gus_idle": [
+			"Thirty-one years. Never once found the bottom of that mop bucket.",
+			"Wind's out of the south again. Don't like what's on it.",
+			"Fire don't ask questions. That's why I like it."
+		],
+		"gus_greet": [
+			"Fire's free. Sit if you're sitting."
+		],
+		"gus_busy": [
+			"One at a time. I only got the one story."
+		],
+		"wrenhome_idle": [
+			"It's so quiet here. Nobody's running.",
+			"I keep counting the door. There's no door. It's a habit."
+		],
+		"wrenhome_greet": [
+			"Oh. It's you. Hi. I'm bad at thank-yous. Thank you."
+		],
+		"wrenhome_busy": [
+			"Hang on."
+		]
+	},
+	"trees": {
+		"chiller_talk": {
+			"start": "start",
+			"nodes": {
+				"start": {
+					"speaker": "Chiller",
+					"text": "Heyyy. You good? You look stressed. Everybody out there looks stressed. In here we don't do stressed.",
+					"choices": [
+						{
+							"text": "Who's in charge here?",
+							"next": "boss"
+						},
+						{
+							"text": "What is this place?",
+							"next": "place"
+						},
+						{
+							"text": "Later.",
+							"next": "bye"
+						}
+					]
+				},
+				"boss": {
+					"speaker": "Chiller",
+					"text": "Meekachu, man. Up on the throne in the back. He kept like forty of us alive the first winter. Don't let the giggling fool you. That dude has SEEN things.",
+					"choices": [
+						{
+							"text": "What kind of things?",
+							"next": "seen"
+						},
+						{
+							"text": "Thanks.",
+							"next": "bye"
+						}
+					]
+				},
+				"seen": {
+					"speaker": "Chiller",
+					"text": "He was on the roof when the flash hit. He doesn't talk about it. Well, he talks about it a LOT, actually, but never the same way twice. Ask him yourself.",
+					"choices": [
+						{
+							"text": "I will.",
+							"next": "bye"
+						}
+					]
+				},
+				"place": {
+					"speaker": "Chiller",
+					"text": "The Nebraskan Student Union, bro. We were all here for finals week. Then the sky went white and finals got cancelled. Forever. Best and worst day of my life.",
+					"choices": [
+						{
+							"text": "Who's in charge?",
+							"next": "boss"
+						},
+						{
+							"text": "Rough.",
+							"next": "bye"
+						}
+					]
+				},
+				"bye": {
+					"speaker": "Chiller",
+					"text": "Stay chill, friend. Out there, chill keeps you alive.",
+					"end": true
+				}
+			}
+		},
+		"meekachu_talk": {
+			"start": "start",
+			"nodes": {
+				"start": {
+					"speaker": "Meekachu",
+					"text": "...Whoa. Hey. Hey hey hey. Sit down, sit down. Welcome to the throne room. It's a beanbag. The throne is a beanbag. I am Meekachu, King of the Chillers, Lord of the Lounge, Protector of the Snack Machine.",
+					"choices": [
+						{
+							"text": "What are you selling?",
+							"next": "shop"
+						},
+						{
+							"text": "Who are the Chillers?",
+							"next": "chillers"
+						},
+						{
+							"text": "What happened here when the bombs fell?",
+							"next": "flash"
+						},
+						{
+							"text": "You know Bonk?",
+							"next": "bonk"
+						},
+						{
+							"text": "I'll leave you to it.",
+							"next": "bye"
+						}
+					],
+					"flag": "mq_meek_met"
+				},
+				"menu": {
+					"speaker": "Meekachu",
+					"text": "Okay. Okay. Where were we. I was... I was somewhere. You were also somewhere. Beautiful. What do you need?",
+					"choices": [
+						{
+							"text": "Evan ran the keycard. The machine printed a list.",
+							"next": "printout",
+							"requires": [
+								"mq_evan_card",
+								"!mq_meek_printout"
+							]
+						},
+						{
+							"text": "Hunter Conner is dead.",
+							"next": "hunter_dead",
+							"requires": [
+								"boss_hunter_conner_dead",
+								"!mq_meek_hunter_dead"
+							]
+						},
+						{
+							"text": "[Lighter] Bonk sends his regards. And this.",
+							"next": "lighter_back",
+							"requires": [
+								"sq_lighter_bonk",
+								"!sq_lighter_done"
+							],
+							"cost": {
+								"meekachus_lighter": 1
+							},
+							"cost_fail": "lighter_none"
+						},
+						{
+							"text": "[5 Jerky] Evan sends jerky. And an apology.",
+							"next": "jerky_back",
+							"requires": [
+								"sq_jerky_evan",
+								"!sq_jerky_done"
+							],
+							"cost": {
+								"evans_jerky": 5
+							},
+							"cost_fail": "jerky_none"
+						},
+						{
+							"text": "What are you selling?",
+							"next": "shop"
+						},
+						{
+							"text": "Who are the Chillers?",
+							"next": "chillers"
+						},
+						{
+							"text": "What happened here when the bombs fell?",
+							"next": "flash"
+						},
+						{
+							"text": "What do you know about the Suits?",
+							"next": "suits"
+						},
+						{
+							"text": "You know Bonk?",
+							"next": "bonk"
+						},
+						{
+							"text": "I'll leave you to it.",
+							"next": "bye"
+						}
+					]
+				},
+				"shop": {
+					"speaker": "Meekachu",
+					"text": "The Chiller Dispensary is OPEN, my friend. Everything grown, picked or cooked right here on campus. No loans, no tabs, no Suits. What's your poison? Not literally. Mostly not literally.",
+					"choices": [
+						{
+							"text": "2 cans of beans for 2 of your Kush.",
+							"next": "sold_kush",
+							"cost": {
+								"canned_beans": 2
+							},
+							"cost_fail": "broke"
+						},
+						{
+							"text": "2 bottles of water for Magic Mushrooms.",
+							"next": "sold_shrooms",
+							"cost": {
+								"water_bottle": 2
+							},
+							"cost_fail": "broke"
+						},
+						{
+							"text": "Painkillers for an Acid Tab.",
+							"next": "sold_acid",
+							"cost": {
+								"painkillers": 1
+							},
+							"cost_fail": "broke"
+						},
+						{
+							"text": "2 bandages for some Molly.",
+							"next": "sold_molly",
+							"cost": {
+								"bandage": 2
+							},
+							"cost_fail": "broke"
+						},
+						{
+							"text": "20 rounds of 9mm for the Black Tar.",
+							"next": "sold_tar",
+							"cost": {
+								"ammo_9mm": 20
+							},
+							"cost_fail": "broke"
+						},
+						{
+							"text": "A car battery for the grow lights?",
+							"next": "sold_battery",
+							"cost": {
+								"car_battery": 1
+							},
+							"cost_fail": "broke"
+						},
+						{
+							"text": "Can I get a free sample?",
+							"next": "sample"
+						},
+						{
+							"text": "Nothing right now.",
+							"next": "menu"
+						}
+					]
+				},
+				"sold_kush": {
+					"speaker": "Meekachu",
+					"text": "Two of the house special. Meekachu's Kush. Grown under stolen grow lights in the old ballroom, watered with love and also, like, rain. You'll feel no pain. You'll also feel very hungry. That's the deal, bro. That's always the deal.",
+					"give": {
+						"kush_joint": 2
+					},
+					"give_every_time": true,
+					"choices": [
+						{
+							"text": "Another deal.",
+							"next": "shop"
+						},
+						{
+							"text": "That's all.",
+							"next": "menu"
+						}
+					]
+				},
+				"sold_shrooms": {
+					"speaker": "Meekachu",
+					"text": "Fresh from behind the science building. They grow where the storms touched the dirt. Is that bad? Probably that's bad. They're SO good though. You'll see further. You'll see... too far, maybe. Drink water.",
+					"give": {
+						"magic_mushrooms": 1
+					},
+					"give_every_time": true,
+					"choices": [
+						{
+							"text": "Another deal.",
+							"next": "shop"
+						},
+						{
+							"text": "That's all.",
+							"next": "menu"
+						}
+					]
+				},
+				"sold_acid": {
+					"speaker": "Meekachu",
+					"text": "One tab. Patches cooked it in the chem lab. Patches has never passed a chemistry exam in his life. Patches is a genius. These two things are both true, bro. Hold that in your mind. Hold it.",
+					"give": {
+						"acid_tab": 1
+					},
+					"give_every_time": true,
+					"choices": [
+						{
+							"text": "Another deal.",
+							"next": "shop"
+						},
+						{
+							"text": "That's all.",
+							"next": "menu"
+						}
+					]
+				},
+				"sold_molly": {
+					"speaker": "Meekachu",
+					"text": "Molly! You'll run so fast. You'll love everybody. You'll love ZOMBIES, bro, don't hug the zombies. And after, you're gonna feel like a wet sock for a while. Respect the comedown.",
+					"give": {
+						"molly": 1
+					},
+					"give_every_time": true,
+					"choices": [
+						{
+							"text": "Another deal.",
+							"next": "shop"
+						},
+						{
+							"text": "That's all.",
+							"next": "menu"
+						}
+					]
+				},
+				"sold_tar": {
+					"speaker": "Meekachu",
+					"text": "...Yeah. Okay. Here. ...Listen to me. Look at me. This one's not a party. This one's for when the world's chewing on you and you need it to stop for a minute. It stops the pain. Then it takes something back. Every time. I've buried Chillers who forgot that part.",
+					"give": {
+						"black_tar": 1
+					},
+					"give_every_time": true,
+					"choices": [
+						{
+							"text": "I hear you.",
+							"next": "menu"
+						},
+						{
+							"text": "Another deal.",
+							"next": "shop"
+						}
+					]
+				},
+				"sold_battery": {
+					"speaker": "Meekachu",
+					"text": "A BATTERY. Oh my god. Oh my GOD. The grow lights live another month. You absolute saint. Take these. Take these and know that you have saved... agriculture. You are basically a farmer now.",
+					"give": {
+						"kush_joint": 3,
+						"molly": 1
+					},
+					"give_every_time": true,
+					"choices": [
+						{
+							"text": "Evan at the Archway wants batteries too.",
+							"next": "evan"
+						},
+						{
+							"text": "Another deal.",
+							"next": "shop"
+						},
+						{
+							"text": "That's all.",
+							"next": "menu"
+						}
+					]
+				},
+				"sample": {
+					"speaker": "Meekachu",
+					"text": "For a friend of Bonk? First one's on the house, always. Here. Smoke it somewhere safe, not in a field. Never in a field. Fields have... things.",
+					"give": {
+						"kush_joint": 1
+					},
+					"choices": [
+						{
+							"text": "Thanks, Meekachu.",
+							"next": "menu"
+						}
+					]
+				},
+				"broke": {
+					"speaker": "Meekachu",
+					"text": "Bro... you don't have that. It's okay. It's okay. Nobody has anything anymore. That's the whole thing about the apocalypse, man. Come back when you've got the goods.",
+					"choices": [
+						{
+							"text": "Fair.",
+							"next": "shop"
+						}
+					]
+				},
+				"chillers": {
+					"speaker": "Meekachu",
+					"text": "The Chillers are whoever's left who still wants to be a person. Students. Two professors. A janitor named Gus who's the toughest man alive. We don't raid. We don't shoot first. We grow, we trade, we keep the lights on. That's it. That's the whole religion.",
+					"choices": [
+						{
+							"text": "How do you survive without fighting?",
+							"next": "survive"
+						},
+						{
+							"text": "Two professors?",
+							"next": "professors"
+						},
+						{
+							"text": "Okay.",
+							"next": "menu"
+						}
+					]
+				},
+				"survive": {
+					"speaker": "Meekachu",
+					"text": "Oh we fight. When we have to. We just don't LIKE it. The dead come for noise, so we're quiet. Raiders come for stuff, so we trade them stuff. And the Suits... the Suits come for people. So we hide our people. Every single time.",
+					"choices": [
+						{
+							"text": "The Suits come here?",
+							"next": "suits"
+						},
+						{
+							"text": "That's smart.",
+							"next": "menu"
+						}
+					]
+				},
+				"professors": {
+					"speaker": "Meekachu",
+					"text": "Dr. Halvorsen, physics, and Dr. Pell, botany. Pell keeps the plants alive. Halvorsen keeps a notebook about the storms and won't let ANYBODY read it. Says if the wrong people read it, they'd come back. She doesn't say who 'they' are. She doesn't have to, bro.",
+					"choices": [
+						{
+							"text": "Can I talk to Halvorsen?",
+							"next": "halvorsen"
+						},
+						{
+							"text": "Huh.",
+							"next": "menu"
+						}
+					]
+				},
+				"halvorsen": {
+					"speaker": "Meekachu",
+					"text": "She left. Last spring. Went west along the river with the notebook and a crowbar and said 'don't follow me.' So we didn't. Sometimes at night I think about how she said it. Like she knew exactly where she was going. Like she'd been there before.",
+					"choices": [
+						{
+							"text": "Where do you think she went?",
+							"next": "suits"
+						},
+						{
+							"text": "I'm sorry, man.",
+							"next": "menu"
+						}
+					]
+				},
+				"flash": {
+					"speaker": "Meekachu",
+					"text": "...I was on the roof. Union roof. Finals week, I was up there with a joint and a calculus textbook, and I wasn't doing calculus. And the whole sky went white. Not bright. WHITE. Like somebody erased it.",
+					"choices": [
+						{
+							"text": "Then what?",
+							"next": "flash_2"
+						},
+						{
+							"text": "You don't have to talk about it.",
+							"next": "flash_skip"
+						}
+					]
+				},
+				"flash_2": {
+					"speaker": "Meekachu",
+					"text": "Then no sound. For like four seconds. The quietest four seconds in history, bro. And then the wind came, and every window on campus came IN, and I was lying on the roof watching the sky turn the color of a bruise. I remember thinking, I should have studied.",
+					"choices": [
+						{
+							"text": "How did you all make it?",
+							"next": "flash_3"
+						}
+					]
+				},
+				"flash_3": {
+					"speaker": "Meekachu",
+					"text": "Basement. Everybody into the basement. Three hundred kids. I stood at the stairs and counted them down. Three hundred and eleven. We came back up after a month. Forty-two. ...Forty-two, man. I counted those too. I count them every night. That's why I smoke. So I can stop counting for an hour.",
+					"choices": [
+						{
+							"text": "...I'm sorry.",
+							"next": "flash_4"
+						},
+						{
+							"text": "You saved forty-two people.",
+							"next": "flash_4"
+						}
+					]
+				},
+				"flash_4": {
+					"speaker": "Meekachu",
+					"text": "...Yeah. Yeah. Okay. That's what Gus says too. Thanks, bro. Seriously. ...Okay, that's enough sad. Do you want to see the snack machine? It still has one Funyun in it. We are saving it for the end of the second apocalypse.",
+					"choices": [
+						{
+							"text": "Ha. Maybe later.",
+							"next": "menu"
+						}
+					]
+				},
+				"flash_skip": {
+					"speaker": "Meekachu",
+					"text": "...Thanks, man. Most people want the story. Respect. You're good people. Bonk always finds good people. Kind of his whole thing.",
+					"choices": [
+						{
+							"text": "Speaking of Bonk...",
+							"next": "bonk"
+						},
+						{
+							"text": "Anytime.",
+							"next": "menu"
+						}
+					]
+				},
+				"suits": {
+					"speaker": "Meekachu",
+					"text": "The Suits. Yeah. They come twice a year. Clean trucks, clean clothes, gas masks with little eagles on 'em. They don't shoot. That's what's scary. They just... ask questions. Count us. Take one person. Always one. Never the same kind of person. Like they're collecting a set.",
+					"choices": [
+						{
+							"text": "Who did they take?",
+							"next": "taken"
+						},
+						{
+							"text": "Where do they come from?",
+							"next": "suits_from"
+						}
+					]
+				},
+				"taken": {
+					"speaker": "Meekachu",
+					"text": "A nursing student. A welder. A kid who could fix radios. A girl who'd been out in the storms and didn't get sick. ...They wanted to know why she didn't get sick. I saw the guy's face when he figured out she was immune. He smiled, bro. He SMILED.",
+					"choices": [
+						{
+							"text": "Who does the taking? The Suits themselves?",
+							"next": "hunter"
+						},
+						{
+							"text": "Why would they want someone immune?",
+							"next": "immune"
+						},
+						{
+							"text": "That's horrifying.",
+							"next": "menu"
+						}
+					],
+					"flag": "mq_meek_taken"
+				},
+				"immune": {
+					"speaker": "Meekachu",
+					"text": "Think about it, man. If you're the people who keep the storms going... the last thing you want is somebody who can walk through them. Somebody who could go where you are. Halvorsen figured that out. That's why she left. She was the second one who didn't get sick.",
+					"choices": [
+						{
+							"text": "Evan at the Archway thinks the storms are made on purpose.",
+							"next": "evan"
+						},
+						{
+							"text": "I need to think about this.",
+							"next": "menu"
+						}
+					]
+				},
+				"suits_from": {
+					"speaker": "Meekachu",
+					"text": "The trucks come up from the south. Every time. Toward the river. And then the tire tracks just... stop. Like the road ate them. Gus followed them once. Came back a week later and didn't talk for a month. Now he just says 'it's bigger than the town, kid.' Bigger than the TOWN.",
+					"choices": [
+						{
+							"text": "Evan at the Archway said they went underground.",
+							"next": "evan"
+						},
+						{
+							"text": "Creepy.",
+							"next": "menu"
+						}
+					]
+				},
+				"evan": {
+					"speaker": "Meekachu",
+					"text": "JERKIN'?! You've met Jerkin'! Bro, that man owes me forty jerky and an apology. Wait. Hold on. ...He's right, isn't he? About the storms. About underground. He used to work for them. He said that once, real drunk, and then he said he didn't. ...We should talk to him. Somebody should. Somebody braver than me.",
+					"choices": [
+						{
+							"text": "Maybe that somebody is us.",
+							"next": "us"
+						},
+						{
+							"text": "One problem at a time.",
+							"next": "menu"
+						}
+					],
+					"flag": "sq_jerky_start"
+				},
+				"us": {
+					"speaker": "Meekachu",
+					"text": "...Yeah. Yeah, maybe. You came out of a hole after five years and the first thing you did was walk across a dead town to talk to the weirdest guys in it. That's not nothing, bro. That's the start of something. ...Okay I need to sit down. I am sitting down. I need to sit down MORE.",
+					"choices": [
+						{
+							"text": "Take it easy, Meekachu.",
+							"next": "menu"
+						}
+					]
+				},
+				"bonk": {
+					"speaker": "Meekachu",
+					"text": "BONK?! Bonk is ALIVE? Bonk! Bro! Bonk is the smartest dumb guy I have ever met. He once fixed a car with a sock. He owes me a lighter. From before the world ended. Tell him I still remember. Tell him I'm not mad. Tell him I'm a little mad.",
+					"choices": [
+						{
+							"text": "He's with us.",
+							"next": "bonk_2"
+						},
+						{
+							"text": "I'll tell him.",
+							"next": "menu"
+						}
+					],
+					"flag": "sq_lighter_start"
+				},
+				"bonk_2": {
+					"speaker": "Meekachu",
+					"text": "Then you're in good hands, friend. Everybody thinks Bonk's lost. Bonk's never lost. Bonk is just going somewhere nobody else has thought of yet. Follow him. And bring my lighter.",
+					"choices": [
+						{
+							"text": "Will do.",
+							"next": "menu"
+						}
+					]
+				},
+				"bye": {
+					"speaker": "Meekachu",
+					"text": "Peace, love, and canned beans, my friend. Stay quiet out there. And hey... come back, okay? People don't always come back.",
+					"end": true
+				},
+				"hunter": {
+					"speaker": "Meekachu",
+					"text": "...No. That's the thing. The Suits just hold the clipboard. The one who walks you to the truck is local. Hunter Conner. He was a hall monitor at Kearney High the day the sky went white. Now the Suits give him a clean shirt and a rifle and a number, and he fills the number. He keeps people in the school's front office till the trucks come. ...He took Skyler's sister two weeks ago. Wren. The trucks haven't come yet, bro. I did the math. I do the math every night.",
+					"flag": "mq_meek_hunter",
+					"choices": [
+						{
+							"text": "Then she's still in there.",
+							"next": "hunter_2"
+						}
+					]
+				},
+				"hunter_2": {
+					"speaker": "Meekachu",
+					"text": "Maybe. MAYBE. Don't say it loud, Skyler's right over there. Listen. Hunter carries a card on a chain. Little eagle on it. Opens Suit doors. If somebody were going to that school anyway, for a completely different reason... a guy could come back with a card AND a Wren. West side of town. Past Bonk's place, past the park. Big brick building full of things that used to be faculty.",
+					"choices": [
+						{
+							"text": "We'll go.",
+							"next": "menu"
+						}
+					]
+				},
+				"lighter_back": {
+					"speaker": "Meekachu",
+					"text": "...No way. No WAY. That's her. That's Sheila. Five years, bro. ...Why's she so worn down? Did he USE her? Every day? ...That's the nicest thing anybody's ever done. He kept her working. Bonk, you beautiful idiot.",
+					"flag": "sq_lighter_done",
+					"choices": [
+						{
+							"text": "He says Dale kept her warm.",
+							"next": "menu"
+						}
+					]
+				},
+				"lighter_none": {
+					"speaker": "Meekachu",
+					"text": "You don't have her ON you? Bro. Don't play with a man's heart.",
+					"choices": [
+						{
+							"text": "Sorry.",
+							"next": "menu"
+						}
+					]
+				},
+				"jerky_back": {
+					"speaker": "Meekachu",
+					"text": "He said SORRY? About the salad thing? ...Okay. Okay, we're good. Me and Jerkin' are good. Thirty-five to go, but we're good. That man's all alone up on that bridge, you know? Somebody should check on him sometimes. I'm glad it's you.",
+					"flag": "sq_jerky_done",
+					"choices": [
+						{
+							"text": "Me too.",
+							"next": "menu"
+						}
+					]
+				},
+				"jerky_none": {
+					"speaker": "Meekachu",
+					"text": "That's not five, bro. I can count to five. Most days.",
+					"choices": [
+						{
+							"text": "I'll be back.",
+							"next": "menu"
+						}
+					]
+				},
+				"hunter_dead": {
+					"speaker": "Meekachu",
+					"text": "Dead. Like, dead dead. ...I should feel better than this. He was a kid, you know? Same as us. The world ended and somebody handed him a clean shirt. ...Thank you. For Wren. For the ones before her. Go see Skyler. He's gonna lose his mind.",
+					"flag": "mq_meek_hunter_dead",
+					"choices": [
+						{
+							"text": "Will do.",
+							"next": "menu"
+						}
+					]
+				},
+				"printout": {
+					"speaker": "Meekachu",
+					"text": "...Read me the names. ...Yeah. Yeah. That's all of them. Every one. In order. They kept a LIST, bro. Like groceries. ...What else did it say.",
+					"choices": [
+						{
+							"text": "Nine relays. Fourteen days until the next collection. And Halvorsen is on the list twice: taken, and staff.",
+							"next": "printout_2"
+						}
+					]
+				},
+				"printout_2": {
+					"speaker": "Meekachu",
+					"text": "...Staff. ...She said 'don't follow me.' She knew the way because she'd BEEN there. ...Okay. I'm not gonna be high for this part. Hold on. ...There. First time in five years. Fourteen days, and no collector to meet them. They'll come up angry. I've got forty-two people, bro. Forty-three with Wren. Go talk to Gus. Out by the fire. He's the only one of us who's stood where the trucks go down. Tell him Meekachu said it's time.",
+					"flag": "mq_meek_printout",
+					"choices": [
+						{
+							"text": "I'll tell him.",
+							"next": "menu"
+						}
+					]
+				}
+			},
+			"starts": [
+				{
+					"requires": "mq_meek_met",
+					"node": "menu"
+				}
+			]
+		},
+		"skyler_talk": {
+			"start": "start",
+			"nodes": {
+				"start": {
+					"speaker": "Skyler",
+					"text": "Hey. Sorry. I'm not great company. I'm watering. I just keep watering. Wren used to do the watering.",
+					"choices": [
+						{
+							"text": "Skyler. Wren is alive. Hunter's dead.",
+							"next": "alive",
+							"requires": [
+								"boss_hunter_conner_dead",
+								"mq_wren",
+								"!sq_wren_skyler"
+							]
+						},
+						{
+							"text": "Who's Wren?",
+							"next": "wren"
+						},
+						{
+							"text": "What is this room?",
+							"next": "room"
+						},
+						{
+							"text": "Later.",
+							"next": "bye"
+						}
+					]
+				},
+				"wren": {
+					"speaker": "Skyler",
+					"text": "My sister. The Suits' guy took her two weeks ago. Hunter. Walked right in here in a clean shirt, pointed, and nobody did anything. I didn't do anything. ...She doesn't get sick in the storms. Somebody told them. I think a lot about who told them.",
+					"choices": [
+						{
+							"text": "I'm sorry.",
+							"next": "bye"
+						}
+					]
+				},
+				"room": {
+					"speaker": "Skyler",
+					"text": "Used to be the ballroom. Prom, job fairs, blood drives. Now it's the only green thing for ten miles. Meekachu says that's the point of it. Not the smoking. The green.",
+					"choices": [
+						{
+							"text": "It's something.",
+							"next": "bye"
+						}
+					]
+				},
+				"alive": {
+					"speaker": "Skyler",
+					"text": "...Don't. Don't say that unless... You SAW her? She talked? She was mean to you? ...That's her. That's really her. Oh my god. I have to... the plants... forget the plants. Thank you. Take this. Take all of it. I was saving it for a funeral.",
+					"flag": "sq_wren_skyler",
+					"choices": [
+						{
+							"text": "Go see your sister.",
+							"next": "bye"
+						}
+					]
+				},
+				"bye": {
+					"speaker": "Skyler",
+					"text": "Yeah. Stay green, man.",
+					"end": true
+				}
+			}
+		},
+		"patches_talk": {
+			"start": "start",
+			"nodes": {
+				"start": {
+					"speaker": "Patches",
+					"text": "Yo. Patches. Head of R and D. That means I cook. You need something? I need something. Everybody needs something, that's economics.",
+					"choices": [
+						{
+							"text": "[Chem Lab Kit] Got your kit.",
+							"next": "kit_back",
+							"requires": [
+								"sq_lab_start",
+								"!sq_lab_done"
+							],
+							"cost": {
+								"chem_lab_kit": 1
+							},
+							"cost_fail": "kit_none"
+						},
+						{
+							"text": "What do you need?",
+							"next": "need",
+							"requires": "!sq_lab_start"
+						},
+						{
+							"text": "What do you cook?",
+							"next": "cook"
+						},
+						{
+							"text": "Later.",
+							"next": "bye"
+						}
+					]
+				},
+				"need": {
+					"speaker": "Patches",
+					"text": "A real kit. Glassware, burner, the good thermometer. I'm cooking acid on a camping stove with a MEAT thermometer, man, it's a miracle anybody's seen God at all. Kearney High's science lab had a full cabinet. East end of the north hall. I'd go myself, but, uh. Hall Monitors. They RUN, bro. Nothing dead should run.",
+					"flag": "sq_lab_start",
+					"choices": [
+						{
+							"text": "I'll look for it.",
+							"next": "bye"
+						}
+					]
+				},
+				"kit_back": {
+					"speaker": "Patches",
+					"text": "Oh, you beautiful... it's got the CONDENSER. Okay. Okay! Purity's going up. Prices are staying the same, because I am a man of the people. Here. First batch off the old gear. On me.",
+					"flag": "sq_lab_done",
+					"choices": [
+						{
+							"text": "Pleasure.",
+							"next": "bye"
+						}
+					]
+				},
+				"kit_none": {
+					"speaker": "Patches",
+					"text": "That's not a kit. That's your empty hands.",
+					"choices": [
+						{
+							"text": "Right.",
+							"next": "bye"
+						}
+					]
+				},
+				"cook": {
+					"speaker": "Patches",
+					"text": "Acid, mostly. Molly when the stars line up. I flunked chem twice. Turns out I just don't test well.",
+					"choices": [
+						{
+							"text": "Clearly.",
+							"next": "bye"
+						}
+					]
+				},
+				"bye": {
+					"speaker": "Patches",
+					"text": "Stay hydrated. I mean it. Especially on my stuff.",
+					"end": true
+				}
+			}
+		},
+		"gus_talk": {
+			"start": "start",
+			"starts": [
+				{
+					"requires": "mq_gus",
+					"node": "after"
+				},
+				{
+					"requires": "mq_meek_printout",
+					"node": "time"
+				}
+			],
+			"nodes": {
+				"start": {
+					"speaker": "Gus",
+					"text": "Fire's free. Conversation ain't.",
+					"choices": [
+						{
+							"text": "You're Gus? The janitor?",
+							"next": "janitor"
+						},
+						{
+							"text": "I heard you followed the Suits' trucks.",
+							"next": "trucks_no"
+						},
+						{
+							"text": "I'll go.",
+							"next": "bye"
+						}
+					]
+				},
+				"janitor": {
+					"speaker": "Gus",
+					"text": "Thirty-one years at this college. Mopped up after forty thousand kids. Now I mop up after the end of the world. Same job. Worse hours.",
+					"choices": [
+						{
+							"text": "About those trucks...",
+							"next": "trucks_no"
+						},
+						{
+							"text": "Respect.",
+							"next": "bye"
+						}
+					]
+				},
+				"trucks_no": {
+					"speaker": "Gus",
+					"text": "You heard wrong. I went for a walk. Ask me again when the kid on the beanbag says it's time. He ain't said it's time.",
+					"choices": [
+						{
+							"text": "Understood.",
+							"next": "bye"
+						}
+					]
+				},
+				"time": {
+					"speaker": "Gus",
+					"text": "...He put the joint out, didn't he. I watched it through the window. Five years, I never once saw that boy put one out. ...Sit down. I'll say this one time.",
+					"choices": [
+						{
+							"text": "Go on.",
+							"next": "time_2"
+						}
+					]
+				},
+				"time_2": {
+					"speaker": "Gus",
+					"text": "South of the river there's an old co-op grain elevator. Empty since the nineties. I followed the tire tracks to it, and the tracks went INSIDE. So I went inside. The floor of that elevator is a door. Big as a barn, flat in the ground, and it opens DOWN. Trucks drive in, and the floor takes 'em.",
+					"choices": [
+						{
+							"text": "What's under it?",
+							"next": "time_3"
+						}
+					]
+				},
+				"time_3": {
+					"speaker": "Gus",
+					"text": "Lights. Miles of 'em. I laid on my belly at the edge of that door for two days and watched. Hallways. People in clean clothes, walking around like it's a Tuesday. And a sound, like a furnace the size of a county. Every time it got loud, the sky out west went green. ...It's bigger than the town, kid. It's UNDER the town. We been living on its roof.",
+					"choices": [
+						{
+							"text": "Can you take us there?",
+							"next": "time_4"
+						}
+					]
+				},
+				"time_4": {
+					"speaker": "Gus",
+					"text": "I can take you to the door. What I can't do is get you through it. That takes more than a card and a pistol. That takes people. ...Fourteen days, the list said? Then we got fourteen days to find some. Come see me when you've slept. You look like hell. That's a compliment. Means you been somewhere.",
+					"flag": "mq_gus",
+					"choices": [
+						{
+							"text": "We'll be ready.",
+							"next": "bye"
+						}
+					]
+				},
+				"after": {
+					"speaker": "Gus",
+					"text": "Still here. Fire's still free. Get some rest. The next part's south of the river.",
+					"choices": [
+						{
+							"text": "See you then.",
+							"next": "bye"
+						}
+					]
+				},
+				"bye": {
+					"speaker": "Gus",
+					"text": "Mind the embers.",
+					"end": true
+				}
+			}
+		},
+		"wren_home_talk": {
+			"start": "start",
+			"nodes": {
+				"start": {
+					"speaker": "Wren",
+					"text": "I walked the whole way. Nobody stopped me. I kept waiting for somebody to stop me. ...Skyler cried for an hour. It was disgusting. I loved it.",
+					"choices": [
+						{
+							"text": "What did Hunter want with you?",
+							"next": "want"
+						},
+						{
+							"text": "Glad you're home.",
+							"next": "bye"
+						}
+					]
+				},
+				"want": {
+					"speaker": "Wren",
+					"text": "Not him. Them. He told me once, bragging. They can't make the storms hurt less. They can only make them hurt MORE. And people like me, the storm doesn't see us. He said downstairs they've got a room full of people like me, wired up like a choir, and that's how the machine learns what it can't kill yet. ...I was going to be a tuning fork.",
+					"choices": [
+						{
+							"text": "We won't let them.",
+							"next": "bye"
+						}
+					]
+				},
+				"bye": {
+					"speaker": "Wren",
+					"text": "You'd better not. I know where you live now. It's a hole in a backyard.",
+					"end": true
+				}
+			}
+		}
+	}
+}

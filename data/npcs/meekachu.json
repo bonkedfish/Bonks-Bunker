@@ -1,0 +1,16 @@
+{
+	"note": "Meekachu (D-053): leader of the Chillers at UNK, permanently stoned, sells chems for barter, intense lore dialogue. Lines in data/dialogue/meekachu.json (barks prefixed meekachu_).",
+	"display_name": "Meekachu",
+	"dialogue_tree": "meekachu_talk",
+	"bark_prefix": "meekachu_",
+	"model": "survivor_sam",
+	"talk_range": 3.0,
+	"subtitle_range": 18.0,
+	"greet_range": 10.0,
+	"face_range": 7.0,
+	"turn_speed": 2.0,
+	"bark_cooldown": 6.0,
+	"idle_bark_min": 20.0,
+	"idle_bark_max": 45.0,
+	"smoke": true
+}

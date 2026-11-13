@@ -1,0 +1,51 @@
+{
+	"note": "Timed effects (D-052): Fallout-chem style buffs with side effects, started by items whose use block has \"effect\": id. mods multiply (1.0 = no change): damage_taken, move_speed, hunger_drain, thirst_drain; heal_per_second adds HP; fov_add widens the view; tint [r,g,b,a] colours the local screen (pulse_hz > 0 cycles the hue). Using an item again restarts its timer. When an effect ends, its \"after\" effect starts (comedowns). Not saved.",
+	"effects": {
+		"baked": {
+			"name": "Baked", "seconds": 180.0,
+			"mods": { "damage_taken": 0.85, "move_speed": 0.92, "hunger_drain": 3.0 },
+			"tint": [0.35, 0.6, 0.3, 0.08], "pulse_hz": 0.0, "fov_add": 0.0
+		},
+		"tripping_shrooms": {
+			"name": "Tripping (Shrooms)", "seconds": 150.0,
+			"mods": { "damage_taken": 0.9, "thirst_drain": 1.5 },
+			"tint": [0.55, 0.3, 0.65, 0.16], "pulse_hz": 0.15, "fov_add": 8.0,
+			"after": "comedown"
+		},
+		"tripping_acid": {
+			"name": "Tripping (Acid)", "seconds": 240.0,
+			"mods": { "move_speed": 1.05, "thirst_drain": 2.0 },
+			"tint": [0.9, 0.3, 0.6, 0.22], "pulse_hz": 0.35, "fov_add": 14.0,
+			"after": "fried"
+		},
+		"rolling": {
+			"name": "Rolling", "seconds": 120.0,
+			"mods": { "move_speed": 1.15, "thirst_drain": 3.0 },
+			"heal_per_second": 0.2,
+			"tint": [0.4, 0.55, 0.95, 0.08], "pulse_hz": 0.6, "fov_add": 4.0,
+			"after": "comedown"
+		},
+		"nodding": {
+			"name": "Nodding", "seconds": 90.0,
+			"mods": { "damage_taken": 0.6, "move_speed": 0.7 },
+			"heal_per_second": 0.3,
+			"tint": [0.2, 0.15, 0.1, 0.2], "pulse_hz": 0.0, "fov_add": -6.0,
+			"after": "dope_sick"
+		},
+		"comedown": {
+			"name": "Comedown", "seconds": 60.0,
+			"mods": { "move_speed": 0.88, "damage_taken": 1.1 },
+			"tint": [0.3, 0.3, 0.35, 0.08], "pulse_hz": 0.0, "fov_add": 0.0
+		},
+		"fried": {
+			"name": "Fried", "seconds": 120.0,
+			"mods": { "damage_taken": 1.15, "hunger_drain": 1.5 },
+			"tint": [0.4, 0.35, 0.3, 0.06], "pulse_hz": 0.0, "fov_add": 0.0
+		},
+		"dope_sick": {
+			"name": "Dope Sick", "seconds": 180.0,
+			"mods": { "damage_taken": 1.2, "move_speed": 0.9, "hunger_drain": 2.0, "thirst_drain": 2.0 },
+			"tint": [0.45, 0.5, 0.25, 0.1], "pulse_hz": 0.0, "fov_add": 0.0
+		}
+	}
+}

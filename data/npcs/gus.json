@@ -1,0 +1,15 @@
+{
+	"note": "Quest NPC (D-054). Lines in data/dialogue (barks prefixed gus_).",
+	"display_name": "Gus",
+	"dialogue_tree": "gus_talk",
+	"bark_prefix": "gus_",
+	"model": "survivor_sam",
+	"talk_range": 3.0,
+	"subtitle_range": 16.0,
+	"greet_range": 9.0,
+	"face_range": 7.0,
+	"turn_speed": 3.0,
+	"bark_cooldown": 8.0,
+	"idle_bark_min": 30.0,
+	"idle_bark_max": 70.0
+}

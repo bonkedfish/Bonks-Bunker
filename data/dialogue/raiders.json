@@ -1,0 +1,48 @@
+{
+	"note": "Raider barks (D-060/D-062): subtitles from raider bodies (bark_prefix raider_ / copperhead_) and Bonk's lines when the party reaches the downtown bars. Placeholder text: edit freely.",
+	"barks": {
+		"raider_aggro": [
+			"Fresh meat on the bricks!",
+			"Toll's everything you're carrying.",
+			"Somebody tell Copperhead we got walk-ins!",
+			"Bar's closed, pal. Permanently.",
+			"Ooh, a backpack. I love a backpack.",
+			"You lost? Good. Stay lost.",
+			"Last call, buddy!",
+			"Two-drink minimum. Lead drinks."
+		],
+		"raider_death": [
+			"...should've stayed... at Brix...",
+			"Tab's... still open...",
+			"Tell Copperhead... I was... cool about it...",
+			"Ugh. Not on the good carpet."
+		],
+		"copperhead_aggro": [
+			"Welcome to the Pit. Cover charge is your teeth.",
+			"I've been running this street since the sirens. You're not gonna be the one.",
+			"Everybody gets one last call. This is yours."
+		],
+		"copperhead_enrage": [
+			"Lock the doors! NOBODY leaves my bar!",
+			"That's it. I'm cutting you OFF."
+		],
+		"copperhead_death": [
+			"...somebody... close out my tab...",
+			"Twenty-first and Central... was mine..."
+		],
+		"landmark_copperfields": [
+			"Copperfields. Raiders. Lots of raiders. Remember when the worst thing here was the line for the bathroom?",
+			"See the barricade? That's new. The guy on top with the rifle is also new. I don't love him."
+		],
+		"landmark_brix": [
+			"Brix! They're using the upstairs as a lookout. Keep your head down, genius."
+		],
+		"landmark_the_other_side": [
+			"The Other Side. Spooky name for a bar that's now actually full of bad guys."
+		],
+		"landmark_gillies": [
+			"Gillie's. Somebody's still running the stage lights in there. Raiders love a vibe, I guess."
+		]
+	},
+	"trees": {}
+}

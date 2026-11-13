@@ -1,0 +1,16 @@
+{
+	"note": "A Chiller at the UNK student union (D-053). Shares the chiller_talk tree and chiller_ barks (data/dialogue/meekachu.json).",
+	"display_name": "Skyler",
+	"dialogue_tree": "skyler_talk",
+	"bark_prefix": "chiller_",
+	"model": "survivor_shaun",
+	"talk_range": 3.0,
+	"subtitle_range": 14.0,
+	"greet_range": 8.0,
+	"face_range": 6.0,
+	"turn_speed": 3.0,
+	"bark_cooldown": 8.0,
+	"idle_bark_min": 35.0,
+	"idle_bark_max": 80.0,
+	"smoke": false
+}

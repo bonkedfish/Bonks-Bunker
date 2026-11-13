@@ -1,0 +1,22 @@
+{
+	"source": "Quaternius - Zombie Apocalypse Kit (March 2024), CC0 1.0 - https://quaternius.com/packs/zombieapocalypsekit.html",
+	"download_url": "https://drive.usercontent.google.com/download?id=%s&export=download",
+	"out_dir": "res://assets/characters/zombie_apocalypse_kit",
+	"user_agent": "KearneyRPG-asset-import/0.1 (personal Godot game project)",
+	"files": {
+		"Characters_GermanShepherd.gltf": "1QovajqzAj7gFG8vCG4DmQ_vm7OP0cVLq",
+		"Characters_Lis_SingleWeapon.gltf": "1FmvSjkAwW8rruzEgTyM9Haudk4Gp4YeK",
+		"Characters_Lis.gltf": "1732QBPPKRkeGmhm-b8PBPR_Imkz8iUl3",
+		"Characters_Matt_SingleWeapon.gltf": "1hCbVych1BygiMK_9KttpI7MxSAmRR-aD",
+		"Characters_Matt.gltf": "1yNs2723NIl51s_LcI6ISpUkb7REeURv2",
+		"Characters_Pug.gltf": "1JafmFjjMky0u_ljSk4o_84IfxCJpkvhW",
+		"Characters_Sam_SingleWeapon.gltf": "1Ztm2tziQJi9KtPxL32I4ELdl-m6o6STx",
+		"Characters_Sam.gltf": "1yv-OLGTp4tEm2_PM02TXhoh7jz2bzLLo",
+		"Characters_Shaun_SingleWeapon.gltf": "19b_vYql-uGYkn4tv67rT_isLnE79sX7r",
+		"Characters_Shaun.gltf": "1CLkXsgz8QJKi5Ty8snQUFiGnfBEa0GWO",
+		"Zombie_Arm.gltf": "19MMkSg5NkpeSNb6271EoN_pNeBlQpt4Z",
+		"Zombie_Basic.gltf": "1S6EfXv0Fc6SiqyoPx5gNF48MI0OajNLr",
+		"Zombie_Chubby.gltf": "1PKHYBqygDy3ztkJLOQWx4fY00eFL0epN",
+		"Zombie_Ribcage.gltf": "1mcGcs5UeeBpgbSwhu3r2yZWoB0V4dazt"
+	}
+}

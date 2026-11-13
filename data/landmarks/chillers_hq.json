@@ -1,0 +1,720 @@
+{
+	"note": "Chillers HQ (D-053): the Nebraskan Student Union at UNK, taken over by the Chillers. Local metres: origin = middle of the union's main block on the ground (map x 648 z -2265), x east, z south (map). Walkable ground floor: lounge, dining corner, grow room (old ballroom, east), Meekachu's throne room (west); upper storey is exterior only. Campus camp on the south lawn. Built by tools/landmarks/build_chillers_hq.tscn -> world/landmarks/chillers_hq.scn.",
+	"out_path": "res://world/landmarks/chillers_hq.scn",
+	"seed": 420,
+	"materials": {
+		"brick": {
+			"texture": "brick_red",
+			"tile_m": 2.0,
+			"color": [
+				0.85,
+				0.7,
+				0.6
+			]
+		},
+		"concrete": {
+			"texture": "concrete_cracked",
+			"tile_m": 3.0,
+			"color": [
+				0.8,
+				0.78,
+				0.75
+			]
+		},
+		"floor": {
+			"texture": "concrete_slab",
+			"tile_m": 3.0,
+			"color": [
+				1.1,
+				1.05,
+				1.0
+			]
+		},
+		"plaster": {
+			"color": [
+				0.6,
+				0.57,
+				0.52
+			],
+			"roughness": 0.95
+		},
+		"glass": {
+			"color": [
+				0.16,
+				0.2,
+				0.22
+			],
+			"metallic": 0.4,
+			"roughness": 0.1,
+			"alpha": 0.55
+		},
+		"roof": {
+			"color": [
+				0.3,
+				0.3,
+				0.3
+			],
+			"roughness": 0.9
+		},
+		"wood": {
+			"texture": "planks_weathered",
+			"tile_m": 1.0,
+			"color": [
+				0.75,
+				0.55,
+				0.38
+			],
+			"visible_m": 150.0
+		},
+		"couch_a": {
+			"color": [
+				0.45,
+				0.22,
+				0.12
+			],
+			"roughness": 1.0,
+			"visible_m": 120.0
+		},
+		"couch_b": {
+			"color": [
+				0.22,
+				0.32,
+				0.25
+			],
+			"roughness": 1.0,
+			"visible_m": 120.0
+		},
+		"couch_c": {
+			"color": [
+				0.5,
+				0.42,
+				0.25
+			],
+			"roughness": 1.0,
+			"visible_m": 120.0
+		},
+		"rug": {
+			"color": [
+				0.45,
+				0.15,
+				0.25
+			],
+			"roughness": 1.0,
+			"shadows": false,
+			"visible_m": 120.0
+		},
+		"rug_b": {
+			"color": [
+				0.2,
+				0.3,
+				0.5
+			],
+			"roughness": 1.0,
+			"shadows": false,
+			"visible_m": 120.0
+		},
+		"tapestry": {
+			"color": [
+				0.55,
+				0.3,
+				0.6
+			],
+			"roughness": 1.0,
+			"shadows": false,
+			"visible_m": 120.0
+		},
+		"tapestry_b": {
+			"color": [
+				0.85,
+				0.55,
+				0.15
+			],
+			"roughness": 1.0,
+			"shadows": false,
+			"visible_m": 120.0
+		},
+		"beanbag": {
+			"color": [
+				0.6,
+				0.1,
+				0.45
+			],
+			"roughness": 1.0,
+			"visible_m": 120.0
+		},
+		"gold": {
+			"color": [
+				0.75,
+				0.6,
+				0.2
+			],
+			"metallic": 0.8,
+			"roughness": 0.35,
+			"visible_m": 120.0
+		},
+		"rust": {
+			"color": [
+				0.42,
+				0.22,
+				0.12
+			],
+			"metallic": 0.3,
+			"roughness": 0.85
+		},
+		"steel": {
+			"color": [
+				0.3,
+				0.3,
+				0.32
+			],
+			"metallic": 0.6,
+			"roughness": 0.5
+		},
+		"vending": {
+			"color": [
+				0.12,
+				0.25,
+				0.55
+			],
+			"metallic": 0.3,
+			"roughness": 0.5,
+			"visible_m": 120.0
+		},
+		"soil": {
+			"color": [
+				0.25,
+				0.18,
+				0.12
+			],
+			"roughness": 1.0,
+			"shadows": false
+		},
+		"plants": {
+			"shader": "res://shaders/wild_flowers.gdshader",
+			"visible_m": 100.0,
+			"shadows": false
+		},
+		"grow_light": {
+			"color": [
+				0.8,
+				0.3,
+				1.0
+			],
+			"emission": [
+				0.85,
+				0.35,
+				1.0,
+				3.0
+			],
+			"shadows": false,
+			"visible_m": 200.0
+		},
+		"bulbs": {
+			"color": [
+				1.0,
+				0.8,
+				0.4
+			],
+			"emission": [
+				1.0,
+				0.75,
+				0.35,
+				2.5
+			],
+			"shadows": false,
+			"visible_m": 120.0
+		},
+		"fire": {
+			"color": [
+				1.0,
+				0.5,
+				0.1
+			],
+			"emission": [
+				1.0,
+				0.45,
+				0.1,
+				4.0
+			],
+			"shadows": false,
+			"visible_m": 200.0
+		},
+		"canvas": {
+			"color": [
+				0.45,
+				0.48,
+				0.32
+			],
+			"roughness": 1.0,
+			"visible_m": 200.0
+		},
+		"canvas_b": {
+			"color": [
+				0.55,
+				0.35,
+				0.2
+			],
+			"roughness": 1.0,
+			"visible_m": 200.0
+		},
+		"van": {
+			"color": [
+				0.55,
+				0.7,
+				0.65
+			],
+			"metallic": 0.3,
+			"roughness": 0.6
+		},
+		"van_white": {
+			"color": [
+				0.85,
+				0.83,
+				0.78
+			],
+			"metallic": 0.3,
+			"roughness": 0.6
+		},
+		"tyre": {
+			"color": [
+				0.08,
+				0.08,
+				0.08
+			],
+			"roughness": 0.9
+		},
+		"sign": {
+			"color": [
+				0.2,
+				0.15,
+				0.1
+			],
+			"roughness": 0.9
+		}
+	},
+	"palettes": {
+		"weed": [
+			[
+				0.22,
+				0.4,
+				0.15
+			],
+			[
+				0.28,
+				0.48,
+				0.18
+			],
+			[
+				0.18,
+				0.35,
+				0.12
+			],
+			[
+				0.35,
+				0.5,
+				0.2
+			]
+		]
+	},
+	"building": {
+		"half_x": 46.5,
+		"half_z": 21.0,
+		"wall_m": 0.4,
+		"ceiling_y": 4.5,
+		"top_y": 9.0,
+		"window_lo": 1.1,
+		"window_hi": 3.2,
+		"door_half_m": 2.0,
+		"door_h": 3.0,
+		"throne_x": -26.0,
+		"grow_x": 14.0,
+		"inner_door_half_m": 2.0
+	},
+	"camp": {
+		"centre": [
+			0,
+			38
+		],
+		"tents": [
+			[
+				-30,
+				36,
+				0.3
+			],
+			[
+				-20,
+				44,
+				-0.4
+			],
+			[
+				22,
+				44,
+				0.5
+			],
+			[
+				32,
+				36,
+				-0.2
+			]
+		],
+		"van": [
+			12,
+			32,
+			0.0
+		],
+		"fire": [
+			0,
+			38
+		]
+	},
+	"signs": [
+		{
+			"text": "CHILLERS",
+			"pos": [
+				0,
+				7.2,
+				21.5
+			],
+			"size": 220
+		},
+		{
+			"text": "NO SUITS  -  NO RAIDS  -  GOOD VIBES ONLY",
+			"pos": [
+				0,
+				3.8,
+				21.5
+			],
+			"size": 70
+		}
+	],
+	"lights": [
+		{
+			"pos": [
+				-36,
+				3.6,
+				0
+			],
+			"color": [
+				1.0,
+				0.7,
+				0.45
+			],
+			"range": 13.0,
+			"energy": 1.6
+		},
+		{
+			"pos": [
+				-14,
+				3.6,
+				-8
+			],
+			"color": [
+				1.0,
+				0.75,
+				0.5
+			],
+			"range": 14.0,
+			"energy": 1.5
+		},
+		{
+			"pos": [
+				-2,
+				3.6,
+				10
+			],
+			"color": [
+				1.0,
+				0.72,
+				0.45
+			],
+			"range": 14.0,
+			"energy": 1.5
+		},
+		{
+			"pos": [
+				24,
+				3.6,
+				0
+			],
+			"color": [
+				0.8,
+				0.3,
+				1.0
+			],
+			"range": 15.0,
+			"energy": 2.2
+		},
+		{
+			"pos": [
+				38,
+				3.6,
+				0
+			],
+			"color": [
+				0.8,
+				0.3,
+				1.0
+			],
+			"range": 15.0,
+			"energy": 2.2
+		},
+		{
+			"pos": [
+				0,
+				1.5,
+				38
+			],
+			"color": [
+				1.0,
+				0.55,
+				0.2
+			],
+			"range": 10.0,
+			"energy": 2.0
+		}
+	],
+	"npcs": [
+		{
+			"npc_id": "meekachu",
+			"pos": [
+				-39.0,
+				0.6,
+				0.0
+			],
+			"yaw_deg": 90.0,
+			"name": "Meekachu"
+		},
+		{
+			"npc_id": "chiller_bongo",
+			"pos": [
+				-8,
+				0,
+				6
+			],
+			"yaw_deg": 180.0,
+			"name": "Bongo"
+		},
+		{
+			"npc_id": "chiller_skyler",
+			"pos": [
+				24,
+				0,
+				-10
+			],
+			"yaw_deg": 0.0,
+			"name": "Skyler"
+		},
+		{
+			"npc_id": "chiller_patches",
+			"pos": [
+				3,
+				0,
+				36
+			],
+			"yaw_deg": 180.0,
+			"name": "Patches"
+		},
+		{
+			"npc_id": "gus",
+			"pos": [
+				15.5,
+				0,
+				33
+			],
+			"yaw_deg": -90.0,
+			"name": "Gus"
+		},
+		{
+			"npc_id": "wren_home",
+			"pos": [
+				21,
+				0,
+				-10
+			],
+			"yaw_deg": 90.0,
+			"name": "WrenHome"
+		}
+	],
+	"loot": [
+		{
+			"id": "lounge_lockers",
+			"name": "Student Lockers",
+			"table": "house_cabinet",
+			"pos": [
+				-24,
+				0,
+				-19.8
+			],
+			"size": [
+				2.4,
+				1.9,
+				0.5
+			]
+		},
+		{
+			"id": "lounge_crate",
+			"name": "Chiller Supply Crate",
+			"table": "archway_exhibit",
+			"pos": [
+				10,
+				0,
+				18
+			],
+			"size": [
+				1.0,
+				0.8,
+				1.0
+			]
+		},
+		{
+			"id": "dining_fridge",
+			"name": "Dining Hall Fridge",
+			"table": "fridge",
+			"pos": [
+				-12,
+				0,
+				-19.6
+			],
+			"size": [
+				1.2,
+				1.9,
+				0.8
+			]
+		},
+		{
+			"id": "dining_pantry",
+			"name": "Dining Pantry",
+			"table": "archway_diner",
+			"pos": [
+				-4,
+				0,
+				-19.6
+			],
+			"size": [
+				1.6,
+				1.9,
+				0.8
+			]
+		},
+		{
+			"id": "bookstore_shelf",
+			"name": "Bookstore Shelf",
+			"table": "archway_gift_shop",
+			"pos": [
+				4,
+				0,
+				-19.6
+			],
+			"size": [
+				2.4,
+				1.8,
+				0.6
+			]
+		},
+		{
+			"id": "grow_supplies",
+			"name": "Grow Supplies",
+			"table": "toolbox",
+			"pos": [
+				44.5,
+				0,
+				-18
+			],
+			"size": [
+				1.2,
+				1.0,
+				0.8
+			]
+		},
+		{
+			"id": "grow_stash",
+			"name": "Drying Rack Stash",
+			"table": "chiller_stash",
+			"pos": [
+				44.5,
+				0,
+				16
+			],
+			"size": [
+				1.0,
+				1.2,
+				1.6
+			]
+		},
+		{
+			"id": "throne_snack_machine",
+			"name": "Snack Machine (one Funyun left)",
+			"table": "archway_diner",
+			"pos": [
+				-45,
+				0,
+				-16
+			],
+			"size": [
+				1.0,
+				1.9,
+				1.0
+			]
+		},
+		{
+			"id": "throne_stash",
+			"name": "Meekachu's Treasure Chest",
+			"table": "chiller_stash",
+			"pos": [
+				-45,
+				0,
+				17
+			],
+			"size": [
+				1.2,
+				0.8,
+				0.8
+			]
+		},
+		{
+			"id": "camp_cooler",
+			"name": "Camp Cooler",
+			"table": "fridge",
+			"pos": [
+				-4,
+				0,
+				41
+			],
+			"size": [
+				0.9,
+				0.6,
+				0.6
+			]
+		},
+		{
+			"id": "van_back",
+			"name": "Van (back doors)",
+			"table": "chiller_stash",
+			"pos": [
+				12,
+				0,
+				28.6
+			],
+			"size": [
+				1.6,
+				1.2,
+				0.5
+			]
+		},
+		{
+			"id": "tent_bag",
+			"name": "Sleeping Bag Pile",
+			"table": "house_cabinet",
+			"pos": [
+				-30,
+				0,
+				39
+			],
+			"size": [
+				1.4,
+				0.4,
+				0.9
+			]
+		}
+	]
+}

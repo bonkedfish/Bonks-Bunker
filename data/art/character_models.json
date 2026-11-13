@@ -1,0 +1,2304 @@
+{
+	"kit_dir": "res://assets/characters/zombie_apocalypse_kit/glTF",
+	"far_animation_m": 35.0,
+	"far_animation_hz": 10.0,
+	"blend_seconds": 0.2,
+	"models": {
+		"zombie_basic": {
+			"gltf": "Zombie_Basic.gltf",
+			"height_m": 1.8,
+			"yaw_offset_deg": 180.0,
+			"walk_ref_speed": 1.2,
+			"run_ref_speed": 3.2,
+			"run_above_speed": 1.6,
+			"clips": {
+				"idle": "Idle",
+				"walk": "Walk",
+				"run": "Run",
+				"attack": "Punch",
+				"hit": "HitReact",
+				"death": "Death"
+			}
+		},
+		"zombie_chubby": {
+			"gltf": "Zombie_Chubby.gltf",
+			"height_m": 1.75,
+			"yaw_offset_deg": 180.0,
+			"walk_ref_speed": 1.2,
+			"run_ref_speed": 3.2,
+			"run_above_speed": 1.6,
+			"clips": {
+				"idle": "Idle",
+				"walk": "Walk",
+				"run": "Run",
+				"attack": "Punch",
+				"hit": "HitReact",
+				"death": "Death"
+			}
+		},
+		"zombie_arm": {
+			"gltf": "Zombie_Arm.gltf",
+			"height_m": 1.8,
+			"yaw_offset_deg": 180.0,
+			"walk_ref_speed": 1.2,
+			"run_ref_speed": 3.2,
+			"run_above_speed": 1.6,
+			"clips": {
+				"idle": "Idle",
+				"walk": "Walk",
+				"run": "Run",
+				"attack": "Punch",
+				"hit": "HitReact",
+				"death": "Death"
+			}
+		},
+		"zombie_ribcage": {
+			"gltf": "Zombie_Ribcage.gltf",
+			"height_m": 1.8,
+			"yaw_offset_deg": 180.0,
+			"walk_ref_speed": 1.2,
+			"run_ref_speed": 3.2,
+			"run_above_speed": 1.6,
+			"clips": {
+				"idle": "Idle",
+				"walk": "Walk",
+				"run": "Run",
+				"attack": "Punch",
+				"hit": "HitReact",
+				"death": "Death"
+			}
+		},
+		"survivor_lis": {
+			"gltf": "Characters_Lis.gltf",
+			"height_m": 1.78,
+			"yaw_offset_deg": 180.0,
+			"walk_ref_speed": 3.5,
+			"run_ref_speed": 6.5,
+			"run_above_speed": 5.0,
+			"weapons_by_slot": [
+				"Pistol",
+				"WoodenBat_Barbed"
+			],
+			"clips": {
+				"idle": "Idle",
+				"idle_gun": "Idle_Gun",
+				"walk": "Walk",
+				"walk_gun": "Walk_Gun",
+				"run": "Run",
+				"run_gun": "Run_Gun",
+				"attack": "Slash",
+				"hit": "HitReact",
+				"death": "Death",
+				"crouch": "Duck"
+			}
+		},
+		"survivor_matt": {
+			"gltf": "Characters_Matt.gltf",
+			"height_m": 1.78,
+			"yaw_offset_deg": 180.0,
+			"walk_ref_speed": 3.5,
+			"run_ref_speed": 6.5,
+			"run_above_speed": 5.0,
+			"weapons_by_slot": [
+				"Pistol",
+				"WoodenBat_Barbed"
+			],
+			"clips": {
+				"idle": "Idle",
+				"idle_gun": "Idle_Gun",
+				"walk": "Walk",
+				"walk_gun": "Walk_Gun",
+				"run": "Run",
+				"run_gun": "Run_Gun",
+				"attack": "Slash",
+				"hit": "HitReact",
+				"death": "Death",
+				"crouch": "Duck"
+			}
+		},
+		"survivor_sam": {
+			"gltf": "Characters_Sam.gltf",
+			"height_m": 1.78,
+			"yaw_offset_deg": 180.0,
+			"walk_ref_speed": 3.5,
+			"run_ref_speed": 6.5,
+			"run_above_speed": 5.0,
+			"weapons_by_slot": [
+				"Pistol",
+				"WoodenBat_Barbed"
+			],
+			"clips": {
+				"idle": "Idle",
+				"idle_gun": "Idle_Gun",
+				"walk": "Walk",
+				"walk_gun": "Walk_Gun",
+				"run": "Run",
+				"run_gun": "Run_Gun",
+				"attack": "Slash",
+				"hit": "HitReact",
+				"death": "Death",
+				"crouch": "Duck"
+			}
+		},
+		"survivor_shaun": {
+			"gltf": "Characters_Shaun.gltf",
+			"height_m": 1.78,
+			"yaw_offset_deg": 180.0,
+			"walk_ref_speed": 3.5,
+			"run_ref_speed": 6.5,
+			"run_above_speed": 5.0,
+			"weapons_by_slot": [
+				"Pistol",
+				"WoodenBat_Barbed"
+			],
+			"clips": {
+				"idle": "Idle",
+				"idle_gun": "Idle_Gun",
+				"walk": "Walk",
+				"walk_gun": "Walk_Gun",
+				"run": "Run",
+				"run_gun": "Run_Gun",
+				"attack": "Slash",
+				"hit": "HitReact",
+				"death": "Death",
+				"crouch": "Duck"
+			}
+		},
+		"ubc_scavenger_m": {
+			"path": "res://assets/characters/ubc/Superhero_Male_FullBody.gltf",
+			"anim_source": "res://assets/characters/ual/UAL1_Standard.glb",
+			"height_m": 1.78,
+			"yaw_offset_deg": 180.0,
+			"walk_ref_speed": 3.8,
+			"run_ref_speed": 6.5,
+			"run_above_speed": 5.0,
+			"clips": {
+				"idle": "Idle",
+				"walk": "Jog_Fwd",
+				"run": "Sprint",
+				"idle_gun": "Pistol_Idle",
+				"attack": "Punch_Cross",
+				"attack_gun": "Pistol_Shoot",
+				"hit": "Hit_Chest",
+				"death": "Death01",
+				"crouch": "Crouch_Idle"
+			},
+			"outfit": {
+				"shirt": [
+					0.3,
+					0.33,
+					0.2
+				],
+				"pants": [
+					0.22,
+					0.26,
+					0.36
+				],
+				"shoes": [
+					0.14,
+					0.1,
+					0.07
+				],
+				"skin": [
+					0.78,
+					0.6,
+					0.48
+				]
+			},
+			"hair": [
+				"res://assets/characters/ubc/hair/Hair_Buzzed.gltf",
+				"res://assets/characters/ubc/hair/Eyebrows_Regular.gltf"
+			],
+			"hair_color": [
+				0.2,
+				0.14,
+				0.08
+			],
+			"props": [
+				{
+					"node": "Pistol",
+					"from": "res://assets/characters/zombie_apocalypse_kit/glTF/Characters_Matt.gltf",
+					"bone": "hand_r",
+					"pos": [
+						0.0,
+						0.08,
+						0.03
+					],
+					"rot_deg": [
+						0,
+						90,
+						90
+					],
+					"scale": 0.25
+				},
+				{
+					"node": "WoodenBat_Barbed",
+					"from": "res://assets/characters/zombie_apocalypse_kit/glTF/Characters_Matt.gltf",
+					"bone": "hand_r",
+					"pos": [
+						0.0,
+						0.08,
+						0.03
+					],
+					"rot_deg": [
+						-90,
+						180,
+						0
+					],
+					"scale": 0.25
+				}
+			],
+			"weapons_by_slot": [
+				"Pistol",
+				"WoodenBat_Barbed"
+			],
+			"fp_model": "survivor_sam"
+		},
+		"ubc_drifter_m": {
+			"path": "res://assets/characters/ubc/Superhero_Male_FullBody.gltf",
+			"anim_source": "res://assets/characters/ual/UAL1_Standard.glb",
+			"height_m": 1.78,
+			"yaw_offset_deg": 180.0,
+			"walk_ref_speed": 3.8,
+			"run_ref_speed": 6.5,
+			"run_above_speed": 5.0,
+			"clips": {
+				"idle": "Idle",
+				"walk": "Jog_Fwd",
+				"run": "Sprint",
+				"idle_gun": "Pistol_Idle",
+				"attack": "Punch_Cross",
+				"attack_gun": "Pistol_Shoot",
+				"hit": "Hit_Chest",
+				"death": "Death01",
+				"crouch": "Crouch_Idle"
+			},
+			"outfit": {
+				"shirt": [
+					0.55,
+					0.12,
+					0.1
+				],
+				"pants": [
+					0.45,
+					0.4,
+					0.28
+				],
+				"shoes": [
+					0.2,
+					0.15,
+					0.1
+				],
+				"skin": [
+					0.55,
+					0.38,
+					0.27
+				]
+			},
+			"hair": [
+				"res://assets/characters/ubc/hair/Hair_SimpleParted.gltf",
+				"res://assets/characters/ubc/hair/Hair_Beard.gltf",
+				"res://assets/characters/ubc/hair/Eyebrows_Regular.gltf"
+			],
+			"hair_color": [
+				0.35,
+				0.22,
+				0.12
+			],
+			"props": [
+				{
+					"node": "Pistol",
+					"from": "res://assets/characters/zombie_apocalypse_kit/glTF/Characters_Matt.gltf",
+					"bone": "hand_r",
+					"pos": [
+						0.0,
+						0.08,
+						0.03
+					],
+					"rot_deg": [
+						0,
+						90,
+						90
+					],
+					"scale": 0.25
+				},
+				{
+					"node": "WoodenBat_Barbed",
+					"from": "res://assets/characters/zombie_apocalypse_kit/glTF/Characters_Matt.gltf",
+					"bone": "hand_r",
+					"pos": [
+						0.0,
+						0.08,
+						0.03
+					],
+					"rot_deg": [
+						-90,
+						180,
+						0
+					],
+					"scale": 0.25
+				}
+			],
+			"weapons_by_slot": [
+				"Pistol",
+				"WoodenBat_Barbed"
+			],
+			"fp_model": "survivor_sam"
+		},
+		"ubc_mechanic_m": {
+			"path": "res://assets/characters/ubc/Superhero_Male_FullBody.gltf",
+			"anim_source": "res://assets/characters/ual/UAL1_Standard.glb",
+			"height_m": 1.78,
+			"yaw_offset_deg": 180.0,
+			"walk_ref_speed": 3.8,
+			"run_ref_speed": 6.5,
+			"run_above_speed": 5.0,
+			"clips": {
+				"idle": "Idle",
+				"walk": "Jog_Fwd",
+				"run": "Sprint",
+				"idle_gun": "Pistol_Idle",
+				"attack": "Punch_Cross",
+				"attack_gun": "Pistol_Shoot",
+				"hit": "Hit_Chest",
+				"death": "Death01",
+				"crouch": "Crouch_Idle"
+			},
+			"outfit": {
+				"shirt": [
+					0.22,
+					0.3,
+					0.42
+				],
+				"pants": [
+					0.18,
+					0.18,
+					0.2
+				],
+				"shoes": [
+					0.1,
+					0.1,
+					0.1
+				],
+				"skin": [
+					0.36,
+					0.25,
+					0.18
+				]
+			},
+			"hair": [
+				"res://assets/characters/ubc/hair/Hair_Long.gltf",
+				"res://assets/characters/ubc/hair/Eyebrows_Regular.gltf"
+			],
+			"hair_color": [
+				0.08,
+				0.07,
+				0.06
+			],
+			"props": [
+				{
+					"node": "Pistol",
+					"from": "res://assets/characters/zombie_apocalypse_kit/glTF/Characters_Matt.gltf",
+					"bone": "hand_r",
+					"pos": [
+						0.0,
+						0.08,
+						0.03
+					],
+					"rot_deg": [
+						0,
+						90,
+						90
+					],
+					"scale": 0.25
+				},
+				{
+					"node": "WoodenBat_Barbed",
+					"from": "res://assets/characters/zombie_apocalypse_kit/glTF/Characters_Matt.gltf",
+					"bone": "hand_r",
+					"pos": [
+						0.0,
+						0.08,
+						0.03
+					],
+					"rot_deg": [
+						-90,
+						180,
+						0
+					],
+					"scale": 0.25
+				}
+			],
+			"weapons_by_slot": [
+				"Pistol",
+				"WoodenBat_Barbed"
+			],
+			"fp_model": "survivor_sam"
+		},
+		"ubc_ranger_f": {
+			"path": "res://assets/characters/ubc/Superhero_Female_FullBody.gltf",
+			"anim_source": "res://assets/characters/ual/UAL1_Standard.glb",
+			"height_m": 1.7,
+			"yaw_offset_deg": 180.0,
+			"walk_ref_speed": 3.8,
+			"run_ref_speed": 6.5,
+			"run_above_speed": 5.0,
+			"clips": {
+				"idle": "Idle",
+				"walk": "Jog_Fwd",
+				"run": "Sprint",
+				"idle_gun": "Pistol_Idle",
+				"attack": "Punch_Cross",
+				"attack_gun": "Pistol_Shoot",
+				"hit": "Hit_Chest",
+				"death": "Death01",
+				"crouch": "Crouch_Idle"
+			},
+			"outfit": {
+				"shirt": [
+					0.35,
+					0.3,
+					0.2
+				],
+				"pants": [
+					0.25,
+					0.22,
+					0.18
+				],
+				"shoes": [
+					0.15,
+					0.11,
+					0.08
+				],
+				"skin": [
+					0.72,
+					0.55,
+					0.43
+				]
+			},
+			"hair": [
+				"res://assets/characters/ubc/hair/Hair_Buns.gltf",
+				"res://assets/characters/ubc/hair/Eyebrows_Female.gltf"
+			],
+			"hair_color": [
+				0.12,
+				0.08,
+				0.05
+			],
+			"props": [
+				{
+					"node": "Pistol",
+					"from": "res://assets/characters/zombie_apocalypse_kit/glTF/Characters_Matt.gltf",
+					"bone": "hand_r",
+					"pos": [
+						0.0,
+						0.08,
+						0.03
+					],
+					"rot_deg": [
+						0,
+						90,
+						90
+					],
+					"scale": 0.25
+				},
+				{
+					"node": "WoodenBat_Barbed",
+					"from": "res://assets/characters/zombie_apocalypse_kit/glTF/Characters_Matt.gltf",
+					"bone": "hand_r",
+					"pos": [
+						0.0,
+						0.08,
+						0.03
+					],
+					"rot_deg": [
+						-90,
+						180,
+						0
+					],
+					"scale": 0.25
+				}
+			],
+			"weapons_by_slot": [
+				"Pistol",
+				"WoodenBat_Barbed"
+			],
+			"fp_model": "survivor_lis"
+		},
+		"ubc_medic_f": {
+			"path": "res://assets/characters/ubc/Superhero_Female_FullBody.gltf",
+			"anim_source": "res://assets/characters/ual/UAL1_Standard.glb",
+			"height_m": 1.7,
+			"yaw_offset_deg": 180.0,
+			"walk_ref_speed": 3.8,
+			"run_ref_speed": 6.5,
+			"run_above_speed": 5.0,
+			"clips": {
+				"idle": "Idle",
+				"walk": "Jog_Fwd",
+				"run": "Sprint",
+				"idle_gun": "Pistol_Idle",
+				"attack": "Punch_Cross",
+				"attack_gun": "Pistol_Shoot",
+				"hit": "Hit_Chest",
+				"death": "Death01",
+				"crouch": "Crouch_Idle"
+			},
+			"outfit": {
+				"shirt": [
+					0.6,
+					0.62,
+					0.6
+				],
+				"pants": [
+					0.2,
+					0.35,
+					0.38
+				],
+				"shoes": [
+					0.85,
+					0.85,
+					0.85
+				],
+				"skin": [
+					0.85,
+					0.68,
+					0.56
+				]
+			},
+			"hair": [
+				"res://assets/characters/ubc/hair/Hair_Long.gltf",
+				"res://assets/characters/ubc/hair/Eyebrows_Female.gltf"
+			],
+			"hair_color": [
+				0.55,
+				0.4,
+				0.2
+			],
+			"props": [
+				{
+					"node": "Pistol",
+					"from": "res://assets/characters/zombie_apocalypse_kit/glTF/Characters_Matt.gltf",
+					"bone": "hand_r",
+					"pos": [
+						0.0,
+						0.08,
+						0.03
+					],
+					"rot_deg": [
+						0,
+						90,
+						90
+					],
+					"scale": 0.25
+				},
+				{
+					"node": "WoodenBat_Barbed",
+					"from": "res://assets/characters/zombie_apocalypse_kit/glTF/Characters_Matt.gltf",
+					"bone": "hand_r",
+					"pos": [
+						0.0,
+						0.08,
+						0.03
+					],
+					"rot_deg": [
+						-90,
+						180,
+						0
+					],
+					"scale": 0.25
+				}
+			],
+			"weapons_by_slot": [
+				"Pistol",
+				"WoodenBat_Barbed"
+			],
+			"fp_model": "survivor_lis"
+		},
+		"ubc_punk_f": {
+			"path": "res://assets/characters/ubc/Superhero_Female_FullBody.gltf",
+			"anim_source": "res://assets/characters/ual/UAL1_Standard.glb",
+			"height_m": 1.7,
+			"yaw_offset_deg": 180.0,
+			"walk_ref_speed": 3.8,
+			"run_ref_speed": 6.5,
+			"run_above_speed": 5.0,
+			"clips": {
+				"idle": "Idle",
+				"walk": "Jog_Fwd",
+				"run": "Sprint",
+				"idle_gun": "Pistol_Idle",
+				"attack": "Punch_Cross",
+				"attack_gun": "Pistol_Shoot",
+				"hit": "Hit_Chest",
+				"death": "Death01",
+				"crouch": "Crouch_Idle"
+			},
+			"outfit": {
+				"shirt": [
+					0.1,
+					0.1,
+					0.11
+				],
+				"pants": [
+					0.4,
+					0.1,
+					0.25
+				],
+				"shoes": [
+					0.1,
+					0.1,
+					0.1
+				],
+				"skin": [
+					0.45,
+					0.31,
+					0.22
+				]
+			},
+			"hair": [
+				"res://assets/characters/ubc/hair/Hair_BuzzedFemale.gltf",
+				"res://assets/characters/ubc/hair/Eyebrows_Female.gltf"
+			],
+			"hair_color": [
+				0.6,
+				0.15,
+				0.4
+			],
+			"props": [
+				{
+					"node": "Pistol",
+					"from": "res://assets/characters/zombie_apocalypse_kit/glTF/Characters_Matt.gltf",
+					"bone": "hand_r",
+					"pos": [
+						0.0,
+						0.08,
+						0.03
+					],
+					"rot_deg": [
+						0,
+						90,
+						90
+					],
+					"scale": 0.25
+				},
+				{
+					"node": "WoodenBat_Barbed",
+					"from": "res://assets/characters/zombie_apocalypse_kit/glTF/Characters_Matt.gltf",
+					"bone": "hand_r",
+					"pos": [
+						0.0,
+						0.08,
+						0.03
+					],
+					"rot_deg": [
+						-90,
+						180,
+						0
+					],
+					"scale": 0.25
+				}
+			],
+			"weapons_by_slot": [
+				"Pistol",
+				"WoodenBat_Barbed"
+			],
+			"fp_model": "survivor_lis"
+		},
+		"raider_gunner_m": {
+			"path": "res://assets/characters/ubc/Superhero_Male_FullBody.gltf",
+			"anim_source": "res://assets/characters/ual/UAL1_Standard.glb",
+			"height_m": 1.78,
+			"yaw_offset_deg": 180.0,
+			"walk_ref_speed": 3.8,
+			"run_ref_speed": 6.5,
+			"run_above_speed": 5.0,
+			"clips": {
+				"idle": "Idle",
+				"walk": "Jog_Fwd",
+				"run": "Sprint",
+				"idle_gun": "Pistol_Idle",
+				"attack": "Punch_Cross",
+				"attack_gun": "Pistol_Shoot",
+				"hit": "Hit_Chest",
+				"death": "Death01",
+				"crouch": "Crouch_Idle"
+			},
+			"outfit": {
+				"shirt": [
+					0.22,
+					0.14,
+					0.09
+				],
+				"pants": [
+					0.18,
+					0.17,
+					0.15
+				],
+				"shoes": [
+					0.08,
+					0.07,
+					0.06
+				],
+				"skin": [
+					0.78,
+					0.6,
+					0.48
+				]
+			},
+			"hair": [
+				"res://assets/characters/ubc/hair/Hair_Buzzed.gltf",
+				"res://assets/characters/ubc/hair/Hair_Beard.gltf",
+				"res://assets/characters/ubc/hair/Eyebrows_Regular.gltf"
+			],
+			"hair_color": [
+				0.2,
+				0.14,
+				0.08
+			],
+			"props": [
+				{
+					"node": "Pistol",
+					"from": "res://assets/characters/zombie_apocalypse_kit/glTF/Characters_Matt.gltf",
+					"bone": "hand_r",
+					"pos": [
+						0.0,
+						0.08,
+						0.03
+					],
+					"rot_deg": [
+						0,
+						90,
+						90
+					],
+					"scale": 0.25
+				},
+				{
+					"node": "WoodenBat_Barbed",
+					"from": "res://assets/characters/zombie_apocalypse_kit/glTF/Characters_Matt.gltf",
+					"bone": "hand_r",
+					"pos": [
+						0.0,
+						0.08,
+						0.03
+					],
+					"rot_deg": [
+						-90,
+						180,
+						0
+					],
+					"scale": 0.25
+				}
+			],
+			"weapons_by_slot": [
+				"Pistol",
+				"WoodenBat_Barbed"
+			],
+			"gear": [
+				{
+					"shape": "box",
+					"bone": "Head",
+					"pos": [
+						0,
+						0.035,
+						0.095
+					],
+					"size": [
+						0.17,
+						0.075,
+						0.05
+					],
+					"color": [
+						0.6,
+						0.08,
+						0.06
+					]
+				},
+				{
+					"shape": "box",
+					"bone": "Head",
+					"pos": [
+						0,
+						0.125,
+						0.0
+					],
+					"size": [
+						0.185,
+						0.03,
+						0.215
+					],
+					"color": [
+						0.12,
+						0.12,
+						0.12
+					]
+				},
+				{
+					"shape": "box",
+					"bone": "Head",
+					"pos": [
+						0,
+						0.125,
+						0.105
+					],
+					"size": [
+						0.13,
+						0.045,
+						0.03
+					],
+					"color": [
+						0.2,
+						0.35,
+						0.3
+					],
+					"metal": 0.5
+				},
+				{
+					"shape": "box",
+					"bone": "upperarm_l",
+					"pos": [
+						-0.07,
+						0.05,
+						0
+					],
+					"size": [
+						0.05,
+						0.17,
+						0.17
+					],
+					"color": [
+						0.42,
+						0.24,
+						0.14
+					],
+					"metal": 0.4
+				},
+				{
+					"shape": "cone",
+					"bone": "upperarm_l",
+					"pos": [
+						-0.12,
+						0.02,
+						0
+					],
+					"size": [
+						0.018,
+						0.07,
+						0
+					],
+					"color": [
+						0.32,
+						0.32,
+						0.34
+					],
+					"rot_deg": [
+						0,
+						0,
+						90
+					],
+					"metal": 0.6
+				},
+				{
+					"shape": "cone",
+					"bone": "upperarm_l",
+					"pos": [
+						-0.12,
+						0.07,
+						0
+					],
+					"size": [
+						0.018,
+						0.07,
+						0
+					],
+					"color": [
+						0.32,
+						0.32,
+						0.34
+					],
+					"rot_deg": [
+						0,
+						0,
+						90
+					],
+					"metal": 0.6
+				},
+				{
+					"shape": "box",
+					"bone": "pelvis",
+					"pos": [
+						0,
+						0.06,
+						0.0
+					],
+					"size": [
+						0.31000000000000005,
+						0.045,
+						0.21
+					],
+					"color": [
+						0.12,
+						0.08,
+						0.05
+					]
+				}
+			]
+		},
+		"raider_scout_f": {
+			"path": "res://assets/characters/ubc/Superhero_Female_FullBody.gltf",
+			"anim_source": "res://assets/characters/ual/UAL1_Standard.glb",
+			"height_m": 1.7,
+			"yaw_offset_deg": 180.0,
+			"walk_ref_speed": 3.8,
+			"run_ref_speed": 6.5,
+			"run_above_speed": 5.0,
+			"clips": {
+				"idle": "Idle",
+				"walk": "Jog_Fwd",
+				"run": "Sprint",
+				"idle_gun": "Pistol_Idle",
+				"attack": "Punch_Cross",
+				"attack_gun": "Pistol_Shoot",
+				"hit": "Hit_Chest",
+				"death": "Death01",
+				"crouch": "Crouch_Idle"
+			},
+			"outfit": {
+				"shirt": [
+					0.25,
+					0.27,
+					0.18
+				],
+				"pants": [
+					0.08,
+					0.08,
+					0.09
+				],
+				"shoes": [
+					0.06,
+					0.06,
+					0.06
+				],
+				"skin": [
+					0.62,
+					0.45,
+					0.34
+				]
+			},
+			"hair": [
+				"res://assets/characters/ubc/hair/Hair_Long.gltf",
+				"res://assets/characters/ubc/hair/Eyebrows_Female.gltf"
+			],
+			"hair_color": [
+				0.55,
+				0.12,
+				0.08
+			],
+			"props": [
+				{
+					"node": "Pistol",
+					"from": "res://assets/characters/zombie_apocalypse_kit/glTF/Characters_Matt.gltf",
+					"bone": "hand_r",
+					"pos": [
+						0.0,
+						0.08,
+						0.03
+					],
+					"rot_deg": [
+						0,
+						90,
+						90
+					],
+					"scale": 0.25
+				},
+				{
+					"node": "WoodenBat_Barbed",
+					"from": "res://assets/characters/zombie_apocalypse_kit/glTF/Characters_Matt.gltf",
+					"bone": "hand_r",
+					"pos": [
+						0.0,
+						0.08,
+						0.03
+					],
+					"rot_deg": [
+						-90,
+						180,
+						0
+					],
+					"scale": 0.25
+				}
+			],
+			"weapons_by_slot": [
+				"Pistol",
+				"WoodenBat_Barbed"
+			],
+			"gear": [
+				{
+					"shape": "box",
+					"bone": "Head",
+					"pos": [
+						0,
+						0.04,
+						0.1
+					],
+					"size": [
+						0.12,
+						0.09,
+						0.07
+					],
+					"color": [
+						0.15,
+						0.15,
+						0.15
+					]
+				},
+				{
+					"shape": "cylinder",
+					"bone": "Head",
+					"pos": [
+						0.0,
+						0.0,
+						0.14
+					],
+					"size": [
+						0.035,
+						0.06,
+						0
+					],
+					"color": [
+						0.3,
+						0.3,
+						0.3
+					],
+					"rot_deg": [
+						90,
+						0,
+						0
+					],
+					"metal": 0.5
+				},
+				{
+					"shape": "box",
+					"bone": "spine_03",
+					"pos": [
+						0,
+						0.0,
+						0.125
+					],
+					"size": [
+						0.06,
+						0.42,
+						0.02
+					],
+					"color": [
+						0.3,
+						0.2,
+						0.1
+					],
+					"rot_deg": [
+						0,
+						0,
+						38
+					]
+				},
+				{
+					"shape": "box",
+					"bone": "upperarm_r",
+					"pos": [
+						0.07,
+						0.05,
+						0
+					],
+					"size": [
+						0.05,
+						0.15,
+						0.15
+					],
+					"color": [
+						0.32,
+						0.32,
+						0.34
+					],
+					"metal": 0.5
+				},
+				{
+					"shape": "cone",
+					"bone": "upperarm_r",
+					"pos": [
+						0.12,
+						0.02,
+						0
+					],
+					"size": [
+						0.018,
+						0.07,
+						0
+					],
+					"color": [
+						0.32,
+						0.32,
+						0.34
+					],
+					"rot_deg": [
+						0,
+						0,
+						-90
+					],
+					"metal": 0.6
+				},
+				{
+					"shape": "box",
+					"bone": "pelvis",
+					"pos": [
+						0,
+						0.06,
+						0.0
+					],
+					"size": [
+						0.29000000000000004,
+						0.045,
+						0.21
+					],
+					"color": [
+						0.1,
+						0.08,
+						0.05
+					]
+				}
+			]
+		},
+		"raider_brute_m": {
+			"path": "res://assets/characters/ubc/Superhero_Male_FullBody.gltf",
+			"anim_source": "res://assets/characters/ual/UAL1_Standard.glb",
+			"height_m": 1.78,
+			"yaw_offset_deg": 180.0,
+			"walk_ref_speed": 3.8,
+			"run_ref_speed": 6.5,
+			"run_above_speed": 5.0,
+			"clips": {
+				"idle": "Idle",
+				"walk": "Jog_Fwd",
+				"run": "Sprint",
+				"idle_gun": "Pistol_Idle",
+				"attack": "Punch_Cross",
+				"attack_gun": "Pistol_Shoot",
+				"hit": "Hit_Chest",
+				"death": "Death01",
+				"crouch": "Crouch_Idle"
+			},
+			"outfit": {
+				"shirt": [
+					0.5,
+					0.32,
+					0.22
+				],
+				"pants": [
+					0.12,
+					0.1,
+					0.09
+				],
+				"shoes": [
+					0.06,
+					0.05,
+					0.05
+				],
+				"skin": [
+					0.5,
+					0.32,
+					0.22
+				]
+			},
+			"hair": [
+				"res://assets/characters/ubc/hair/Hair_Buzzed.gltf",
+				"res://assets/characters/ubc/hair/Eyebrows_Regular.gltf"
+			],
+			"hair_color": [
+				0.08,
+				0.08,
+				0.08
+			],
+			"props": [
+				{
+					"node": "Pistol",
+					"from": "res://assets/characters/zombie_apocalypse_kit/glTF/Characters_Matt.gltf",
+					"bone": "hand_r",
+					"pos": [
+						0.0,
+						0.08,
+						0.03
+					],
+					"rot_deg": [
+						0,
+						90,
+						90
+					],
+					"scale": 0.25
+				},
+				{
+					"node": "WoodenBat_Barbed",
+					"from": "res://assets/characters/zombie_apocalypse_kit/glTF/Characters_Matt.gltf",
+					"bone": "hand_r",
+					"pos": [
+						0.0,
+						0.08,
+						0.03
+					],
+					"rot_deg": [
+						-90,
+						180,
+						0
+					],
+					"scale": 0.25
+				}
+			],
+			"weapons_by_slot": [
+				"Pistol",
+				"WoodenBat_Barbed"
+			],
+			"gear": [
+				{
+					"shape": "box",
+					"bone": "Head",
+					"pos": [
+						0,
+						0.21,
+						-0.01
+					],
+					"size": [
+						0.03,
+						0.07,
+						0.21
+					],
+					"color": [
+						0.75,
+						0.1,
+						0.1
+					]
+				},
+				{
+					"shape": "box",
+					"bone": "Head",
+					"pos": [
+						0,
+						0.03,
+						0.1
+					],
+					"size": [
+						0.15,
+						0.08,
+						0.03
+					],
+					"color": [
+						0.32,
+						0.32,
+						0.34
+					],
+					"metal": 0.6
+				},
+				{
+					"shape": "box",
+					"bone": "spine_03",
+					"pos": [
+						0,
+						0.0,
+						0.13
+					],
+					"size": [
+						0.3,
+						0.26,
+						0.04
+					],
+					"color": [
+						0.42,
+						0.24,
+						0.14
+					],
+					"metal": 0.4
+				},
+				{
+					"shape": "box",
+					"bone": "spine_03",
+					"pos": [
+						0,
+						0.0,
+						-0.13
+					],
+					"size": [
+						0.3,
+						0.26,
+						0.04
+					],
+					"color": [
+						0.42,
+						0.24,
+						0.14
+					],
+					"metal": 0.4
+				},
+				{
+					"shape": "box",
+					"bone": "upperarm_l",
+					"pos": [
+						-0.07,
+						0.05,
+						0
+					],
+					"size": [
+						0.05,
+						0.17,
+						0.17
+					],
+					"color": [
+						0.42,
+						0.24,
+						0.14
+					],
+					"metal": 0.4
+				},
+				{
+					"shape": "cone",
+					"bone": "upperarm_l",
+					"pos": [
+						-0.12,
+						0.02,
+						0
+					],
+					"size": [
+						0.018,
+						0.07,
+						0
+					],
+					"color": [
+						0.32,
+						0.32,
+						0.34
+					],
+					"rot_deg": [
+						0,
+						0,
+						90
+					],
+					"metal": 0.6
+				},
+				{
+					"shape": "cone",
+					"bone": "upperarm_l",
+					"pos": [
+						-0.12,
+						0.07,
+						0
+					],
+					"size": [
+						0.018,
+						0.07,
+						0
+					],
+					"color": [
+						0.32,
+						0.32,
+						0.34
+					],
+					"rot_deg": [
+						0,
+						0,
+						90
+					],
+					"metal": 0.6
+				},
+				{
+					"shape": "cone",
+					"bone": "upperarm_l",
+					"pos": [
+						-0.12,
+						0.12000000000000001,
+						0
+					],
+					"size": [
+						0.018,
+						0.07,
+						0
+					],
+					"color": [
+						0.32,
+						0.32,
+						0.34
+					],
+					"rot_deg": [
+						0,
+						0,
+						90
+					],
+					"metal": 0.6
+				},
+				{
+					"shape": "box",
+					"bone": "upperarm_r",
+					"pos": [
+						0.07,
+						0.05,
+						0
+					],
+					"size": [
+						0.05,
+						0.17,
+						0.17
+					],
+					"color": [
+						0.42,
+						0.24,
+						0.14
+					],
+					"metal": 0.4
+				},
+				{
+					"shape": "cone",
+					"bone": "upperarm_r",
+					"pos": [
+						0.12,
+						0.02,
+						0
+					],
+					"size": [
+						0.018,
+						0.07,
+						0
+					],
+					"color": [
+						0.32,
+						0.32,
+						0.34
+					],
+					"rot_deg": [
+						0,
+						0,
+						-90
+					],
+					"metal": 0.6
+				},
+				{
+					"shape": "cone",
+					"bone": "upperarm_r",
+					"pos": [
+						0.12,
+						0.07,
+						0
+					],
+					"size": [
+						0.018,
+						0.07,
+						0
+					],
+					"color": [
+						0.32,
+						0.32,
+						0.34
+					],
+					"rot_deg": [
+						0,
+						0,
+						-90
+					],
+					"metal": 0.6
+				},
+				{
+					"shape": "cone",
+					"bone": "upperarm_r",
+					"pos": [
+						0.12,
+						0.12000000000000001,
+						0
+					],
+					"size": [
+						0.018,
+						0.07,
+						0
+					],
+					"color": [
+						0.32,
+						0.32,
+						0.34
+					],
+					"rot_deg": [
+						0,
+						0,
+						-90
+					],
+					"metal": 0.6
+				},
+				{
+					"shape": "box",
+					"bone": "pelvis",
+					"pos": [
+						0,
+						0.06,
+						0.0
+					],
+					"size": [
+						0.31000000000000005,
+						0.045,
+						0.21
+					],
+					"color": [
+						0.1,
+						0.07,
+						0.04
+					]
+				}
+			]
+		},
+		"raider_brute_f": {
+			"path": "res://assets/characters/ubc/Superhero_Female_FullBody.gltf",
+			"anim_source": "res://assets/characters/ual/UAL1_Standard.glb",
+			"height_m": 1.7,
+			"yaw_offset_deg": 180.0,
+			"walk_ref_speed": 3.8,
+			"run_ref_speed": 6.5,
+			"run_above_speed": 5.0,
+			"clips": {
+				"idle": "Idle",
+				"walk": "Jog_Fwd",
+				"run": "Sprint",
+				"idle_gun": "Pistol_Idle",
+				"attack": "Punch_Cross",
+				"attack_gun": "Pistol_Shoot",
+				"hit": "Hit_Chest",
+				"death": "Death01",
+				"crouch": "Crouch_Idle"
+			},
+			"outfit": {
+				"shirt": [
+					0.1,
+					0.1,
+					0.1
+				],
+				"pants": [
+					0.28,
+					0.3,
+					0.2
+				],
+				"shoes": [
+					0.07,
+					0.06,
+					0.05
+				],
+				"skin": [
+					0.82,
+					0.66,
+					0.55
+				]
+			},
+			"hair": [
+				"res://assets/characters/ubc/hair/Hair_Buns.gltf",
+				"res://assets/characters/ubc/hair/Eyebrows_Female.gltf"
+			],
+			"hair_color": [
+				0.85,
+				0.75,
+				0.45
+			],
+			"props": [
+				{
+					"node": "Pistol",
+					"from": "res://assets/characters/zombie_apocalypse_kit/glTF/Characters_Matt.gltf",
+					"bone": "hand_r",
+					"pos": [
+						0.0,
+						0.08,
+						0.03
+					],
+					"rot_deg": [
+						0,
+						90,
+						90
+					],
+					"scale": 0.25
+				},
+				{
+					"node": "WoodenBat_Barbed",
+					"from": "res://assets/characters/zombie_apocalypse_kit/glTF/Characters_Matt.gltf",
+					"bone": "hand_r",
+					"pos": [
+						0.0,
+						0.08,
+						0.03
+					],
+					"rot_deg": [
+						-90,
+						180,
+						0
+					],
+					"scale": 0.25
+				}
+			],
+			"weapons_by_slot": [
+				"Pistol",
+				"WoodenBat_Barbed"
+			],
+			"gear": [
+				{
+					"shape": "sphere",
+					"bone": "Head",
+					"pos": [
+						0,
+						0.12,
+						-0.005
+					],
+					"size": [
+						0.115,
+						0,
+						0
+					],
+					"color": [
+						0.32,
+						0.32,
+						0.34
+					],
+					"metal": 0.6
+				},
+				{
+					"shape": "cone",
+					"bone": "Head",
+					"pos": [
+						0,
+						0.25,
+						-0.005
+					],
+					"size": [
+						0.025,
+						0.09,
+						0
+					],
+					"color": [
+						0.32,
+						0.32,
+						0.34
+					],
+					"rot_deg": [
+						0,
+						0,
+						0
+					],
+					"metal": 0.6
+				},
+				{
+					"shape": "box",
+					"bone": "Head",
+					"pos": [
+						0,
+						0.06,
+						0.1
+					],
+					"size": [
+						0.15,
+						0.03,
+						0.03
+					],
+					"color": [
+						0.05,
+						0.05,
+						0.05
+					]
+				},
+				{
+					"shape": "box",
+					"bone": "upperarm_l",
+					"pos": [
+						-0.07,
+						0.05,
+						0
+					],
+					"size": [
+						0.05,
+						0.15,
+						0.15
+					],
+					"color": [
+						0.32,
+						0.32,
+						0.34
+					],
+					"metal": 0.5
+				},
+				{
+					"shape": "cone",
+					"bone": "upperarm_l",
+					"pos": [
+						-0.12,
+						0.02,
+						0
+					],
+					"size": [
+						0.018,
+						0.07,
+						0
+					],
+					"color": [
+						0.32,
+						0.32,
+						0.34
+					],
+					"rot_deg": [
+						0,
+						0,
+						90
+					],
+					"metal": 0.6
+				},
+				{
+					"shape": "cone",
+					"bone": "upperarm_l",
+					"pos": [
+						-0.12,
+						0.07,
+						0
+					],
+					"size": [
+						0.018,
+						0.07,
+						0
+					],
+					"color": [
+						0.32,
+						0.32,
+						0.34
+					],
+					"rot_deg": [
+						0,
+						0,
+						90
+					],
+					"metal": 0.6
+				},
+				{
+					"shape": "box",
+					"bone": "upperarm_r",
+					"pos": [
+						0.07,
+						0.05,
+						0
+					],
+					"size": [
+						0.05,
+						0.15,
+						0.15
+					],
+					"color": [
+						0.32,
+						0.32,
+						0.34
+					],
+					"metal": 0.5
+				},
+				{
+					"shape": "cone",
+					"bone": "upperarm_r",
+					"pos": [
+						0.12,
+						0.02,
+						0
+					],
+					"size": [
+						0.018,
+						0.07,
+						0
+					],
+					"color": [
+						0.32,
+						0.32,
+						0.34
+					],
+					"rot_deg": [
+						0,
+						0,
+						-90
+					],
+					"metal": 0.6
+				},
+				{
+					"shape": "cone",
+					"bone": "upperarm_r",
+					"pos": [
+						0.12,
+						0.07,
+						0
+					],
+					"size": [
+						0.018,
+						0.07,
+						0
+					],
+					"color": [
+						0.32,
+						0.32,
+						0.34
+					],
+					"rot_deg": [
+						0,
+						0,
+						-90
+					],
+					"metal": 0.6
+				},
+				{
+					"shape": "box",
+					"bone": "pelvis",
+					"pos": [
+						0,
+						0.06,
+						0.0
+					],
+					"size": [
+						0.29000000000000004,
+						0.045,
+						0.21
+					],
+					"color": [
+						0.12,
+						0.08,
+						0.05
+					]
+				}
+			]
+		},
+		"raider_boss": {
+			"path": "res://assets/characters/ubc/Superhero_Male_FullBody.gltf",
+			"anim_source": "res://assets/characters/ual/UAL1_Standard.glb",
+			"height_m": 1.78,
+			"yaw_offset_deg": 180.0,
+			"walk_ref_speed": 3.8,
+			"run_ref_speed": 6.5,
+			"run_above_speed": 5.0,
+			"clips": {
+				"idle": "Idle",
+				"walk": "Jog_Fwd",
+				"run": "Sprint",
+				"idle_gun": "Pistol_Idle",
+				"attack": "Punch_Cross",
+				"attack_gun": "Pistol_Shoot",
+				"hit": "Hit_Chest",
+				"death": "Death01",
+				"crouch": "Crouch_Idle"
+			},
+			"outfit": {
+				"shirt": [
+					0.45,
+					0.24,
+					0.12
+				],
+				"pants": [
+					0.08,
+					0.07,
+					0.07
+				],
+				"shoes": [
+					0.05,
+					0.04,
+					0.04
+				],
+				"skin": [
+					0.74,
+					0.56,
+					0.44
+				]
+			},
+			"hair": [
+				"res://assets/characters/ubc/hair/Hair_SimpleParted.gltf",
+				"res://assets/characters/ubc/hair/Hair_Beard.gltf",
+				"res://assets/characters/ubc/hair/Eyebrows_Regular.gltf"
+			],
+			"hair_color": [
+				0.55,
+				0.22,
+				0.08
+			],
+			"props": [
+				{
+					"node": "Pistol",
+					"from": "res://assets/characters/zombie_apocalypse_kit/glTF/Characters_Matt.gltf",
+					"bone": "hand_r",
+					"pos": [
+						0.0,
+						0.08,
+						0.03
+					],
+					"rot_deg": [
+						0,
+						90,
+						90
+					],
+					"scale": 0.25
+				},
+				{
+					"node": "WoodenBat_Barbed",
+					"from": "res://assets/characters/zombie_apocalypse_kit/glTF/Characters_Matt.gltf",
+					"bone": "hand_r",
+					"pos": [
+						0.0,
+						0.08,
+						0.03
+					],
+					"rot_deg": [
+						-90,
+						180,
+						0
+					],
+					"scale": 0.25
+				}
+			],
+			"weapons_by_slot": [
+				"Pistol",
+				"WoodenBat_Barbed"
+			],
+			"gear": [
+				{
+					"shape": "box",
+					"bone": "spine_03",
+					"pos": [
+						0,
+						0.0,
+						0.135
+					],
+					"size": [
+						0.32,
+						0.28,
+						0.04
+					],
+					"color": [
+						0.72,
+						0.4,
+						0.2
+					],
+					"metal": 0.8
+				},
+				{
+					"shape": "box",
+					"bone": "Head",
+					"pos": [
+						0,
+						0.1,
+						0.098
+					],
+					"size": [
+						0.17,
+						0.04,
+						0.03
+					],
+					"color": [
+						0.72,
+						0.4,
+						0.2
+					],
+					"metal": 0.8
+				},
+				{
+					"shape": "cone",
+					"bone": "Head",
+					"pos": [
+						0,
+						0.24,
+						0.0
+					],
+					"size": [
+						0.02,
+						0.08,
+						0
+					],
+					"color": [
+						0.72,
+						0.4,
+						0.2
+					],
+					"rot_deg": [
+						0,
+						0,
+						0
+					],
+					"metal": 0.8
+				},
+				{
+					"shape": "cone",
+					"bone": "Head",
+					"pos": [
+						0.05,
+						0.22,
+						0.0
+					],
+					"size": [
+						0.018,
+						0.07,
+						0
+					],
+					"color": [
+						0.72,
+						0.4,
+						0.2
+					],
+					"rot_deg": [
+						0,
+						0,
+						-20
+					],
+					"metal": 0.8
+				},
+				{
+					"shape": "cone",
+					"bone": "Head",
+					"pos": [
+						-0.05,
+						0.22,
+						0.0
+					],
+					"size": [
+						0.018,
+						0.07,
+						0
+					],
+					"color": [
+						0.72,
+						0.4,
+						0.2
+					],
+					"rot_deg": [
+						0,
+						0,
+						20
+					],
+					"metal": 0.8
+				},
+				{
+					"shape": "box",
+					"bone": "upperarm_l",
+					"pos": [
+						-0.07,
+						0.05,
+						0
+					],
+					"size": [
+						0.05,
+						0.17,
+						0.17
+					],
+					"color": [
+						0.72,
+						0.4,
+						0.2
+					],
+					"metal": 0.8
+				},
+				{
+					"shape": "cone",
+					"bone": "upperarm_l",
+					"pos": [
+						-0.12,
+						0.02,
+						0
+					],
+					"size": [
+						0.018,
+						0.07,
+						0
+					],
+					"color": [
+						0.32,
+						0.32,
+						0.34
+					],
+					"rot_deg": [
+						0,
+						0,
+						90
+					],
+					"metal": 0.6
+				},
+				{
+					"shape": "cone",
+					"bone": "upperarm_l",
+					"pos": [
+						-0.12,
+						0.07,
+						0
+					],
+					"size": [
+						0.018,
+						0.07,
+						0
+					],
+					"color": [
+						0.32,
+						0.32,
+						0.34
+					],
+					"rot_deg": [
+						0,
+						0,
+						90
+					],
+					"metal": 0.6
+				},
+				{
+					"shape": "cone",
+					"bone": "upperarm_l",
+					"pos": [
+						-0.12,
+						0.12000000000000001,
+						0
+					],
+					"size": [
+						0.018,
+						0.07,
+						0
+					],
+					"color": [
+						0.32,
+						0.32,
+						0.34
+					],
+					"rot_deg": [
+						0,
+						0,
+						90
+					],
+					"metal": 0.6
+				},
+				{
+					"shape": "box",
+					"bone": "upperarm_r",
+					"pos": [
+						0.07,
+						0.05,
+						0
+					],
+					"size": [
+						0.05,
+						0.17,
+						0.17
+					],
+					"color": [
+						0.72,
+						0.4,
+						0.2
+					],
+					"metal": 0.8
+				},
+				{
+					"shape": "cone",
+					"bone": "upperarm_r",
+					"pos": [
+						0.12,
+						0.02,
+						0
+					],
+					"size": [
+						0.018,
+						0.07,
+						0
+					],
+					"color": [
+						0.32,
+						0.32,
+						0.34
+					],
+					"rot_deg": [
+						0,
+						0,
+						-90
+					],
+					"metal": 0.6
+				},
+				{
+					"shape": "cone",
+					"bone": "upperarm_r",
+					"pos": [
+						0.12,
+						0.07,
+						0
+					],
+					"size": [
+						0.018,
+						0.07,
+						0
+					],
+					"color": [
+						0.32,
+						0.32,
+						0.34
+					],
+					"rot_deg": [
+						0,
+						0,
+						-90
+					],
+					"metal": 0.6
+				},
+				{
+					"shape": "cone",
+					"bone": "upperarm_r",
+					"pos": [
+						0.12,
+						0.12000000000000001,
+						0
+					],
+					"size": [
+						0.018,
+						0.07,
+						0
+					],
+					"color": [
+						0.32,
+						0.32,
+						0.34
+					],
+					"rot_deg": [
+						0,
+						0,
+						-90
+					],
+					"metal": 0.6
+				},
+				{
+					"shape": "box",
+					"bone": "pelvis",
+					"pos": [
+						0,
+						0.06,
+						0.0
+					],
+					"size": [
+						0.31000000000000005,
+						0.045,
+						0.21
+					],
+					"color": [
+						0.3,
+						0.16,
+						0.08
+					]
+				}
+			]
+		}
+	},
+	"fp_offset": [
+		0.24,
+		-1.58,
+		0.02
+	],
+	"fp_hide_bones": [
+		"Head",
+		"Neck",
+		"UpperLeg.L",
+		"UpperLeg.R",
+		"Foot.L",
+		"Foot.R"
+	],
+	"player_models": [
+		"survivor_lis",
+		"survivor_sam",
+		"survivor_shaun",
+		"ubc_scavenger_m",
+		"ubc_drifter_m",
+		"ubc_mechanic_m",
+		"ubc_ranger_f",
+		"ubc_medic_f",
+		"ubc_punk_f"
+	]
+}

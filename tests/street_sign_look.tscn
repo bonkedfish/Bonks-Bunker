@@ -1,0 +1,6 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://tests/street_sign_look.gd" id="1_test"]
+
+[node name="StreetSignLook" type="Node"]
+script = ExtResource("1_test")

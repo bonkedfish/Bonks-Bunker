@@ -1,0 +1,20 @@
+{
+	"textures_dir": "res://assets/textures",
+	"ground": {"texture": "grass_dry", "tile_m": 3.0, "tint": [1.0, 1.0, 1.0], "variation": 0.25},
+	"pitched_roof": {"texture": "roof_shingles", "tile_m": 2.0},
+	"surfaces": {
+		"asphalt": {"texture": "road_cracked", "tile_m": 4.0, "tint": [1.0, 1.0, 1.0], "joint_spacing_m": 0.0, "centre_joint": false},
+		"concrete": {"texture": "concrete_slab", "tile_m": 3.0, "tint": [1.7, 1.8, 2.05], "joint_spacing_m": 4.5, "centre_joint": true},
+		"gravel": {"texture": "gravel", "tile_m": 3.0, "tint": [1.0, 1.0, 1.0], "joint_spacing_m": 0.0, "centre_joint": false},
+		"sidewalk": {"texture": "concrete_slab", "tile_m": 2.0, "tint": [1.8, 1.9, 2.2], "joint_spacing_m": 1.5, "centre_joint": false}
+	},
+	"surface_by_osm_tag": {"concrete": "concrete", "concrete:plates": "concrete", "asphalt": "asphalt", "paved": "asphalt",
+		"gravel": "gravel", "fine_gravel": "gravel", "compacted": "gravel", "unpaved": "gravel", "dirt": "gravel"},
+	"default_surface": {"drivable": "asphalt", "alley": "gravel", "service": "concrete", "path": "sidewalk"},
+	"centre_line": {"primary": 1.0, "secondary": 1.0, "tertiary": 0.5},
+	"line_wear": 0.35,
+	"sidewalk_kinds": ["residential", "living_street", "tertiary", "secondary", "primary"],
+	"sidewalk": {"parkway_m": 2.0, "width_m": 1.5, "lift_m": 0.1, "curb_height_m": 0.15, "curb_width_m": 0.15},
+	"intersection_min_angle_deg": 30.0,
+	"intersection_margin_m": 1.0
+}

@@ -1,0 +1,436 @@
+{
+ "note": "Disc golf courses (D-069), map coords (x east, z south, metres). Centennial Park DGC, Kearney: UDisc 'centennial-park-6iCA' Main layout, 9 holes, all par 3, lengths from UDisc; tee/basket spots traced from the user's UDisc screenshot (white pads = tees, 'Main' icons = baskets) and snapped to the UDisc lengths along each traced line. 'box' = course box at hole 1 (start a round there). 'bounds' [x0, z0, x1, z1] = park rect: zombies kept out during a round, round abandoned 'leave_m' outside it. Cottonmill DGC (D-073): the layout drawn on the user's UDisc screenshot (mixed Long/Short/Main/Left/Right tees and baskets), incl. the hidden hole \"9 1/2\" between 2 and 11; lengths measured along the drawn lines at 0.53 m/px (screen scale fitted to the park roads), par 4 for 400 ft and up. Optional hole keys: \"label\" (shown instead of the number), \"via\" (dogleg points, for length / reference).",
+ "centennial": {
+  "name": "Centennial Park DGC",
+  "landmark": "centennial_dgc",
+  "box": [
+   985.5,
+   -309.5
+  ],
+  "bounds": [
+   895.0,
+   -528.0,
+   1192.0,
+   -292.0
+  ],
+  "holes": [
+   {
+    "par": 3,
+    "length_ft": 193,
+    "tee": [
+     982.4,
+     -303.6
+    ],
+    "basket": [
+     924.3,
+     -312.5
+    ]
+   },
+   {
+    "par": 3,
+    "length_ft": 178,
+    "tee": [
+     921.6,
+     -329.0
+    ],
+    "basket": [
+     941.7,
+     -379.4
+    ]
+   },
+   {
+    "par": 3,
+    "length_ft": 189,
+    "tee": [
+     912.2,
+     -405.5
+    ],
+    "basket": [
+     969.8,
+     -406.8
+    ]
+   },
+   {
+    "par": 3,
+    "length_ft": 195,
+    "tee": [
+     1037.8,
+     -410.6
+    ],
+    "basket": [
+     1047.2,
+     -469.3
+    ]
+   },
+   {
+    "par": 3,
+    "length_ft": 214,
+    "tee": [
+     1089.0,
+     -452.6
+    ],
+    "basket": [
+     1154.0,
+     -457.5
+    ]
+   },
+   {
+    "par": 3,
+    "length_ft": 218,
+    "tee": [
+     1158.9,
+     -447.8
+    ],
+    "basket": [
+     1156.0,
+     -514.1
+    ]
+   },
+   {
+    "par": 3,
+    "length_ft": 208,
+    "tee": [
+     1174.4,
+     -509.1
+    ],
+    "basket": [
+     1168.9,
+     -446.0
+    ]
+   },
+   {
+    "par": 3,
+    "length_ft": 167,
+    "tee": [
+     1178.7,
+     -437.9
+    ],
+    "basket": [
+     1161.8,
+     -389.9
+    ]
+   },
+   {
+    "par": 3,
+    "length_ft": 283,
+    "tee": [
+     1156.5,
+     -418.8
+    ],
+    "basket": [
+     1074.6,
+     -446.0
+    ]
+   }
+  ]
+ },
+ "cottonmill": {
+  "name": "Cottonmill DGC",
+  "landmark": "cottonmill_dgc",
+  "box": [
+   -3264.0,
+   -2554.7
+  ],
+  "bounds": [
+   -3587.0,
+   -2688.0,
+   -3180.0,
+   -2337.0
+  ],
+  "holes": [
+   {
+    "par": 3,
+    "length_ft": 193,
+    "tee": [
+     -3267.0,
+     -2551.2
+    ],
+    "basket": [
+     -3224.6,
+     -2591.8
+    ]
+   },
+   {
+    "par": 3,
+    "length_ft": 375,
+    "tee": [
+     -3243.0,
+     -2590.8
+    ],
+    "basket": [
+     -3344.7,
+     -2567.1
+    ],
+    "via": [
+     [
+      -3325.3,
+      -2592.5
+     ]
+    ]
+   },
+   {
+    "par": 4,
+    "length_ft": 543,
+    "tee": [
+     -3353.6,
+     -2568.8
+    ],
+    "basket": [
+     -3464.9,
+     -2623.6
+    ],
+    "via": [
+     [
+      -3376.5,
+      -2639.5
+     ],
+     [
+      -3418.9,
+      -2640.2
+     ]
+    ]
+   },
+   {
+    "par": 3,
+    "length_ft": 199,
+    "tee": [
+     -3415.4,
+     -2614.1
+    ],
+    "basket": [
+     -3455.0,
+     -2568.1
+    ]
+   },
+   {
+    "par": 3,
+    "length_ft": 256,
+    "tee": [
+     -3464.9,
+     -2558.9
+    ],
+    "basket": [
+     -3512.6,
+     -2611.9
+    ],
+    "via": [
+     [
+      -3489.6,
+      -2607.7
+     ]
+    ]
+   },
+   {
+    "par": 3,
+    "length_ft": 365,
+    "tee": [
+     -3464.9,
+     -2628.9
+    ],
+    "basket": [
+     -3556.7,
+     -2657.9
+    ],
+    "via": [
+     [
+      -3489.6,
+      -2639.5
+     ],
+     [
+      -3521.4,
+      -2636.0
+     ],
+     [
+      -3532.0,
+      -2627.8
+     ]
+    ]
+   },
+   {
+    "par": 3,
+    "length_ft": 262,
+    "tee": [
+     -3528.5,
+     -2620.1
+    ],
+    "basket": [
+     -3491.4,
+     -2549.4
+    ]
+   },
+   {
+    "par": 3,
+    "length_ft": 284,
+    "tee": [
+     -3470.2,
+     -2528.2
+    ],
+    "basket": [
+     -3415.4,
+     -2595.3
+    ]
+   },
+   {
+    "par": 3,
+    "length_ft": 274,
+    "tee": [
+     -3397.7,
+     -2597.1
+    ],
+    "basket": [
+     -3318.9,
+     -2622.6
+    ],
+    "via": [
+     [
+      -3334.1,
+      -2621.8
+     ]
+    ]
+   },
+   {
+    "par": 3,
+    "length_ft": 189,
+    "tee": [
+     -3303.0,
+     -2563.5
+    ],
+    "basket": [
+     -3332.4,
+     -2514.1
+    ],
+    "label": "9\u00bd"
+   },
+   {
+    "par": 4,
+    "length_ft": 482,
+    "tee": [
+     -3358.9,
+     -2558.9
+    ],
+    "basket": [
+     -3413.6,
+     -2439.9
+    ],
+    "via": [
+     [
+      -3365.9,
+      -2494.6
+     ],
+     [
+      -3401.3,
+      -2435.3
+     ]
+    ]
+   },
+   {
+    "par": 3,
+    "length_ft": 302,
+    "tee": [
+     -3350.0,
+     -2456.5
+    ],
+    "basket": [
+     -3282.9,
+     -2519.4
+    ]
+   },
+   {
+    "par": 3,
+    "length_ft": 160,
+    "tee": [
+     -3311.2,
+     -2503.5
+    ],
+    "basket": [
+     -3359.9,
+     -2505.2
+    ]
+   },
+   {
+    "par": 3,
+    "length_ft": 164,
+    "tee": [
+     -3363.1,
+     -2459.3
+    ],
+    "basket": [
+     -3369.5,
+     -2409.8
+    ]
+   },
+   {
+    "par": 3,
+    "length_ft": 151,
+    "tee": [
+     -3350.0,
+     -2429.3
+    ],
+    "basket": [
+     -3349.3,
+     -2383.3
+    ]
+   },
+   {
+    "par": 4,
+    "length_ft": 593,
+    "tee": [
+     -3343.0,
+     -2367.4
+    ],
+    "basket": [
+     -3210.5,
+     -2484.0
+    ],
+    "via": [
+     [
+      -3284.7,
+      -2393.9
+     ]
+    ]
+   },
+   {
+    "par": 3,
+    "length_ft": 233,
+    "tee": [
+     -3328.8,
+     -2393.9
+    ],
+    "basket": [
+     -3318.2,
+     -2459.3
+    ],
+    "via": [
+     [
+      -3335.9,
+      -2431.0
+     ]
+    ]
+   },
+   {
+    "par": 3,
+    "length_ft": 244,
+    "tee": [
+     -3293.5,
+     -2458.6
+    ],
+    "basket": [
+     -3234.1,
+     -2503.5
+    ]
+   },
+   {
+    "par": 3,
+    "length_ft": 216,
+    "tee": [
+     -3254.6,
+     -2497.1
+    ],
+    "basket": [
+     -3212.2,
+     -2547.6
+    ]
+   }
+  ]
+ }
+}

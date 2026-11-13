@@ -1,0 +1,6 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://tools/assets/fetch_textures.gd" id="1_tex"]
+
+[node name="FetchTextures" type="Node"]
+script = ExtResource("1_tex")
