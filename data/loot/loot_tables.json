@@ -2,7 +2,7 @@
 	"meepo_dock": {
 		"rolls_min": 1.0, "rolls_max": 1.0,
 		"entries": [
-			{ "item": "meepo", "weight": 1.0, "min": 4.0, "max": 4.0 }
+			{ "item": "meepo", "weight": 1.0, "min": 10.0, "max": 10.0 }
 		]
 	},
 	"khs_science_kit": {

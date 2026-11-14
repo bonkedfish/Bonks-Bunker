@@ -558,3 +558,12 @@ Player.ask_name (host -> owner) / submit_name (owner -> host, cleaned, re-asks o
 name from the save, asks when missing; SaveFormat player entry has optional "name" (no version bump).
 Tests: coop_test PASS 0 failed (host + client prompts, client sees the host's tag text, save keeps both names);
 disc_golf_test 0 failures; parse_check 55/55 OK.
+
+RELEASE alpha2.3 (2026-11-13 20:09): published https://github.com/bonkedfish/Bonks-Bunker/releases/tag/alpha2.3
+(Windows + Mac, each zip split in 2 parts; 533 s). Contains Kenwood + Centennial pool, the five POIs + golf paint,
+disc golf sound/key-3 fixes, player names + name tags (D-081). Release commits now carry data/release/release.json
+"commit_trailer" (Claude attribution lines).
+
+MEEPO DOCK (2026-11-13 21:25): bunker Meepo dock (loot table meepo_dock) now holds 10 Meepos instead of 4 - user ask.
+Worlds whose dock was already opened keep what their save says is left; new worlds / unopened docks get 10.
+Player cap: user asked about 8 players, then chose to do only the Meepo change for now (project brief still 1-6).
