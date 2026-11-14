@@ -3,11 +3,13 @@
 # Shell, rooms, furniture, burn damage, signs, lights, loot and lair markers are data (LandmarkParts); this file adds
 # the repeated set pieces: the bowling centre (lanes, gutters, approaches, ball returns, pinsetter housings, masking
 # panels, score monitors, a few racks of pins), rows of arcade cabinets, and the outdoor go-kart track (asphalt
-# ribbon along a traced centre line, tyre stacks on both edges, parked karts).
-# Depends on: LandmarkKit, landmark_parts.gd.
+# ribbon along a traced centre line, tyre stacks on both edges, parked karts), and the playable pool tables (D-084:
+# a PoolTable from scenes/pool_table.tscn at each "pool_tables" spot, named PoolTable_<n>).
+# Depends on: LandmarkKit, landmark_parts.gd, scenes/pool_table.tscn.
 extends RefCounted
 
 const Parts := preload("res://tools/landmarks/landmark_parts.gd")
+const POOL_TABLE := preload("res://scenes/pool_table.tscn")
 
 
 static func build(k: LandmarkKit, d: Dictionary, rng: RandomNumberGenerator) -> void:
@@ -17,6 +19,12 @@ static func build(k: LandmarkKit, d: Dictionary, rng: RandomNumberGenerator) -> 
 	for row: Dictionary in d.arcade_rows:
 		_cabinets(k, row, fy, rng)
 	_kart_track(k, d.kart_track, rng)
+	var n := 1
+	for pt: Dictionary in d.get("pool_tables", []):  # [x, z] + yaw_deg; the table's floor is the room floor
+		var at: Array = pt.pos
+		k.place(POOL_TABLE, Transform3D(Basis(Vector3.UP, deg_to_rad(float(pt.get("yaw_deg", 0.0)))), Vector3(at[0], fy, at[1])),
+			{"table_id": "big_apple_%d" % n}, "PoolTable_%d" % n)
+		n += 1
 
 
 # Lanes run along z from the approach (z_approach) past the foul line (z_foul) to the pins (z_pins) and the pit.

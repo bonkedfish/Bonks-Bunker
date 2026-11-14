@@ -1,10 +1,11 @@
 # DiscCourse — one disc golf course in the world (D-069), the landmark scene scenes/disc_course.tscn placed by
 # LandmarkLoader (data/map/landmarks.json "centennial_dgc"). Builds from data/discgolf/courses.json at load:
 # a Mach II-style basket per hole (pole, tray, chains, glowing yellow band (D-076), hole number; one shared vertex-coloured mesh),
-# an asphalt tee pad with a sign (hole, par, length) and the course box at hole 1 (E: start / join a round).
+# an asphalt tee pad with a sign (hole, par, length) and the course box at hole 1 (E: start / join a round), and
+# John Pork's VendorCamp (tent, vendor, records board, Meepo dock) where the course has a "camp" (D-082).
 # Course data is in map coordinates; each piece drops onto the ground with a ray when its cell has loaded.
 # Group "disc_courses". Course box body: group "course_boxes" (display_name, course_id) on the interactable layer.
-# Visual + colliders only; rounds live in DiscGolfDirector. Depends on: DiscGolfRules, WorldStreamer
+# Visual + colliders only; rounds live in DiscGolfDirector. Depends on: DiscGolfRules, VendorCamp, WorldStreamer
 # (group "world_streamer": cell_loaded).
 class_name DiscCourse
 extends Node3D
@@ -19,6 +20,7 @@ var course: Dictionary = {}
 var _baskets: Array[Node3D] = []
 var _tees: Array[Node3D] = []
 var _box: Node3D
+var camp: VendorCamp
 var _unsnapped: Array[Node3D] = []
 var _rids: Array[RID] = []
 
@@ -47,6 +49,8 @@ func _ready() -> void:
 		_baskets.append(_add_basket(basket, DiscGolfRules.hole_label(course, i)))
 		_tees.append(_add_tee(tee, dir, DiscGolfRules.hole_label(course, i), h))
 	_box = _add_box(_map(course.box))
+	if course.has("camp"):
+		_add_camp(course.camp)
 	var streamer := get_tree().get_first_node_in_group("world_streamer")
 	if streamer and streamer.has_signal("cell_loaded"):
 		streamer.cell_loaded.connect(func(_c: Vector2i) -> void: _snap.call_deferred())
@@ -183,6 +187,17 @@ func _add_box(local: Vector3) -> Node3D:
 	label.visibility_range_end = 30.0
 	a.add_child(label)
 	return a
+
+
+# John Pork's tent, its front turned to the camp's "face" point (D-082).
+func _add_camp(def: Dictionary) -> void:
+	var at := _map(def.at)
+	var face := _map(def.get("face", course.box))
+	var a := _anchor(at)
+	camp = VendorCamp.new()
+	camp.rotation.y = atan2(-(face.x - at.x), -(face.z - at.z))  # its -Z toward `face`
+	a.add_child(camp)
+	_rids.append_array(camp.build(course_id, course))
 
 
 func _label(text: String, font_size: int, col: Color) -> Label3D:

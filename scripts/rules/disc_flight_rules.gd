@@ -27,7 +27,7 @@ const TUNING_SCHEMA := {"note": TYPE_STRING, "lift_base": TYPE_FLOAT, "lift_glid
 	"pole_radius_m": TYPE_FLOAT, "start_radius_m": TYPE_FLOAT, "box_use_m": TYPE_FLOAT, "lie_radius_m": TYPE_FLOAT,
 	"tee_radius_m": TYPE_FLOAT, "max_strokes": TYPE_FLOAT, "leave_m": TYPE_FLOAT, "wind_max_mph": TYPE_FLOAT,
 	"wind_shift_s": TYPE_ARRAY, "wind_turn_max_deg": TYPE_FLOAT, "wind_effect": TYPE_FLOAT, "ace_slowmo": TYPE_FLOAT,
-	"ace_slowmo_s": TYPE_FLOAT, "rewards": TYPE_DICTIONARY}
+	"ace_slowmo_s": TYPE_FLOAT, "impaired_throw": TYPE_DICTIONARY, "water_penalty": TYPE_FLOAT, "rewards": TYPE_DICTIONARY}
 const G := 9.8
 const MPH := 0.44704  # m/s
 const COMPASS := ["N", "NE", "E", "SE", "S", "SW", "W", "NW"]

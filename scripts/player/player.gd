@@ -13,10 +13,12 @@
 # surface colliders (layer 32) gives the depth at the feet; wading slows, swimming floats (no sprint, no firing).
 # Name (D-081): net_name is the character's name in this world (host sets it from the save or from the owner's
 # NamePrompt via submit_name); other players see it on a NameTag over this body.
+# Motorcycle (D-083): while "Bike" (BikeRider) is mounted, _simulate hands the intent (plus the gear the rider picked,
+# sent with every intent) to it, the mouse orbits its camera, fire / reload / weapon swaps are off.
 # Depends on: MovementRules, CombatRules, CarryRules, DataLoader, NetClock, Health, WeaponHolder, LifeState,
 #             InventoryHolder, Viewmodel, CharacterAnimator (Body: other players see an animated survivor model,
 #             D-045), data/tuning/player_movement.json, combat.json, inventory.json, data/art/character_models.json,
-#             NameTag, NameRules, NamePrompt (group "name_prompt").
+#             NameTag, NameRules, NamePrompt (group "name_prompt"), BikeRider.
 extends CharacterBody3D
 
 const NameTag := preload("res://scripts/player/name_tag.gd")
@@ -92,6 +94,7 @@ var _q_yaw := PackedFloat32Array()
 var _q_pitch := PackedFloat32Array()
 var _q_view := PackedFloat64Array()
 var _q_seq := PackedInt32Array()
+var _q_gear := PackedInt32Array()
 var _q_next := 0
 var _q_count := 0
 var _last_queued_seq := 0
@@ -121,6 +124,7 @@ var _s_count := 0
 @onready var meepo: MeepoRider = $Meepo
 @onready var disc: DiscThrower = $Disc
 @onready var sport: SportInput = $Sport
+@onready var bike: BikeRider = $Bike
 
 var riding: bool:  # on the Meepo (D-057)
 	get:
@@ -171,6 +175,7 @@ func _ready() -> void:
 	_q_pitch.resize(INTENT_QUEUE_SIZE)
 	_q_view.resize(INTENT_QUEUE_SIZE)
 	_q_seq.resize(INTENT_QUEUE_SIZE)
+	_q_gear.resize(INTENT_QUEUE_SIZE)
 	_s_time.resize(SNAP_BUFFER)
 	_s_pos.resize(SNAP_BUFFER)
 	_s_yaw.resize(SNAP_BUFFER)
@@ -223,6 +228,9 @@ func _unhandled_input(event: InputEvent) -> void:
 	var motion := event as InputEventMouseMotion
 	if motion:
 		var sens: float = tuning.mouse_sensitivity
+		if bike.mounted:  # orbit the bike camera
+			bike.look(motion.relative.x * sens, motion.relative.y * sens)
+			return
 		yaw = wrapf(yaw - motion.relative.x * sens, -PI, PI)
 		pitch = clampf(pitch - motion.relative.y * sens, -PITCH_LIMIT, PITCH_LIMIT)
 		rotation.y = yaw
@@ -234,8 +242,10 @@ func _physics_process(delta: float) -> void:
 	if multiplayer.is_server():
 		if is_local:
 			var flags := _read_local_flags()
+			if bike.mounted:
+				yaw = bike.look_yaw()
 			if not dead:
-				_simulate(_read_local_move(), flags, yaw, pitch)
+				_simulate(_read_local_move(), flags, yaw, pitch, bike.want_gear)
 			weapons.host_step(_dry_flags(flags), yaw, pitch, float(_clock.tick), delta, dead)
 			_host_try_revive(flags, delta)
 		else:
@@ -245,6 +255,7 @@ func _physics_process(delta: float) -> void:
 		item_use.host_tick(delta)
 		effects.host_tick(delta, life.net_state == LifeState.ALIVE)
 		meepo.host_tick(delta)
+		bike.host_tick(delta)
 		_hit_history.record(_clock.tick, global_position, _current_height())
 		net_position = global_position
 		net_yaw = yaw
@@ -255,17 +266,20 @@ func _physics_process(delta: float) -> void:
 		var move := Vector2.ZERO if dead else _read_local_move()
 		var flags := _read_local_flags() if not dead else (WeaponHolder.FLAG_SLOT2 if selected_slot == 1 else 0)
 		_seq += 1
-		_send_intent.rpc_id(1, _seq, move, flags, yaw, pitch, _clock.view_tick())
+		if bike.mounted:
+			yaw = bike.look_yaw()
+		_send_intent.rpc_id(1, _seq, move, flags, yaw, pitch, _clock.view_tick(), bike.want_gear)
 		if not dead:
-			_simulate(move, flags, yaw, pitch)
+			_simulate(move, flags, yaw, pitch, bike.want_gear)
 		_history[_seq % HISTORY_SIZE] = global_position
+		bike.record(_seq)
 		weapons.client_step(_dry_flags(flags), selected_slot, delta, dead)
 	else:
 		_interpolate_remote()
 	if is_local:
 		_update_look(delta)
 	else:
-		body.set_weapon_slot(weapons.net_slot)
+		body.set_weapon_slot(-1 if bike.mounted else weapons.net_slot)
 		body.riding = meepo.net_riding
 		body.update(delta, false, life.net_state != LifeState.ALIVE, health.current, weapons.net_slot == 0, crouched)
 	_update_life_visuals()
@@ -377,7 +391,7 @@ func _update_look(delta: float) -> void:
 	looked_workbench = null
 	looked_course_box = null
 	looked_sport_spot = null
-	if health.is_dead():
+	if health.is_dead() or bike.mounted:  # no use prompts from the saddle (E shifts gears there)
 		return
 	var from := camera.global_position
 	var to := from - camera.global_basis.z * float(_carry.get("interact_range", 2.5))
@@ -448,13 +462,16 @@ func _respawn() -> void:
 
 # --- shared simulation -------------------------------------------------------
 
-func _simulate(move: Vector2, flags: int, look_yaw: float, look_pitch: float) -> void:
+func _simulate(move: Vector2, flags: int, look_yaw: float, look_pitch: float, gear := 0) -> void:
 	yaw = look_yaw
 	pitch = clampf(look_pitch, -PITCH_LIMIT, PITCH_LIMIT)
 	rotation.y = yaw
 	head.rotation.x = pitch
 	var depth := _water_depth()
 	water = MovementRules.water_mode(depth, tuning)
+	if bike.mounted:
+		bike.simulate(move, flags, gear)
+		return
 	var dt := get_physics_process_delta_time()
 	if water == MovementRules.Water.SWIM:
 		if crouched and _has_headroom():
@@ -490,8 +507,10 @@ func _water_depth() -> float:
 	return hit.position.y - global_position.y if not hit.is_empty() else 0.0
 
 
-# No firing while swimming or riding the Meepo.
+# No firing while swimming or riding the Meepo; no firing or reloading on a motorcycle (D-083).
 func _dry_flags(flags: int) -> int:
+	if bike.mounted:
+		return flags & ~(WeaponHolder.FLAG_FIRE | WeaponHolder.FLAG_RELOAD)
 	return flags & ~WeaponHolder.FLAG_FIRE if water == MovementRules.Water.SWIM or meepo.net_riding else flags
 
 
@@ -514,7 +533,9 @@ func _has_headroom() -> bool:
 func _read_local_move() -> Vector2:
 	if cutscene or Input.mouse_mode != Input.MOUSE_MODE_CAPTURED:
 		return Vector2.ZERO
-	return Input.get_vector("move_left", "move_right", "move_forward", "move_back")
+	if bike.mounted:  # throttle / brake and lean are separate axes (full throttle while leaning)
+		return Vector2(Input.get_axis("move_left", "move_right"), Input.get_axis("move_forward", "move_back"))
+	return effects.stumble(Input.get_vector("move_left", "move_right", "move_forward", "move_back"))  # drunk (D-082)
 
 
 func _read_local_flags() -> int:
@@ -524,7 +545,7 @@ func _read_local_flags() -> int:
 			_select_slot(0)
 		if Input.is_action_just_pressed("weapon_2"):
 			_select_slot(1)
-		if Input.is_action_just_pressed("jump"):
+		if Input.is_action_just_pressed("jump") or (bike.mounted and Input.is_action_pressed("jump")):  # bike: lean back
 			flags |= FLAG_JUMP
 		if Input.is_action_pressed("sprint"):
 			flags |= FLAG_SPRINT
@@ -542,7 +563,7 @@ func _read_local_flags() -> int:
 
 
 func _select_slot(slot: int) -> void:
-	if slot == selected_slot or weapons.weapon_in_slot(slot).is_empty():
+	if bike.mounted or slot == selected_slot or weapons.weapon_in_slot(slot).is_empty():
 		return
 	selected_slot = slot
 	viewmodel.show_slot(slot)
@@ -551,6 +572,7 @@ func _select_slot(slot: int) -> void:
 func _on_snapshot() -> void:
 	if is_local:
 		_reconcile()
+		bike.reconcile(net_ack_seq, _seq)
 	else:
 		_s_newest = (_s_newest + 1) % SNAP_BUFFER
 		_s_count = mini(_s_count + 1, SNAP_BUFFER)
@@ -578,7 +600,8 @@ func _reconcile() -> void:
 # --- host ----------------------------------------------------------------------
 
 @rpc("any_peer", "call_remote", "unreliable_ordered")
-func _send_intent(seq: int, move: Vector2, flags: int, look_yaw: float, look_pitch: float, view_tick: float) -> void:
+func _send_intent(seq: int, move: Vector2, flags: int, look_yaw: float, look_pitch: float, view_tick: float,
+		gear: int) -> void:
 	# Never trust the client: only its own body, only newer intents, sane values.
 	if not multiplayer.is_server() or multiplayer.get_remote_sender_id() != peer_id:
 		return
@@ -586,7 +609,9 @@ func _send_intent(seq: int, move: Vector2, flags: int, look_yaw: float, look_pit
 			or not is_finite(look_pitch) or not is_finite(view_tick):
 		return
 	_last_queued_seq = seq
-	if move.length_squared() > 1.0:
+	if bike.mounted:  # throttle and lean are separate axes on a bike
+		move = move.clamp(-Vector2.ONE, Vector2.ONE)
+	elif move.length_squared() > 1.0:
 		move = move.normalized()
 	if cutscene:  # ace replay: hold still whatever the client sends
 		move = Vector2.ZERO
@@ -597,6 +622,7 @@ func _send_intent(seq: int, move: Vector2, flags: int, look_yaw: float, look_pit
 	_q_pitch[_q_next] = look_pitch
 	_q_view[_q_next] = view_tick
 	_q_seq[_q_next] = seq
+	_q_gear[_q_next] = clampi(gear, 0, 9)
 	_q_next = (_q_next + 1) % INTENT_QUEUE_SIZE
 	_q_count = mini(_q_count + 1, INTENT_QUEUE_SIZE)
 
@@ -607,7 +633,7 @@ func _process_queued_intents(delta: float) -> void:
 		var idx := (_q_next - _q_count + INTENT_QUEUE_SIZE) % INTENT_QUEUE_SIZE
 		var dead := health.is_dead()
 		if not dead:
-			_simulate(_q_move[idx], _q_flags[idx], _q_yaw[idx], _q_pitch[idx])
+			_simulate(_q_move[idx], _q_flags[idx], _q_yaw[idx], _q_pitch[idx], _q_gear[idx])
 		weapons.host_step(_dry_flags(_q_flags[idx]), _q_yaw[idx], clampf(_q_pitch[idx], -PITCH_LIMIT, PITCH_LIMIT),
 			_q_view[idx], delta, dead)
 		_host_try_revive(_q_flags[idx], delta)

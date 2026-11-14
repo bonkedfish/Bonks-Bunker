@@ -1,6 +1,7 @@
 # DiscGolfRules — pure disc golf scoring and baskets (D-069): what a disc hitting a basket does (caught in the
 # chains or tray, spat out, or bounced off the tray / pole), throw validation, score names, course pars, the
-# reward tier for a finished round, and the group's throwing order (D-076). Depends on: DataLoader, data/discgolf/courses.json, DiscFlightRules (tuning).
+# reward tier for a finished round, the group's throwing order (D-076), and a drunk / high thrower's throw error
+# (D-082). Depends on: DataLoader, data/discgolf/courses.json, DiscFlightRules (tuning).
 class_name DiscGolfRules
 extends RefCounted
 
@@ -10,6 +11,7 @@ const COURSES_PATH := "res://data/discgolf/courses.json"
 const COURSE_SCHEMA := {"name": TYPE_STRING, "landmark": TYPE_STRING, "box": TYPE_ARRAY, "bounds": TYPE_ARRAY, "holes": TYPE_ARRAY}
 const HOLE_SCHEMA := {"par": TYPE_FLOAT, "length_ft": TYPE_FLOAT, "tee": TYPE_ARRAY, "basket": TYPE_ARRAY}
 const HOLE_OPTIONAL := ["label", "via"]  # shown name ("9½"), dogleg points
+const COURSE_OPTIONAL := ["camp"]  # John Pork's tent {at, face} (D-082)
 
 static var _courses: Dictionary = {}
 
@@ -19,7 +21,12 @@ static func courses() -> Dictionary:
 		var raw := DataLoader.load_json(COURSES_PATH)
 		for id: String in raw:
 			var c: Variant = raw[id]
-			if typeof(c) != TYPE_DICTIONARY or not DataLoader.validate(c, COURSE_SCHEMA, "%s:%s" % [COURSES_PATH, id]):
+			if typeof(c) != TYPE_DICTIONARY:
+				continue
+			var base: Dictionary = c.duplicate()
+			for opt: String in COURSE_OPTIONAL:
+				base.erase(opt)
+			if not DataLoader.validate(base, COURSE_SCHEMA, "%s:%s" % [COURSES_PATH, id]):
 				continue
 			var ok := true
 			for h: Variant in c.holes:
@@ -138,3 +145,16 @@ static func tee_order(scores: Dictionary, rng: RandomNumberGenerator) -> Array:
 	for k: Array in keyed:
 		out.append(k[2])
 	return out
+
+
+# A drunk or high throw (D-082): random power / aim / tilt error scaled by impairment 0-1 (impaired_throw tuning).
+# Returns Vector3(power, yaw, tilt_deg).
+static func impaired_throw(power: float, yaw: float, tilt: float, impair: float, rng: RandomNumberGenerator,
+		t: Dictionary) -> Vector3:
+	if impair <= 0.0:
+		return Vector3(power, yaw, tilt)
+	var err: Dictionary = t.impaired_throw
+	return Vector3(
+		clampf(power * (1.0 + rng.randf_range(-1.0, 1.0) * float(err.power) * impair), 0.05, 1.0),
+		yaw + rng.randf_range(-1.0, 1.0) * deg_to_rad(float(err.angle_deg)) * impair,
+		tilt + rng.randf_range(-1.0, 1.0) * float(err.tilt_deg) * impair)

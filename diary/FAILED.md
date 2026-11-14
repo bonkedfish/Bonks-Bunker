@@ -114,3 +114,19 @@ Approach — why it failed — what replaced it.
   file into a brand-new folder right before committing, then check the device size with device_list_dir.
 - 2026-11-13: the two chats shared /mnt/user-data/outputs (p5/c2 already held the other chat's files) - always use
   a new, unique folder name per commit.
+- 2026-11-14 (D-082) EffectRules.tick froze a held effect for a whole tick even when the hold ran out partway, so
+  one long tick (100 s in the pure test) lost the leftover time; harmless at 60 Hz but wrong. Fix: the hold uses up
+  its share of delta first, the rest wears the dose off.
+- 2026-11-14 (D-082) Course records fell back to player_label() for unnamed players, which is "You" on the host -
+  stored in the save and shown to everyone as "You". Fallback is now "Host" / "Guest".
+- 2026-11-14 Discs that went into a lake fell through it: the lake bed is on its own collision layer (so the navmesh
+  skips it) and the flight ray only checked layer 1, so the disc kept its sideways speed and fell 60 m, often coming
+  to rest under dry land well past the shore. Flight + slide now check the water surface layer (32) too.
+- 2026-11-14 Door fix: ramps alone weren't enough. (1) LandmarkParts.wall cut gaps one after another, so a window on
+  an upper storey that overlapped a ground-floor door along the wall built its below-sill wall right through the
+  door (Cope's west doors were sealed). wall() now splits the wall at every gap end and leaves each stretch open
+  wherever any gap over it is open. (2) Props/loot placed inside doorways (Big Apple back bar, club kitchen rack and
+  3 lockers, Merryman bench, RV store shelf). (3) Merryman's south dock door opened into a real (MS footprint)
+  building behind the stage house - door removed. (4) Cope's north end-zone building stuck out of its terrain pad
+  (pad z -80, building to -95) so the ground outside its north door was a hill above the floor - pad extended.
+  Also: the first walk test spawned players at local y 0.6, under higher terrain, and they fell through the world.

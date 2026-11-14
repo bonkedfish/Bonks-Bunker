@@ -1,6 +1,7 @@
 # DiscGolfHud — disc golf on the HUD (D-069), added under the HUD by DiscGolfDirector. Draws, for the local player:
 #   * with a disc out: the bag (carried discs, the one in hand highlighted), backhand / forehand, tilt, and the power
-#     bar while charging, with a mark at the power that carries to the basket on flat ground;
+#     bar while charging, with a mark at the power that carries to the basket on flat ground; drunk or high (D-082)
+#     the bar shakes and its fill jumps around by how impaired you are (the host adds that much error to the throw);
 #   * during a round: hole, par, length, throw number, feet to the basket and score so far (above the bag), and a
 #     reminder to walk to the disc / tee when too far from it; whose throw it is (top centre, D-076); the wind
 #     (arrow turned to your view, mph, where it comes from); the basket marker (arrow + feet, through trees,
@@ -207,6 +208,12 @@ func _bag(to_basket: float) -> void:
 	var bar := Rect2(r.position.x + 12.0, r.position.y + 42.0, w - 24.0, 16.0)
 	draw_rect(bar, Color(0.1, 0.1, 0.1, 0.9))
 	var charge: float = th.charge
+	var imp: float = _me.effects.impairment()
+	if imp > 0.0:  # drunk / high: the bar won't sit still (D-082)
+		var t := Time.get_ticks_msec() / 1000.0
+		bar.position += Vector2(sin(t * 23.0), cos(t * 19.0)) * 3.0 * imp
+		charge = clampf(charge * (1.0 + 0.3 * imp * sin(t * 9.0) * sin(t * 3.7 + 1.0)), 0.0, 1.0)
+		draw_rect(bar, Color(0.1, 0.1, 0.1, 0.9))
 	draw_rect(Rect2(bar.position, Vector2(bar.size.x * charge, bar.size.y)), Color(0.3, 0.85, 0.35).lerp(Color(1.0, 0.45, 0.2), charge))
 	if to_basket > 0.0 and _reach.has(th.disc_id):
 		var need := DiscFlightRules.power_for(_reach[th.disc_id], to_basket)

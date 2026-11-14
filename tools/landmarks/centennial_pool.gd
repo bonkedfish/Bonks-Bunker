@@ -4,7 +4,9 @@
 # end to the 6 ft deep end in the north), vertical walls, coping, drop line, sprays, ladders; the terrain under it is
 # cut by landmarks.json "ground_holes". Then the concrete deck, the bathhouse (locker rooms, guard room, concession),
 # the chain-link fence, deck furniture, drained-pool mess (leaves, puddle, floaties, junk), signs, lights, loot
-# containers and lair spawn markers (Marker3D, group "lair_spawns", meta "enemy").
+# containers and lair spawn markers (Marker3D, group "lair_spawns", meta "enemy"). The deck and bathhouse floors are
+# 0.12 m slabs the player capsule can't step onto, so the deck's "ramps" and every ground-level bathhouse door that
+# opens onto bare ground get a step-free ramp (outer_doors; tests/door_walk_test walks through them).
 # Depends on: LandmarkKit, scenes/loot_container.tscn.
 extends RefCounted
 
@@ -152,6 +154,8 @@ static func _deck(k: LandmarkKit, d: Dictionary) -> void:
 	k.block(Vector3(dr[0], -0.3, b[3]), Vector3(dr[2], top, dr[3]), "deck")
 	k.block(Vector3(dr[0], -0.3, b[1]), Vector3(b[0], top, b[3]), "deck")
 	k.block(Vector3(b[2], -0.3, b[1]), Vector3(dr[2], top, b[3]), "deck")
+	for r: Array in d.deck.get("ramps", []):  # ground -> deck edge
+		k.ramp(Vector3(r[0], -0.15, r[1]), Vector3(r[2], top, r[3]), float(r[4]), 0.3, "deck")
 	for t: Array in d.deck.text:  # painted depth markers / NO DIVING on the deck: [text, x, z, yaw_deg, size]
 		var l := Label3D.new()
 		l.name = "Deck_" + str(t[0]).replace(" ", "_")
@@ -167,6 +171,32 @@ static func _deck(k: LandmarkKit, d: Dictionary) -> void:
 
 
 # --- bathhouse ------------------------------------------------------------------------------------
+
+# Bathhouse doors (sill 0) that open onto bare ground rather than the deck: [{at (outer face), inward, half,
+# inside_y, outside_y}].
+static func outer_doors(d: Dictionary) -> Array:
+	var bh: Dictionary = d.bathhouse
+	var r: Array = bh.rect
+	var dk: Array = d.deck.rect
+	var fy := float(d.dims.deck_y)
+	var c := [Vector2(r[0], r[1]), Vector2(r[2], r[1]), Vector2(r[2], r[3]), Vector2(r[0], r[3])]
+	var edge := {"n": [c[0], c[1], Vector2(0, 1)], "e": [c[1], c[2], Vector2(-1, 0)], "s": [c[3], c[2], Vector2(0, -1)],
+		"w": [c[0], c[3], Vector2(1, 0)]}
+	var out: Array = []
+	for e: String in edge:
+		var a: Vector2 = edge[e][0]
+		var dir: Vector2 = (edge[e][1] - a).normalized()
+		var n: Vector2 = edge[e][2]
+		for g: Array in bh.doors.get(e, []):
+			if g.size() > 2 and float(g[2]) > 0.0:
+				continue
+			var at := a + dir * float(g[0])
+			var o := at - n * 1.2
+			var on_deck := o.x > float(dk[0]) and o.x < float(dk[2]) and o.y > float(dk[1]) and o.y < float(dk[3])
+			if not on_deck:
+				out.append({"at": at, "inward": n, "half": float(g[1]), "inside_y": fy, "outside_y": 0.0})
+	return out
+
 
 static func _bathhouse(k: LandmarkKit, d: Dictionary) -> void:
 	var bh: Dictionary = d.bathhouse
@@ -188,6 +218,11 @@ static func _bathhouse(k: LandmarkKit, d: Dictionary) -> void:
 		_wall(k, a + o, b + o, t, h, float(bh.door_h), "block_wall", bh.doors.get(e, []), t * 0.5)
 		k.box_xf(Transform3D(Basis(Vector3.UP, atan2((b - a).x, (b - a).y)), Vector3((a.x + b.x) * 0.5, h - 0.25, (a.y + b.y) * 0.5) - Vector3(inward.x, 0, inward.y) * 0.02),
 			Vector3(0.05, 0.5, a.distance_to(b) + t), "trim", false)
+	for dr: Dictionary in outer_doors(d):  # step-free ramp out of each door that opens onto the ground
+		var at: Vector2 = dr.at
+		var n: Vector2 = dr.inward
+		k.ramp(Vector3(at.x - n.x * (t + 1.6), -0.15, at.y - n.y * (t + 1.6)), Vector3(at.x + n.x * 0.05, fy, at.y + n.y * 0.05),
+			float(dr.half) * 2.0 + 0.6, 0.3, "deck")
 	for w: Dictionary in bh.walls:
 		_wall(k, Vector2(w.a[0], w.a[1]), Vector2(w.b[0], w.b[1]), 0.15, h, float(bh.door_h), "block_wall", w.get("doors", []), 0.0)
 	for s: Array in bh.stalls:  # [x0, z0, x1, z1, count, toilet side "x0"/"x1"]: a row of stalls along z

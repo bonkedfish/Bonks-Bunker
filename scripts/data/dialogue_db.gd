@@ -8,7 +8,7 @@ class_name DialogueDB
 extends RefCounted
 
 const FILES := ["res://data/dialogue/bonk.json", "res://data/dialogue/evan.json", "res://data/dialogue/meekachu.json", "res://data/dialogue/school.json",
-	"res://data/dialogue/raiders.json"]
+	"res://data/dialogue/raiders.json", "res://data/dialogue/john_pork.json"]
 
 static var _data: Dictionary = {}
 static var _valid := false

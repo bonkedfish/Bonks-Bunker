@@ -567,3 +567,64 @@ disc golf sound/key-3 fixes, player names + name tags (D-081). Release commits n
 MEEPO DOCK (2026-11-13 21:25): bunker Meepo dock (loot table meepo_dock) now holds 10 Meepos instead of 4 - user ask.
 Worlds whose dock was already opened keep what their save says is left; new worlds / unopened docks get 10.
 Player cap: user asked about 8 players, then chose to do only the Meepo change for now (project brief still 1-6).
+
+RELEASE alpha2.4 (2026-11-13 ~22:00): https://github.com/bonkedfish/Bonks-Bunker/releases/tag/alpha2.4 - adds the
+10-Meepo dock. OPEN BUG (not fixed, user deferred): you can't walk into the five D-079 places (and probably the pool's
+bathhouse doors / east gate) - the inside floors sit 0.15 m above the ground and the capsule (r 0.35, 45 deg floor
+limit) can't step up 0.15 m (Kenwood has door ramps, so it's fine). Big Apple's x -37 bar door is also blocked inside
+by the back bar box. Found with tests/big_apple_door_check.tscn (players stop at the threshold, knee ray is clear).
+Planned fix (~30-40 min): door ramps for every sill-0 outline/mass gap in landmark_parts.gd + the pool's doors/gate,
+move the back bar, walk-in test through every outside door.
+
+BIG UPDATE (D-082, 2026-11-14): code written and on the PC, testing in progress.
+- Needs: hunger 180 min / thirst 120 min to empty (survival.json).
+- Effects: EffectRules rewritten (doses, strength, hold, scaled comedowns; mods/look/vomit); effects.json stronger +
+  longer chems, new drunk (30 s per drink, 12 max, holds 120 s at 8+, vomits at 8+) and hungover. ActiveEffects:
+  host strengths 10 Hz -> owner RPC, vomiting; owner sway / drift / lurch / stumble / double vision + blur shader.
+- Booze: 16 drinks (beers, seltzers, shots, mixed, boxed wine, moonshine), category "booze" + inventory tab; John's
+  Pork Rinds, Gas Station Hot Dog, Corn Dog. Quick eat/drink keys skip anything with an effect.
+- Disc golf: drunk/high throw error (host) + power bar jitter; water drop fix (flight stops at the water surface,
+  +1, drop where it crossed onto the water); throw swing for other players; course records (saved as disc_records).
+- John Pork camp (VendorCamp) at Centennial (1001.4, -307.4) and Cottonmill (-3251.9, -2547.7): tent, vendor
+  (barter shop), records board, Meepo dock. Spots picked from OSM + tree data (clear of trees, fairways, roads, pool).
+- MeepoDock: E to dock / take back, instant charge, no riding while docked; at both camps + bunker (rack renamed).
+- Tests: tests/big_update_test.tscn (new); menu_test + meepo_test now pick the Meepo rack explicitly.
+
+BIG UPDATE (D-082) TESTED (2026-11-14): tests/big_update_test.tscn 0 failures (29 PASS): drink/chem compounding,
+hold + sobering + hangover, 8-drink look values, vomit threshold, kush cap, records + board text, drunk throw error,
+quick keys skip booze, needs 3x; in game: camp on the ground 16 m from the Centennial box, bought 3 waters from John
+Pork for 1 scrap, Meepo dock (charged 100%, no riding while docked, take back), hole record on the board under the
+player's name, 8 drinks (impair 0.56, 18 px double vision, stumbling, threw up), disc into Cottonmill Lake (stops at
+the water, shore drop 9.7 m from where it crossed, on dry ground), throw swing with the disc in hand (release 0.77 s).
+Perf at the camp 5.7 ms / 456 draw calls. Regressions all 0 failures: disc_golf_test (48; Centennial 5.6 ms / 636 dc), meepo_test, menu_test,
+coop_test (host + client), hud_pause_test, chillers_test (5.9 ms / 524 dc at Meekachu). Fixed two stale tests:
+hud_pause_test now answers the D-081 name prompt before Esc; chillers_test uses the new EffectRules API and reads
+baked's numbers from data (baked is now x0.8 damage).
+Not verified in game yet: the swing as seen by a real second player over the network; the vendor tent at Cottonmill
+(only Centennial looked at; same code); drunk visuals at 12 drinks.
+
+DOORS FIXED (D-079 follow-up, 2026-11-14): landmark_parts.wall() splits walls at every gap end (overlapping gaps used
+to leave solid wall); outer_doors() + door_ramps() put a concrete ramp outside every sill-0 outline/mass doorway whose
+inside floor sits above the ground; the pool bathhouse doors / deck have ramps (deck.ramps in centennial_pool.json).
+Props moved out of doorways (Big Apple back bar, country club prop 22 + lockers, RV store shelf, Merryman prop 78);
+Merryman's south dock door removed (it opened onto the building behind); Cope's terrain pad extended to [-92,-99,62,92]
+(north door was over a hill) and cells rebuilt. tests/door_walk_test.tscn walks into every outer door + deck ramp:
+all pass (Big Apple 7, Merryman 6, Cope 9, country club 11, RV park 5, pool, Kenwood).
+
+MOTORCYCLES (D-083, 2026-11-14): 5 bikes in data/vehicles/bikes.json (Sandhills Scrambler 250, Platte Hooligan 450,
+Union Pacific Cafe 500, Cornhusker RR600, Prairie King 1200), 3 stock schemes each, code-built meshes. Mayhem-style
+handling in pure BikeRules (clutch + manual gears E/Q with the clutch, stalls, wheelies / stoppies / loops, landing and
+impact crashes, fuel + gas cans). Found parked in cells (seeded, 35%), saved under world.bikes. No weapons on a bike.
+Host-authoritative: gear rides in the intent, owner predicts + reconciles. tests/bike_test.tscn 0 failures; riding
+6.2-6.5 ms / ~417 draw calls; coop_test still 0 failures. Not verified: rider pose on survivor models (only a UBC
+model looked at), a bike as seen by a real second player, no crash damage when looping at low speed (by design).
+
+POOL (D-084, 2026-11-14): both Big Apple bar tables are playable 8-ball (PoolTable nodes placed by big_apple.gd from
+big_apple.json pool_tables). First person: E sits / leaves, hold-release left click to shoot where you look, aim line +
+ghost ball + cue; 2 players or solo practice; ball in hand after a scratch; host simulates the shot (PoolRules, pure,
+3 ms per frame budget) and plays it back on every peer. Table status sign hides for the seated player. Games aren't
+saved. tests/pool_test.tscn 0 failures (break 5.6 s of play in ~29 ms of work; 6.0-6.8 ms / ~470 draw calls at the
+table). Regressions 0 failures: parse_check (92), menu, hud_pause, meepo, big_update, door_walk. dropzone_test: one
+FAIL both runs on the scripted pickleball rally (1-0 / 0-0 in 30 s, 12-14 CPU returns). Pickleball code + tuning are
+untouched since D-074; the check depends on the CPU's random misses, so the test needs a longer window or a seeded rng.
+Not verified: a pool game between two real players over the network.

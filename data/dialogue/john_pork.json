@@ -1,0 +1,614 @@
+{
+	"barks": {
+		"john_pork_idle": [
+			"Cold drinks! Hot dogs! Party favors! Scrap only!",
+			"Get your pork rinds here! Crunchy! Mostly!",
+			"Hydrate or diedrate, folks!",
+			"Hard seltzers! It's basically water! It is NOT water!",
+			"Who's got the course record today? Check the board!",
+			"Corn dogs! Nebraska on a stick!",
+			"Somebody's disc is in the creek again. Classic."
+		],
+		"john_pork_greet": [
+			"HEY-O! Step right up! John Pork's Disc-Side Concessions!",
+			"There they are! Thirsty? Hungry? Weird? I got stuff for all three.",
+			"Welcome to the course, friend! First beer's - not free. Nothing's free. But cheap!"
+		],
+		"john_pork_busy": [
+			"One sec, one sec, I'm counting scrap.",
+			"Hang tight, the cooler lid's stuck again."
+		]
+	},
+	"trees": {
+		"john_pork_talk": {
+			"start": "start",
+			"nodes": {
+				"start": {
+					"speaker": "John Pork",
+					"text": "HEY-O! Welcome to John Pork's Disc-Side Concessions! Cold drinks, hot dogs, and party favors. No cash, no cards - scrap only. Money's dead. Scrap metal is forever.",
+					"choices": [
+						{
+							"text": "What've you got?",
+							"next": "shop"
+						},
+						{
+							"text": "Who are you?",
+							"next": "who"
+						},
+						{
+							"text": "Why set up at a disc golf course?",
+							"next": "why"
+						},
+						{
+							"text": "See ya.",
+							"next": "bye"
+						}
+					]
+				},
+				"menu": {
+					"speaker": "John Pork",
+					"text": "What else can I do ya for?",
+					"choices": [
+						{
+							"text": "What've you got?",
+							"next": "shop"
+						},
+						{
+							"text": "Who are you?",
+							"next": "who"
+						},
+						{
+							"text": "Why set up at a disc golf course?",
+							"next": "why"
+						},
+						{
+							"text": "Got any course tips?",
+							"next": "tips"
+						},
+						{
+							"text": "See ya.",
+							"next": "bye"
+						}
+					]
+				},
+				"shop": {
+					"speaker": "John Pork",
+					"text": "Pick a cooler, any cooler.",
+					"choices": [
+						{
+							"text": "Food and water.",
+							"next": "shop_food"
+						},
+						{
+							"text": "Cold drinks. The fun kind.",
+							"next": "shop_booze"
+						},
+						{
+							"text": "...Party favors?",
+							"next": "shop_party"
+						},
+						{
+							"text": "Never mind.",
+							"next": "menu"
+						}
+					]
+				},
+				"shop_food": {
+					"speaker": "John Pork",
+					"text": "Fuel for the back nine. Everything's warm except the water, and the water's room temperature, which is a kind of warm.",
+					"choices": [
+						{
+							"text": "1 scrap metal for 3 bottles of water.",
+							"next": "sold_water",
+							"cost": {
+								"scrap_metal": 1
+							},
+							"cost_fail": "broke"
+						},
+						{
+							"text": "1 scrap metal for 2 gas station hot dogs.",
+							"next": "sold_dogs",
+							"cost": {
+								"scrap_metal": 1
+							},
+							"cost_fail": "broke"
+						},
+						{
+							"text": "1 scrap metal for 2 bags of pork rinds.",
+							"next": "sold_rinds",
+							"cost": {
+								"scrap_metal": 1
+							},
+							"cost_fail": "broke"
+						},
+						{
+							"text": "1 duct tape for 2 corn dogs and 2 waters.",
+							"next": "sold_corn",
+							"cost": {
+								"duct_tape": 1
+							},
+							"cost_fail": "broke"
+						},
+						{
+							"text": "Back.",
+							"next": "shop"
+						}
+					]
+				},
+				"shop_booze": {
+					"speaker": "John Pork",
+					"text": "Coolers are full, ice is a memory. Drink responsibly. Or don't, I'm not your dad.",
+					"choices": [
+						{
+							"text": "1 scrap metal for 2 Platte Valley Lights.",
+							"next": "sold_light",
+							"cost": {
+								"scrap_metal": 1
+							},
+							"cost_fail": "broke"
+						},
+						{
+							"text": "1 scrap metal for 2 Sandhills Lagers.",
+							"next": "sold_lager",
+							"cost": {
+								"scrap_metal": 1
+							},
+							"cost_fail": "broke"
+						},
+						{
+							"text": "1 duct tape for 2 IPAs and a stout.",
+							"next": "sold_craft",
+							"cost": {
+								"duct_tape": 1
+							},
+							"cost_fail": "broke"
+						},
+						{
+							"text": "1 scrap metal for a 3-pack of hard seltzers.",
+							"next": "sold_seltzer",
+							"cost": {
+								"scrap_metal": 1
+							},
+							"cost_fail": "broke"
+						},
+						{
+							"text": "1 duct tape for a round of shots.",
+							"next": "sold_shots",
+							"cost": {
+								"duct_tape": 1
+							},
+							"cost_fail": "broke"
+						},
+						{
+							"text": "1 wrench for jungle juice and a Long Island.",
+							"next": "sold_mixed",
+							"cost": {
+								"wrench": 1
+							},
+							"cost_fail": "broke"
+						},
+						{
+							"text": "1 car battery for the party pack.",
+							"next": "sold_party_pack",
+							"cost": {
+								"car_battery": 1
+							},
+							"cost_fail": "broke"
+						},
+						{
+							"text": "Back.",
+							"next": "shop"
+						}
+					]
+				},
+				"shop_party": {
+					"speaker": "John Pork",
+					"text": "*looks both ways* ...I got a guy at UNK. Don't tell him what I charge, he thinks I'm his only customer.",
+					"choices": [
+						{
+							"text": "1 duct tape for 2 joints.",
+							"next": "sold_kush",
+							"cost": {
+								"duct_tape": 1
+							},
+							"cost_fail": "broke"
+						},
+						{
+							"text": "1 wrench for some mushrooms.",
+							"next": "sold_shrooms",
+							"cost": {
+								"wrench": 1
+							},
+							"cost_fail": "broke"
+						},
+						{
+							"text": "2 scrap metal for an acid tab.",
+							"next": "sold_acid",
+							"cost": {
+								"scrap_metal": 2
+							},
+							"cost_fail": "broke"
+						},
+						{
+							"text": "2 scrap metal for some molly.",
+							"next": "sold_molly",
+							"cost": {
+								"scrap_metal": 2
+							},
+							"cost_fail": "broke"
+						},
+						{
+							"text": "1 car battery for... the heavy stuff.",
+							"next": "sold_tar",
+							"cost": {
+								"car_battery": 1
+							},
+							"cost_fail": "broke"
+						},
+						{
+							"text": "Back.",
+							"next": "shop"
+						}
+					]
+				},
+				"sold_water": {
+					"speaker": "John Pork",
+					"text": "Three waters. Hydrate or diedrate. That's the slogan. I'm workshopping it.",
+					"give": {
+						"water_bottle": 3
+					},
+					"give_every_time": true,
+					"choices": [
+						{
+							"text": "Another deal.",
+							"next": "shop_food"
+						},
+						{
+							"text": "That's all.",
+							"next": "menu"
+						}
+					]
+				},
+				"sold_dogs": {
+					"speaker": "John Pork",
+					"text": "Two dogs, been rolling on the roller since before the bombs. Seasoned by time itself.",
+					"give": {
+						"gas_station_hot_dog": 2
+					},
+					"give_every_time": true,
+					"choices": [
+						{
+							"text": "Another deal.",
+							"next": "shop_food"
+						},
+						{
+							"text": "That's all.",
+							"next": "menu"
+						}
+					]
+				},
+				"sold_rinds": {
+					"speaker": "John Pork",
+					"text": "John's Pork Rinds! Family recipe. Don't ask which family.",
+					"give": {
+						"pork_rinds": 2
+					},
+					"give_every_time": true,
+					"choices": [
+						{
+							"text": "Another deal.",
+							"next": "shop_food"
+						},
+						{
+							"text": "That's all.",
+							"next": "menu"
+						}
+					]
+				},
+				"sold_corn": {
+					"speaker": "John Pork",
+					"text": "Corn dogs! Nebraska's finest export. Corn. On a dog. On a stick.",
+					"give": {
+						"corn_dog": 2,
+						"water_bottle": 2
+					},
+					"give_every_time": true,
+					"choices": [
+						{
+							"text": "Another deal.",
+							"next": "shop_food"
+						},
+						{
+							"text": "That's all.",
+							"next": "menu"
+						}
+					]
+				},
+				"sold_light": {
+					"speaker": "John Pork",
+					"text": "Platte Valley Light. Tastes like a river. A refreshing river.",
+					"give": {
+						"beer_platte_light": 2
+					},
+					"give_every_time": true,
+					"choices": [
+						{
+							"text": "Another deal.",
+							"next": "shop_booze"
+						},
+						{
+							"text": "That's all.",
+							"next": "menu"
+						}
+					]
+				},
+				"sold_lager": {
+					"speaker": "John Pork",
+					"text": "Sandhills Lager. Brewed out west by a guy named Dale. Dale's gone now. The lager remains.",
+					"give": {
+						"beer_sandhills_lager": 2
+					},
+					"give_every_time": true,
+					"choices": [
+						{
+							"text": "Another deal.",
+							"next": "shop_booze"
+						},
+						{
+							"text": "That's all.",
+							"next": "menu"
+						}
+					]
+				},
+				"sold_craft": {
+					"speaker": "John Pork",
+					"text": "Couple of IPAs and a stout. For the disc golfer with a beard and opinions.",
+					"give": {
+						"beer_crane_ipa": 2,
+						"beer_buffalo_stout": 1
+					},
+					"give_every_time": true,
+					"choices": [
+						{
+							"text": "Another deal.",
+							"next": "shop_booze"
+						},
+						{
+							"text": "That's all.",
+							"next": "menu"
+						}
+					]
+				},
+				"sold_seltzer": {
+					"speaker": "John Pork",
+					"text": "Black cherry, lime, mango. Basically water. Do NOT treat it like water.",
+					"give": {
+						"seltzer_black_cherry": 1,
+						"seltzer_lime": 1,
+						"seltzer_mango": 1
+					},
+					"give_every_time": true,
+					"choices": [
+						{
+							"text": "Another deal.",
+							"next": "shop_booze"
+						},
+						{
+							"text": "That's all.",
+							"next": "menu"
+						}
+					]
+				},
+				"sold_shots": {
+					"speaker": "John Pork",
+					"text": "Whiskey, vodka, tequila, cinnamon. A shot for every bad decision you're about to make.",
+					"give": {
+						"shot_whiskey": 1,
+						"shot_vodka": 1,
+						"shot_tequila": 1,
+						"shot_cinnamon": 1
+					},
+					"give_every_time": true,
+					"choices": [
+						{
+							"text": "Another deal.",
+							"next": "shop_booze"
+						},
+						{
+							"text": "That's all.",
+							"next": "menu"
+						}
+					]
+				},
+				"sold_mixed": {
+					"speaker": "John Pork",
+					"text": "Jungle juice and a Long Island. What's in the jungle juice? Yes.",
+					"give": {
+						"drink_jungle_juice": 1,
+						"drink_long_island": 1
+					},
+					"give_every_time": true,
+					"choices": [
+						{
+							"text": "Another deal.",
+							"next": "shop_booze"
+						},
+						{
+							"text": "That's all.",
+							"next": "menu"
+						}
+					]
+				},
+				"sold_party_pack": {
+					"speaker": "John Pork",
+					"text": "THE PARTY PACK. Boxed wine, a jar of moonshine, four warm tallboys. God bless.",
+					"give": {
+						"wine_box": 1,
+						"moonshine_jar": 1,
+						"beer_warm_tallboy": 4
+					},
+					"give_every_time": true,
+					"choices": [
+						{
+							"text": "Another deal.",
+							"next": "shop_booze"
+						},
+						{
+							"text": "That's all.",
+							"next": "menu"
+						}
+					]
+				},
+				"sold_kush": {
+					"speaker": "John Pork",
+					"text": "Two joints. Smoke 'em AFTER your round. Or during. You'll putt like a monk.",
+					"give": {
+						"kush_joint": 2
+					},
+					"give_every_time": true,
+					"choices": [
+						{
+							"text": "Another deal.",
+							"next": "shop_party"
+						},
+						{
+							"text": "That's all.",
+							"next": "menu"
+						}
+					]
+				},
+				"sold_shrooms": {
+					"speaker": "John Pork",
+					"text": "Mushrooms. The baskets start talking around hole six. Listen to them.",
+					"give": {
+						"magic_mushrooms": 1
+					},
+					"give_every_time": true,
+					"choices": [
+						{
+							"text": "Another deal.",
+							"next": "shop_party"
+						},
+						{
+							"text": "That's all.",
+							"next": "menu"
+						}
+					]
+				},
+				"sold_acid": {
+					"speaker": "John Pork",
+					"text": "One tab. The trees out here are a LOT on acid. Just so you know.",
+					"give": {
+						"acid_tab": 1
+					},
+					"give_every_time": true,
+					"choices": [
+						{
+							"text": "Another deal.",
+							"next": "shop_party"
+						},
+						{
+							"text": "That's all.",
+							"next": "menu"
+						}
+					]
+				},
+				"sold_molly": {
+					"speaker": "John Pork",
+					"text": "Molly. You're gonna wanna hug the chains. Let yourself.",
+					"give": {
+						"molly": 1
+					},
+					"give_every_time": true,
+					"choices": [
+						{
+							"text": "Another deal.",
+							"next": "shop_party"
+						},
+						{
+							"text": "That's all.",
+							"next": "menu"
+						}
+					]
+				},
+				"sold_tar": {
+					"speaker": "John Pork",
+					"text": "...Here. Look, I sell it 'cause people want it, not 'cause it's good. Go slow. Come back and buy a hot dog after, okay?",
+					"give": {
+						"black_tar": 1
+					},
+					"give_every_time": true,
+					"choices": [
+						{
+							"text": "Another deal.",
+							"next": "shop_party"
+						},
+						{
+							"text": "That's all.",
+							"next": "menu"
+						}
+					]
+				},
+				"broke": {
+					"speaker": "John Pork",
+					"text": "Ope - you're short, buddy. Scrap, tape, wrenches, car batteries. Bring me junk, I bring you joy.",
+					"choices": [
+						{
+							"text": "Right.",
+							"next": "shop"
+						}
+					]
+				},
+				"who": {
+					"speaker": "John Pork",
+					"text": "John Pork. Ran the concession stand at the ballfields before everything ended. Everything ended, the concessions didn't. Somebody's gotta keep the people fed and hammered.",
+					"choices": [
+						{
+							"text": "Why 'Pork'?",
+							"next": "pork"
+						},
+						{
+							"text": "Back.",
+							"next": "menu"
+						}
+					]
+				},
+				"pork": {
+					"speaker": "John Pork",
+					"text": "It's my NAME, man. Like Smith. Like Baker. My great-granddad raised hogs out by Gibbon. And no - I don't answer my phone. Phones don't work anyway. Stop calling.",
+					"choices": [
+						{
+							"text": "Back.",
+							"next": "menu"
+						}
+					]
+				},
+				"why": {
+					"speaker": "John Pork",
+					"text": "Disc golfers are the last civilization. Zombies, raiders, the sky going weird - they're still out here, throwing plastic at chains, keeping score. Respect. Also they're always thirsty.",
+					"choices": [
+						{
+							"text": "Back.",
+							"next": "menu"
+						}
+					]
+				},
+				"tips": {
+					"speaker": "John Pork",
+					"text": "Check the board - see who's got the records. Wind changes every half minute, so watch the arrow. And if you go in the water, you throw again from where it went in, plus one. Don't drink before you putt. Okay, drink a little.",
+					"choices": [
+						{
+							"text": "Back.",
+							"next": "menu"
+						}
+					]
+				},
+				"bye": {
+					"speaker": "John Pork",
+					"text": "Throw straight, drink crooked!",
+					"end": true
+				}
+			}
+		}
+	}
+}

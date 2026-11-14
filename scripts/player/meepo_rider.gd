@@ -4,13 +4,15 @@
 # (group "meepo_chargers"), throws the rider off on a big hit, an empty battery, going down, or dropping the board.
 # `net_riding` / `net_battery` replicate so the owner predicts ride speed with the host's state and everyone sees
 # the board under the rider. While riding: ride_speed instead of walk/sprint, no firing (Player checks `riding`).
-# Rules in MeepoRules. Depends on: MeepoRules, Player (parent: inventory, health, life, water, velocity, is_local).
+# Docking (D-082): MeepoDock.host_dock() puts the board in a dock — battery full, no riding until it's taken back.
+# Rules in MeepoRules. Depends on: MeepoRules, Player (parent: inventory, health, life, water, velocity, is_local, bike).
 class_name MeepoRider
 extends Node3D
 
 var net_riding := false
 var net_battery := 100.0
 var _level := 100.0  # host: exact battery level; net_battery publishes it in 0.5 steps
+var _dock: Node = null  # host: the MeepoDock holding this player's board (D-082)
 
 var _t: Dictionary
 var _board: Node3D
@@ -38,6 +40,23 @@ func has_board() -> bool:
 	return player.inventory.count("meepo") > 0
 
 
+# Host: the dock this player's board is in, or null.
+func docked_at() -> Node:
+	return _dock if is_instance_valid(_dock) else null
+
+
+# Host: the board goes into `dock` and is charged straight away (D-065 instant charge).
+func host_dock(dock: Node) -> void:
+	_dock = dock
+	net_riding = false
+	_level = 100.0
+	net_battery = 100.0
+
+
+func host_undock() -> void:
+	_dock = null
+
+
 func _unhandled_input(event: InputEvent) -> void:
 	if player.is_local and Input.mouse_mode == Input.MOUSE_MODE_CAPTURED and event.is_action_pressed("ride"):
 		if multiplayer.is_server():
@@ -53,15 +72,30 @@ func _ask_toggle() -> void:
 
 
 func _host_toggle() -> void:
+	if player.bike.mounted:  # on a motorcycle (D-083): B starts its engine instead
+		return
 	if net_riding:
 		net_riding = false
+	elif docked_at() != null:
+		_note.rpc_id(player.peer_id, "Your Meepo is in the dock - press E at the dock to take it")
 	elif MeepoRules.can_ride(has_board(), net_battery, player.life.net_state == LifeState.ALIVE,
 			player.water == MovementRules.Water.SWIM, _t):
 		net_riding = true
 
 
+@rpc("authority", "call_local", "reliable")
+func _note(text: String) -> void:
+	var hud := get_tree().get_first_node_in_group("hud")
+	if hud:
+		hud.show_toast(text, 2.5)
+
+
 # Host, every physics tick.
 func host_tick(delta: float) -> void:
+	if _dock != null and (not is_instance_valid(_dock) or not has_board()):  # dock unloaded, or the board is gone
+		if is_instance_valid(_dock):
+			_dock.host_release(player.peer_id)
+		_dock = null
 	var speed := Vector2(player.velocity.x, player.velocity.z).length()
 	var rolling: bool = net_riding and speed > 1.0
 	var boosting: bool = rolling and speed > float(_t.ride_speed) + 0.5

@@ -19,6 +19,8 @@
 #   light  {pos [x, y, z], color, energy, range}
 #   loot   {id, name, table, pos [x, z] | [x, y, z], size [sx, sy, sz], color?, yaw_deg?}  (container_id = prefix_id)
 #   spawn  [name, enemy id, [x, z] | [x, y, z]]   (Marker3D "<prefix>_<name>", group lair_spawns, meta enemy)
+# Every ground-level doorway (outline / mass gap with sill 0) whose inside floor is higher than the ground outside gets
+# a step-free ramp (outer_doors / door_ramps): the player capsule can't step onto a 0.15 m floor edge.
 # Depends on: LandmarkKit, scenes/loot_container.tscn.
 extends RefCounted
 
@@ -35,6 +37,7 @@ static func build_all(k: LandmarkKit, d: Dictionary, prefix: String, floor_y: fl
 			str(w.mat), w.get("gaps", []), float(w.get("door_h", 2.3)))
 	for f: Dictionary in d.get("floors", []):
 		slab(k, f)
+	door_ramps(k, d)
 	for s: Dictionary in d.get("stairs", []):
 		k.ramp(_v3(s.a), _v3(s.b), float(s.w), 0.3, str(s.mat))
 	for r: Dictionary in d.get("rows", []):
@@ -91,27 +94,42 @@ static func outline(k: LandmarkKit, o: Dictionary) -> void:
 
 
 # Wall from a to b (centre line), thickness t, from y0 to top, with gaps [at, half, sill?, top?] measured from a.
+# Gaps on different storeys may overlap along the wall (a door under upper windows): each stretch between gap ends
+# is solid wherever no gap covering it is open, so a window's sill wall never closes a door below it.
 static func wall(k: LandmarkKit, a: Vector2, b: Vector2, t: float, y0: float, top: float, mat: String, gaps: Array,
 		door_h := 2.4) -> void:
 	var dir := (b - a).normalized()
 	var length := a.distance_to(b)
-	var cuts: Array = []
+	var cuts: Array = []  # [s0, s1, sill, top, glazed]
+	var marks: Array = [0.0, length]
 	for g: Array in gaps:
-		cuts.append([float(g[0]) - float(g[1]), float(g[0]) + float(g[1]), float(g[2]) if g.size() > 2 else 0.0,
-			float(g[3]) if g.size() > 3 else door_h, g.size() < 5 or bool(g[4])])
-	cuts.sort_custom(func(p: Array, q: Array) -> bool: return p[0] < q[0])
-	var at := 0.0
-	for c: Array in cuts:
-		if c[0] > at:
-			seg(k, a, dir, at, c[0], y0, top, t, mat)
-		if c[2] > 0.0:  # window (or a raised doorway when the gap's 5th value is 0): wall below the sill + glass
-			seg(k, a, dir, c[0], c[1], y0, c[2], t, mat)
-			if c[4]:
-				seg(k, a, dir, c[0], c[1], c[2], c[3], 0.04, "glass", false)
-		seg(k, a, dir, c[0], c[1], c[3], top, t, mat)
-		at = c[1]
-	if length > at:
-		seg(k, a, dir, at, length, y0, top, t, mat)
+		var c := [float(g[0]) - float(g[1]), float(g[0]) + float(g[1]), float(g[2]) if g.size() > 2 else 0.0,
+			float(g[3]) if g.size() > 3 else door_h, g.size() < 5 or bool(g[4])]
+		cuts.append(c)
+		marks.append(clampf(c[0], 0.0, length))
+		marks.append(clampf(c[1], 0.0, length))
+	marks.sort()
+	for i in marks.size() - 1:
+		var s0: float = marks[i]
+		var s1: float = marks[i + 1]
+		if s1 - s0 < 0.01:
+			continue
+		var mid := (s0 + s1) * 0.5
+		var open: Array = []  # [y_lo, y_hi] of every gap over this stretch (a doorway is open from the foundation)
+		for c: Array in cuts:
+			if c[0] <= mid and mid <= c[1]:
+				open.append([y0 if c[2] <= 0.0 else c[2], c[3]])
+		open.sort_custom(func(p: Array, q: Array) -> bool: return p[0] < q[0])
+		var y := y0
+		for o: Array in open:
+			if o[0] > y:
+				seg(k, a, dir, s0, s1, y, o[0], t, mat)
+			y = maxf(y, o[1])
+		if top > y:
+			seg(k, a, dir, s0, s1, y, top, t, mat)
+	for c: Array in cuts:  # glass in the windows (a raised doorway, 5th value 0, has none)
+		if c[2] > 0.0 and c[4]:
+			seg(k, a, dir, c[0], c[1], c[2], c[3], 0.04, "glass", false)
 
 
 static func seg(k: LandmarkKit, a: Vector2, dir: Vector2, s0: float, s1: float, y0: float, y1: float, t: float,
@@ -121,6 +139,85 @@ static func seg(k: LandmarkKit, a: Vector2, dir: Vector2, s0: float, s1: float, 
 	var mid := a + dir * (s0 + s1) * 0.5
 	k.box_xf(Transform3D(Basis(Vector3.UP, atan2(dir.x, dir.y)), Vector3(mid.x, (y0 + y1) * 0.5, mid.y)),
 		Vector3(t, y1 - y0, s1 - s0), mat, collide)
+
+
+# --- door ramps --------------------------------------------------------------------------------------
+
+# Outer doorways that need a ramp: [{at: Vector2 (on the outer face), inward: Vector2, half, inside_y, outside_y, t}].
+# A doorway counts when a floor covers the spot 1.2 m inside and its top is > 0.05 m above whatever is 1.2 m outside
+# (another floor, or the ground at 0). tests/door_walk_test walks a player through each one.
+static func outer_doors(d: Dictionary) -> Array:
+	var floors: Array = d.get("floors", [])
+	var cands: Array = []  # [at, inward, half, t]
+	for o: Dictionary in d.get("outlines", []):
+		var pts := PackedVector2Array()
+		for p: Array in o.poly:
+			pts.append(Vector2(p[0], p[1]))
+		var area := 0.0
+		for i in pts.size():
+			area += pts[i].cross(pts[(i + 1) % pts.size()])
+		var gaps: Dictionary = o.get("gaps", {})
+		for e: String in gaps:
+			var a := pts[int(e)]
+			var b := pts[(int(e) + 1) % pts.size()]
+			var dir := (b - a).normalized()
+			for g: Array in gaps[e]:
+				if g.size() < 3 or float(g[2]) <= 0.0:
+					cands.append([a + dir * float(g[0]), dir.orthogonal() * (-1.0 if area > 0.0 else 1.0), float(g[1]),
+						float(o.get("t", 0.3))])
+	for m: Dictionary in d.get("masses", []):
+		var r: Array = m.rect
+		var sides: Dictionary = m.get("sides", {})
+		var starts := {"n": [Vector2(r[0], r[1]), Vector2(1, 0), Vector2(0, 1)], "s": [Vector2(r[0], r[3]), Vector2(1, 0), Vector2(0, -1)],
+			"w": [Vector2(r[0], r[1]), Vector2(0, 1), Vector2(1, 0)], "e": [Vector2(r[2], r[1]), Vector2(0, 1), Vector2(-1, 0)]}
+		for side: String in starts:
+			var g_list = sides.get(side, [])
+			if not g_list is Array:
+				continue
+			for g: Array in g_list:
+				if g.size() < 3 or float(g[2]) <= 0.0:
+					var st: Array = starts[side]
+					cands.append([st[0] + st[1] * float(g[0]), st[2], float(g[1]), float(m.get("t", 0.3))])
+	var out: Array = []
+	for c: Array in cands:
+		var inside := _floor_top(floors, c[0] + c[1] * 1.2)
+		var outside := maxf(_floor_top(floors, c[0] - c[1] * 1.2), 0.0)
+		if inside - outside > 0.05:
+			out.append({"at": c[0], "inward": c[1], "half": c[2], "inside_y": inside, "outside_y": outside, "t": c[3]})
+	return out
+
+
+# Like Kenwood's: from 1.6 m past the wall (0.15 below the outside level) up to the inside floor just inside the
+# outer face, 0.6 m wider than the doorway.
+static func door_ramps(k: LandmarkKit, d: Dictionary) -> void:
+	var mats: Dictionary = d.get("materials", {})
+	var mat := "concrete" if mats.has("concrete") else "floor"
+	for dr: Dictionary in outer_doors(d):
+		var at: Vector2 = dr.at
+		var n: Vector2 = dr.inward
+		var reach := float(dr.t) + 1.6
+		k.ramp(Vector3(at.x - n.x * reach, float(dr.outside_y) - 0.15, at.y - n.y * reach),
+			Vector3(at.x + n.x * 0.05, float(dr.inside_y), at.y + n.y * 0.05), float(dr.half) * 2.0 + 0.6, 0.3, mat)
+
+
+# Top of the highest ground-storey floor (y <= 1 m) covering p, or -1 when none does.
+static func _floor_top(floors: Array, p: Vector2) -> float:
+	var best := -1.0
+	for f: Dictionary in floors:
+		var y := float(f.y)
+		if y > 1.0 or y <= best:
+			continue
+		if f.has("rect"):
+			var r: Array = f.rect
+			if p.x >= float(r[0]) and p.x <= float(r[2]) and p.y >= float(r[1]) and p.y <= float(r[3]):
+				best = y
+		else:
+			var poly := PackedVector2Array()
+			for q: Array in f.poly:
+				poly.append(Vector2(q[0], q[1]))
+			if Geometry2D.is_point_in_polygon(p, poly):
+				best = y
+	return best
 
 
 # --- floors, rows, props --------------------------------------------------------------------------

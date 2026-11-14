@@ -1,10 +1,10 @@
 # ItemDB — item definitions from data/items/items.json, looked up by string ID and validated.
-# Categories: weapon, ammo, aid, food, junk. Pure: no scene or rendering dependencies. Depends on: DataLoader.
+# Categories: weapon, ammo, aid, food, chem, booze (D-082), gear, junk, quest. Pure: no scene or rendering dependencies. Depends on: DataLoader.
 class_name ItemDB
 extends RefCounted
 
 const PATH := "res://data/items/items.json"
-const CATEGORIES := ["weapon", "ammo", "aid", "food", "chem", "gear", "junk", "quest"]
+const CATEGORIES := ["weapon", "ammo", "aid", "food", "booze", "chem", "gear", "junk", "quest"]
 const SCHEMA := {"name": TYPE_STRING, "category": TYPE_STRING, "weight": TYPE_FLOAT, "value": TYPE_FLOAT}
 
 static var _items: Dictionary = {}
@@ -35,7 +35,7 @@ static func _ensure_loaded() -> void:
 			push_error("ItemDB: %s:%s is not an object" % [PATH, id])
 			continue
 		var required: Dictionary = entry.duplicate()
-		required.erase("use")  # optional { seconds, heal?, food?, water?, effect? } (SurvivalRules D-046, EffectRules D-052)
+		required.erase("use")  # optional { seconds, heal?, food?, water?, effect?, doses? } (SurvivalRules D-046, EffectRules D-052)
 		if not DataLoader.validate(required, SCHEMA, "%s:%s" % [PATH, id]):
 			continue
 		if not entry.category in CATEGORIES:

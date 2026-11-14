@@ -1,0 +1,15 @@
+{
+	"note": "John Pork (D-082): runs the concession tent at the start of both disc golf courses (Centennial, Cottonmill). Sells water, food, booze and party favors cheap for scrap. Never fights, can't be hurt. Lines in data/dialogue/john_pork.json (barks prefixed john_pork_). Placed by DiscCourse through VendorCamp.",
+	"display_name": "John Pork",
+	"dialogue_tree": "john_pork_talk",
+	"bark_prefix": "john_pork_",
+	"model": "vendor_john_pork",
+	"talk_range": 3.5,
+	"subtitle_range": 18.0,
+	"greet_range": 10.0,
+	"face_range": 8.0,
+	"turn_speed": 3.0,
+	"bark_cooldown": 6.0,
+	"idle_bark_min": 25.0,
+	"idle_bark_max": 50.0
+}

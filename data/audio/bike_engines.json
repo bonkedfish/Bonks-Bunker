@@ -1,0 +1,25 @@
+{
+	"note": "Written by tools/audio/build_bike_sounds.py (D-083): the rpm each engine loop in assets/audio/bike_engine/<engine>_<band>.ogg was made at. BikeSound plays each loop at pitch rpm / this rpm and crossfades the three bands.",
+	"engines": {
+		"single": {
+			"low": 1800.0,
+			"mid": 5200.0,
+			"high": 9500.0
+		},
+		"twin": {
+			"low": 1800.0,
+			"mid": 5200.0,
+			"high": 9500.0
+		},
+		"inline4": {
+			"low": 1800.0,
+			"mid": 5200.0,
+			"high": 9500.0
+		},
+		"vtwin": {
+			"low": 1800.0,
+			"mid": 5200.0,
+			"high": 9500.0
+		}
+	}
+}

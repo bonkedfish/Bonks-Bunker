@@ -2,7 +2,9 @@
 # removes player bodies as peers connect and leave; spawns Bonk once per session (NpcSpawner), so clients only ever
 # have the host's Bonk. MultiplayerSpawners replicate them to clients.
 # Hosting opens the world picked in the menu through the Saves node (D-037).
-# Depends on: Net autoload, scenes/player.tscn, SaveDirector ("Saves"), WorldPicker, PlayerIdentity, PauseMenu, NamePrompt.
+# Also makes "Bikes" (BikeDirector, D-083: the parked motorcycles) on every peer.
+# Depends on: Net autoload, scenes/player.tscn, SaveDirector ("Saves"), WorldPicker, PlayerIdentity, PauseMenu, NamePrompt,
+# BikeDirector.
 extends Node3D
 
 const PLAYER_SCENE := preload("res://scenes/player.tscn")
@@ -34,6 +36,9 @@ func _ready() -> void:
 	var prompt := NamePrompt.new()
 	prompt.name = "NamePrompt"
 	$UI.add_child(prompt)  # after Pause: it sees Esc first and keeps the pause menu shut while open
+	var bikes := BikeDirector.new()
+	bikes.name = "Bikes"
+	add_child(bikes)
 	menu.play_offline.connect(_on_singleplayer_pressed)
 	menu.host.connect(_on_host_pressed)
 	menu.join.connect(_on_join_pressed)

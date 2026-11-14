@@ -20,7 +20,19 @@ const PATHS := ["res://scripts/rules/disc_flight_rules.gd", "res://scripts/rules
 	"res://tools/landmarks/cope_stadium.gd", "res://tools/landmarks/rv_park.gd", "res://tools/landmarks/country_club.gd",
 	"res://scripts/world/ground_props.gd", "res://tools/map_import/ground_paint.gd",
 	"res://scripts/rules/name_rules.gd", "res://scripts/player/name_tag.gd", "res://scripts/ui/name_prompt.gd",
-	"res://scripts/main.gd", "res://scripts/save/save_director.gd", "res://scripts/save/save_format.gd"]
+	"res://scripts/main.gd", "res://scripts/save/save_director.gd", "res://scripts/save/save_format.gd",
+	"res://scripts/rules/effect_rules.gd", "res://scripts/player/active_effects.gd", "res://scripts/rules/disc_records_rules.gd",
+	"res://scripts/discgolf/vendor_camp.gd", "res://scripts/world/meepo_dock.gd", "res://scripts/player/meepo_rider.gd",
+	"res://scripts/visual/character_animator.gd", "res://scripts/discgolf/disc_course.gd", "res://scripts/discgolf/disc_golf_director.gd",
+	"res://scripts/ui/disc_golf_hud.gd", "res://scripts/rules/disc_golf_rules.gd", "res://scripts/rules/disc_flight_rules.gd",
+	"res://scripts/rules/survival_rules.gd", "res://scripts/player/item_use.gd", "res://scripts/data/item_db.gd",
+	"res://scripts/data/dialogue_db.gd", "res://scripts/ui/inventory_ui.gd", "res://scripts/ui/hud_icons.gd",
+	"res://scripts/player/player.gd", "res://tests/big_update_test.gd", "res://tests/menu_test.gd", "res://tests/meepo_test.gd",
+	"res://scripts/rules/bike_rules.gd", "res://scripts/vehicles/bike_mesh.gd", "res://scripts/vehicles/parked_bike.gd",
+	"res://scripts/vehicles/bike_director.gd", "res://scripts/vehicles/bike_rider.gd", "res://scripts/vehicles/bike_sound.gd",
+	"res://scripts/ui/bike_hud.gd", "res://tests/bike_test.gd", "res://tests/door_walk_test.gd",
+	"res://scripts/rules/pool_rules.gd", "res://scripts/pool/pool_table.gd", "res://scripts/ui/pool_hud.gd",
+	"res://scripts/player/sport_input.gd", "res://tools/landmarks/big_apple.gd", "res://tests/pool_test.gd"]
 
 
 func _ready() -> void:

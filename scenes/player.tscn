@@ -13,6 +13,7 @@
 [ext_resource type="Script" path="res://scripts/player/meepo_rider.gd" id="11_meepo"]
 [ext_resource type="Script" path="res://scripts/player/disc_thrower.gd" id="12_disc"]
 [ext_resource type="Script" path="res://scripts/player/sport_input.gd" id="13_sport"]
+[ext_resource type="Script" path="res://scripts/vehicles/bike_rider.gd" id="14_bike"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_body"]
 resource_local_to_scene = true
@@ -101,6 +102,12 @@ properties/20/replication_mode = 2
 properties/21/path = NodePath(".:net_name")
 properties/21/spawn = true
 properties/21/replication_mode = 2
+properties/22/path = NodePath("Bike:net_ride")
+properties/22/spawn = true
+properties/22/replication_mode = 2
+properties/23/path = NodePath("Bike:net_state")
+properties/23/spawn = true
+properties/23/replication_mode = 1
 
 [node name="Player" type="CharacterBody3D"]
 collision_layer = 2
@@ -181,3 +188,6 @@ script = ExtResource("12_disc")
 
 [node name="Sport" type="Node" parent="."]
 script = ExtResource("13_sport")
+
+[node name="Bike" type="Node3D" parent="."]
+script = ExtResource("14_bike")

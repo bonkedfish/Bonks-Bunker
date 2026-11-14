@@ -8,6 +8,9 @@
 #   bonk:       { position: [x,y,z], health }            (empty until first save)
 #   drops:      [[item_id, count, x, y, z], ...] oldest first (optional, D-046; items dropped into the world)
 #   quests:     { flag: int } (optional, D-054; the party's quest flags + counters, incl. boss_<id>_dead)
+#   disc_records: { course_id: { player_key: {name, best, holes: [int], aces: [int]} } } (optional, D-082)
+#   bikes: { taken: [cell bike id], parked: { bike id: {model, scheme, fuel, pos [x, y, z], yaw, tipped} } } (optional, D-083:
+#          motorcycles players moved, and which cells' own bikes are gone)
 # Zombies are not saved (they respawn). Bump VERSION and add a step to migrate() when the shape changes.
 # Depends on: ItemDB (to drop items that no longer exist).
 class_name SaveFormat

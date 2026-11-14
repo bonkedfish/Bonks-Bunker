@@ -20,6 +20,9 @@ func _ready() -> void:
 	main.menu.play_offline.emit()
 	await get_tree().create_timer(5.0).timeout
 	var player: Node3D = get_tree().get_first_node_in_group("local_player")
+	var prompt: Control = get_tree().get_first_node_in_group("name_prompt")
+	if prompt and prompt.visible:
+		prompt.submit("Bonk")  # D-081: the name prompt swallows Esc until it is answered
 	var slug: String = main.saves.world_slug
 	var hud := get_tree().get_first_node_in_group("hud")
 	player.inventory.host_add("meepo", 1)

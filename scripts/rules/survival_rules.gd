@@ -62,7 +62,8 @@ static func apply_use(use: Dictionary, health: float, max_health: float, needs: 
 
 
 # Which owned item a quick-use key picks: "heal" -> the aid item that heals most; "eat" -> the food/water that
-# best fills the lower meter (or the other meter if nothing fills the lower one). "" if nothing fits.
+# best fills the lower meter (or the other meter if nothing fills the lower one). "" if nothing fits. Items with an
+# "effect" (chems, booze) are never picked (D-082).
 static func quick_pick(kind: String, owned: Dictionary, items: Dictionary, needs: Vector2) -> String:
 	if kind == "heal":
 		return _best(owned, items, "heal")
@@ -75,8 +76,8 @@ static func _best(owned: Dictionary, items: Dictionary, effect: String) -> Strin
 	var best := ""
 	var best_amount := 0.0
 	for id: String in owned:
-		if int(owned[id]) <= 0 or not items.has(id):
-			continue
+		if int(owned[id]) <= 0 or not items.has(id) or use_def(items[id]).has("effect"):
+			continue  # quick keys never pick something that gets you high or drunk (D-082)
 		var amount := float(use_def(items[id]).get(effect, 0.0))
 		if amount > best_amount:
 			best = id

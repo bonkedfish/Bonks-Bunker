@@ -4,7 +4,7 @@
 #   which only asks the host. Host: checks the player is alive, owns the item and the item has a "use" block,
 #   then runs the timer (`net_use_item`, `net_use_progress` replicate for the HUD). Moving faster than
 #   cancel_move_speed (the owner gets a "stand still" note) or taking damage cancels it. On completion the host removes one item and applies heal /
-#   food / water through SurvivalRules (healing halved while a meter is low), and starts the item's "effect" (D-052).
+#   food / water through SurvivalRules (healing halved while a meter is low), and starts the item's "effect" (D-052) with its "doses" (booze: drinks, D-082).
 # Sound (D-077): the item's use sound (Sfx.use_event) plays for everyone when a use starts and stops if it's cancelled.
 # Depends on: SurvivalRules, ItemDB, Sfx, Player (parent: inventory, health, life, needs, is_local).
 class_name ItemUse
@@ -102,7 +102,7 @@ func host_tick(delta: float) -> void:
 		player.health.current = float(r.health)
 		player.needs.host_set(r.needs)
 		if _use.has("effect"):
-			player.effects.host_add(str(_use.effect))
+			player.effects.host_add(str(_use.effect), float(_use.get("doses", 1.0)))
 	_cancel()
 
 

@@ -3,6 +3,7 @@
 [ext_resource type="Script" path="res://scripts/world/static_mesh_merger.gd" id="1_merge"]
 [ext_resource type="PackedScene" path="res://scenes/loot_container.tscn" id="2_container"]
 [ext_resource type="PackedScene" path="res://scenes/workbench.tscn" id="3_workbench"]
+[ext_resource type="Script" path="res://scripts/world/meepo_dock.gd" id="4_meepo_dock"]
 
 [sub_resource type="StandardMaterial3D" id="Mat_concrete"]
 albedo_color = Color(0.5, 0.5, 0.48, 1)
@@ -606,10 +607,14 @@ color = Color(0.35, 0.4, 0.35, 1)
 [node name="MeepoDock" parent="Loot" groups=["meepo_chargers"] instance=ExtResource("2_container")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.2, -4.0, 2.2)
 container_id = "bonk_bunker_meepo_dock"
-display_name = "Meepo Charging Dock"
+display_name = "Meepo Rack (spare boards)"
 loot_table = "meepo_dock"
 size = Vector3(1.1, 0.35, 0.45)
 color = Color(0.1, 0.45, 0.55, 1)
+
+[node name="MeepoCharger" type="StaticBody3D" parent="Loot"]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 5.4, -4.0, 1.25)
+script = ExtResource("4_meepo_dock")
 
 [node name="JunkPile" parent="Loot" instance=ExtResource("2_container")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.0, 0.0, 7.5)

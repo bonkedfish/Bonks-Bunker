@@ -1,7 +1,7 @@
 {
 	"max_need": 100.0,
-	"hunger_minutes_to_empty": 60.0,
-	"thirst_minutes_to_empty": 40.0,
+	"hunger_minutes_to_empty": 180.0,
+	"thirst_minutes_to_empty": 120.0,
 	"low_threshold": 25.0,
 	"low_heal_multiplier": 0.5,
 	"low_blocks_sprint": true,

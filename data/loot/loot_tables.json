@@ -121,7 +121,8 @@
 		"entries": [
 			{ "item": "car_battery", "weight": 2.0, "min": 1.0, "max": 1.0 },
 			{ "item": "cinder_block", "weight": 3.0, "min": 1.0, "max": 2.0 },
-			{ "item": "scrap_metal", "weight": 3.0, "min": 1.0, "max": 3.0 }
+			{ "item": "scrap_metal", "weight": 3.0, "min": 1.0, "max": 3.0 },
+			{ "item": "gas_can", "weight": 1.0, "min": 1.0, "max": 1.0 }
 		]
 	},
 	"poi_gas": {
@@ -132,7 +133,8 @@
 			{ "item": "car_battery", "weight": 1.0, "min": 1.0, "max": 1.0 },
 			{ "item": "duct_tape", "weight": 2.0, "min": 1.0, "max": 1.0 },
 			{ "item": "scrap_metal", "weight": 2.0, "min": 1.0, "max": 3.0 },
-			{ "item": "", "weight": 2.0, "min": 0.0, "max": 0.0 }
+			{ "item": "", "weight": 2.0, "min": 0.0, "max": 0.0 },
+			{ "item": "gas_can", "weight": 4.0, "min": 1.0, "max": 2.0 }
 		]
 	},
 	"poi_store": {
@@ -171,7 +173,8 @@
 			{ "item": "car_battery", "weight": 2.0, "min": 1.0, "max": 1.0 },
 			{ "item": "duct_tape", "weight": 2.0, "min": 1.0, "max": 1.0 },
 			{ "item": "ammo_9mm", "weight": 1.0, "min": 3.0, "max": 8.0 },
-			{ "item": "", "weight": 2.0, "min": 0.0, "max": 0.0 }
+			{ "item": "", "weight": 2.0, "min": 0.0, "max": 0.0 },
+			{ "item": "gas_can", "weight": 2.0, "min": 1.0, "max": 1.0 }
 		]
 	},
 	"porch": {
@@ -202,7 +205,8 @@
 			{ "item": "water_bottle", "weight": 2.0, "min": 1.0, "max": 1.0 },
 			{ "item": "ammo_9mm", "weight": 1.0, "min": 2.0, "max": 6.0 },
 			{ "item": "bandage", "weight": 1.0, "min": 1.0, "max": 1.0 },
-			{ "item": "", "weight": 3.0, "min": 0.0, "max": 0.0 }
+			{ "item": "", "weight": 3.0, "min": 0.0, "max": 0.0 },
+			{ "item": "gas_can", "weight": 1.0, "min": 1.0, "max": 1.0 }
 		]
 	},
 	"bar_register": {

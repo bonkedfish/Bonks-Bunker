@@ -3,6 +3,8 @@
 #   "range": 3 cycles driver / 7-iron / wedge; hold left click to charge, release to swing where you look.
 #   "putt":  hold left click to charge, release to putt where you look.
 #   "pickle": left click hits (or serves) toward where you look.
+#   "pool":  (D-084, a PoolTable) on your shot hold left click to charge, release to shoot where you look; with ball in
+#            hand the table takes the click (places the cue ball) instead.
 # Right click cancels a charge. Sends only intents to the game node (request_shot / request_hit); the host decides.
 # While a mode is on, the weapon is hidden and doesn't fire (Player checks `mode`), and the disc is put away.
 # HUD reads mode / club_id() / charge. Depends on: GolfBallRules (tuning), Player (parent: is_local, yaw, viewmodel,
@@ -61,10 +63,15 @@ func _unhandled_input(event: InputEvent) -> void:
 
 
 func _process(delta: float) -> void:
-	if not player.is_local or (mode != "range" and mode != "putt") or game == null:
+	if not player.is_local or (mode != "range" and mode != "putt" and mode != "pool") or game == null:
+		return
+	if mode == "pool" and (not game.my_turn() or game.placing()):
+		charging = false
+		charge = 0.0
 		return
 	var t := GolfBallRules.tuning()
-	var seconds := float(t.range.charge_seconds) if mode == "range" else float(t.putting.charge_seconds)
+	var seconds := float(t.range.charge_seconds) if mode == "range" else (
+		float(PoolRules.tuning().charge_seconds) if mode == "pool" else float(t.putting.charge_seconds))
 	var can: bool = Input.mouse_mode == Input.MOUSE_MODE_CAPTURED and not player.health.is_dead()
 	if can and Input.is_action_pressed("fire"):
 		charging = true

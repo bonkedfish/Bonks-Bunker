@@ -21,7 +21,8 @@ func _ready() -> void:
 	_p = get_tree().get_first_node_in_group("local_player")
 	var dock: Node3D = null
 	for c in get_tree().get_nodes_in_group("meepo_chargers"):
-		dock = c
+		if c.has_method("request_open"):  # the spare-board rack (the MeepoDock stand charges too, D-082)
+			dock = c
 	_check("Meepo dock in the bunker", dock != null)
 	if dock == null:
 		_finish(main)

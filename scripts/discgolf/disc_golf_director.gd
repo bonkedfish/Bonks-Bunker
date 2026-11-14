@@ -13,6 +13,9 @@
 #          is done when everyone has holed out or picked up, then the group moves to the next tee. Late joiners
 #          start at the group's hole. Wind (`wind`, D-076) shifts every wind_shift_s during a round and goes into
 #          every flight. An ace starts the AceReplay on every peer.
+#          D-082: a drunk / high thrower's throw goes off (DiscGolfRules.impaired_throw); a disc in the water is +1
+#          and played from where it crossed onto the water; course records (DiscRecordsRules) per player, saved
+#          with the world through SaveDirector (host_load_records / host_save_records), shown on the record boards.
 #   Every peer: the scorecard (`card` + `turn`, synced whole on change), disc flights played back from the host's
 #          path (one pooled disc per player, left lying at the lie) with a DiscTracer line kept until the thrower
 #          walks up to the disc, the ace replay, the disc golf HUD, minimap basket + tee.
@@ -26,9 +29,11 @@ signal card_changed
 
 const DiscGolfHud := preload("res://scripts/ui/disc_golf_hud.gd")
 const GROUND_MASK := 1
+const WATER_MASK := 32  # water surfaces (lakes, canals); the lake bed is on its own layer
 const CHECK_SECONDS := 0.5
 const TREE_GRID := 12.0
 const TOAST_SECONDS := 4.0
+const MAX_THROW_LEAD := 0.6  # s: others see the disc leave the hand this long after the throw (the swing, D-082)
 # Contact sounds along a flight (D-077), by kind: chains (caught or spat out), basket tray / pole, tree branches,
 # trunk or wall, landing on the ground.
 const HIT_SOUNDS := ["disc_chains", "disc_basket_clank", "disc_tree", "disc_thud", "disc_land"]
@@ -39,11 +44,12 @@ var round_course := ""
 var card: Dictionary = {}
 var turn := 0             # peer whose throw it is (0 = nobody can throw right now)
 var wind := Vector2.ZERO  # m/s in map x / z, the way it blows (D-076)
+var records: Dictionary = {}  # course id -> DiscRecordsRules record set (D-082); host-owned, saved with the world
 
 var _t: Dictionary
 var _rng := RandomNumberGenerator.new()
 var _check := 0.0
-var _in_flight: Dictionary = {}  # host: peer -> [seconds left, rest: Vector3, holed: bool, shot: [path, rolls, disc, forehand]]
+var _in_flight: Dictionary = {}  # host: peer -> [seconds left, rest, holed, shot: [path, rolls, disc, forehand], water drop]
 var _order: Array = []           # host: tee order for the current hole (peers)
 var _wind_left := 0.0            # host: seconds to the next wind shift
 var _announced := []             # host: [peer, hole, throws] of the last throw announced
@@ -198,6 +204,10 @@ func request_throw(disc_id: String, power: float, yaw: float, pitch: float, tilt
 	var reach := float(_t.tee_radius_m) if int(e.throws) == 0 else float(_t.lie_radius_m)
 	if _flat(p.global_position).distance_to(_flat(e.lie)) > reach + 0.5:
 		return
+	var off := DiscGolfRules.impaired_throw(power, yaw, tilt, p.effects.impairment(), _rng, _t)  # drunk / high (D-082)
+	power = off.x
+	yaw = off.y
+	tilt = off.z
 	var cl := DiscGolfRules.clamp_throw(power, tilt, _t)
 	var from: Vector3 = p.global_position + Vector3.UP * float(_t.launch_height_m)
 	var f := DiscFlightRules.launch(DiscFlightRules.discs()[disc_id], cl.x, from, yaw,
@@ -205,7 +215,8 @@ func request_throw(disc_id: String, power: float, yaw: float, pitch: float, tilt
 	f.wind = Vector3(wind.x, 0.0, wind.y) * float(_t.wind_effect)
 	var out := _simulate(f, c.basket_position(int(e.hole)), c)
 	e.throws = int(e.throws) + 1
-	_in_flight[p.peer_id] = [_duration(out[0]) + 0.2, out[2], out[3], [out[0], out[1], disc_id, forehand]]
+	var drop := _shore_drop(out[0], c) if out[5] else Vector3.INF  # in the water: throw again from the shore (D-082)
+	_in_flight[p.peer_id] = [_duration(out[0]) + 0.2 + MAX_THROW_LEAD, out[2], out[3], [out[0], out[1], disc_id, forehand], drop]
 	_play.rpc(p.peer_id, disc_id, out[0], out[1], forehand, out[4])
 
 
@@ -219,7 +230,7 @@ func _physics_process(delta: float) -> void:
 		fl[0] = float(fl[0]) - delta
 		if float(fl[0]) <= 0.0:
 			_in_flight.erase(peer)
-			_host_land(peer, fl[1], fl[2], fl[3])
+			_host_land(peer, fl[1], fl[2], fl[3], fl[4])
 	if round_active:
 		_wind_left -= delta
 		if _wind_left <= 0.0:
@@ -246,13 +257,18 @@ func _host_join(p: Node, c: DiscCourse, hole := 0) -> void:
 
 
 # A disc has come to rest (its flight has played out on screen). shot = [path, rolls, disc id, forehand] for the ace
-# replay.
-func _host_land(peer: int, rest: Vector3, holed: bool, shot: Array = []) -> void:
+# replay. drop = where to play from after the disc went into the water (Vector3.INF: it didn't).
+func _host_land(peer: int, rest: Vector3, holed: bool, shot: Array = [], drop := Vector3.INF) -> void:
 	if not card.has(peer):
 		return
 	var e: Dictionary = card[peer]
 	var c := course_node()
 	var hole := int(e.hole)
+	if drop != Vector3.INF:  # penalty stroke, play from the shore where it went in (D-082)
+		e.throws = int(e.throws) + int(_t.water_penalty)
+		rest = drop
+		_water_drop.rpc(peer, drop)
+		_say_p.rpc(peer, "{p} - in the water: +%d, drop on the shore" % int(_t.water_penalty))
 	if holed or int(e.throws) >= int(_t.max_strokes):
 		var par := int(c.course.holes[hole].par)
 		e.strokes[hole] = int(e.throws)
@@ -260,6 +276,9 @@ func _host_land(peer: int, rest: Vector3, holed: bool, shot: Array = []) -> void
 		e.lie = c.basket_position(hole) if holed else rest
 		var what := DiscGolfRules.score_name(int(e.throws), par) if holed else "picked up at %d" % int(e.throws)
 		_say_p.rpc(peer, "{p} - hole %s: %s" % [DiscGolfRules.hole_label(c.course, hole), what])
+		if holed:
+			_host_record(c, peer, func(rec: Dictionary, key: String, who: String) -> Dictionary:
+				return DiscRecordsRules.hole_done(rec, key, who, hole, int(e.throws), c.hole_count()))
 		if holed and int(e.throws) == 1 and shot.size() >= 4:
 			var ft := roundi(_flat(shot[0][0]).distance_to(_flat(c.basket_position(hole))) * 3.28084)
 			_ace.rpc(peer, shot[2], shot[0], shot[1], shot[3], hole, ft)
@@ -363,6 +382,9 @@ func _host_finish(peer: int, c: DiscCourse) -> void:
 		names.append("%s x%d" % [ItemDB.get_item(id).get("name", id), got[id]])
 	_say_p.rpc(peer, "{p} finished %s: %d (%s)%s" % [c.course.name, total, DiscGolfRules.to_par_text(total, par),
 		("  -  " + ", ".join(names)) if not names.is_empty() else ""])
+	if complete:
+		_host_record(c, peer, func(rec: Dictionary, key: String, who: String) -> Dictionary:
+			return DiscRecordsRules.round_done(rec, key, who, total, c.hole_count()))
 	var quests := get_tree().get_first_node_in_group("quests")
 	if quests and complete:
 		var best_flag := "dg_best_" + c.course_id
@@ -431,9 +453,36 @@ func _on_peer_connected(peer: int) -> void:
 	if multiplayer.is_server():
 		_sync_card.rpc_id(peer, round_active, round_course, card, turn)
 		_set_wind.rpc_id(peer, wind, false)
+		for id: String in records:
+			_sync_records.rpc_id(peer, id, records[id])
 
 
-# The whole flight at once: returns [path, rolls, rest position, holed, contacts as [time, kind] pairs for sounds].
+# --- host: course records (D-082) ----------------------------------------------------------------
+
+# Applies `change(rec, player_key, name) -> rec` to this course's records for that player, then shows everyone.
+func _host_record(c: DiscCourse, peer: int, change: Callable) -> void:
+	var saves := get_tree().get_first_node_in_group("save_director")
+	var key: String = saves.key_of(peer) if saves and saves.has_method("key_of") else ""
+	if key == "":
+		key = "peer_%d" % peer  # no save running (tests): still show it this session
+	var p := _player(peer)
+	var who: String = p.net_name if p and "net_name" in p and str(p.net_name) != "" else ("Host" if peer == 1 else "Guest")
+	records[c.course_id] = change.call(records.get(c.course_id, {}), key, who)
+	_sync_records.rpc(c.course_id, records[c.course_id])
+
+
+func host_load_records(saved: Dictionary) -> void:
+	records = saved.duplicate(true)
+	for id: String in records:
+		_sync_records.rpc(id, records[id])
+
+
+func host_save_records() -> Dictionary:
+	return records.duplicate(true)
+
+
+# The whole flight at once: returns [path, rolls, rest position, holed, contacts as [time, kind] pairs for sounds,
+# in the water].
 func _simulate(f: DiscFlightRules.Flight, basket: Vector3, c: DiscCourse) -> Array:
 	var dt := 1.0 / float(_t.step_hz)
 	var every := maxi(1, roundi(float(_t.step_hz) / float(_t.sample_hz)))
@@ -443,6 +492,10 @@ func _simulate(f: DiscFlightRules.Flight, basket: Vector3, c: DiscCourse) -> Arr
 	var q := PhysicsRayQueryParameters3D.new()
 	q.collision_mask = GROUND_MASK
 	q.exclude = c.body_rids()
+	var wq := PhysicsRayQueryParameters3D.new()
+	wq.collision_mask = WATER_MASK
+	wq.collide_with_areas = true
+	var in_water := false
 	if _trees_dirty:
 		_gather_trees(c)
 	var holed := false
@@ -475,6 +528,14 @@ func _simulate(f: DiscFlightRules.Flight, basket: Vector3, c: DiscCourse) -> Arr
 			if cooldown <= 0.0 and _canopy_hit(f, prev.distance_to(f.pos)):
 				cooldown = 0.2
 				_add_hit(hits, f.time, 2)
+			wq.from = prev
+			wq.to = f.pos
+			var splash := space.intersect_ray(wq)
+			if not splash.is_empty():  # into the water: it stops there (D-082)
+				f.pos = splash.position
+				in_water = true
+				_add_hit(hits, f.time, 4)
+				break
 			q.from = prev
 			q.to = f.pos
 			var hit := space.intersect_ray(q)
@@ -501,6 +562,13 @@ func _simulate(f: DiscFlightRules.Flight, basket: Vector3, c: DiscCourse) -> Arr
 			q.to = next + Vector3.UP * 0.15
 			if not space.intersect_ray(q).is_empty():
 				break  # slid into something
+			wq.from = next + Vector3.UP
+			wq.to = next + Vector3.DOWN * 2.0
+			var wet := space.intersect_ray(wq)
+			if not wet.is_empty():  # slid off the bank into the water
+				f.pos = wet.position
+				in_water = true
+				break
 			q.from = next + Vector3.UP
 			q.to = next + Vector3.DOWN * 2.0
 			var ground := space.intersect_ray(q)
@@ -515,7 +583,32 @@ func _simulate(f: DiscFlightRules.Flight, basket: Vector3, c: DiscCourse) -> Arr
 			rolls.append(f.roll)
 	path.append(f.pos)
 	rolls.append(f.roll)
-	return [path, rolls, f.pos, holed, PackedFloat32Array(hits)]
+	return [path, rolls, f.pos, holed, PackedFloat32Array(hits), in_water]
+
+
+# Where a disc that went into the water is played from (D-082): the last point of its flight that was over dry
+# ground (where it crossed onto the water, the real OB rule), stepped back a little, on the ground.
+func _shore_drop(path: PackedVector3Array, c: DiscCourse) -> Vector3:
+	var space := get_world_3d().direct_space_state
+	var q := PhysicsRayQueryParameters3D.new()
+	q.collide_with_areas = true
+	for i in range(path.size() - 1, -1, -1):
+		var p := path[i]
+		q.collision_mask = WATER_MASK
+		q.from = p + Vector3.UP * 60.0
+		q.to = p + Vector3.DOWN * 60.0
+		if not space.intersect_ray(q).is_empty():
+			continue  # still over the water
+		var back := path[maxi(i - 2, 0)]  # a step further from the water
+		q.collision_mask = GROUND_MASK
+		q.exclude = c.body_rids()
+		q.from = back + Vector3.UP * 60.0
+		q.to = back + Vector3.DOWN * 60.0
+		var ground := space.intersect_ray(q)
+		if not ground.is_empty():
+			return ground.position + Vector3.UP * 0.03
+		q.exclude = []
+	return path[0]
 
 
 # One sound per contact: the same kind again within 0.15 s is the same hit.
@@ -669,14 +762,48 @@ func _play(peer: int, disc_id: String, path: PackedVector3Array, rolls: PackedFl
 		add_child(line)
 		_visual[peer] = {"node": mi, "tracer": line}
 	var v: Dictionary = _visual[peer]
+	var lead := 0.0
+	var thrower := _player(peer)
+	if thrower and not thrower.is_local and "body" in thrower:  # everyone else sees the swing (D-082)
+		var col: Array = DiscFlightRules.discs()[disc_id].color
+		lead = minf(thrower.body.throw_disc(Color(col[0], col[1], col[2]), disc_id == "disc_putter"), MAX_THROW_LEAD)
 	v.node.mesh = _mesh_for(disc_id)
-	v.node.visible = true
+	v.node.visible = lead <= 0.0  # it's in their hand until the release
 	v.tracer.show_path(path)
 	v.path = path
 	v.rolls = rolls
-	v.t = 0.0
+	v.t = -lead
 	v.hand = -1.0 if forehand else 1.0
 	v.hits = hits
+	v.hit_i = 0
+
+
+# Course records changed: update this course's board(s) (D-082).
+@rpc("authority", "call_local", "reliable")
+func _sync_records(course_id: String, rec: Dictionary) -> void:
+	records[course_id] = rec
+	var course: Dictionary = DiscGolfRules.courses().get(course_id, {})
+	if course.is_empty():
+		return
+	var text := DiscRecordsRules.board_text(rec, course)
+	for b in get_tree().get_nodes_in_group("record_boards"):
+		if str(b.get_meta("course_id", "")) == course_id:
+			b.text = text
+
+
+# The disc went in the water: it shows at the drop spot on the shore (D-082).
+@rpc("authority", "call_local", "reliable")
+func _water_drop(peer: int, drop: Vector3) -> void:
+	if not _visual.has(peer):
+		return
+	var v: Dictionary = _visual[peer]
+	v.node.global_position = drop
+	v.node.basis = Basis()
+	v.node.visible = true
+	v.path = PackedVector3Array([drop, drop])
+	v.rolls = PackedFloat32Array([0.0, 0.0])
+	v.t = 99.0
+	v.hits = PackedFloat32Array()
 	v.hit_i = 0
 
 
@@ -700,7 +827,13 @@ func _toast(text: String) -> void:
 func _process(delta: float) -> void:
 	for peer: int in _visual:
 		var v: Dictionary = _visual[peer]
-		if not v.node.visible or not v.has("path"):
+		if not v.has("path"):
+			continue
+		if float(v.t) < 0.0:  # still in the thrower's hand (D-082)
+			v.t = float(v.t) + delta
+			v.node.visible = float(v.t) >= 0.0
+			continue
+		if not v.node.visible:
 			continue
 		var path: PackedVector3Array = v.path
 		var dur := _duration(path)

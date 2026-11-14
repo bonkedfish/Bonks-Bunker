@@ -9,11 +9,16 @@ const CONTROLS := [
 	["quick_heal", "Quick heal (bandage)"], ["quick_eat", "Quick eat"], ["ride", "Hop on / off the Meepo (Shift = boost)"],
 	["disc_mode", "Next disc (disc golf) / next club (Drop Zone)"], ["disc_tilt_left", "Disc: tilt left (curve left)"],
 	["disc_tilt_right", "Disc: tilt right (curve right)"], ["disc_grip", "Disc: backhand / forehand"], ["scorecard", "Disc golf scorecard"],
+	["bike_shift_up", "Bike: shift up (hold Shift = clutch)"], ["bike_shift_down", "Bike: shift down (hold Shift)"],
+	["bike_dismount", "Bike: get off (when slow)"], ["bike_camera", "Bike: chase / first-person camera"],
 	["quest_book", "Quest book"], ["world_map", "Map"], ["quicksave", "Quicksave (host)"], ["toggle_debug", "Performance overlay"],
 ]
 
 const EXTRA := [["Look around", "Mouse"], ["Pause / settings", "Esc"], ["Take all from a container", "R"],
-	["Disc: charge / throw", "Hold / release left click"], ["Disc: cancel throw", "Right click"]]
+	["Disc: charge / throw", "Hold / release left click"], ["Disc: cancel throw", "Right click"],
+	["Bike: ride a parked bike", "E"], ["Bike: throttle / brake / lean", "W / S / A, D"],
+	["Bike: lean back (wheelie) / forward (stoppie)", "Space / Ctrl"], ["Bike: start engine / refuel (gas can)", "B / R"],
+	["Pool: sit at / leave a table", "E"], ["Pool: shoot where you look", "Hold / release left click"]]
 
 
 static func build() -> GridContainer:

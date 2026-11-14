@@ -13,6 +13,8 @@
 # from another model onto a hand bone, named for weapons_by_slot) and "fp_model" (model used for first-person arms).
 # "gear" (D-061): primitive meshes built in code and fixed to bones (masks, pads, spikes): {shape: box | cylinder |
 # cone | sphere, size [x,y,z] (cylinder/cone: [radius, height, -]), color [r,g,b], metal, bone, pos, rot_deg}.
+# Disc throws (D-082): throw_disc() plays the "throw" (backhand swing) or "putt" (one-hand push) clip and shows a
+# disc on the "disc_hand" bone until it lets go, hands otherwise empty; every peer runs it for remote players.
 # Never affects gameplay. Depends on: DataLoader, shaders/outfit.gdshader.
 class_name CharacterAnimator
 extends Node3D
@@ -42,6 +44,10 @@ var _oneshot_left := 0.0
 var _accum := 0.0
 var _blend := 0.2
 var riding := false  # standing on the Meepo: idle pose instead of walk/run (D-057)
+var on_bike := false  # sitting on a motorcycle: the "ride" clip, no weapon in hand (D-083)
+var _disc_hold: MeshInstance3D  # the disc in the throwing hand (D-082)
+var _disc_mat: StandardMaterial3D
+var _disc_left := 0.0
 var _far_m := 35.0
 var _far_period := 0.1
 
@@ -237,6 +243,8 @@ static func _gear_mesh(g: Dictionary) -> Mesh:
 
 # Shows the weapon mesh listed for this slot in weapons_by_slot (or none).
 func set_weapon_slot(slot: int) -> void:
+	if on_bike or _oneshot_left > 0.0 and (_oneshot_key == "throw" or _oneshot_key == "putt"):
+		slot = -1  # throwing a disc: no gun in the hand
 	var names: Array = _def.get("weapons_by_slot", [])
 	var want := str(names[slot]) if slot >= 0 and slot < names.size() else ""
 	for mi in _props:
@@ -248,6 +256,51 @@ func one_shot(key: String, seconds: float) -> void:
 	_oneshot_key = key
 	_oneshot_left = seconds
 	_current = ""
+
+
+# A disc throw seen by other players: the swing, with the disc (colour `col`) in hand until it's released.
+# Returns the seconds from now until the release (0 when this model has no throw clip).
+func throw_disc(col: Color, putt: bool) -> float:
+	var key := "putt" if putt else "throw"
+	var clip := str(_def.get("clips", {}).get(key, ""))
+	if _player == null or not _player.has_animation(clip):
+		return 0.0
+	var length := _player.get_animation(clip).length
+	one_shot(key, length)
+	set_weapon_slot(-1)
+	if _disc_hold == null:
+		_make_disc_hold()
+	if _disc_hold:
+		_disc_mat.albedo_color = col
+		_disc_hold.visible = true
+	_disc_left = length * (0.45 if putt else 0.5)
+	return _disc_left
+
+
+func _make_disc_hold() -> void:
+	var hand: Dictionary = _def.get("disc_hand", {})
+	if _skeleton == null or hand.is_empty() or _skeleton.find_bone(str(hand.bone)) < 0:
+		return
+	var att := BoneAttachment3D.new()
+	att.bone_name = str(hand.bone)
+	_skeleton.add_child(att)
+	_disc_hold = MeshInstance3D.new()
+	var m := CylinderMesh.new()
+	m.top_radius = 0.105
+	m.bottom_radius = 0.1
+	m.height = 0.025
+	m.radial_segments = 16
+	m.rings = 1
+	_disc_mat = StandardMaterial3D.new()
+	_disc_mat.roughness = 0.4
+	m.material = _disc_mat
+	_disc_hold.mesh = m
+	var pos: Array = hand.get("pos", [0, 0, 0])
+	var rot: Array = hand.get("rot_deg", [0, 0, 0])
+	_disc_hold.position = Vector3(pos[0], pos[1], pos[2])
+	_disc_hold.rotation_degrees = Vector3(rot[0], rot[1], rot[2])
+	_disc_hold.visible = false
+	att.add_child(_disc_hold)
 
 
 # Call every frame (all peers). health = current HP (replicated).
@@ -264,6 +317,10 @@ func update(delta: float, attacking: bool, dead: bool, health: float, armed := f
 	_last_health = health
 	_hit_left = maxf(_hit_left - delta, 0.0)
 	_oneshot_left = maxf(_oneshot_left - delta, 0.0)
+	if _disc_hold and _disc_hold.visible:
+		_disc_left -= delta
+		if _disc_left <= 0.0:
+			_disc_hold.visible = false  # let go
 
 	if dead:
 		_play("death", 1.0, false)
@@ -273,6 +330,8 @@ func update(delta: float, attacking: bool, dead: bool, health: float, armed := f
 		_play("attack", 1.0, armed)
 	elif _hit_left > 0.0:
 		_play("hit", 1.0, armed)
+	elif on_bike:
+		_play("ride" if _def.clips.has("ride") else "idle", 1.0, false)
 	elif riding:
 		_play("idle", 1.0, armed)
 	elif crouched and _def.clips.has("crouch"):

@@ -1,5 +1,5 @@
 {
- "note": "Disc golf courses (D-069), map coords (x east, z south, metres). Centennial Park DGC, Kearney: UDisc 'centennial-park-6iCA' Main layout, 9 holes, all par 3, lengths from UDisc; tee/basket spots traced from the user's UDisc screenshot (white pads = tees, 'Main' icons = baskets) and snapped to the UDisc lengths along each traced line. 'box' = course box at hole 1 (start a round there). 'bounds' [x0, z0, x1, z1] = park rect: zombies kept out during a round, round abandoned 'leave_m' outside it. Cottonmill DGC (D-073): the layout drawn on the user's UDisc screenshot (mixed Long/Short/Main/Left/Right tees and baskets), incl. the hidden hole \"9 1/2\" between 2 and 11; lengths measured along the drawn lines at 0.53 m/px (screen scale fitted to the park roads), par 4 for 400 ft and up. Optional hole keys: \"label\" (shown instead of the number), \"via\" (dogleg points, for length / reference).",
+ "note": "Disc golf courses (D-069), map coords (x east, z south, metres). Centennial Park DGC, Kearney: UDisc 'centennial-park-6iCA' Main layout, 9 holes, all par 3, lengths from UDisc; tee/basket spots traced from the user's UDisc screenshot (white pads = tees, 'Main' icons = baskets) and snapped to the UDisc lengths along each traced line. 'box' = course box at hole 1 (start a round there). 'camp' (D-082) = John Pork's tent: 'at' its centre, 'face' the point its front looks at (chosen clear of trees, fairways, roads and the pool from the OSM + tree data). 'bounds' [x0, z0, x1, z1] = park rect: zombies kept out during a round, round abandoned 'leave_m' outside it. Cottonmill DGC (D-073): the layout drawn on the user's UDisc screenshot (mixed Long/Short/Main/Left/Right tees and baskets), incl. the hidden hole \"9 1/2\" between 2 and 11; lengths measured along the drawn lines at 0.53 m/px (screen scale fitted to the park roads), par 4 for 400 ft and up. Optional hole keys: \"label\" (shown instead of the number), \"via\" (dogleg points, for length / reference).",
  "centennial": {
   "name": "Centennial Park DGC",
   "landmark": "centennial_dgc",
@@ -7,6 +7,16 @@
    985.5,
    -309.5
   ],
+  "camp": {
+   "at": [
+    1001.4,
+    -307.4
+   ],
+   "face": [
+    985.5,
+    -309.5
+   ]
+  },
   "bounds": [
    895.0,
    -528.0,
@@ -131,6 +141,16 @@
    -3264.0,
    -2554.7
   ],
+  "camp": {
+   "at": [
+    -3251.9,
+    -2547.7
+   ],
+   "face": [
+    -3264.0,
+    -2554.7
+   ]
+  },
   "bounds": [
    -3587.0,
    -2688.0,

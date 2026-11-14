@@ -36,7 +36,10 @@ func _ready() -> void:
 		_finish(main)
 		return
 	# Take 1 / Take Stack.
-	var dock: Node3D = get_tree().get_first_node_in_group("meepo_chargers")
+	var dock: Node3D = null
+	for c in get_tree().get_nodes_in_group("meepo_chargers"):
+		if c.has_method("request_open"):  # the spare-board rack (the MeepoDock stand charges too, D-082)
+			dock = c
 	var ui := get_tree().get_first_node_in_group("loot_ui")
 	player.global_position = dock.global_position + Vector3(-1.2, 0.3, 0)
 	await get_tree().create_timer(1.0).timeout

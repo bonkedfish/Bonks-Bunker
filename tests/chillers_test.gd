@@ -75,11 +75,14 @@ func _ready() -> void:
 func _pure_checks() -> void:
 	var d := EffectRules.defs()
 	_check("effects data loads (%d effects)" % d.size(), d.size() >= 8)
-	var a := EffectRules.tick({"tripping_acid": 0.5}, 1.0, d)
+	var a := EffectRules.tick({"tripping_acid": {"left": 0.5, "hold": 0.0, "peak": 1.0}}, 1.0, d)
 	_check("acid wears off into 'fried': %s" % a, not a.has("tripping_acid") and a.has("fried"))
-	var m := EffectRules.mods(["baked", "rolling"], d)
+	var m := EffectRules.mods({"baked": 1.0, "rolling": 1.0}, d)  # D-082: strengths by id
+	var bm: Dictionary = d.baked.mods
+	var rm: Dictionary = d.rolling.mods
 	_check("baked + rolling mods multiply: speed %.3f, dmg %.2f, hunger %.1f, thirst %.1f" % [m.move_speed, m.damage_taken,
-		m.hunger_drain, m.thirst_drain], is_equal_approx(m.move_speed, 0.92 * 1.15) and is_equal_approx(m.damage_taken, 0.85))
+		m.hunger_drain, m.thirst_drain], is_equal_approx(m.move_speed, float(bm.move_speed) * float(rm.move_speed))
+		and is_equal_approx(m.damage_taken, float(bm.damage_taken) * float(rm.damage_taken)))
 	for id: String in ["kush_joint", "magic_mushrooms", "acid_tab", "molly", "black_tar"]:
 		var item := ItemDB.get_item(id)
 		_check("item %s -> effect %s" % [id, item.get("use", {}).get("effect", "?")],
@@ -151,7 +154,7 @@ func _talk_and_use(meek: Node) -> void:
 		eff.net_effects.has("baked") and eff.speed_mult() < speed0 and _player.health.damage_mult < 1.0 and _player.needs.drain_mult.x > 1.0)
 	var hp0: float = _player.health.current
 	_player.health.apply_damage(10.0, 99)
-	_check("10 damage while baked took %.1f HP" % (hp0 - _player.health.current), is_equal_approx(hp0 - _player.health.current, 8.5))
+	_check("10 damage while baked took %.1f HP" % (hp0 - _player.health.current), is_equal_approx(hp0 - _player.health.current, 10.0 * _player.health.damage_mult))
 	_player.item_use.request("acid_tab")
 	await get_tree().create_timer(5.0).timeout
 	_check("dropped acid: effects %s" % eff.net_effects, eff.net_effects.has("tripping_acid") and eff.net_effects.has("baked"))

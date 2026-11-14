@@ -369,6 +369,8 @@
   ]
  },
  "deck": {
+  "ramps_note": "step-free ramps from the ground up onto the 0.12 m deck slab: [x0, z0 (ground end), x1, z1 (deck edge), width] (east gate, west strip by the girls' locker room door)",
+  "ramps": [[20.7, -0.5, 18.15, -0.5, 3.6], [-20.0, 13.0, -17.55, 13.0, 2.4]],
   "rect": [
    -17.6,
    -20.5,

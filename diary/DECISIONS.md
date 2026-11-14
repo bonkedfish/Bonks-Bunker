@@ -271,3 +271,52 @@ Locked unless flagged. Each entry: decision — reason.
   fully visible to 30 m, fades out by 40 m, hidden behind walls (no health bar, not through walls). Host cleans names
   (printable, spaces collapsed, max 20 chars). - User (options: main menu field / per world character / ask every
   time; name fading with range / name + health bar / always through walls).
+- **D-082** (2026-11-14) Big update — User.
+  * Hunger/thirst drain 3x slower: ~3 h to empty hunger, ~2 h thirst (CHANGES D-046's "~1 h", at the user's ask).
+  * Chems compound (CHANGES D-052's "using it again restarts the timer"): each dose adds its time up to a cap and
+    raises strength up to max doses; effects fade out at the end; the comedown is scaled by how high you got (weak,
+    slow). Stronger and longer than before. Options were: stack to a cap + comedown / no limit / overdose risk.
+  * Alcohol: beers, seltzers, shots and mixed drinks give a "Drunk" level (1 per drink, ~40 s each, ~5 min max).
+    BRUTAL at 8+ drinks (user pick over heavy / light): screen sway, view drift, stumbling, double vision, blurred
+    edges, camera lurches, vomiting (lose food + water, stop for a moment).
+  * Being drunk or high wobbles gun aim (the view drifts) AND disc throws, visibly: the power bar jitters and the
+    host adds power / angle error by how impaired you are (user pick over gun-only / mild).
+  * John Pork's tent at the start of both disc golf courses: vendor selling water, food, chems and booze cheap
+    (barter, like Evan), a Meepo charging dock, and a course records board.
+  * Records board: this world, per player — best round, best per hole, aces (user pick over all-worlds / rounds only).
+  * Meepo dock is usable: E puts your board in the dock (charged instantly — D-065 kept, user pick) and E takes it
+    back; you can't ride while it's docked. Standing near a dock still charges as before.
+  * Throw animation other players see (wind-up + release with the disc in hand).
+  * Disc in water: it stops at the surface, +1 stroke, next throw from the spot where it crossed onto the water
+    (real disc golf OB rule) — the old code let it fall through the lake bed and travel on under the land.
+- **D-083** (2026-11-14) Motorcycles — User. A second exception to on-foot travel (after the Meepo, D-057).
+  * Five bikes, fictional makes, built in code (no download): dirt 250, supermoto 450, cafe racer 500, sport 600,
+    cruiser 1200. Stock colour schemes only, one picked at random when a bike spawns (user pick over a paint
+    station / both).
+  * Mayhem-style handling (user pick over arcade cruising / stunt-heavy): A/D lean-steer, W throttle, S brakes,
+    Space leans back (throttle wheelies, air pitch), Ctrl leans forward (brake stoppies, air pitch), jumps off
+    slopes; a bad landing, looping a wheelie, an endo or a hard hit throws you off and hurts.
+  * Manual gearbox WITH clutch (user pick over no clutch / manual + auto): hold Shift for the clutch, E / Q shift
+    up / down, N + 5-6 gears, rev limiter per gear, the wrong gear bogs, letting the clutch out at too few revs
+    stalls (B restarts, clutch in or neutral).
+  * Found + fuel (user pick over a bunker garage / starter + found): parked on streets, at most one per map cell,
+    the same bikes for the same world; runs on gas, gas cans from loot (gas stations, garages, car trunks,
+    junk piles), R refuels while stopped. Where a moved bike was left is world state in the save.
+  * No shooting and no weapon in hand while riding (user).
+  * My calls: third-person chase camera while riding (V switches to first person), F gets off (only when slow),
+    the host simulates the bike from the rider's intents and the rider's client predicts it.
+- **D-084** (2026-11-14) Pool (billiards) at the Big Apple — User.
+  * Both bar-room tables become real 7-ft tables (the decoration props are replaced), placed by the Big Apple
+    generator as PoolTable nodes so a re-import keeps them.
+  * Simple 8-ball (user pick over free play / 8-ball + 9-ball): solids vs stripes decided by the first ball
+    pocketed after the break, sink the 8 last, a foul (scratch, hitting nothing, hitting the wrong group first)
+    gives the other player ball in hand, potting your own ball keeps your turn, the 8 early or on a foul loses,
+    the 8 on the break is re-spotted.
+  * First person at the table (user pick over a top-down 247-style view / top-down + 3D replay): walk around the
+    table, aim where you look from the cue ball (aim line + ghost ball while it's your shot), hold left click for
+    power, release to shoot; ball in hand = click the felt to put the cue ball down.
+  * Players + solo practice (user pick over players only / + Bonk AI): E at a table takes a seat (two seats);
+    alone you practise on a full rack, a second player starts a match; others watch. E again or walking away
+    leaves. Games aren't saved.
+  * Host-authoritative like the other sports: the shooter sends only power + aim, the host runs the shot (pure
+    PoolRules) and sends every peer the ball paths to play back.

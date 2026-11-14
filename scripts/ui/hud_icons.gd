@@ -2,7 +2,7 @@
 # icon centred on `c` about `s` pixels across onto any CanvasItem during its _draw(). Icons: health (heart),
 # food (can), water (drop), meepo (longboard), and one per chem effect: baked (leaf), tripping_shrooms (mushroom),
 # tripping_acid (blotter tab), rolling (pill), nodding (Zz), comedown (down arrow), fried (lightning), dope_sick (sick
-# face). Unknown ids get a plain dot. Presentation only. Depends on: nothing.
+# face), drunk (beer mug, D-082), hungover (wavy line). Unknown ids get a plain dot. Presentation only. Depends on: nothing.
 class_name HudIcons
 extends RefCounted
 
@@ -11,6 +11,7 @@ const COLORS := {
 	"meepo": Color(0.2, 0.9, 1.0), "baked": Color(0.35, 0.8, 0.3), "tripping_shrooms": Color(0.85, 0.25, 0.2),
 	"tripping_acid": Color(0.95, 0.5, 1.0), "rolling": Color(1.0, 0.5, 0.75), "nodding": Color(0.6, 0.55, 0.95),
 	"comedown": Color(0.6, 0.65, 0.75), "fried": Color(1.0, 0.85, 0.2), "dope_sick": Color(0.55, 0.75, 0.3),
+	"drunk": Color(0.95, 0.7, 0.2), "hungover": Color(0.7, 0.65, 0.45),
 }
 
 
@@ -98,5 +99,14 @@ static func draw(ci: CanvasItem, id: String, c: Vector2, s: float) -> void:
 			for i in 7:
 				mouth.append(c + Vector2(-h * 0.45 + i * h * 0.15, h * 0.35 + (h * 0.08 if i % 2 == 0 else -h * 0.08)))
 			ci.draw_polyline(mouth, Color(0.1, 0.12, 0.08), 2.0)
+		"drunk":  # mug with foam and a handle
+			ci.draw_rect(Rect2(c + Vector2(-h * 0.55, -h * 0.45), Vector2(h * 0.85, h * 1.25)), col)
+			ci.draw_rect(Rect2(c + Vector2(-h * 0.62, -h * 0.75), Vector2(h * 0.99, h * 0.36)), Color(0.98, 0.97, 0.92))
+			ci.draw_arc(c + Vector2(h * 0.38, h * 0.12), h * 0.32, -PI * 0.5, PI * 0.5, 8, col, maxf(2.0, h * 0.16))
+		"hungover":
+			var wave := PackedVector2Array()
+			for i in 9:
+				wave.append(c + Vector2(-h * 0.8 + i * h * 0.2, sin(i * 1.4) * h * 0.25))
+			ci.draw_polyline(wave, col, maxf(2.0, h * 0.18))
 		_:
 			ci.draw_circle(c, h * 0.6, col)

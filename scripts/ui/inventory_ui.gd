@@ -7,8 +7,8 @@
 # Group "inventory_ui". Depends on: Player (group "local_player"), InventoryHolder, ItemDB, CarryRules.
 extends Control
 
-const TABS := ["All", "Weapons", "Ammo", "Aid", "Food", "Chems", "Gear", "Junk", "Quest"]
-const TAB_CATEGORY := ["", "weapon", "ammo", "aid", "food", "chem", "gear", "junk", "quest"]
+const TABS := ["All", "Weapons", "Ammo", "Aid", "Food", "Booze", "Chems", "Gear", "Junk", "Quest"]
+const TAB_CATEGORY := ["", "weapon", "ammo", "aid", "food", "booze", "chem", "gear", "junk", "quest"]
 
 var _tabs: TabBar
 var _tree: Tree

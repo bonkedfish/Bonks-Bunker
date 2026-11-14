@@ -9,7 +9,7 @@
 #   * Saves: every autosave_seconds, F5 (quicksave), when the window closes, and a leaving player's
 #     character is captured before their body is removed. Everyone sees a short "Game saved" note.
 # Depends on: SaveFormat, SaveStore, PlayerIdentity, DataLoader, CombatRules, SurvivalRules, players (group "players"),
-# QuestDirector (group "quests": quest flags, incl. killed bosses), loot containers (group "loot_containers"), world drops (group "world_drops"), Bonk (group "bonk"), HUD (group "hud").
+# DiscGolfDirector (group "disc_golf": course records, D-082), BikeDirector (group "bike_director": parked motorcycles, D-083), QuestDirector (group "quests": quest flags, incl. killed bosses), loot containers (group "loot_containers"), world drops (group "world_drops"), Bonk (group "bonk"), HUD (group "hud").
 extends Node
 
 const TUNING_PATH := "res://data/tuning/save.json"
@@ -66,6 +66,14 @@ func host_start() -> void:
 	if quests:
 		var saved: Variant = world.get("quests", {})
 		quests.host_load_state(saved if typeof(saved) == TYPE_DICTIONARY else {})
+	var dg := get_tree().get_first_node_in_group("disc_golf")
+	if dg:
+		var rec: Variant = world.get("disc_records", {})
+		dg.host_load_records(rec if typeof(rec) == TYPE_DICTIONARY else {})
+	var bikes := get_tree().get_first_node_in_group("bike_director")
+	if bikes:
+		var saved_bikes: Variant = world.get("bikes", {})
+		bikes.host_load(saved_bikes if typeof(saved_bikes) == TYPE_DICTIONARY else {}, world_slug)
 	var bonk := get_tree().get_first_node_in_group("bonk")
 	if bonk and not world.bonk.is_empty():
 		var pos := SaveFormat.array_to_vec(world.bonk.position)
@@ -185,6 +193,12 @@ func _capture() -> void:
 	var quests := get_tree().get_first_node_in_group("quests")
 	if quests:
 		world["quests"] = quests.host_save_state()
+	var dg := get_tree().get_first_node_in_group("disc_golf")
+	if dg:
+		world["disc_records"] = dg.host_save_records()
+	var bikes := get_tree().get_first_node_in_group("bike_director")
+	if bikes:
+		world["bikes"] = bikes.host_save()
 	var bonk := get_tree().get_first_node_in_group("bonk")
 	if bonk:
 		world.bonk = {"position": SaveFormat.vec_to_array(bonk.global_position),
@@ -199,6 +213,11 @@ func _player_entry(p: Node) -> Dictionary:
 		hp = float(CombatRules.load_tuning().get("revive_health", 30.0))
 	return SaveFormat.player_entry(p.global_position, hp, p.inventory.net_items, p.weapons.host_save_mags(), p.needs.value(),
 		p.net_name)
+
+
+# Host: the save key of a connected player's character ("" if not known yet). Course records use it (D-082).
+func key_of(peer: int) -> String:
+	return str(_key_by_peer.get(peer, ""))
 
 
 func _player(peer: int) -> Node:
