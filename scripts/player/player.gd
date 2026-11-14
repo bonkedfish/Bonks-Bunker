@@ -11,10 +11,16 @@
 # loot container under the crosshair (10x/sec) and opens it on E. Hunger/thirst live in "Needs" (low = no
 # sprint) and timed item use in "ItemUse" (D-046); the host ticks both. Water (D-047): a ray against the water
 # surface colliders (layer 32) gives the depth at the feet; wading slows, swimming floats (no sprint, no firing).
+# Name (D-081): net_name is the character's name in this world (host sets it from the save or from the owner's
+# NamePrompt via submit_name); other players see it on a NameTag over this body.
 # Depends on: MovementRules, CombatRules, CarryRules, DataLoader, NetClock, Health, WeaponHolder, LifeState,
 #             InventoryHolder, Viewmodel, CharacterAnimator (Body: other players see an animated survivor model,
-#             D-045), data/tuning/player_movement.json, combat.json, inventory.json, data/art/character_models.json.
+#             D-045), data/tuning/player_movement.json, combat.json, inventory.json, data/art/character_models.json,
+#             NameTag, NameRules, NamePrompt (group "name_prompt").
 extends CharacterBody3D
+
+const NameTag := preload("res://scripts/player/name_tag.gd")
+const NameRules := preload("res://scripts/rules/name_rules.gd")
 
 const TUNING_PATH := "res://data/tuning/player_movement.json"
 const FLAG_JUMP := 1
@@ -42,6 +48,11 @@ var net_yaw := 0.0
 var net_pitch := 0.0
 var net_crouched := false
 var net_ack_seq := 0
+var net_name := "":  # D-081, "" until named
+	set(value):
+		net_name = value
+		if _tag:
+			_tag.text = value
 
 var peer_id := 1
 var is_local := false
@@ -67,6 +78,7 @@ var looked_workbench: Node = null  # local player: the crafting bench (group "wo
 var looked_course_box: Node = null  # local player: a disc golf course box (group "course_boxes", D-069) under the crosshair
 var looked_sport_spot: Node = null  # local player: a Drop Zone bay / putting start / court post (group "sport_spots", D-074)
 var cutscene := false  # ace replay (D-076, set on every peer by AceReplay): no moving, looking or using
+var _tag: Label3D = null  # other players' bodies only
 var _look_timer := 0.0
 
 # Owning client: prediction history, indexed by seq % HISTORY_SIZE.
@@ -140,6 +152,9 @@ func _ready() -> void:
 		viewmodel.set_arms_model(model)
 	else:
 		body.set_model(model)
+		_tag = NameTag.new()
+		add_child(_tag)
+		_tag.text = net_name
 	viewmodel.show_slot(0)
 	weapons.viewmodel = viewmodel
 	weapons.inventory = inventory
@@ -173,6 +188,30 @@ func _ready() -> void:
 	else:
 		global_position = net_position
 		sync.synchronized.connect(_on_snapshot)
+
+
+# Host -> the owning peer: this character has no name in this world yet (D-081), so open the name prompt.
+@rpc("authority", "call_local", "reliable")
+func ask_name() -> void:
+	var prompt := get_tree().get_first_node_in_group("name_prompt")
+	if is_local and prompt:
+		prompt.open(self)
+
+
+# Owning peer -> host: the typed name. The host cleans it (asks again if nothing usable is left) and sets net_name,
+# which Sync sends to everyone and SaveDirector keeps in the world save.
+@rpc("any_peer", "call_local", "reliable")
+func submit_name(raw: String) -> void:
+	if not multiplayer.is_server():
+		return
+	var sender := multiplayer.get_remote_sender_id()
+	if sender != peer_id and not (is_local and sender in [0, multiplayer.get_unique_id()]):
+		return
+	var clean := NameRules.clean(raw, int(NameTag.load_tuning().get("max_length", 20)))
+	if clean == "":
+		ask_name.rpc_id(peer_id)
+		return
+	net_name = clean
 
 
 func _unhandled_input(event: InputEvent) -> void:

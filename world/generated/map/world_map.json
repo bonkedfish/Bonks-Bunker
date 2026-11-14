@@ -131,6 +131,41 @@
 			"size": "poi",
 			"x": 692.2,
 			"z": 1316.5
+		},
+		{
+			"below": false,
+			"name": "Big Apple Fun Center",
+			"size": "poi",
+			"x": 1197.5,
+			"z": 522.0
+		},
+		{
+			"below": false,
+			"name": "Kearney RV Park (raiders)",
+			"size": "poi",
+			"x": 3020.0,
+			"z": 1170.0
+		},
+		{
+			"below": false,
+			"name": "Kearney Country Club",
+			"size": "poi",
+			"x": -153.0,
+			"z": -2394.0
+		},
+		{
+			"below": false,
+			"name": "Cope Stadium",
+			"size": "poi",
+			"x": 541.0,
+			"z": -2293.5
+		},
+		{
+			"below": false,
+			"name": "Merryman Performing Arts Center",
+			"size": "poi",
+			"x": 1497.0,
+			"z": -1822.0
 		}
 	],
 	"pixels": [

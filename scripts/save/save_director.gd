@@ -4,6 +4,8 @@
 #   * Each player is matched to a saved character by PlayerIdentity: the host's own ID directly,
 #     clients send theirs with register_player(). A known character gets its position, health, items
 #     magazines and hunger/thirst back; a new one keeps the starting kit and bunker spawn.
+#   * Names (D-081): a character's name comes back from the save; one without a name gets the NamePrompt on its
+#     owner's screen (Player.ask_name) and the typed name is saved with the character.
 #   * Saves: every autosave_seconds, F5 (quicksave), when the window closes, and a leaving player's
 #     character is captured before their body is removed. Everyone sees a short "Game saved" note.
 # Depends on: SaveFormat, SaveStore, PlayerIdentity, DataLoader, CombatRules, SurvivalRules, players (group "players"),
@@ -150,12 +152,15 @@ func _assign(peer: int, uid: String) -> void:
 	var p := _player(peer)
 	if p:
 		_apply_player(p, key)
+		if p.net_name == "":
+			p.ask_name.rpc_id(peer)
 
 
 func _apply_player(player: Node, key: String) -> void:
 	var e: Dictionary = world.players.get(key, {})
 	if e.is_empty():
 		return  # new character: starting kit, bunker spawn
+	player.net_name = str(e.get("name", ""))
 	var pos := SaveFormat.array_to_vec(e.position)
 	player.global_position = pos
 	player.net_position = pos
@@ -192,7 +197,8 @@ func _player_entry(p: Node) -> Dictionary:
 	var hp: float = p.health.current
 	if p.health.is_dead() or p.life.net_state != LifeState.ALIVE:
 		hp = float(CombatRules.load_tuning().get("revive_health", 30.0))
-	return SaveFormat.player_entry(p.global_position, hp, p.inventory.net_items, p.weapons.host_save_mags(), p.needs.value())
+	return SaveFormat.player_entry(p.global_position, hp, p.inventory.net_items, p.weapons.host_save_mags(), p.needs.value(),
+		p.net_name)
 
 
 func _player(peer: int) -> Node:

@@ -1,0 +1,1202 @@
+{
+ "note": "Centennial Park pool, drained (D-078). Built by tools/landmarks/build_centennial_pool.tscn (centennial_pool.gd) -> world/landmarks/centennial_pool.scn; placed by data/map/landmarks.json 'centennial_pool' (origin = map x 977.15, z -360.85, no rotation). Local frame = map axes, x east, z south, y 0 = ground. Basin, beach, sprays and deck traced from Esri World Imagery; bathhouse fitted to the Microsoft footprint; depths are a best guess (3 ft shallow end, 6 ft deep end). depth_profile: [z, depth m] pairs along z; beach: quarter ellipse (centre, radii) inside which depth fades to 0 over 'ramp' of the radius. Doors/walls: [metres from the first point, half width(, sill, top)]. loot/spawns as in kenwood.json; spawn heights follow the pool floor.",
+ "out_path": "res://world/landmarks/centennial_pool.scn",
+ "seed": 1952,
+ "materials": {
+  "deck": {
+   "texture": "concrete_slab",
+   "tile_m": 2.0,
+   "color": [
+    1.05,
+    1.03,
+    0.98
+   ]
+  },
+  "coping": {
+   "color": [
+    0.82,
+    0.8,
+    0.74
+   ],
+   "roughness": 0.8
+  },
+  "pool_floor": {
+   "texture": "concrete_cracked",
+   "tile_m": 3.0,
+   "color": [
+    0.75,
+    0.95,
+    1.0
+   ]
+  },
+  "pool_wall": {
+   "texture": "concrete_cracked",
+   "tile_m": 2.5,
+   "color": [
+    0.7,
+    0.9,
+    0.98
+   ]
+  },
+  "tile_line": {
+   "color": [
+    0.08,
+    0.12,
+    0.3
+   ],
+   "shadows": false,
+   "visible_m": 60.0
+  },
+  "drain": {
+   "color": [
+    0.05,
+    0.05,
+    0.05
+   ],
+   "shadows": false,
+   "visible_m": 40.0
+  },
+  "chrome": {
+   "color": [
+    0.7,
+    0.72,
+    0.75
+   ],
+   "metallic": 0.8,
+   "roughness": 0.3,
+   "visible_m": 80.0
+  },
+  "spray_stem": {
+   "color": [
+    0.95,
+    0.75,
+    0.1
+   ],
+   "roughness": 0.5,
+   "visible_m": 150.0
+  },
+  "spray_cap": {
+   "color": [
+    0.1,
+    0.55,
+    0.8
+   ],
+   "roughness": 0.5,
+   "visible_m": 150.0
+  },
+  "tile": {
+   "color": [
+    0.75,
+    0.77,
+    0.78
+   ],
+   "roughness": 0.5
+  },
+  "roof": {
+   "color": [
+    0.35,
+    0.35,
+    0.34
+   ],
+   "roughness": 0.9
+  },
+  "ceiling": {
+   "color": [
+    0.62,
+    0.62,
+    0.6
+   ],
+   "roughness": 1.0
+  },
+  "block_wall": {
+   "texture": "concrete_cracked",
+   "tile_m": 1.5,
+   "color": [
+    1.1,
+    1.05,
+    0.95
+   ]
+  },
+  "trim": {
+   "color": [
+    0.2,
+    0.4,
+    0.65
+   ],
+   "roughness": 0.7
+  },
+  "stall": {
+   "color": [
+    0.6,
+    0.65,
+    0.7
+   ],
+   "roughness": 0.6,
+   "visible_m": 60.0
+  },
+  "porcelain": {
+   "color": [
+    0.9,
+    0.9,
+    0.88
+   ],
+   "roughness": 0.3,
+   "visible_m": 60.0
+  },
+  "locker": {
+   "color": [
+    0.35,
+    0.5,
+    0.62
+   ],
+   "metallic": 0.3,
+   "roughness": 0.6,
+   "visible_m": 70.0
+  },
+  "bench": {
+   "texture": "planks_weathered",
+   "tile_m": 1.0,
+   "color": [
+    0.9,
+    0.75,
+    0.55
+   ],
+   "visible_m": 70.0
+  },
+  "counter": {
+   "color": [
+    0.75,
+    0.72,
+    0.66
+   ],
+   "roughness": 0.6,
+   "visible_m": 80.0
+  },
+  "fence_post": {
+   "color": [
+    0.55,
+    0.56,
+    0.57
+   ],
+   "metallic": 0.5,
+   "roughness": 0.6
+  },
+  "chainlink": {
+   "color": [
+    0.45,
+    0.46,
+    0.47
+   ],
+   "alpha": 0.3,
+   "shadows": false
+  },
+  "lounger": {
+   "color": [
+    0.9,
+    0.9,
+    0.86
+   ],
+   "roughness": 0.6,
+   "visible_m": 90.0
+  },
+  "canvas": {
+   "color": [
+    0.15,
+    0.35,
+    0.65
+   ],
+   "roughness": 0.9,
+   "visible_m": 120.0
+  },
+  "lifeguard": {
+   "color": [
+    0.92,
+    0.92,
+    0.9
+   ],
+   "roughness": 0.6,
+   "visible_m": 120.0
+  },
+  "rescue_red": {
+   "color": [
+    0.8,
+    0.1,
+    0.08
+   ],
+   "roughness": 0.5,
+   "visible_m": 100.0
+  },
+  "puddle": {
+   "color": [
+    0.08,
+    0.12,
+    0.06
+   ],
+   "roughness": 0.05,
+   "metallic": 0.2,
+   "shadows": false,
+   "visible_m": 80.0
+  },
+  "leaves": {
+   "color": [
+    0.5,
+    0.32,
+    0.12
+   ],
+   "roughness": 1.0,
+   "shadows": false,
+   "visible_m": 45.0
+  },
+  "leaves_dark": {
+   "color": [
+    0.28,
+    0.18,
+    0.08
+   ],
+   "roughness": 1.0,
+   "shadows": false,
+   "visible_m": 60.0
+  },
+  "floatie_orange": {
+   "color": [
+    0.95,
+    0.45,
+    0.1
+   ],
+   "roughness": 0.4,
+   "visible_m": 60.0
+  },
+  "floatie_purple": {
+   "color": [
+    0.5,
+    0.2,
+    0.7
+   ],
+   "roughness": 0.4,
+   "visible_m": 60.0
+  }
+ },
+ "dims": {
+  "deck_y": 0.12,
+  "coping_m": 0.35
+ },
+ "basin": {
+  "rect": [
+   -12.25,
+   -14.75,
+   12.25,
+   14.75
+  ],
+  "step_m": 0.5,
+  "depth_profile": [
+   [
+    -14.75,
+    1.83
+   ],
+   [
+    -10.0,
+    1.83
+   ],
+   [
+    -6.0,
+    1.1
+   ],
+   [
+    14.75,
+    0.9
+   ]
+  ],
+  "beach": {
+   "centre": [
+    2.4,
+    3.7
+   ],
+   "rx": 14.65,
+   "rz": 11.05,
+   "ramp": 0.45
+  },
+  "drop_line_z": -6.0,
+  "drains": [
+   [
+    -1.5,
+    -12.5
+   ],
+   [
+    1.5,
+    -12.5
+   ]
+  ],
+  "ladders": [
+   [
+    -6.0,
+    -14.75,
+    1
+   ],
+   [
+    6.0,
+    -14.75,
+    1
+   ],
+   [
+    10.0,
+    14.75,
+    -1
+   ]
+  ]
+ },
+ "sprays": {
+  "mushrooms": [
+   {
+    "pos": [
+     -6.2,
+     1.2
+    ],
+    "radius": 2.85,
+    "height": 2.3
+   }
+  ],
+  "arches": [
+   [
+    -11.2,
+    -0.3,
+    90
+   ],
+   [
+    -4.4,
+    5.7,
+    30
+   ]
+  ]
+ },
+ "deck": {
+  "rect": [
+   -17.6,
+   -20.5,
+   18.2,
+   18.4
+  ],
+  "text": [
+   [
+    "3 FT",
+    13.4,
+    10.0,
+    90,
+    64
+   ],
+   [
+    "3.5 FT",
+    13.4,
+    -5.5,
+    90,
+    64
+   ],
+   [
+    "6 FT",
+    13.4,
+    -12.5,
+    90,
+    64
+   ],
+   [
+    "3.5 FT",
+    -13.4,
+    -5.5,
+    -90,
+    64
+   ],
+   [
+    "6 FT",
+    -13.4,
+    -12.5,
+    -90,
+    64
+   ],
+   [
+    "NO DIVING",
+    0.0,
+    -16.0,
+    0,
+    70
+   ]
+  ]
+ },
+ "bathhouse": {
+  "rect": [
+   -26.3,
+   18.4,
+   8.0,
+   28.8
+  ],
+  "height": 3.3,
+  "wall_m": 0.25,
+  "door_h": 2.2,
+  "doors": {
+   "n": [
+    [
+     6.3,
+     0.9
+    ],
+    [
+     17.8,
+     0.9
+    ],
+    [
+     29.05,
+     0.9
+    ],
+    [
+     32.3,
+     1.0,
+     1.0,
+     2.1
+    ]
+   ],
+   "s": [
+    [
+     6.3,
+     0.9
+    ],
+    [
+     17.8,
+     0.9
+    ],
+    [
+     31.3,
+     0.5
+    ]
+   ],
+   "e": [
+    [
+     7.6,
+     1.5,
+     1.0,
+     2.1
+    ]
+   ]
+  },
+  "walls": [
+   {
+    "a": [
+     -14.5,
+     18.4
+    ],
+    "b": [
+     -14.5,
+     28.8
+    ]
+   },
+   {
+    "a": [
+     -2.5,
+     18.4
+    ],
+    "b": [
+     -2.5,
+     28.8
+    ]
+   },
+   {
+    "a": [
+     -2.5,
+     23.6
+    ],
+    "b": [
+     8.0,
+     23.6
+    ],
+    "doors": [
+     [
+      2.5,
+      0.45
+     ]
+    ]
+   }
+  ],
+  "stalls": [
+   [
+    -16.4,
+    19.8,
+    -14.575,
+    23.8,
+    3,
+    "x1"
+   ],
+   [
+    -14.425,
+    19.8,
+    -12.6,
+    23.8,
+    3,
+    "x0"
+   ]
+  ],
+  "lockers": [
+   [
+    -26.05,
+    19.2,
+    -25.6,
+    25.4
+   ],
+   [
+    -26.05,
+    26.6,
+    -25.6,
+    28.55
+   ],
+   [
+    -3.075,
+    19.2,
+    -2.625,
+    25.4
+   ],
+   [
+    -3.075,
+    26.6,
+    -2.625,
+    28.55
+   ]
+  ],
+  "benches": [
+   [
+    -23.3,
+    23.6,
+    3.5
+   ],
+   [
+    -5.7,
+    23.6,
+    3.5
+   ]
+  ],
+  "showers": [
+   [
+    -25.2,
+    18.72
+   ],
+   [
+    -24.0,
+    18.72
+   ],
+   [
+    -22.8,
+    18.72
+   ],
+   [
+    -6.2,
+    18.72
+   ],
+   [
+    -5.0,
+    18.72
+   ],
+   [
+    -3.8,
+    18.72
+   ]
+  ],
+  "sinks": [
+   [
+    -14.85,
+    25.5,
+    0
+   ],
+   [
+    -14.85,
+    26.6,
+    0
+   ],
+   [
+    -14.85,
+    27.7,
+    0
+   ],
+   [
+    -14.15,
+    25.5,
+    0
+   ],
+   [
+    -14.15,
+    26.6,
+    0
+   ],
+   [
+    -14.15,
+    27.7,
+    0
+   ]
+  ],
+  "counters": [
+   [
+    6.9,
+    24.3,
+    7.875,
+    27.7
+   ]
+  ]
+ },
+ "fence": {
+  "height": 1.8,
+  "lines": [
+   [
+    [
+     -26.3,
+     18.4
+    ],
+    [
+     -29.0,
+     18.4
+    ],
+    [
+     -29.0,
+     -24.0
+    ],
+    [
+     21.0,
+     -24.0
+    ],
+    [
+     21.0,
+     -2.0
+    ]
+   ],
+   [
+    [
+     21.0,
+     1.0
+    ],
+    [
+     21.0,
+     18.4
+    ],
+    [
+     8.0,
+     18.4
+    ]
+   ]
+  ],
+  "gate": {
+   "hinge": [
+    21.0,
+    1.0
+   ],
+   "yaw_deg": 110,
+   "width": 2.9
+  }
+ },
+ "furniture": {
+  "loungers": [
+   [
+    15.5,
+    -15,
+    0
+   ],
+   [
+    15.5,
+    -11,
+    0
+   ],
+   [
+    15.5,
+    -7,
+    0
+   ],
+   [
+    15.5,
+    -3,
+    0
+   ],
+   [
+    16.2,
+    5,
+    20
+   ],
+   [
+    15.2,
+    9,
+    -15
+   ],
+   [
+    -6,
+    -18,
+    90
+   ],
+   [
+    -2,
+    -18,
+    90
+   ],
+   [
+    2,
+    -18,
+    95
+   ]
+  ],
+  "umbrellas": [
+   [
+    -24,
+    -8
+   ],
+   [
+    -24,
+    0
+   ],
+   [
+    -23,
+    8
+   ]
+  ],
+  "guard_chair": [
+   14.8,
+   1.0,
+   90
+  ],
+  "hoop": [
+   6.0,
+   15.3,
+   0
+  ],
+  "trash_cans": [
+   [
+    17.5,
+    15.5
+   ],
+   [
+    -17.0,
+    -19.5
+   ]
+  ]
+ },
+ "mess": {
+  "puddles": [
+   [
+    0.0,
+    -12.8,
+    2.2
+   ],
+   [
+    -7.0,
+    -13.5,
+    0.9
+   ]
+  ],
+  "leaves": 450,
+  "leaf_bias": 2.4,
+  "leaf_piles": [
+   [
+    -11.3,
+    -14.0,
+    1.2
+   ],
+   [
+    10.8,
+    -13.6,
+    1.0
+   ],
+   [
+    11.3,
+    -4.0,
+    0.7
+   ]
+  ],
+  "floaties": [
+   {
+    "shape": "star",
+    "pos": [
+     -3.5,
+     -8.5
+    ],
+    "size": 1.0,
+    "yaw_deg": 20,
+    "mat": "floatie_orange"
+   },
+   {
+    "shape": "manta",
+    "pos": [
+     6.5,
+     -3.5
+    ],
+    "size": 1.1,
+    "yaw_deg": -35,
+    "mat": "floatie_purple"
+   }
+  ],
+  "junk": [
+   {
+    "type": "lounger_flipped",
+    "pos": [
+     4.0,
+     -11.5
+    ],
+    "yaw_deg": 30
+   },
+   {
+    "type": "cone",
+    "pos": [
+     -8.0,
+     -12.0
+    ]
+   },
+   {
+    "type": "rescue_tube",
+    "pos": [
+     -2.0,
+     -6.5
+    ],
+    "yaw_deg": 70
+   },
+   {
+    "type": "kickboard",
+    "pos": [
+     3.0,
+     0.0
+    ],
+    "yaw_deg": 15
+   },
+   {
+    "type": "kickboard",
+    "pos": [
+     9.0,
+     6.0
+    ],
+    "yaw_deg": -40
+   },
+   {
+    "type": "trash_can",
+    "pos": [
+     -9.5,
+     -9.0
+    ],
+    "yaw_deg": 80
+   },
+   {
+    "type": "umbrella_down",
+    "pos": [
+     8.5,
+     -12.5
+    ],
+    "yaw_deg": 120
+   }
+  ]
+ },
+ "signs": [
+  {
+   "text": "CENTENNIAL POOL",
+   "pos": [
+    -9.0,
+    2.75,
+    28.82
+   ],
+   "yaw_deg": 0,
+   "size": 90,
+   "color": [
+    0.2,
+    0.45,
+    0.75
+   ],
+   "visible_m": 120.0
+  },
+  {
+   "text": "SNACKS",
+   "pos": [
+    8.02,
+    2.5,
+    26.0
+   ],
+   "yaw_deg": 90,
+   "size": 50,
+   "color": [
+    0.95,
+    0.8,
+    0.15
+   ]
+  },
+  {
+   "text": "POOL CLOSED",
+   "pos": [
+    21.05,
+    1.4,
+    3.5
+   ],
+   "yaw_deg": 90,
+   "size": 50,
+   "color": [
+    0.85,
+    0.1,
+    0.1
+   ],
+   "visible_m": 80.0
+  },
+  {
+   "text": "MEN",
+   "pos": [
+    -20.0,
+    2.55,
+    18.38
+   ],
+   "yaw_deg": 180,
+   "size": 40,
+   "color": [
+    0.9,
+    0.9,
+    0.9
+   ]
+  },
+  {
+   "text": "WOMEN",
+   "pos": [
+    -8.5,
+    2.55,
+    18.38
+   ],
+   "yaw_deg": 180,
+   "size": 40,
+   "color": [
+    0.9,
+    0.9,
+    0.9
+   ]
+  },
+  {
+   "text": "LIFEGUARD",
+   "pos": [
+    2.75,
+    2.55,
+    18.38
+   ],
+   "yaw_deg": 180,
+   "size": 40,
+   "color": [
+    0.9,
+    0.9,
+    0.9
+   ]
+  },
+  {
+   "text": "NO LIFEGUARD\nON DUTY",
+   "pos": [
+    0.0,
+    -0.8,
+    -14.73
+   ],
+   "yaw_deg": 0,
+   "size": 60,
+   "color": [
+    0.6,
+    0.05,
+    0.05
+   ]
+  }
+ ],
+ "lights": [
+  {
+   "pos": [
+    -20.0,
+    3.0,
+    23.6
+   ],
+   "color": [
+    1.0,
+    0.85,
+    0.6
+   ],
+   "energy": 0.5,
+   "range": 8.0
+  },
+  {
+   "pos": [
+    -8.5,
+    3.0,
+    23.6
+   ],
+   "color": [
+    1.0,
+    0.85,
+    0.6
+   ],
+   "energy": 0.5,
+   "range": 8.0
+  },
+  {
+   "pos": [
+    3.0,
+    3.0,
+    21.0
+   ],
+   "color": [
+    1.0,
+    0.85,
+    0.6
+   ],
+   "energy": 0.5,
+   "range": 7.0
+  },
+  {
+   "pos": [
+    3.0,
+    3.0,
+    26.2
+   ],
+   "color": [
+    0.9,
+    0.95,
+    1.0
+   ],
+   "energy": 0.5,
+   "range": 7.0
+  }
+ ],
+ "loot": [
+  {
+   "id": "concession_fridge",
+   "name": "Concession Fridge",
+   "table": "fridge",
+   "pos": [
+    -2.05,
+    26.5
+   ],
+   "size": [
+    0.7,
+    1.8,
+    0.7
+   ],
+   "color": [
+    0.85,
+    0.85,
+    0.88
+   ]
+  },
+  {
+   "id": "snack_shelf",
+   "name": "Snack Shelf",
+   "table": "poi_store",
+   "pos": [
+    2.0,
+    28.33
+   ],
+   "size": [
+    1.6,
+    1.6,
+    0.4
+   ],
+   "color": [
+    0.6,
+    0.45,
+    0.3
+   ]
+  },
+  {
+   "id": "first_aid",
+   "name": "First Aid Cabinet",
+   "table": "khs_nurse",
+   "pos": [
+    -2.2,
+    21.0
+   ],
+   "size": [
+    0.4,
+    1.2,
+    0.8
+   ],
+   "color": [
+    0.85,
+    0.2,
+    0.2
+   ]
+  },
+  {
+   "id": "guard_desk",
+   "name": "Lifeguard Desk",
+   "table": "house_cabinet",
+   "pos": [
+    4.5,
+    23.17
+   ],
+   "size": [
+    1.4,
+    0.8,
+    0.6
+   ],
+   "color": [
+    0.5,
+    0.4,
+    0.3
+   ]
+  },
+  {
+   "id": "pump_tools",
+   "name": "Pump Room Toolbox",
+   "table": "toolbox",
+   "pos": [
+    7.4,
+    19.2
+   ],
+   "size": [
+    0.6,
+    0.4,
+    0.35
+   ],
+   "color": [
+    0.75,
+    0.1,
+    0.1
+   ]
+  },
+  {
+   "id": "mens_locker",
+   "name": "Locker",
+   "table": "junk_pile",
+   "pos": [
+    -25.83,
+    26.0
+   ],
+   "size": [
+    0.45,
+    1.9,
+    0.9
+   ],
+   "color": [
+    0.35,
+    0.5,
+    0.62
+   ]
+  },
+  {
+   "id": "womens_locker",
+   "name": "Locker",
+   "table": "junk_pile",
+   "pos": [
+    -2.85,
+    26.0
+   ],
+   "size": [
+    0.45,
+    1.9,
+    0.9
+   ],
+   "color": [
+    0.35,
+    0.5,
+    0.62
+   ]
+  }
+ ],
+ "spawns": [
+  [
+   "deep_a",
+   "zombie_shambler",
+   [
+    -3.0,
+    -11.0
+   ]
+  ],
+  [
+   "deep_b",
+   "zombie_shambler",
+   [
+    5.0,
+    -8.0
+   ]
+  ]
+ ]
+}

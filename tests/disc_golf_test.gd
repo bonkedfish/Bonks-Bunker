@@ -42,6 +42,20 @@ func _ready() -> void:
 		var hl: Dictionary = course.course.holes[i]
 		var d := Vector2(course.tee_position(i).x, course.tee_position(i).z).distance_to(Vector2(course.basket_position(i).x, course.basket_position(i).z))
 		_say("hole %d: %.1f m (%d ft UDisc), tee y %.2f basket y %.2f" % [i + 1, d, int(hl.length_ft), course.tee_position(i).y, course.basket_position(i).y])
+	# Only on a course (D-077): out at the box, put away off the course, and 3 does nothing there.
+	player.inventory.host_add("disc_putter", 1)
+	player.disc._next_disc()
+	_check("3 takes a disc out on the course", player.disc.active)
+	var cb := course.bounds()
+	var box := course.box_position()
+	player.global_position = Vector3(cb.end.x + float(DiscFlightRules.tuning().leave_m) + 50.0, box.y + 1.0, box.z)
+	await get_tree().process_frame
+	await get_tree().process_frame
+	_check("walking off the course puts the disc away", not player.disc.active)
+	player.disc._next_disc()
+	_check("3 does nothing off a course", not player.disc.active)
+	player.global_position = box + Vector3(2.5, 1.5, 0)
+	await get_tree().create_timer(0.5).timeout
 	# Start the round at the box.
 	dg.request_start("centennial")
 	await get_tree().create_timer(0.3).timeout
@@ -93,6 +107,11 @@ func _ready() -> void:
 		throws += 1
 		await get_tree().create_timer(0.15).timeout
 		_check("throw %d accepted (%s, %.0f m, power %.2f)" % [throws, disc, dist, power], dg.is_flying(me))
+		var kinds := PackedStringArray()
+		var hits: PackedFloat32Array = dg._visual[me].hits
+		for h in range(1, hits.size(), 2):
+			kinds.append(dg.HIT_SOUNDS[int(hits[h])])
+		_check("  contact sounds on the flight: %s" % ", ".join(kinds), hits.size() >= 2)
 		if throws == 1:
 			_check("tracer behind the disc in flight", dg._visual[me].tracer.visible)
 			await get_tree().create_timer(1.0).timeout

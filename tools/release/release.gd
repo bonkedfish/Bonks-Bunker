@@ -63,7 +63,10 @@ func _run() -> bool:
 
 	if not _git_cmd(["add", "-A"], "git add"):
 		return false
-	if not _git_cmd(["commit", "--allow-empty", "-m", "Release " + ver], "git commit"):
+	var msg := ["commit", "--allow-empty", "-m", "Release " + ver]
+	if str(cfg.get("commit_trailer", "")) != "":  # attribution lines for the release commit
+		msg.append_array(["-m", str(cfg.commit_trailer)])
+	if not _git_cmd(msg, "git commit"):
 		return false
 	if not _git_cmd(["push", "-u", "origin", "HEAD:main"], "git push"):
 		return false

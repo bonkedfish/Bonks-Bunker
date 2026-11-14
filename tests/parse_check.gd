@@ -14,7 +14,13 @@ const PATHS := ["res://scripts/rules/disc_flight_rules.gd", "res://scripts/rules
 	"res://scripts/ui/disc_golf_hud.gd", "res://scripts/discgolf/disc_tracer.gd", "res://scripts/discgolf/ace_replay.gd",
 	"res://scripts/ai/zombie.gd", "res://scripts/combat/health.gd",
 	"res://scripts/audio/sfx.gd", "res://scripts/audio/ambience.gd", "res://scripts/combat/weapon_holder.gd",
-	"res://scripts/combat/combat_world.gd", "res://scripts/data/weapon_db.gd", "res://scripts/ui/settings_menu.gd"]
+	"res://scripts/combat/combat_world.gd", "res://scripts/data/weapon_db.gd", "res://scripts/ui/settings_menu.gd",
+	"res://tools/landmarks/kenwood.gd", "res://tools/landmarks/kenwood_rooms.gd", "res://tools/landmarks/centennial_pool.gd",
+	"res://tools/landmarks/landmark_parts.gd", "res://tools/landmarks/big_apple.gd", "res://tools/landmarks/merryman.gd",
+	"res://tools/landmarks/cope_stadium.gd", "res://tools/landmarks/rv_park.gd", "res://tools/landmarks/country_club.gd",
+	"res://scripts/world/ground_props.gd", "res://tools/map_import/ground_paint.gd",
+	"res://scripts/rules/name_rules.gd", "res://scripts/player/name_tag.gd", "res://scripts/ui/name_prompt.gd",
+	"res://scripts/main.gd", "res://scripts/save/save_director.gd", "res://scripts/save/save_format.gd"]
 
 
 func _ready() -> void:

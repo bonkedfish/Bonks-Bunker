@@ -454,6 +454,7 @@ bat swing/hit, player_hurt, jump, land, eat/drink/bandage/pills/smoke (item use,
 disc_basket_clank (timed on the flight path), ambience_wind loop + ambience_distant one-shots. Settings has SFX /
 Ambience sliders (saved in user://settings.cfg [audio]). Missing files = one warning per event, then silent.
 Verified 2026-11-13: tests/parse_check.tscn all OK on the user's PC (sfx, ambience, every hooked script).
+Verified 2026-11-13: tests/sfx_check.tscn finds files for all 18 events (97 total).
 Not yet verified: hearing them in game (volumes in sounds.json are first guesses), co-op hearing.
 
 ## Disc golf group play (D-076, 2026-11-13)
@@ -470,3 +471,90 @@ zombies frozen, HUD hidden; ~7-9 s. Toasts naming a player now say "You" / "Host
 Tests: disc_golf_test (pure order / tee order / wind; your turn + wind in the round, out-of-turn refused, tracer in
 flight and gone at the lie, ace replay locks and lets go). Perf at Centennial 5.6 ms, 551 draw calls.
 Not yet verified: turn order with 2+ real players over the network, the replay on a client.
+
+RELEASE alpha2.2 (2026-11-13): sound (D-077) + disc golf group play (D-076). Windows export 54 s, Mac 285 s, smoke
+exit 0, zips ~2.5 GB -> still 2 parts each (one-zip question still open), upload 13 min.
+https://github.com/bonkedfish/Bonks-Bunker/releases/tag/alpha2.2
+
+DISC GOLF FIXES (2026-11-13, after alpha2.2 playtest): (1) No disc golf sounds in alpha2.2 - the D-076 session saved
+disc_golf_director.gd over the D-077 basket hook. Restored, and every flight now carries contact sounds timed on the
+path: disc_chains (caught / spat out), disc_basket_clank (tray / pole), disc_tree (canopy branch), disc_thud (trunk or
+wall), disc_land (first ground contact); new sound folders from Kenney + OGA "Different steps" (CC0). AceReplay plays
+the chains as the disc drops in. (2) 3 took a disc out anywhere - now only inside a course's bounds + leave_m, and
+walking off a course puts it away (DiscThrower.on_course). disc_golf_test: 45 PASS, 0 fail (new checks: 3 on / off the
+course, contact sounds on a flight). Perf note from that run: Cottonmill showed one 217.7 ms frame right after the
+teleport (streaming), Centennial 6.6 ms / 544 draw calls.
+
+KENWOOD + CENTENNIAL POOL (D-078, 2026-11-13): both built and registered in data/map/landmarks.json.
+- Kenwood Elementary (915 16th Ave): tools/landmarks/build_kenwood.tscn -> world/landmarks/kenwood.scn, 36 meshes /
+  24.3k tris / 552 collision shapes. Real OSM footprint (way 1056847663) squared up, rotated 25.54 deg. Gym (NE, 8.5 m)
+  and cafeteria (S, 7.2 m) halls, 1-storey rest with dropped ceiling; 10 wing classrooms + 4th/5th, music, art, library,
+  restrooms, Pre-K, kitchen, office + principal, nurse, conference, sensory, lobby. 19 loot, 8 zombie_shambler markers.
+  Layout is a best guess from the footprint + imagery (user's choice).
+- Centennial pool, drained: tools/landmarks/build_centennial_pool.tscn -> world/landmarks/centennial_pool.scn, 30 meshes /
+  10.2k tris / 79 shapes. 24.5 x 29.5 m basin, 3 ft -> 6 ft (north), zero-depth beach SW, mushroom + 2 spray hoops,
+  bathhouse (men / women / lifeguard / concession), chain-link fence + open east gate, leaves, puddles, starfish + manta
+  floaties, junk. 7 loot, 2 shamblers in the deep end. Exit the basin by the beach ramp.
+- build_cells fix: _landmark_rect now bounds all 4 corners (2 corners were only right for 0/90/180 deg; Kenwood is the
+  first off-axis landmark). Other landmarks unchanged.
+- tools/landmarks/inspect_landmark.tscn now also shoots kenwood + centennial_pool (tests/_look/inspect_*.png).
+- build_cells rerun (800 cells, ~31 min). tests/kenwood_pool_test.tscn: 0 failures - both placed at terrain height,
+  player stands on the school floor and the pool's deep end (no fall through the ground hole), 5/5 Kenwood + 2/2 pool
+  shamblers walk the navmesh (the pool pair climb out by the beach ramp), nurse cabinet / first aid roll loot.
+  Perf: Kenwood corridor 5.6 ms, 488 draw calls, VRAM 1161 MB; pool deck 5.6 ms, 695 draw calls, VRAM 1255 MB.
+  (Bonk shoots the pool shamblers while the test runs - that's where their lost HP goes.)
+Not yet verified: co-op, layout accuracy vs the real interiors (best guess), sound of the empty pool.
+
+FIVE POIS (D-079/D-080) - IN PROGRESS (2026-11-13). Site research done; map coords = MapProjection local (x east, z south):
+- Big Apple: OSM way 1038108504, axis-aligned, bbox x 1130..1265 z 476..569 (origin 1197.5, 522). Tall west/middle block,
+  taller east block x 1211..1264 z 520..553, low south annex x 1162..1185 z 540..569. Outdoor go-kart loop + pit shed
+  (OSM 1187505073/4) at x 1282..1352 z 563..606. Documented: 36 lanes, duckpin, arcade, VR, laser tag (2 levels),
+  blacklight mini-golf indoors, sports bar (billiards, darts, 20+ TVs), outdoor karts. Room layout inferred.
+- RV park: OSM caravan_site 1431052491 (strip along the lake shore, x 2915..3126 z 1033..1308), lake = OSM water
+  139959461 (already carved), office 1363466104 (x 2898..2932 z 1284..1301), bath/laundry 1363466100 (x 3041..3056
+  z 1159..1174), shelter 1363466103, beach + dock at x 2880..2900 z 1255..1275. 76 sites (listings), concrete pads.
+- Country club: OSM golf_course 150820326 + ~260 golf features (18 holes with refs/par, greens, tees, fairways,
+  bunkers, water hazards, cart paths) saved to data/landmarks/source/five_pois_osm.json. Clubhouse 968031951
+  (x -167..-139 z -2410..-2378), pool kidney x -122..-108 z -2427..-2408 + round wading pool, 2 tennis courts
+  x -102..-68 z -2345..-2305, cart barn/pro shop 492456541 (rotated), maintenance 492456640 (inferred use).
+- Cope Stadium: field OSM 134871579 centre (541, -2293.5), heading -1.0 deg; west building 192503191, west bleachers
+  850281083, east bleachers 850276067, north end bleachers 850276068, north building 193151046 (lockers etc.),
+  scoreboard south end (photo/wiki). Wikipedia's coordinate is ~400 m off; OSM + imagery agree.
+- Merryman: whole OSM way 1339905460 ("Central Elementary School", 300 W 24th St) = the Merryman (19,000 sf 2005
+  addition + 14,000 sf remodel per Sampson Construction); entrance plaza faces the lot to 22nd St. Raised auditorium
+  block x 1472..1530 z -1838..-1810 (imagery). Stage west / house east inferred.
+Downloads: OSM API (api.openstreetmap.org map.json) works from the browser pane; overpass-api.de returns 406 there.
+
+FIVE POIS (D-079/D-080) - continued in a second chat (2026-11-13 afternoon; the first stopped after building all five
+scenes). Done since:
+- country_club.gd fix: GroundProps got the clubhouse sign dicts as "signs" and crashed on load; it now gets
+  course.tee_signs ([x, z, yaw, "HOLE n / PAR p  yyy YDS"], 18, generated from the OSM hole lines in
+  data/landmarks/source/five_pois_osm.json: par 70, 5,798 yd tee-to-green), clubhouse signs go through Parts.signs.
+- 8 loot tables added (existing items only, no blanks): arcade_prizes, bowling_counter, concessions, box_office,
+  theater_backstage, locker_room, press_box, pro_shop.
+- D-080 painting: tools/map_import/ground_paint.gd + build_cells hook (landmark "ground_paint" file). Lifts per layer
+  0.03 / 0.05 / 0.07 / 0.09 / 0.11 m (fairway, tee, green, bunker, path - paths sit over the OSM path strips at 0.10).
+  Dev check tests/ground_paint_check.tscn: 27.8k tris over 12 cells, max 4.5k tris / 5 meshes per cell, 0.6 s.
+- build_cells also takes "terrain_pads" (list) per landmark (the RV park's 24 m strip tiles).
+- landmarks.json: big_apple, merryman, cope_stadium, rv_park, country_club registered (replaced OSM ways, MS-footprint
+  exclusions at their build_cells centres (vertex mean, closing point dropped), pads, ground holes for the Merryman
+  house rake and the club's kidney pool, no-plant rects, ground_paint for the club).
+- world_map.json labels for all five (poi size). tests/five_pois_test.tscn written.
+- build_cells rerun with all five (+ paint): ~62 min this time (batches ~470-530 s vs ~250 s on the Kenwood run;
+  not profiled - likely the extra landmark geometry in navmesh parsing). build_world_map rerun (5 new poi labels).
+- tests/five_pois_test.tscn: 0 failures. All five placed at terrain height (terrain under each pad = landmark y),
+  player stands on an inside floor, every container opens and rolls (19 + 16 + 20 + 17 + 15 = 87), lair enemies
+  awake at each (RV park: raiders). Perf at the inside spot (frame / draw calls / tris / VRAM):
+  Big Apple 5.6 ms / 271 / 262k / 1169 MB; Merryman 5.6 / 596 / 751k / 1308; Cope 5.6 / 439 / 466k / 1358;
+  RV park 5.6 / 219 / 203k / 1355; country club 5.6 / 209 / 219k / 1306. Merryman is right at the ~600 draw-call bar.
+- Regressions: disc_golf_test 0 failures (52 PASS; Centennial course 628 draw calls, was 544 before the pool),
+  coop_test PASS (0 failed), parse_check 49/49 OK.
+FIVE POIS: DONE apart from an in-game walk-through by the user. Not done: no release.
+
+PLAYER NAMES (D-081, 2026-11-13): done. scripts/ui/name_prompt.gd (NamePrompt under $UI, group "name_prompt", Esc
+can't skip it), scripts/player/name_tag.gd (Label3D over other players, manual distance fade, data/tuning/
+name_tags.json), scripts/rules/name_rules.gd (pure clean). Player.net_name replicated by Sync (property 21, on change);
+Player.ask_name (host -> owner) / submit_name (owner -> host, cleaned, re-asks on blank). SaveDirector restores
+name from the save, asks when missing; SaveFormat player entry has optional "name" (no version bump).
+Tests: coop_test PASS 0 failed (host + client prompts, client sees the host's tag text, save keeps both names);
+disc_golf_test 0 failures; parse_check 55/55 OK.

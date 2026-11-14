@@ -98,6 +98,9 @@ properties/19/replication_mode = 2
 properties/20/path = NodePath("Meepo:net_battery")
 properties/20/spawn = true
 properties/20/replication_mode = 2
+properties/21/path = NodePath(".:net_name")
+properties/21/spawn = true
+properties/21/replication_mode = 2
 
 [node name="Player" type="CharacterBody3D"]
 collision_layer = 2

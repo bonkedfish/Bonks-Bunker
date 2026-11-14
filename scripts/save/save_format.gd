@@ -3,7 +3,8 @@
 #   version, name, created, saved (unix seconds), play_seconds,
 #   containers: { container_id: { item_id: count } }   (only containers that were opened; what's left inside)
 #   players:    { player_key: { position: [x,y,z], health, items: { item_id: count }, mags: [int],
-#                               needs: [hunger, thirst] (optional, D-046; missing = full) } }
+#                               needs: [hunger, thirst] (optional, D-046; missing = full),
+#                               name (optional, D-081; the character's name in this world, missing = not named yet) } }
 #   bonk:       { position: [x,y,z], health }            (empty until first save)
 #   drops:      [[item_id, count, x, y, z], ...] oldest first (optional, D-046; items dropped into the world)
 #   quests:     { flag: int } (optional, D-054; the party's quest flags + counters, incl. boss_<id>_dead)
@@ -65,9 +66,13 @@ static func clean_items(items: Dictionary) -> Dictionary:
 	return out
 
 
-static func player_entry(pos: Vector3, health: float, items: Dictionary, mags: Array, needs := Vector2(100, 100)) -> Dictionary:
-	return {"position": vec_to_array(pos), "health": health, "items": items.duplicate(), "mags": mags.duplicate(),
+static func player_entry(pos: Vector3, health: float, items: Dictionary, mags: Array, needs := Vector2(100, 100),
+		char_name := "") -> Dictionary:
+	var e := {"position": vec_to_array(pos), "health": health, "items": items.duplicate(), "mags": mags.duplicate(),
 		"needs": [snappedf(needs.x, 0.1), snappedf(needs.y, 0.1)]}
+	if char_name != "":
+		e["name"] = char_name
+	return e
 
 
 # Saved world drops, minus malformed entries and items the data no longer defines.

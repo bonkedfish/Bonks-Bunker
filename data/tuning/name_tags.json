@@ -1,0 +1,8 @@
+{
+	"note": "Player name tags (D-081). max_length: longest character name. visible_m: tags are fully visible up to here and fade out over fade_m beyond it. height_m: above the body's feet. font_size: Label3D font size (pixel_size 0.005 m).",
+	"max_length": 20,
+	"visible_m": 30.0,
+	"fade_m": 10.0,
+	"height_m": 2.15,
+	"font_size": 40
+}

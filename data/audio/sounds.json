@@ -21,6 +21,9 @@
 		"smoke": {"volume_db": -6.0, "pitch_jitter": 0.05, "max_distance": 12.0, "bus": "SFX"},
 		"disc_chains": {"volume_db": 0.0, "pitch_jitter": 0.05, "max_distance": 60.0, "bus": "SFX"},
 		"disc_basket_clank": {"volume_db": -4.0, "pitch_jitter": 0.06, "max_distance": 50.0, "bus": "SFX"},
+		"disc_tree": {"volume_db": -4.0, "pitch_jitter": 0.08, "max_distance": 40.0, "bus": "SFX"},
+		"disc_thud": {"volume_db": -4.0, "pitch_jitter": 0.08, "max_distance": 40.0, "bus": "SFX"},
+		"disc_land": {"volume_db": -8.0, "pitch_jitter": 0.08, "max_distance": 25.0, "bus": "SFX"},
 		"ambience_wind": {"volume_db": -6.0, "pitch_jitter": 0.0, "max_distance": 1.0, "bus": "Ambience"},
 		"ambience_distant": {"volume_db": 4.0, "pitch_jitter": 0.1, "max_distance": 400.0, "bus": "Ambience"}
 	},

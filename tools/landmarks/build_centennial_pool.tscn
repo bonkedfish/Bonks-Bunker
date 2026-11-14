@@ -1,0 +1,6 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://tools/landmarks/build_centennial_pool.gd" id="1_cp"]
+
+[node name="BuildCentennialPool" type="Node"]
+script = ExtResource("1_cp")

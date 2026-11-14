@@ -295,5 +295,89 @@
 		"entries": [
 			{ "item": "disc_golden_ace", "weight": 1.0, "min": 1.0, "max": 1.0 }
 		]
+	},
+	"arcade_prizes": {
+		"rolls_min": 2.0, "rolls_max": 4.0,
+		"entries": [
+			{ "item": "scrap_metal", "weight": 3.0, "min": 1.0, "max": 3.0 },
+			{ "item": "duct_tape", "weight": 2.0, "min": 1.0, "max": 2.0 },
+			{ "item": "water_bottle", "weight": 2.0, "min": 1.0, "max": 2.0 },
+			{ "item": "car_battery", "weight": 1.0, "min": 1.0, "max": 1.0 },
+			{ "item": "wrench", "weight": 0.5, "min": 1.0, "max": 1.0 }
+		]
+	},
+	"bowling_counter": {
+		"rolls_min": 2.0, "rolls_max": 3.0,
+		"entries": [
+			{ "item": "water_bottle", "weight": 2.0, "min": 1.0, "max": 2.0 },
+			{ "item": "canned_beans", "weight": 2.0, "min": 1.0, "max": 2.0 },
+			{ "item": "scrap_metal", "weight": 2.0, "min": 1.0, "max": 2.0 },
+			{ "item": "wrench", "weight": 1.0, "min": 1.0, "max": 1.0 },
+			{ "item": "duct_tape", "weight": 1.0, "min": 1.0, "max": 1.0 },
+			{ "item": "ammo_9mm", "weight": 1.0, "min": 4.0, "max": 10.0 }
+		]
+	},
+	"concessions": {
+		"rolls_min": 2.0, "rolls_max": 4.0,
+		"entries": [
+			{ "item": "canned_beans", "weight": 4.0, "min": 1.0, "max": 3.0 },
+			{ "item": "water_bottle", "weight": 4.0, "min": 1.0, "max": 3.0 },
+			{ "item": "painkillers", "weight": 0.5, "min": 1.0, "max": 1.0 }
+		]
+	},
+	"box_office": {
+		"rolls_min": 1.0, "rolls_max": 3.0,
+		"entries": [
+			{ "item": "bandage", "weight": 2.0, "min": 1.0, "max": 2.0 },
+			{ "item": "water_bottle", "weight": 2.0, "min": 1.0, "max": 2.0 },
+			{ "item": "duct_tape", "weight": 1.0, "min": 1.0, "max": 1.0 },
+			{ "item": "painkillers", "weight": 1.0, "min": 1.0, "max": 1.0 },
+			{ "item": "ammo_9mm", "weight": 1.0, "min": 4.0, "max": 10.0 }
+		]
+	},
+	"theater_backstage": {
+		"rolls_min": 2.0, "rolls_max": 4.0,
+		"entries": [
+			{ "item": "duct_tape", "weight": 3.0, "min": 1.0, "max": 2.0 },
+			{ "item": "scrap_metal", "weight": 2.0, "min": 1.0, "max": 3.0 },
+			{ "item": "wrench", "weight": 1.5, "min": 1.0, "max": 1.0 },
+			{ "item": "water_bottle", "weight": 1.5, "min": 1.0, "max": 2.0 },
+			{ "item": "bandage", "weight": 1.0, "min": 1.0, "max": 2.0 },
+			{ "item": "kush_joint", "weight": 0.7, "min": 1.0, "max": 2.0 },
+			{ "item": "molly", "weight": 0.5, "min": 1.0, "max": 1.0 }
+		]
+	},
+	"locker_room": {
+		"rolls_min": 2.0, "rolls_max": 4.0,
+		"entries": [
+			{ "item": "bandage", "weight": 3.0, "min": 1.0, "max": 3.0 },
+			{ "item": "painkillers", "weight": 2.0, "min": 1.0, "max": 2.0 },
+			{ "item": "water_bottle", "weight": 2.0, "min": 1.0, "max": 2.0 },
+			{ "item": "duct_tape", "weight": 2.0, "min": 1.0, "max": 2.0 },
+			{ "item": "ammo_9mm", "weight": 1.0, "min": 5.0, "max": 12.0 },
+			{ "item": "bat_baseball", "weight": 0.5, "min": 1.0, "max": 1.0 }
+		]
+	},
+	"press_box": {
+		"rolls_min": 2.0, "rolls_max": 4.0,
+		"entries": [
+			{ "item": "water_bottle", "weight": 2.0, "min": 1.0, "max": 2.0 },
+			{ "item": "canned_beans", "weight": 2.0, "min": 1.0, "max": 2.0 },
+			{ "item": "car_battery", "weight": 1.5, "min": 1.0, "max": 1.0 },
+			{ "item": "duct_tape", "weight": 1.5, "min": 1.0, "max": 2.0 },
+			{ "item": "scrap_metal", "weight": 1.0, "min": 1.0, "max": 2.0 },
+			{ "item": "ammo_9mm", "weight": 1.0, "min": 5.0, "max": 12.0 }
+		]
+	},
+	"pro_shop": {
+		"rolls_min": 2.0, "rolls_max": 3.0,
+		"entries": [
+			{ "item": "water_bottle", "weight": 2.0, "min": 1.0, "max": 2.0 },
+			{ "item": "canned_beans", "weight": 1.0, "min": 1.0, "max": 2.0 },
+			{ "item": "duct_tape", "weight": 1.0, "min": 1.0, "max": 1.0 },
+			{ "item": "wrench", "weight": 1.0, "min": 1.0, "max": 1.0 },
+			{ "item": "painkillers", "weight": 1.0, "min": 1.0, "max": 1.0 },
+			{ "item": "ammo_9mm", "weight": 1.0, "min": 4.0, "max": 10.0 }
+		]
 	}
 }

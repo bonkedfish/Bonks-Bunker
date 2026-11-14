@@ -1,0 +1,2268 @@
+{
+ "note": "Kenwood Elementary (D-078), 915 16th Ave. Built by tools/landmarks/build_kenwood.tscn (kenwood.gd + kenwood_rooms.gd) -> world/landmarks/kenwood.scn; placed by data/map/landmarks.json 'kenwood' (origin = map x 202.6, z -108.1, rotation 25.54 deg). Local frame: x along the wings, z 'south'. footprint = OSM way 1056847663 cross-checked with the Microsoft footprint + Esri imagery, squared up. halls = the two tall roofs seen in the imagery (gym NE, cafeteria/multipurpose S). outer_doors: edge = footprint edge index (point i -> i+1), at = metres from point i. walls: interior walls to the dropped ceiling, doors [metres from a, half width(, sill, top)]. rooms: furniture by type. loot: containers (id, name, loot table, pos [x, z], size). spawns: lair markers [name, enemy, [x, z]] (light: plain shamblers, D-078).",
+ "out_path": "res://world/landmarks/kenwood.scn",
+ "seed": 1935,
+ "materials": {
+  "brick": {
+   "texture": "brick_red",
+   "tile_m": 2.0,
+   "color": [
+    1.1,
+    0.95,
+    0.78
+   ]
+  },
+  "fascia": {
+   "color": [
+    0.45,
+    0.42,
+    0.38
+   ],
+   "roughness": 0.8
+  },
+  "trim": {
+   "color": [
+    0.75,
+    0.73,
+    0.68
+   ],
+   "roughness": 0.7
+  },
+  "concrete": {
+   "texture": "concrete_cracked",
+   "tile_m": 3.0,
+   "color": [
+    0.85,
+    0.83,
+    0.8
+   ]
+  },
+  "floor": {
+   "texture": "concrete_slab",
+   "tile_m": 2.0,
+   "color": [
+    1.15,
+    1.12,
+    1.04
+   ]
+  },
+  "court": {
+   "texture": "planks_weathered",
+   "tile_m": 2.5,
+   "color": [
+    1.15,
+    0.9,
+    0.6
+   ]
+  },
+  "carpet": {
+   "color": [
+    0.24,
+    0.3,
+    0.42
+   ],
+   "roughness": 1.0
+  },
+  "tile": {
+   "color": [
+    0.78,
+    0.8,
+    0.82
+   ],
+   "roughness": 0.4
+  },
+  "wall": {
+   "color": [
+    0.78,
+    0.76,
+    0.7
+   ],
+   "roughness": 0.95
+  },
+  "ceiling": {
+   "color": [
+    0.6,
+    0.6,
+    0.58
+   ],
+   "roughness": 1.0
+  },
+  "roof": {
+   "color": [
+    0.32,
+    0.32,
+    0.31
+   ],
+   "roughness": 0.9
+  },
+  "glass": {
+   "color": [
+    0.16,
+    0.2,
+    0.22
+   ],
+   "metallic": 0.4,
+   "roughness": 0.1,
+   "alpha": 0.7
+  },
+  "porcelain": {
+   "color": [
+    0.9,
+    0.9,
+    0.88
+   ],
+   "roughness": 0.3,
+   "visible_m": 90.0
+  },
+  "corkboard": {
+   "color": [
+    0.55,
+    0.4,
+    0.25
+   ],
+   "roughness": 1.0,
+   "shadows": false,
+   "visible_m": 60.0
+  },
+  "desk": {
+   "texture": "planks_weathered",
+   "tile_m": 1.0,
+   "color": [
+    0.85,
+    0.7,
+    0.5
+   ],
+   "visible_m": 90.0
+  },
+  "table": {
+   "color": [
+    0.82,
+    0.8,
+    0.74
+   ],
+   "roughness": 0.6,
+   "visible_m": 90.0
+  },
+  "steel": {
+   "color": [
+    0.35,
+    0.36,
+    0.38
+   ],
+   "metallic": 0.6,
+   "roughness": 0.5,
+   "visible_m": 150.0
+  },
+  "shelf": {
+   "color": [
+    0.62,
+    0.48,
+    0.32
+   ],
+   "roughness": 0.9,
+   "visible_m": 90.0
+  },
+  "book": {
+   "color": [
+    0.4,
+    0.22,
+    0.15
+   ],
+   "roughness": 1.0,
+   "shadows": false,
+   "visible_m": 50.0
+  },
+  "rug_blue": {
+   "color": [
+    0.15,
+    0.3,
+    0.6
+   ],
+   "roughness": 1.0,
+   "shadows": false,
+   "visible_m": 60.0
+  },
+  "rug_red": {
+   "color": [
+    0.6,
+    0.15,
+    0.15
+   ],
+   "roughness": 1.0,
+   "shadows": false,
+   "visible_m": 60.0
+  },
+  "plastic_red": {
+   "color": [
+    0.75,
+    0.12,
+    0.1
+   ],
+   "roughness": 0.5,
+   "visible_m": 80.0
+  },
+  "plastic_blue": {
+   "color": [
+    0.12,
+    0.3,
+    0.75
+   ],
+   "roughness": 0.5,
+   "visible_m": 80.0
+  },
+  "plastic_green": {
+   "color": [
+    0.15,
+    0.6,
+    0.2
+   ],
+   "roughness": 0.5,
+   "visible_m": 80.0
+  },
+  "plastic_yellow": {
+   "color": [
+    0.95,
+    0.78,
+    0.1
+   ],
+   "roughness": 0.5,
+   "visible_m": 80.0
+  },
+  "paint_yellow": {
+   "color": [
+    0.95,
+    0.8,
+    0.15
+   ],
+   "roughness": 0.8,
+   "shadows": false,
+   "visible_m": 80.0
+  },
+  "paper": {
+   "color": [
+    0.88,
+    0.85,
+    0.76
+   ],
+   "roughness": 1.0,
+   "shadows": false,
+   "visible_m": 45.0
+  },
+  "blood": {
+   "color": [
+    0.3,
+    0.03,
+    0.03
+   ],
+   "roughness": 0.7,
+   "shadows": false,
+   "visible_m": 60.0
+  },
+  "stall": {
+   "color": [
+    0.35,
+    0.45,
+    0.55
+   ],
+   "roughness": 0.6,
+   "visible_m": 60.0
+  },
+  "backboard": {
+   "color": [
+    0.95,
+    0.95,
+    0.95
+   ],
+   "roughness": 0.4,
+   "visible_m": 120.0
+  },
+  "bleacher": {
+   "color": [
+    0.6,
+    0.45,
+    0.28
+   ],
+   "roughness": 0.8,
+   "visible_m": 120.0
+  },
+  "mat": {
+   "color": [
+    0.15,
+    0.25,
+    0.55
+   ],
+   "roughness": 1.0,
+   "visible_m": 80.0
+  },
+  "ball_orange": {
+   "color": [
+    0.9,
+    0.4,
+    0.1
+   ],
+   "roughness": 0.7,
+   "visible_m": 80.0
+  },
+  "stage": {
+   "texture": "planks_weathered",
+   "tile_m": 2.0,
+   "color": [
+    0.75,
+    0.55,
+    0.35
+   ],
+   "visible_m": 150.0
+  },
+  "curtain": {
+   "color": [
+    0.08,
+    0.12,
+    0.4
+   ],
+   "roughness": 1.0,
+   "visible_m": 150.0
+  },
+  "mulch": {
+   "color": [
+    0.45,
+    0.28,
+    0.18
+   ],
+   "roughness": 1.0,
+   "shadows": false,
+   "visible_m": 150.0
+  }
+ },
+ "dims": {
+  "floor_y": 0.12,
+  "ceiling_y": 3.2,
+  "roof_y": 4.6,
+  "parapet_m": 0.6,
+  "wall_m": 0.3,
+  "door_h": 2.4,
+  "window_gap_m": 1.0
+ },
+ "footprint": [
+  [
+   -17.5,
+   -89.5
+  ],
+  [
+   10.6,
+   -89.5
+  ],
+  [
+   10.6,
+   -35.5
+  ],
+  [
+   49.4,
+   -35.5
+  ],
+  [
+   49.4,
+   -7.0
+  ],
+  [
+   17.5,
+   -7.0
+  ],
+  [
+   17.5,
+   3.3
+  ],
+  [
+   14.0,
+   3.3
+  ],
+  [
+   14.7,
+   8.2
+  ],
+  [
+   24.0,
+   13.0
+  ],
+  [
+   20.8,
+   20.0
+  ],
+  [
+   17.5,
+   19.5
+  ],
+  [
+   17.5,
+   32.0
+  ],
+  [
+   7.8,
+   32.0
+  ],
+  [
+   7.8,
+   36.0
+  ],
+  [
+   -18.5,
+   36.0
+  ],
+  [
+   -18.5,
+   20.5
+  ],
+  [
+   -31.0,
+   20.5
+  ],
+  [
+   -32.5,
+   13.5
+  ],
+  [
+   -30.0,
+   8.5
+  ],
+  [
+   -23.5,
+   7.5
+  ],
+  [
+   -23.5,
+   1.3
+  ],
+  [
+   -25.5,
+   1.3
+  ],
+  [
+   -25.5,
+   -7.0
+  ],
+  [
+   -34.5,
+   -7.0
+  ],
+  [
+   -34.5,
+   -35.5
+  ],
+  [
+   -17.5,
+   -35.5
+  ]
+ ],
+ "halls": [
+  {
+   "name": "gym",
+   "rect": [
+    10.6,
+    -35.5,
+    49.4,
+    -7.0
+   ],
+   "top": 8.5,
+   "floor": "court",
+   "inner_walls": [
+    {
+     "a": [
+      10.6,
+      -35.5
+     ],
+     "b": [
+      10.6,
+      -7.0
+     ],
+     "doors": [
+      [
+       14.75,
+       1.6
+      ]
+     ]
+    },
+    {
+     "a": [
+      10.6,
+      -7.0
+     ],
+     "b": [
+      17.5,
+      -7.0
+     ]
+    }
+   ]
+  },
+  {
+   "name": "cafeteria",
+   "rect": [
+    -18.5,
+    -3.5,
+    9.0,
+    20.5
+   ],
+   "top": 7.2,
+   "inner_walls": [
+    {
+     "a": [
+      -18.5,
+      -3.5
+     ],
+     "b": [
+      9.0,
+      -3.5
+     ],
+     "doors": [
+      [
+       6.5,
+       1.0
+      ],
+      [
+       15.0,
+       1.6
+      ]
+     ]
+    },
+    {
+     "a": [
+      -18.5,
+      20.5
+     ],
+     "b": [
+      9.0,
+      20.5
+     ],
+     "doors": [
+      [
+       15.5,
+       1.6
+      ]
+     ]
+    },
+    {
+     "a": [
+      -18.5,
+      -3.5
+     ],
+     "b": [
+      -18.5,
+      20.5
+     ],
+     "doors": [
+      [
+       17.5,
+       0.9
+      ]
+     ]
+    },
+    {
+     "a": [
+      9.0,
+      -3.5
+     ],
+     "b": [
+      9.0,
+      20.5
+     ],
+     "doors": [
+      [
+       19.5,
+       0.9
+      ],
+      [
+       8.5,
+       4.0,
+       0.95,
+       2.1
+      ]
+     ]
+    }
+   ]
+  }
+ ],
+ "outer_doors": [
+  {
+   "edge": 0,
+   "at": 14.0,
+   "half": 1.0
+  },
+  {
+   "edge": 3,
+   "at": 14.5,
+   "half": 1.0
+  },
+  {
+   "edge": 5,
+   "at": 1.75,
+   "half": 0.9
+  },
+  {
+   "edge": 8,
+   "at": 5.2,
+   "half": 1.2
+  },
+  {
+   "edge": 14,
+   "at": 10.8,
+   "half": 1.8
+  },
+  {
+   "edge": 18,
+   "at": 2.8,
+   "half": 0.9
+  },
+  {
+   "edge": 24,
+   "at": 13.75,
+   "half": 1.0
+  }
+ ],
+ "no_window_edges": [
+  6,
+  7
+ ],
+ "walls": [
+  {
+   "a": [
+    -5.3,
+    -89.5
+   ],
+   "b": [
+    -5.3,
+    -35.5
+   ],
+   "doors": [
+    [
+     5.4,
+     0.9
+    ],
+    [
+     16.2,
+     0.9
+    ],
+    [
+     27.0,
+     0.9
+    ],
+    [
+     37.8,
+     0.9
+    ],
+    [
+     48.6,
+     0.9
+    ]
+   ]
+  },
+  {
+   "a": [
+    -1.7,
+    -89.5
+   ],
+   "b": [
+    -1.7,
+    -35.5
+   ],
+   "doors": [
+    [
+     5.4,
+     0.9
+    ],
+    [
+     16.2,
+     0.9
+    ],
+    [
+     27.0,
+     0.9
+    ],
+    [
+     37.8,
+     0.9
+    ],
+    [
+     48.6,
+     0.9
+    ]
+   ]
+  },
+  {
+   "a": [
+    -17.5,
+    -78.7
+   ],
+   "b": [
+    -5.3,
+    -78.7
+   ]
+  },
+  {
+   "a": [
+    -1.7,
+    -78.7
+   ],
+   "b": [
+    10.6,
+    -78.7
+   ]
+  },
+  {
+   "a": [
+    -17.5,
+    -67.9
+   ],
+   "b": [
+    -5.3,
+    -67.9
+   ]
+  },
+  {
+   "a": [
+    -1.7,
+    -67.9
+   ],
+   "b": [
+    10.6,
+    -67.9
+   ]
+  },
+  {
+   "a": [
+    -17.5,
+    -57.1
+   ],
+   "b": [
+    -5.3,
+    -57.1
+   ]
+  },
+  {
+   "a": [
+    -1.7,
+    -57.1
+   ],
+   "b": [
+    10.6,
+    -57.1
+   ]
+  },
+  {
+   "a": [
+    -17.5,
+    -46.3
+   ],
+   "b": [
+    -5.3,
+    -46.3
+   ]
+  },
+  {
+   "a": [
+    -1.7,
+    -46.3
+   ],
+   "b": [
+    10.6,
+    -46.3
+   ]
+  },
+  {
+   "a": [
+    -17.5,
+    -35.5
+   ],
+   "b": [
+    -5.3,
+    -35.5
+   ]
+  },
+  {
+   "a": [
+    -1.7,
+    -35.5
+   ],
+   "b": [
+    10.6,
+    -35.5
+   ]
+  },
+  {
+   "a": [
+    -5.3,
+    -35.5
+   ],
+   "b": [
+    -5.3,
+    -22.5
+   ]
+  },
+  {
+   "a": [
+    -1.7,
+    -35.5
+   ],
+   "b": [
+    -1.7,
+    -22.5
+   ]
+  },
+  {
+   "a": [
+    -17.5,
+    -35.5
+   ],
+   "b": [
+    -17.5,
+    -22.5
+   ]
+  },
+  {
+   "a": [
+    -11.4,
+    -35.5
+   ],
+   "b": [
+    -11.4,
+    -22.5
+   ]
+  },
+  {
+   "a": [
+    -34.5,
+    -22.5
+   ],
+   "b": [
+    -5.3,
+    -22.5
+   ],
+   "doors": [
+    [
+     8.5,
+     1.0
+    ],
+    [
+     20.05,
+     0.8
+    ],
+    [
+     26.15,
+     0.8
+    ]
+   ]
+  },
+  {
+   "a": [
+    -1.7,
+    -22.5
+   ],
+   "b": [
+    10.6,
+    -22.5
+   ],
+   "doors": [
+    [
+     6.2,
+     1.2
+    ]
+   ]
+  },
+  {
+   "a": [
+    -34.5,
+    -19.0
+   ],
+   "b": [
+    -5.3,
+    -19.0
+   ],
+   "doors": [
+    [
+     7.5,
+     1.0
+    ],
+    [
+     22.0,
+     0.9
+    ]
+   ]
+  },
+  {
+   "a": [
+    -1.7,
+    -19.0
+   ],
+   "b": [
+    10.6,
+    -19.0
+   ],
+   "doors": [
+    [
+     6.2,
+     0.9
+    ]
+   ]
+  },
+  {
+   "a": [
+    -5.3,
+    -19.0
+   ],
+   "b": [
+    -5.3,
+    -7.0
+   ]
+  },
+  {
+   "a": [
+    -1.7,
+    -19.0
+   ],
+   "b": [
+    -1.7,
+    -7.0
+   ]
+  },
+  {
+   "a": [
+    -20.0,
+    -19.0
+   ],
+   "b": [
+    -20.0,
+    -7.0
+   ]
+  },
+  {
+   "a": [
+    -25.5,
+    -7.0
+   ],
+   "b": [
+    -5.3,
+    -7.0
+   ]
+  },
+  {
+   "a": [
+    -1.7,
+    -7.0
+   ],
+   "b": [
+    10.6,
+    -7.0
+   ]
+  },
+  {
+   "a": [
+    -25.5,
+    -3.5
+   ],
+   "b": [
+    -18.5,
+    -3.5
+   ],
+   "doors": [
+    [
+     3.5,
+     0.8
+    ]
+   ]
+  },
+  {
+   "a": [
+    9.0,
+    -3.5
+   ],
+   "b": [
+    17.5,
+    -3.5
+   ],
+   "doors": [
+    [
+     4.0,
+     0.9
+    ]
+   ]
+  },
+  {
+   "a": [
+    -23.5,
+    1.3
+   ],
+   "b": [
+    -18.5,
+    1.3
+   ],
+   "doors": [
+    [
+     2.5,
+     0.8
+    ]
+   ]
+  },
+  {
+   "a": [
+    9.0,
+    20.5
+   ],
+   "b": [
+    17.5,
+    20.5
+   ]
+  },
+  {
+   "a": [
+    9.0,
+    26.0
+   ],
+   "b": [
+    17.5,
+    26.0
+   ]
+  },
+  {
+   "a": [
+    9.0,
+    20.5
+   ],
+   "b": [
+    9.0,
+    32.0
+   ],
+   "doors": [
+    [
+     2.75,
+     0.8
+    ],
+    [
+     8.5,
+     0.8
+    ]
+   ]
+  },
+  {
+   "a": [
+    -7.0,
+    20.5
+   ],
+   "b": [
+    -7.0,
+    36.0
+   ],
+   "doors": [
+    [
+     5.5,
+     0.9
+    ],
+    [
+     13.0,
+     0.8,
+     1.0,
+     2.0
+    ]
+   ]
+  },
+  {
+   "a": [
+    -7.0,
+    31.0
+   ],
+   "b": [
+    1.0,
+    31.0
+   ],
+   "doors": [
+    [
+     4.0,
+     1.2
+    ]
+   ]
+  },
+  {
+   "a": [
+    1.0,
+    31.0
+   ],
+   "b": [
+    1.0,
+    36.0
+   ]
+  },
+  {
+   "a": [
+    1.0,
+    31.0
+   ],
+   "b": [
+    7.8,
+    31.0
+   ],
+   "doors": [
+    [
+     3.4,
+     0.8
+    ]
+   ]
+  },
+  {
+   "a": [
+    -18.5,
+    27.0
+   ],
+   "b": [
+    -12.0,
+    27.0
+   ]
+  },
+  {
+   "a": [
+    -12.0,
+    20.5
+   ],
+   "b": [
+    -12.0,
+    27.0
+   ],
+   "doors": [
+    [
+     3.5,
+     0.8
+    ]
+   ]
+  }
+ ],
+ "canopies": [
+  {
+   "points": [
+    [
+     -12.0,
+     36.0
+    ],
+    [
+     6.0,
+     36.0
+    ],
+    [
+     6.0,
+     39.0
+    ],
+    [
+     -12.0,
+     39.0
+    ]
+   ],
+   "y": 3.4,
+   "posts": [
+    [
+     -11.5,
+     38.6
+    ],
+    [
+     5.5,
+     38.6
+    ]
+   ]
+  },
+  {
+   "points": [
+    [
+     24.0,
+     13.0
+    ],
+    [
+     28.2,
+     14.7
+    ],
+    [
+     33.4,
+     18.9
+    ],
+    [
+     34.1,
+     21.0
+    ],
+    [
+     20.8,
+     20.0
+    ]
+   ],
+   "y": 3.3,
+   "posts": [
+    [
+     33.4,
+     19.8
+    ],
+    [
+     28.6,
+     16.3
+    ]
+   ]
+  }
+ ],
+ "rooftop_units": [
+  [
+   -3.0,
+   -62.0,
+   2.6,
+   2.0,
+   1.4
+  ],
+  [
+   -26.0,
+   -14.0,
+   2.2,
+   3.0,
+   1.2
+  ],
+  [
+   -12.0,
+   -28.0,
+   2.0,
+   2.0,
+   1.0
+  ],
+  [
+   13.0,
+   28.0,
+   2.4,
+   2.0,
+   1.2
+  ],
+  [
+   14.0,
+   10.0,
+   1.6,
+   1.6,
+   1.6
+  ]
+ ],
+ "site": {
+  "play_structures": [
+   [
+    -32.0,
+    -70.0
+   ],
+   [
+    56.0,
+    -55.0
+   ]
+  ],
+  "swings": [
+   [
+    -31.0,
+    -50.0,
+    90.0
+   ],
+   [
+    57.0,
+    -38.0,
+    90.0
+   ]
+  ],
+  "gazebos": [
+   [
+    35.0,
+    -44.0
+   ]
+  ],
+  "circles": [
+   [
+    -28.0,
+    -45.4,
+    1.8
+   ],
+   [
+    -40.0,
+    -39.0,
+    1.6
+   ]
+  ],
+  "flagpole": [
+   -14.0,
+   41.5
+  ]
+ },
+ "rooms": [
+  {
+   "type": "classroom",
+   "rect": [
+    -17.5,
+    -89.5,
+    -5.3,
+    -78.7
+   ],
+   "board": "n",
+   "rug": "rug_blue"
+  },
+  {
+   "type": "classroom",
+   "rect": [
+    -1.7,
+    -89.5,
+    10.6,
+    -78.7
+   ],
+   "board": "s",
+   "rug": "rug_red"
+  },
+  {
+   "type": "classroom",
+   "rect": [
+    -17.5,
+    -78.7,
+    -5.3,
+    -67.9
+   ],
+   "board": "s",
+   "rug": "rug_red"
+  },
+  {
+   "type": "classroom",
+   "rect": [
+    -1.7,
+    -78.7,
+    10.6,
+    -67.9
+   ],
+   "board": "n",
+   "rug": "rug_blue"
+  },
+  {
+   "type": "classroom",
+   "rect": [
+    -17.5,
+    -67.9,
+    -5.3,
+    -57.1
+   ],
+   "board": "n",
+   "rug": "rug_blue"
+  },
+  {
+   "type": "classroom",
+   "rect": [
+    -1.7,
+    -67.9,
+    10.6,
+    -57.1
+   ],
+   "board": "s",
+   "rug": "rug_red"
+  },
+  {
+   "type": "classroom",
+   "rect": [
+    -17.5,
+    -57.1,
+    -5.3,
+    -46.3
+   ],
+   "board": "s",
+   "rug": "rug_red"
+  },
+  {
+   "type": "classroom",
+   "rect": [
+    -1.7,
+    -57.1,
+    10.6,
+    -46.3
+   ],
+   "board": "n",
+   "rug": "rug_blue"
+  },
+  {
+   "type": "classroom",
+   "rect": [
+    -17.5,
+    -46.3,
+    -5.3,
+    -35.5
+   ],
+   "board": "n",
+   "rug": "rug_blue"
+  },
+  {
+   "type": "classroom",
+   "rect": [
+    -1.7,
+    -46.3,
+    10.6,
+    -35.5
+   ],
+   "board": "s",
+   "rug": "rug_red"
+  },
+  {
+   "type": "corridor",
+   "rect": [
+    -5.3,
+    -89.5,
+    -1.7,
+    -22.5
+   ]
+  },
+  {
+   "type": "corridor",
+   "rect": [
+    -5.3,
+    -19.0,
+    -1.7,
+    -7.0
+   ]
+  },
+  {
+   "type": "corridor",
+   "rect": [
+    -34.5,
+    -22.5,
+    10.6,
+    -19.0
+   ],
+   "litter": 0.08
+  },
+  {
+   "type": "corridor",
+   "rect": [
+    -25.5,
+    -7.0,
+    17.5,
+    -3.5
+   ],
+   "litter": 0.08
+  },
+  {
+   "type": "music",
+   "rect": [
+    -34.5,
+    -35.5,
+    -17.5,
+    -22.5
+   ]
+  },
+  {
+   "type": "restroom",
+   "rect": [
+    -17.5,
+    -35.5,
+    -11.4,
+    -22.5
+   ]
+  },
+  {
+   "type": "restroom",
+   "rect": [
+    -11.4,
+    -35.5,
+    -5.3,
+    -22.5
+   ]
+  },
+  {
+   "type": "library",
+   "rect": [
+    -1.7,
+    -35.5,
+    10.6,
+    -22.5
+   ]
+  },
+  {
+   "type": "art",
+   "rect": [
+    -34.5,
+    -19.0,
+    -20.0,
+    -7.0
+   ]
+  },
+  {
+   "type": "classroom",
+   "rect": [
+    -20.0,
+    -19.0,
+    -5.3,
+    -7.0
+   ],
+   "board": "w",
+   "rug": "rug_red"
+  },
+  {
+   "type": "classroom",
+   "rect": [
+    -1.7,
+    -19.0,
+    10.6,
+    -7.0
+   ],
+   "board": "e",
+   "rug": "rug_blue"
+  },
+  {
+   "type": "gym",
+   "rect": [
+    10.6,
+    -35.5,
+    49.4,
+    -7.0
+   ],
+   "litter": 0.01
+  },
+  {
+   "type": "cafeteria",
+   "rect": [
+    -18.5,
+    -3.5,
+    9.0,
+    20.5
+   ],
+   "litter": 0.03
+  },
+  {
+   "type": "prek",
+   "rect": [
+    -29.5,
+    8.5,
+    -18.5,
+    20.5
+   ]
+  },
+  {
+   "type": "kitchen",
+   "rect": [
+    9.0,
+    -3.5,
+    17.5,
+    20.5
+   ]
+  },
+  {
+   "type": "conference",
+   "rect": [
+    9.0,
+    20.5,
+    17.5,
+    26.0
+   ]
+  },
+  {
+   "type": "sensory",
+   "rect": [
+    9.0,
+    26.0,
+    17.5,
+    32.0
+   ]
+  },
+  {
+   "type": "lobby",
+   "rect": [
+    -7.0,
+    20.5,
+    9.0,
+    31.0
+   ],
+   "litter": 0.06
+  },
+  {
+   "type": "office",
+   "rect": [
+    -18.5,
+    27.0,
+    -7.0,
+    36.0
+   ]
+  },
+  {
+   "type": "office",
+   "rect": [
+    -18.5,
+    20.5,
+    -12.0,
+    27.0
+   ]
+  },
+  {
+   "type": "nurse",
+   "rect": [
+    1.0,
+    31.0,
+    7.8,
+    36.0
+   ]
+  }
+ ],
+ "barricades": [
+  {
+   "pos": [
+    -5.6,
+    33.6
+   ]
+  }
+ ],
+ "signs": [
+  {
+   "text": "KENWOOD ELEMENTARY",
+   "pos": [
+    -3.0,
+    4.25,
+    36.33
+   ],
+   "yaw_deg": 0,
+   "size": 110,
+   "color": [
+    0.92,
+    0.86,
+    0.68
+   ],
+   "visible_m": 140.0
+  },
+  {
+   "text": "OFFICE",
+   "pos": [
+    -7.12,
+    2.75,
+    26.0
+   ],
+   "yaw_deg": 90,
+   "size": 44,
+   "color": [
+    0.9,
+    0.9,
+    0.9
+   ]
+  },
+  {
+   "text": "GYM",
+   "pos": [
+    10.47,
+    2.75,
+    -20.75
+   ],
+   "yaw_deg": -90,
+   "size": 60,
+   "color": [
+    0.95,
+    0.75,
+    0.2
+   ]
+  },
+  {
+   "text": "LIBRARY",
+   "pos": [
+    4.5,
+    2.75,
+    -22.38
+   ],
+   "yaw_deg": 0,
+   "size": 44,
+   "color": [
+    0.9,
+    0.9,
+    0.9
+   ]
+  },
+  {
+   "text": "MUSIC",
+   "pos": [
+    -26.0,
+    2.75,
+    -22.38
+   ],
+   "yaw_deg": 0,
+   "size": 44,
+   "color": [
+    0.9,
+    0.9,
+    0.9
+   ]
+  },
+  {
+   "text": "ART",
+   "pos": [
+    -27.0,
+    2.75,
+    -19.12
+   ],
+   "yaw_deg": 180,
+   "size": 44,
+   "color": [
+    0.9,
+    0.9,
+    0.9
+   ]
+  },
+  {
+   "text": "CAFETERIA",
+   "pos": [
+    -3.5,
+    2.75,
+    -3.63
+   ],
+   "yaw_deg": 180,
+   "size": 44,
+   "color": [
+    0.9,
+    0.9,
+    0.9
+   ]
+  },
+  {
+   "text": "NURSE",
+   "pos": [
+    4.4,
+    2.75,
+    30.88
+   ],
+   "yaw_deg": 180,
+   "size": 40,
+   "color": [
+    0.95,
+    0.3,
+    0.3
+   ]
+  },
+  {
+   "text": "WE WAITED FOR\nTHE BUSES",
+   "pos": [
+    -34.17,
+    1.9,
+    -26.0
+   ],
+   "yaw_deg": 90,
+   "size": 70,
+   "color": [
+    0.6,
+    0.05,
+    0.05
+   ]
+  }
+ ],
+ "lights": [
+  {
+   "pos": [
+    -3.5,
+    2.9,
+    -62
+   ],
+   "color": [
+    1.0,
+    0.85,
+    0.6
+   ],
+   "energy": 0.7,
+   "range": 12.0
+  },
+  {
+   "pos": [
+    -15,
+    2.9,
+    -20.75
+   ],
+   "color": [
+    1.0,
+    0.85,
+    0.6
+   ],
+   "energy": 0.7,
+   "range": 12.0
+  },
+  {
+   "pos": [
+    4.5,
+    2.9,
+    -29
+   ],
+   "color": [
+    1.0,
+    0.85,
+    0.6
+   ],
+   "energy": 0.6,
+   "range": 9.0
+  },
+  {
+   "pos": [
+    -5,
+    6.4,
+    8
+   ],
+   "color": [
+    1.0,
+    0.85,
+    0.6
+   ],
+   "energy": 0.9,
+   "range": 16.0
+  },
+  {
+   "pos": [
+    30,
+    7.6,
+    -21
+   ],
+   "color": [
+    1.0,
+    0.85,
+    0.6
+   ],
+   "energy": 0.9,
+   "range": 18.0
+  },
+  {
+   "pos": [
+    1,
+    2.9,
+    25
+   ],
+   "color": [
+    1.0,
+    0.85,
+    0.6
+   ],
+   "energy": 0.7,
+   "range": 10.0
+  },
+  {
+   "pos": [
+    -12,
+    2.9,
+    31
+   ],
+   "color": [
+    1.0,
+    0.85,
+    0.6
+   ],
+   "energy": 0.6,
+   "range": 9.0
+  },
+  {
+   "pos": [
+    13,
+    2.9,
+    8
+   ],
+   "color": [
+    0.9,
+    0.95,
+    1.0
+   ],
+   "energy": 0.6,
+   "range": 10.0
+  },
+  {
+   "pos": [
+    -3,
+    2.9,
+    33.5
+   ],
+   "color": [
+    1.0,
+    0.15,
+    0.1
+   ],
+   "energy": 0.8,
+   "range": 6.0
+  }
+ ],
+ "loot": [
+  {
+   "id": "nurse_cabinet",
+   "name": "Nurse's Cabinet",
+   "table": "khs_nurse",
+   "pos": [
+    7.2,
+    33.5
+   ],
+   "size": [
+    0.5,
+    1.8,
+    1.0
+   ],
+   "color": [
+    0.85,
+    0.85,
+    0.82
+   ]
+  },
+  {
+   "id": "front_desk",
+   "name": "Front Desk Drawer",
+   "table": "house_cabinet",
+   "pos": [
+    -10.4,
+    31.5
+   ],
+   "size": [
+    0.6,
+    0.8,
+    1.0
+   ]
+  },
+  {
+   "id": "principal",
+   "name": "Principal's Confiscation Drawer",
+   "table": "ammo_cache",
+   "pos": [
+    -15.2,
+    22.0
+   ],
+   "size": [
+    1.4,
+    0.8,
+    0.7
+   ],
+   "color": [
+    0.45,
+    0.3,
+    0.2
+   ]
+  },
+  {
+   "id": "lost_found",
+   "name": "Lost & Found Bin",
+   "table": "poi_store",
+   "pos": [
+    8.3,
+    21.3
+   ],
+   "size": [
+    0.8,
+    0.9,
+    0.8
+   ],
+   "color": [
+    0.2,
+    0.35,
+    0.6
+   ]
+  },
+  {
+   "id": "vending",
+   "name": "Vending Machine",
+   "table": "poi_store",
+   "pos": [
+    -6.2,
+    22.2
+   ],
+   "size": [
+    0.9,
+    1.9,
+    1.0
+   ],
+   "color": [
+    0.7,
+    0.1,
+    0.1
+   ]
+  },
+  {
+   "id": "serving_line",
+   "name": "Serving Line Warmer",
+   "table": "poi_diner",
+   "pos": [
+    11.3,
+    10.5
+   ],
+   "size": [
+    0.8,
+    0.95,
+    1.2
+   ],
+   "color": [
+    0.6,
+    0.6,
+    0.62
+   ]
+  },
+  {
+   "id": "pantry",
+   "name": "Kitchen Pantry",
+   "table": "poi_store",
+   "pos": [
+    12.6,
+    -2.9
+   ],
+   "size": [
+    1.4,
+    1.8,
+    0.5
+   ],
+   "color": [
+    0.6,
+    0.6,
+    0.62
+   ]
+  },
+  {
+   "id": "cooler",
+   "name": "Milk Cooler",
+   "table": "fridge",
+   "pos": [
+    12.0,
+    16.3
+   ],
+   "size": [
+    1.2,
+    1.2,
+    0.7
+   ],
+   "color": [
+    0.8,
+    0.82,
+    0.85
+   ]
+  },
+  {
+   "id": "teacher_w2",
+   "name": "Teacher's Supply Cabinet",
+   "table": "house_cabinet",
+   "pos": [
+    -16.9,
+    -73.3
+   ],
+   "size": [
+    0.5,
+    1.6,
+    1.2
+   ],
+   "yaw_deg": 0
+  },
+  {
+   "id": "teacher_e4",
+   "name": "Teacher's Supply Cabinet",
+   "table": "house_cabinet",
+   "pos": [
+    10.0,
+    -51.7
+   ],
+   "size": [
+    0.5,
+    1.6,
+    1.2
+   ]
+  },
+  {
+   "id": "teacher_4th",
+   "name": "Teacher's Supply Cabinet",
+   "table": "house_cabinet",
+   "pos": [
+    -19.5,
+    -13.0
+   ],
+   "size": [
+    0.5,
+    1.6,
+    1.2
+   ]
+  },
+  {
+   "id": "teacher_5th",
+   "name": "Teacher's Supply Cabinet",
+   "table": "house_cabinet",
+   "pos": [
+    10.1,
+    -13.0
+   ],
+   "size": [
+    0.5,
+    1.6,
+    1.2
+   ]
+  },
+  {
+   "id": "art_supplies",
+   "name": "Art Supply Cabinet",
+   "table": "toolbox",
+   "pos": [
+    -27.0,
+    -18.65
+   ],
+   "size": [
+    1.2,
+    1.6,
+    0.4
+   ],
+   "color": [
+    0.5,
+    0.4,
+    0.25
+   ]
+  },
+  {
+   "id": "custodian",
+   "name": "Custodian's Closet",
+   "table": "toolbox",
+   "pos": [
+    -22.0,
+    0.7
+   ],
+   "size": [
+    1.2,
+    1.8,
+    0.5
+   ],
+   "color": [
+    0.3,
+    0.35,
+    0.3
+   ]
+  },
+  {
+   "id": "gym_bin",
+   "name": "Gym Equipment Bin",
+   "table": "junk_pile",
+   "pos": [
+    47.5,
+    -32.0
+   ],
+   "size": [
+    1.2,
+    1.0,
+    1.0
+   ],
+   "color": [
+    0.25,
+    0.25,
+    0.3
+   ]
+  },
+  {
+   "id": "book_drop",
+   "name": "Library Book Drop",
+   "table": "house_cabinet",
+   "pos": [
+    2.2,
+    -23.4
+   ],
+   "size": [
+    0.6,
+    1.0,
+    0.6
+   ],
+   "color": [
+    0.3,
+    0.3,
+    0.45
+   ]
+  },
+  {
+   "id": "prek_snacks",
+   "name": "Snack Bin",
+   "table": "fridge",
+   "pos": [
+    -19.2,
+    18.5
+   ],
+   "size": [
+    0.6,
+    0.8,
+    0.9
+   ],
+   "color": [
+    0.9,
+    0.6,
+    0.1
+   ]
+  },
+  {
+   "id": "credenza",
+   "name": "Conference Credenza",
+   "table": "house_cabinet",
+   "pos": [
+    16.9,
+    23.2
+   ],
+   "size": [
+    0.5,
+    0.9,
+    1.6
+   ]
+  },
+  {
+   "id": "music_lockers",
+   "name": "Instrument Lockers",
+   "table": "junk_pile",
+   "pos": [
+    -18.0,
+    -29.0
+   ],
+   "size": [
+    0.5,
+    1.8,
+    2.0
+   ],
+   "color": [
+    0.3,
+    0.3,
+    0.32
+   ]
+  }
+ ],
+ "spawns": [
+  [
+   "wing_hall",
+   "zombie_shambler",
+   [
+    -3.5,
+    -62.0
+   ]
+  ],
+  [
+   "wing_room",
+   "zombie_shambler",
+   [
+    4.5,
+    -76.5
+   ]
+  ],
+  [
+   "main_hall",
+   "zombie_shambler",
+   [
+    -20.0,
+    -20.75
+   ]
+  ],
+  [
+   "gym",
+   "zombie_shambler",
+   [
+    30.0,
+    -20.0
+   ]
+  ],
+  [
+   "cafeteria",
+   "zombie_shambler",
+   [
+    -4.0,
+    8.0
+   ]
+  ],
+  [
+   "kitchen",
+   "zombie_shambler",
+   [
+    14.8,
+    -1.0
+   ]
+  ],
+  [
+   "library",
+   "zombie_shambler",
+   [
+    4.0,
+    -29.0
+   ]
+  ],
+  [
+   "office",
+   "zombie_shambler",
+   [
+    -13.0,
+    31.5
+   ]
+  ]
+ ]
+}

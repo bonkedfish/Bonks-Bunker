@@ -1,6 +1,7 @@
 # DiscThrower — throwing golf discs (D-069), Player child "Disc"; only the local player's does anything.
 # 3 takes out a disc (driver -> mid-range -> putter of the ones you carry, then back to your weapon; 1 / 2 also put
-# it away). With a disc out: hold left click to charge power (0 -> full over charge_seconds), release to throw where
+# it away) - only on a disc golf course (inside a course's bounds + leave_m); walking off one puts it away.
+# With a disc out: hold left click to charge power (0 -> full over charge_seconds), release to throw where
 # you look; right click cancels; Z / X or the mouse wheel tilt the disc (left edge down curves left), F swaps
 # backhand / forehand. The throw goes to the host as an intent (DiscGolfDirector.request_throw) — the host decides
 # everything. Shows the disc in your hand instead of the weapon, and stops the gun firing (Player checks `active`).
@@ -60,7 +61,18 @@ func _unhandled_input(event: InputEvent) -> void:
 		charge = 0.0
 
 
+# True inside any course's bounds grown by leave_m (data/tuning/disc_golf.json).
+func on_course() -> bool:
+	var p := Vector2(player.global_position.x, player.global_position.z)
+	for c in get_tree().get_nodes_in_group("disc_courses"):
+		if c.bounds().grow(float(_t.leave_m)).has_point(p):
+			return true
+	return false
+
+
 func _next_disc() -> void:
+	if not active and not on_course():
+		return  # 3 does nothing off a course
 	var have := carried()
 	if have.is_empty():
 		var hud := get_tree().get_first_node_in_group("hud")
@@ -89,7 +101,7 @@ func _set_active(on: bool) -> void:
 func _process(delta: float) -> void:
 	if not player.is_local or not active:
 		return
-	if player.inventory.count(disc_id) <= 0:  # dropped or traded it away
+	if player.inventory.count(disc_id) <= 0 or not on_course():  # dropped / traded it away, or walked off the course
 		_set_active(false)
 		return
 	var can: bool = Input.mouse_mode == Input.MOUSE_MODE_CAPTURED and not player.riding and not player.health.is_dead() \

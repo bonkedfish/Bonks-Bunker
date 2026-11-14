@@ -5,7 +5,7 @@
 # with its tracer, then the last ace_slowmo_s of the flight in slow motion from beside the basket, then "ACE!" for a
 # moment. Then everything goes back. Letterbox bars, a REPLAY tag, who / hole / distance.
 # Depends on: DiscTracer, DiscFlightRules (tuning), zombie.gd, Player (group "players": cutscene, health, camera),
-# HUD (hides itself while Player.cutscene).
+# HUD (hides itself while Player.cutscene), Sfx (chains as it lands, D-077).
 class_name AceReplay
 extends Node3D
 
@@ -28,6 +28,7 @@ var _slowmo_s := 0.8
 var _wall := 0.0       # seconds since play()
 var _ft := 0.0         # flight time shown
 var _outro := 0.0
+var _chimed := false  # the chains sound has played (D-077)
 var _cam: Camera3D
 var _prev_cam: Camera3D
 var _disc: MeshInstance3D
@@ -77,6 +78,7 @@ func play(path: PackedVector3Array, rolls: PackedFloat32Array, disc_mesh: Mesh, 
 	_wall = 0.0
 	_ft = 0.0
 	_outro = 0.0
+	_chimed = false
 	_disc.mesh = disc_mesh
 	_disc.visible = true
 	_tracer.show_path(path)
@@ -99,6 +101,9 @@ func _process(delta: float) -> void:
 	if _wall > INTRO_S and _ft < dur:
 		_ft = minf(dur, _ft + delta * (_slowmo if _ft >= slow_from else 1.0))
 	elif _ft >= dur:
+		if not _chimed:
+			_chimed = true
+			Sfx.play_at("disc_chains", _basket + Vector3.UP * 0.9)
 		_outro += delta
 		if _outro >= OUTRO_S:
 			_finish()

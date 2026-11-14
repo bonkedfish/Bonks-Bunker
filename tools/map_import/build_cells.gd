@@ -15,7 +15,8 @@
 #                         curb cars, trash cans, porch packages, yard barrels/boxes; no sync node), Navigation (navmesh baked here, tile-aligned),
 #                         Water (lakes/ponds/rivers from WaterBuilder, D-047: terrain carved under them, the carved
 #                         bed's collider on its own layer 16 so the navmesh skips it, surface collider layer 32),
-#                         plus landmark plantings from each landmark's "plants_file"
+#                         plus landmark plantings from each landmark's "plants_file", and Paint_<layer> meshes
+#                         (golf greens, fairways, bunkers, cart paths...) from each landmark's "ground_paint" (D-080)
 #   cell_<x>_<z>_far.scn  low-detail shell: coarse terrain + building blocks, ONE mesh, vertex colours, no shadows
 #   index.json            grid, cell files, landmark heights and the player spawn hint for the streamer
 #   materials/*.tres      shared materials so every cell references the same ones
@@ -25,13 +26,15 @@
 # and below (built, never saved) so navmesh tile borders, tree/building clearances and roads match across batch
 # seams; per-batch state is reset and the batch is freed after saving, so memory stays flat on big maps.
 # Depends on: DataLoader, MapProjection, HeightField, TiffReader, CellGrid, BuildingLooks, FootprintShape, StreetLooks,
-# VegetationBuilder, TreeMesh, CarMesh, WaterBuilder, StreetSigns (street name signs at every intersection, D-070).
+# VegetationBuilder, TreeMesh, CarMesh, WaterBuilder, StreetSigns (street name signs at every intersection, D-070),
+# GroundPaint (D-080).
 extends Node
 
 const CONFIG_PATH := "res://data/map/import_config.json"
 const LANDMARKS_PATH := "res://data/map/landmarks.json"
 const POIS_PATH := "res://data/map/pois.json"
 const LOOT_SCRIPT := preload("res://scripts/inventory/loot_container.gd")
+const GroundPaint := preload("res://tools/map_import/ground_paint.gd")
 const ROAD_WIDTHS := {
 	"motorway": 14.0, "trunk": 12.0, "primary": 12.0, "secondary": 10.0, "tertiary": 9.0,
 	"residential": 7.5, "unclassified": 7.0, "living_street": 6.0, "service": 4.5, "track": 3.0,
@@ -69,6 +72,7 @@ var _clutter: VegetationBuilder
 var _signs: StreetSigns
 var _crossings: Array = []  # every signed intersection on the map (StreetSigns.find)
 var _water: WaterBuilder
+var _paint: GroundPaint  # landmark ground paint (D-080)
 var _landmarks: Dictionary = {}
 var _no_plant: Array[Rect2] = []  # landmark "no_plant_rects" in map coords
 var _corners: Array = []  # [point, way direction, way index, half width] where a street meets a crossing street
@@ -116,6 +120,7 @@ func _ready() -> void:
 	_veg.make_assets()
 	_clutter.make_assets()
 	_signs = StreetSigns.new(str(_cfg.cells_dir) + "/materials")
+	_paint = GroundPaint.new(str(_cfg.cells_dir) + "/materials")
 	_crossings = _signs.find(src, _proj)
 	print("CELLS: %d street sign intersections" % _crossings.size())
 
@@ -139,8 +144,13 @@ func _ready() -> void:
 			_no_plant.append(_landmark_rect(r, pos, rot))
 		for h in lm.get("ground_holes", []):
 			holes.append(_landmark_rect(h, pos, rot))
+		var pads: Array = lm.get("terrain_pads", []).duplicate()  # several pads for a lot that isn't one rectangle
 		if lm.has("terrain_pad"):
-			_field.add_pad(_landmark_rect(lm.terrain_pad, pos, rot), _field.sample(pos.x, pos.y), float(lm.get("terrain_pad_blend_m", 10.0)))
+			pads.push_front(lm.terrain_pad)
+		for r: Array in pads:
+			_field.add_pad(_landmark_rect(r, pos, rot), _field.sample(pos.x, pos.y), float(lm.get("terrain_pad_blend_m", 10.0)))
+		if lm.has("ground_paint"):
+			_paint.add(DataLoader.load_json(str(lm.ground_paint)), key, pos, rot)
 	var road_halves := {}
 	for k: String in DRIVABLE:
 		road_halves[k] = float(ROAD_WIDTHS[k]) * 0.5
@@ -252,10 +262,12 @@ func _load_heights() -> bool:
 	return true
 
 
+# Map-axis bounds of a local rect [x0, z0, x1, z1] (all four corners, so off-axis rotations like Kenwood's work).
 func _landmark_rect(r: Array, pos: Vector2, rot: float) -> Rect2:
-	var a := Vector2(r[0], r[1]).rotated(-rot) + pos
-	var b := Vector2(r[2], r[3]).rotated(-rot) + pos
-	return Rect2(a, b - a).abs()
+	var out := Rect2(Vector2(r[0], r[1]).rotated(-rot) + pos, Vector2.ZERO)
+	for c: Vector2 in [Vector2(r[2], r[1]), Vector2(r[2], r[3]), Vector2(r[0], r[3])]:
+		out = out.expand(c.rotated(-rot) + pos)
+	return out
 
 
 func _make_materials() -> void:
@@ -1376,6 +1388,7 @@ func _finish_cell(c: Vector2i, world: Node3D) -> void:
 	cell.terrain_st.generate_tangents()
 	_add_mesh(terrain, "Mesh", cell.terrain_st, _mats.ground)
 	_add_trimesh(terrain, cell.terrain_faces)
+	_paint.add_cell(_grid.rect_of(c), root, _water.ground, float(_cfg.terrain_step_m))
 	if not cell.bed_faces.is_empty():
 		var bed := StaticBody3D.new()
 		bed.name = "WaterBed"

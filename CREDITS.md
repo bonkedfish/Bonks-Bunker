@@ -12,5 +12,7 @@
   "7 Eating Crunches" (StarNinjas), "Apple Bite" (AntumDeluge), "202 More Sound Effects" (drink, cloth, velcro),
   "RPG Sound Pack" (artisticdude: beads, chainmail), "Zippo click sound", "5 Hit Sounds + Dying",
   "Grunts of male death and pain", "80 CC0 RPG SFX" (chains), "Wind" (IgnasD), "wind whoosh loop" (SketchMan3),
-  "Crow caw", "Crows singing", "Tree Creaking", "Metal clang sounds" (bart), "Zombies Sound Pack" (artisticdude)
+  "Crow caw", "Crows singing", "Tree Creaking", "Metal clang sounds" (bart), "Zombies Sound Pack" (artisticdude),
+  "Different steps on wood, stone, leaves, gravel and mud" (disc landing / leaves)
 - Characters + animations: Quaternius Universal Base Characters [Standard] and Universal Animation Library [Standard], CC0 1.0 (https://quaternius.itch.io) — assets/characters/ubc/, assets/characters/ual/ (D-058)
+- Kenwood Elementary and Centennial pool layouts traced from Esri World Imagery as a reference only (no imagery is shipped)

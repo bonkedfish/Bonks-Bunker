@@ -18,7 +18,7 @@
 #          walks up to the disc, the ace replay, the disc golf HUD, minimap basket + tee.
 # Depends on: DiscFlightRules, DiscGolfRules, DiscTracer, AceReplay, DiscCourse (group "disc_courses"), LootDB, LootRules, ItemDB, LifeState,
 # Players (group "players"), ZombieDirector (group "zombie_director"), WorldStreamer (group "world_streamer"),
-# QuestDirector (group "quests"), HUD (group "hud"), DiscGolfHud.
+# QuestDirector (group "quests"), HUD (group "hud"), DiscGolfHud, Sfx (contact sounds, D-077).
 class_name DiscGolfDirector
 extends Node3D
 
@@ -29,6 +29,9 @@ const GROUND_MASK := 1
 const CHECK_SECONDS := 0.5
 const TREE_GRID := 12.0
 const TOAST_SECONDS := 4.0
+# Contact sounds along a flight (D-077), by kind: chains (caught or spat out), basket tray / pole, tree branches,
+# trunk or wall, landing on the ground.
+const HIT_SOUNDS := ["disc_chains", "disc_basket_clank", "disc_tree", "disc_thud", "disc_land"]
 
 var round_active := false
 var round_course := ""
@@ -203,7 +206,7 @@ func request_throw(disc_id: String, power: float, yaw: float, pitch: float, tilt
 	var out := _simulate(f, c.basket_position(int(e.hole)), c)
 	e.throws = int(e.throws) + 1
 	_in_flight[p.peer_id] = [_duration(out[0]) + 0.2, out[2], out[3], [out[0], out[1], disc_id, forehand]]
-	_play.rpc(p.peer_id, disc_id, out[0], out[1], forehand)
+	_play.rpc(p.peer_id, disc_id, out[0], out[1], forehand, out[4])
 
 
 # --- host ---------------------------------------------------------------------------------------
@@ -430,7 +433,7 @@ func _on_peer_connected(peer: int) -> void:
 		_set_wind.rpc_id(peer, wind, false)
 
 
-# The whole flight at once: returns [path, rolls, rest position, holed].
+# The whole flight at once: returns [path, rolls, rest position, holed, contacts as [time, kind] pairs for sounds].
 func _simulate(f: DiscFlightRules.Flight, basket: Vector3, c: DiscCourse) -> Array:
 	var dt := 1.0 / float(_t.step_hz)
 	var every := maxi(1, roundi(float(_t.step_hz) / float(_t.sample_hz)))
@@ -443,6 +446,7 @@ func _simulate(f: DiscFlightRules.Flight, basket: Vector3, c: DiscCourse) -> Arr
 	if _trees_dirty:
 		_gather_trees(c)
 	var holed := false
+	var hits: Array = []
 	var landed := false
 	var slide := 0.0
 	var cooldown := 0.0
@@ -454,6 +458,8 @@ func _simulate(f: DiscFlightRules.Flight, basket: Vector3, c: DiscCourse) -> Arr
 		if not landed:
 			DiscFlightRules.step(f, dt, _t)
 			var contact := DiscGolfRules.basket_contact(f.pos - basket, prev - basket, f.vel.length(), _t)
+			if contact != DiscGolfRules.Basket.NONE:
+				_add_hit(hits, f.time, 1 if contact == DiscGolfRules.Basket.BOUNCE else 0)
 			if contact == DiscGolfRules.Basket.CATCH:
 				f.pos = basket + Vector3(0.0, 0.62, 0.0) + Vector3(f.vel.x, 0.0, f.vel.z).normalized() * 0.08
 				holed = true
@@ -468,6 +474,7 @@ func _simulate(f: DiscFlightRules.Flight, basket: Vector3, c: DiscCourse) -> Arr
 			cooldown -= dt
 			if cooldown <= 0.0 and _canopy_hit(f, prev.distance_to(f.pos)):
 				cooldown = 0.2
+				_add_hit(hits, f.time, 2)
 			q.from = prev
 			q.to = f.pos
 			var hit := space.intersect_ray(q)
@@ -477,7 +484,9 @@ func _simulate(f: DiscFlightRules.Flight, basket: Vector3, c: DiscCourse) -> Arr
 				if n.y > 0.6:
 					landed = true
 					f.vel = Vector3(f.vel.x, 0.0, f.vel.z) * 0.35
+					_add_hit(hits, f.time, 4)
 				else:
+					_add_hit(hits, f.time, 3)
 					f.vel = f.vel.bounce(n) * restitution
 					f.roll *= 0.5
 			if f.pos.y < floor_y:
@@ -506,7 +515,16 @@ func _simulate(f: DiscFlightRules.Flight, basket: Vector3, c: DiscCourse) -> Arr
 			rolls.append(f.roll)
 	path.append(f.pos)
 	rolls.append(f.roll)
-	return [path, rolls, f.pos, holed]
+	return [path, rolls, f.pos, holed, PackedFloat32Array(hits)]
+
+
+# One sound per contact: the same kind again within 0.15 s is the same hit.
+static func _add_hit(hits: Array, time: float, kind: int) -> void:
+	var n := hits.size()
+	if n >= 2 and int(hits[n - 1]) == kind and time - float(hits[n - 2]) < 0.15:
+		return
+	hits.append(time)
+	hits.append(kind)
 
 
 # Tree crowns: true (and the disc knocked down) when this step clips a branch.
@@ -642,7 +660,8 @@ func _ace(peer: int, disc_id: String, path: PackedVector3Array, rolls: PackedFlo
 
 
 @rpc("authority", "call_local", "reliable")
-func _play(peer: int, disc_id: String, path: PackedVector3Array, rolls: PackedFloat32Array, forehand: bool) -> void:
+func _play(peer: int, disc_id: String, path: PackedVector3Array, rolls: PackedFloat32Array, forehand: bool,
+		hits: PackedFloat32Array) -> void:
 	if not _visual.has(peer):
 		var mi := MeshInstance3D.new()
 		add_child(mi)
@@ -657,6 +676,8 @@ func _play(peer: int, disc_id: String, path: PackedVector3Array, rolls: PackedFl
 	v.rolls = rolls
 	v.t = 0.0
 	v.hand = -1.0 if forehand else 1.0
+	v.hits = hits
+	v.hit_i = 0
 
 
 @rpc("authority", "call_local", "reliable")
@@ -702,6 +723,10 @@ func _process(delta: float) -> void:
 		var yaw: float = atan2(-dir.x, -dir.z) if dir.length() > 0.001 else v.node.rotation.y
 		var moving := float(v.t) < dur
 		v.node.global_position = a.lerp(b, w)
+		var hits: PackedFloat32Array = v.hits
+		while int(v.hit_i) + 1 < hits.size() and float(v.t) >= hits[int(v.hit_i)]:
+			Sfx.play_at(HIT_SOUNDS[int(hits[int(v.hit_i) + 1])], v.node.global_position)
+			v.hit_i = int(v.hit_i) + 2
 		v.node.basis = Basis(Vector3.UP, yaw) * Basis(Vector3.FORWARD, -roll if moving else 0.0) \
 			* Basis(Vector3.UP, float(v.t) * 40.0 * float(v.hand) if moving else 0.0)
 

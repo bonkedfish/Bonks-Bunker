@@ -1,0 +1,5927 @@
+{
+ "note": "Big Apple Fun Center (D-079), 500 W 4th St. Built by tools/landmarks/build_big_apple.tscn (big_apple.gd + landmark_parts.gd) -> world/landmarks/big_apple.scn; placed by data/map/landmarks.json 'big_apple' (origin map x 1197.5, z 522, no rotation). DOCUMENTED: footprint (OSM way 1038108504, squared), block heights from imagery shadows, outdoor go-kart loop + pit shed (traced from Esri imagery, OSM 1187505073/4), 36 lanes (Brunswick, Vector scoring), duckpin, arcade + VR, 2-level laser tag, blacklight mini-golf, sports bar with billiards / darts / 20+ TVs. INFERRED: room layout (sports bar NW, lanes running N-S behind it with the pinsetters against the low south annex, arcade + prize counter in the middle block, snack bar + party rooms south of it, laser tag and glow golf in the tall east block). Dressing: partly burned (D-079) - the sports bar corner and the arcade, with the arcade roof burned through.",
+ "out_path": "res://world/landmarks/big_apple.scn",
+ "seed": 1987,
+ "materials": {
+  "block_wall": {
+   "texture": "concrete_cracked",
+   "tile_m": 2.0,
+   "color": [
+    1.15,
+    1.1,
+    1.0
+   ]
+  },
+  "roof": {
+   "color": [
+    0.82,
+    0.82,
+    0.8
+   ],
+   "roughness": 0.9
+  },
+  "floor": {
+   "texture": "concrete_slab",
+   "tile_m": 2.0,
+   "color": [
+    1.0,
+    1.0,
+    0.95
+   ]
+  },
+  "tile": {
+   "color": [
+    0.7,
+    0.7,
+    0.68
+   ],
+   "roughness": 0.5
+  },
+  "bar_floor": {
+   "texture": "planks_weathered",
+   "tile_m": 1.5,
+   "color": [
+    0.8,
+    0.65,
+    0.5
+   ]
+  },
+  "carpet_cosmic": {
+   "color": [
+    0.12,
+    0.08,
+    0.22
+   ],
+   "roughness": 1.0
+  },
+  "carpet_dark": {
+   "color": [
+    0.05,
+    0.05,
+    0.08
+   ],
+   "roughness": 1.0
+  },
+  "rubber": {
+   "color": [
+    0.1,
+    0.1,
+    0.11
+   ],
+   "roughness": 1.0
+  },
+  "plaster": {
+   "color": [
+    0.75,
+    0.72,
+    0.66
+   ],
+   "roughness": 0.95
+  },
+  "black_wall": {
+   "color": [
+    0.04,
+    0.04,
+    0.05
+   ],
+   "roughness": 1.0
+  },
+  "wood": {
+   "color": [
+    0.42,
+    0.28,
+    0.17
+   ],
+   "roughness": 0.7
+  },
+  "glass": {
+   "color": [
+    0.16,
+    0.2,
+    0.22
+   ],
+   "metallic": 0.4,
+   "roughness": 0.1,
+   "alpha": 0.6
+  },
+  "counter": {
+   "color": [
+    0.6,
+    0.12,
+    0.1
+   ],
+   "roughness": 0.5,
+   "visible_m": 90.0
+  },
+  "shelf": {
+   "color": [
+    0.45,
+    0.36,
+    0.25
+   ],
+   "roughness": 0.9,
+   "visible_m": 70.0
+  },
+  "bar_top": {
+   "color": [
+    0.25,
+    0.16,
+    0.1
+   ],
+   "roughness": 0.3,
+   "visible_m": 80.0
+  },
+  "back_bar": {
+   "color": [
+    0.2,
+    0.13,
+    0.08
+   ],
+   "roughness": 0.5,
+   "visible_m": 80.0
+  },
+  "steel": {
+   "color": [
+    0.45,
+    0.46,
+    0.48
+   ],
+   "metallic": 0.6,
+   "roughness": 0.45,
+   "visible_m": 120.0
+  },
+  "pool_felt": {
+   "color": [
+    0.05,
+    0.35,
+    0.15
+   ],
+   "roughness": 1.0,
+   "visible_m": 60.0
+  },
+  "booth": {
+   "color": [
+    0.45,
+    0.06,
+    0.06
+   ],
+   "roughness": 0.6,
+   "visible_m": 60.0
+  },
+  "tv": {
+   "color": [
+    0.03,
+    0.03,
+    0.035
+   ],
+   "roughness": 0.2,
+   "visible_m": 60.0
+  },
+  "dartboard": {
+   "color": [
+    0.15,
+    0.4,
+    0.15
+   ],
+   "roughness": 0.9,
+   "visible_m": 30.0,
+   "shadows": false
+  },
+  "soot": {
+   "color": [
+    0.03,
+    0.03,
+    0.03
+   ],
+   "roughness": 1.0,
+   "shadows": false,
+   "visible_m": 80.0
+  },
+  "charred": {
+   "color": [
+    0.06,
+    0.055,
+    0.05
+   ],
+   "roughness": 1.0,
+   "visible_m": 100.0
+  },
+  "ceiling_tile": {
+   "color": [
+    0.75,
+    0.73,
+    0.68
+   ],
+   "roughness": 1.0,
+   "visible_m": 40.0,
+   "shadows": false
+  },
+  "rubble": {
+   "texture": "concrete_cracked",
+   "tile_m": 1.0,
+   "color": [
+    0.6,
+    0.58,
+    0.55
+   ],
+   "visible_m": 90.0
+  },
+  "lane": {
+   "texture": "planks_weathered",
+   "tile_m": 0.9,
+   "color": [
+    1.3,
+    1.05,
+    0.75
+   ]
+  },
+  "approach": {
+   "texture": "planks_weathered",
+   "tile_m": 0.9,
+   "color": [
+    1.1,
+    0.9,
+    0.65
+   ]
+  },
+  "gutter": {
+   "color": [
+    0.08,
+    0.08,
+    0.09
+   ],
+   "roughness": 0.6
+  },
+  "foul_line": {
+   "color": [
+    0.6,
+    0.05,
+    0.05
+   ],
+   "roughness": 0.6,
+   "shadows": false,
+   "visible_m": 40.0
+  },
+  "capping": {
+   "color": [
+    0.15,
+    0.15,
+    0.18
+   ],
+   "roughness": 0.5,
+   "visible_m": 80.0
+  },
+  "ball_return": {
+   "color": [
+    0.2,
+    0.2,
+    0.25
+   ],
+   "roughness": 0.4,
+   "visible_m": 70.0
+  },
+  "monitor": {
+   "color": [
+    0.02,
+    0.02,
+    0.03
+   ],
+   "emission": [
+    0.1,
+    0.25,
+    0.6,
+    0.8
+   ],
+   "visible_m": 70.0
+  },
+  "machine": {
+   "color": [
+    0.12,
+    0.12,
+    0.14
+   ],
+   "roughness": 0.5
+  },
+  "masking": {
+   "color": [
+    0.15,
+    0.05,
+    0.25
+   ],
+   "emission": [
+    0.5,
+    0.1,
+    0.8,
+    0.6
+   ],
+   "visible_m": 120.0
+  },
+  "pin": {
+   "color": [
+    0.95,
+    0.95,
+    0.92
+   ],
+   "roughness": 0.3,
+   "visible_m": 45.0
+  },
+  "settee": {
+   "color": [
+    0.2,
+    0.25,
+    0.55
+   ],
+   "roughness": 0.7,
+   "visible_m": 70.0
+  },
+  "console": {
+   "color": [
+    0.15,
+    0.15,
+    0.18
+   ],
+   "roughness": 0.5,
+   "visible_m": 50.0
+  },
+  "ball_rack": {
+   "color": [
+    0.3,
+    0.3,
+    0.32
+   ],
+   "metallic": 0.4,
+   "roughness": 0.5,
+   "visible_m": 60.0
+  },
+  "bowling_ball": {
+   "color": [
+    0.1,
+    0.2,
+    0.7
+   ],
+   "roughness": 0.15,
+   "metallic": 0.2,
+   "visible_m": 40.0
+  },
+  "cabinet": {
+   "color": [
+    0.1,
+    0.1,
+    0.14
+   ],
+   "roughness": 0.6,
+   "visible_m": 80.0
+  },
+  "screen": {
+   "color": [
+    0.02,
+    0.05,
+    0.04
+   ],
+   "emission": [
+    0.1,
+    0.6,
+    0.5,
+    0.5
+   ],
+   "visible_m": 50.0,
+   "shadows": false
+  },
+  "marquee_glow": {
+   "color": [
+    0.2,
+    0.1,
+    0.2
+   ],
+   "emission": [
+    1.0,
+    0.3,
+    0.8,
+    0.7
+   ],
+   "visible_m": 60.0,
+   "shadows": false
+  },
+  "prize_wall": {
+   "color": [
+    0.6,
+    0.2,
+    0.5
+   ],
+   "roughness": 0.8,
+   "visible_m": 60.0
+  },
+  "vr_booth": {
+   "color": [
+    0.85,
+    0.85,
+    0.9
+   ],
+   "roughness": 0.4,
+   "visible_m": 60.0
+  },
+  "plastic_red": {
+   "color": [
+    0.75,
+    0.12,
+    0.1
+   ],
+   "roughness": 0.5,
+   "visible_m": 60.0
+  },
+  "plastic_white": {
+   "color": [
+    0.85,
+    0.85,
+    0.83
+   ],
+   "roughness": 0.5,
+   "visible_m": 60.0
+  },
+  "party_cloth": {
+   "color": [
+    0.2,
+    0.5,
+    0.85
+   ],
+   "roughness": 1.0,
+   "visible_m": 40.0,
+   "shadows": false
+  },
+  "stall": {
+   "color": [
+    0.4,
+    0.45,
+    0.5
+   ],
+   "roughness": 0.6,
+   "visible_m": 40.0
+  },
+  "neon_wall": {
+   "color": [
+    0.08,
+    0.06,
+    0.12
+   ],
+   "roughness": 0.8,
+   "visible_m": 70.0
+  },
+  "neon_trim": {
+   "color": [
+    0.1,
+    0.3,
+    0.1
+   ],
+   "emission": [
+    0.3,
+    1.0,
+    0.3,
+    1.2
+   ],
+   "visible_m": 70.0,
+   "shadows": false
+  },
+  "felt": {
+   "color": [
+    0.05,
+    0.25,
+    0.12
+   ],
+   "emission": [
+    0.0,
+    0.25,
+    0.1,
+    0.4
+   ],
+   "visible_m": 50.0,
+   "shadows": false
+  },
+  "glow_pink": {
+   "color": [
+    0.4,
+    0.05,
+    0.3
+   ],
+   "emission": [
+    1.0,
+    0.2,
+    0.8,
+    1.0
+   ],
+   "visible_m": 60.0
+  },
+  "glow_green": {
+   "color": [
+    0.1,
+    0.4,
+    0.05
+   ],
+   "emission": [
+    0.4,
+    1.0,
+    0.2,
+    1.0
+   ],
+   "visible_m": 60.0
+  },
+  "glow_blue": {
+   "color": [
+    0.05,
+    0.1,
+    0.4
+   ],
+   "emission": [
+    0.2,
+    0.5,
+    1.0,
+    1.0
+   ],
+   "visible_m": 60.0
+  },
+  "cup": {
+   "color": [
+    0.02,
+    0.02,
+    0.02
+   ],
+   "roughness": 1.0,
+   "visible_m": 25.0,
+   "shadows": false
+  },
+  "dumpster": {
+   "color": [
+    0.15,
+    0.3,
+    0.18
+   ],
+   "metallic": 0.4,
+   "roughness": 0.7,
+   "visible_m": 120.0
+  },
+  "paper": {
+   "color": [
+    0.88,
+    0.85,
+    0.76
+   ],
+   "roughness": 1.0,
+   "shadows": false,
+   "visible_m": 35.0
+  },
+  "asphalt": {
+   "texture": "road_cracked",
+   "tile_m": 4.0,
+   "color": [
+    0.75,
+    0.75,
+    0.75
+   ]
+  },
+  "tyre": {
+   "color": [
+    0.05,
+    0.05,
+    0.05
+   ],
+   "roughness": 0.9,
+   "visible_m": 90.0
+  },
+  "kart": {
+   "color": [
+    0.8,
+    0.1,
+    0.08
+   ],
+   "roughness": 0.5,
+   "visible_m": 90.0
+  },
+  "kart_b": {
+   "color": [
+    0.1,
+    0.25,
+    0.75
+   ],
+   "roughness": 0.5,
+   "visible_m": 90.0
+  }
+ },
+ "dims": {
+  "floor_y": 0.15
+ },
+ "outlines": [
+  {
+   "poly": [
+    [
+     -67,
+     -46
+    ],
+    [
+     -16,
+     -46
+    ],
+    [
+     -16,
+     -44.4
+    ],
+    [
+     -9,
+     -44.4
+    ],
+    [
+     -9,
+     -42
+    ],
+    [
+     13.6,
+     -42
+    ],
+    [
+     13.6,
+     -2.3
+    ],
+    [
+     67,
+     -2.3
+    ],
+    [
+     67,
+     31
+    ],
+    [
+     -3,
+     31
+    ],
+    [
+     -3,
+     23.5
+    ],
+    [
+     -12,
+     23.5
+    ],
+    [
+     -12,
+     46.8
+    ],
+    [
+     -35.5,
+     46.8
+    ],
+    [
+     -35.5,
+     18
+    ],
+    [
+     -67,
+     18
+    ]
+   ],
+   "t": 0.35,
+   "y0": -0.3,
+   "top": 7.5,
+   "mat": "block_wall",
+   "gaps": {
+    "0": [
+     [
+      3.0,
+      0.9,
+      1.2,
+      2.6
+     ],
+     [
+      9.0,
+      0.9,
+      1.2,
+      2.6
+     ],
+     [
+      15.0,
+      0.9,
+      1.2,
+      2.6
+     ],
+     [
+      21.0,
+      0.9,
+      1.2,
+      2.6
+     ],
+     [
+      27.0,
+      0.9,
+      1.2,
+      2.6
+     ],
+     [
+      33.0,
+      0.9,
+      1.2,
+      2.6
+     ],
+     [
+      39.0,
+      0.9,
+      1.2,
+      2.6
+     ],
+     [
+      45.0,
+      0.9,
+      1.2,
+      2.6
+     ],
+     [
+      30,
+      1.2
+     ]
+    ],
+    "2": [
+     [
+      3.5,
+      1.6,
+      0,
+      2.8
+     ]
+    ],
+    "4": [
+     [
+      2.75,
+      0.9,
+      1.2,
+      2.6
+     ],
+     [
+      8.25,
+      0.9,
+      1.2,
+      2.6
+     ],
+     [
+      13.75,
+      0.9,
+      1.2,
+      2.6
+     ],
+     [
+      19.25,
+      0.9,
+      1.2,
+      2.6
+     ],
+     [
+      11,
+      1.2
+     ]
+    ],
+    "8": [
+     [
+      16.3,
+      1.6,
+      0,
+      2.8
+     ],
+     [
+      30,
+      1.0
+     ]
+    ],
+    "9": [
+     [
+      35,
+      1.0
+     ]
+    ],
+    "13": [
+     [
+      12,
+      1.6,
+      0,
+      3.0
+     ]
+    ],
+    "15": [
+     [
+      16,
+      1.0
+     ]
+    ]
+   },
+   "tops": {
+    "7": 9.5,
+    "8": 9.5,
+    "9": 9.5,
+    "12": 4.8,
+    "13": 4.8,
+    "14": 4.8
+   }
+  }
+ ],
+ "walls": [
+  {
+   "a": [
+    -67,
+    -20
+   ],
+   "b": [
+    -16,
+    -20
+   ],
+   "top": 1.1,
+   "mat": "wood",
+   "gaps": [
+    [
+     10,
+     1.2
+    ],
+    [
+     26,
+     1.5
+    ],
+    [
+     42,
+     1.2
+    ]
+   ],
+   "y0": -0.3,
+   "t": 0.2
+  },
+  {
+   "a": [
+    13.6,
+    -2.3
+   ],
+   "b": [
+    13.6,
+    31
+   ],
+   "top": 7.5,
+   "mat": "block_wall",
+   "gaps": [
+    [
+     6,
+     1.4
+    ],
+    [
+     22,
+     1.2
+    ]
+   ],
+   "y0": -0.3,
+   "t": 0.2
+  },
+  {
+   "a": [
+    13.6,
+    -2.3
+   ],
+   "b": [
+    13.6,
+    31
+   ],
+   "top": 9.5,
+   "mat": "block_wall",
+   "gaps": [],
+   "y0": 7.5,
+   "t": 0.2
+  },
+  {
+   "a": [
+    -9,
+    -2.3
+   ],
+   "b": [
+    13.6,
+    -2.3
+   ],
+   "top": 3.6,
+   "mat": "plaster",
+   "gaps": [
+    [
+     5,
+     1.6
+    ],
+    [
+     16,
+     1.2
+    ]
+   ],
+   "y0": -0.3,
+   "t": 0.2
+  },
+  {
+   "a": [
+    -35.5,
+    18
+   ],
+   "b": [
+    -12,
+    18
+   ],
+   "top": 7.5,
+   "mat": "block_wall",
+   "gaps": [
+    [
+     6,
+     1.0
+    ],
+    [
+     18,
+     1.6,
+     0,
+     3.0
+    ]
+   ],
+   "y0": -0.3,
+   "t": 0.2
+  },
+  {
+   "a": [
+    -35.5,
+    30
+   ],
+   "b": [
+    -12,
+    30
+   ],
+   "top": 3.6,
+   "mat": "plaster",
+   "gaps": [
+    [
+     6,
+     0.9
+    ],
+    [
+     17,
+     0.9
+    ]
+   ],
+   "y0": -0.3,
+   "t": 0.2
+  },
+  {
+   "a": [
+    -24,
+    30
+   ],
+   "b": [
+    -24,
+    46.8
+   ],
+   "top": 3.6,
+   "mat": "plaster",
+   "gaps": [
+    [
+     6,
+     0.9
+    ]
+   ],
+   "y0": -0.3,
+   "t": 0.2
+  },
+  {
+   "a": [
+    2,
+    10
+   ],
+   "b": [
+    2,
+    31
+   ],
+   "top": 3.6,
+   "mat": "plaster",
+   "gaps": [
+    [
+     3,
+     0.9
+    ],
+    [
+     9,
+     0.9
+    ]
+   ],
+   "y0": -0.3,
+   "t": 0.2
+  },
+  {
+   "a": [
+    -9,
+    10
+   ],
+   "b": [
+    13.6,
+    10
+   ],
+   "top": 3.6,
+   "mat": "plaster",
+   "gaps": [
+    [
+     3,
+     0.9
+    ],
+    [
+     17,
+     0.9
+    ]
+   ],
+   "y0": -0.3,
+   "t": 0.2
+  },
+  {
+   "a": [
+    2,
+    20
+   ],
+   "b": [
+    13.6,
+    20
+   ],
+   "top": 3.6,
+   "mat": "plaster",
+   "gaps": [
+    [
+     6,
+     0.9
+    ]
+   ],
+   "y0": -0.3,
+   "t": 0.2
+  },
+  {
+   "a": [
+    -3,
+    16.5
+   ],
+   "b": [
+    2,
+    16.5
+   ],
+   "top": 3.6,
+   "mat": "tile",
+   "gaps": [],
+   "y0": -0.3,
+   "t": 0.2
+  },
+  {
+   "a": [
+    42,
+    -2.3
+   ],
+   "b": [
+    42,
+    31
+   ],
+   "top": 3.2,
+   "mat": "black_wall",
+   "gaps": [
+    [
+     16,
+     1.5
+    ]
+   ],
+   "y0": -0.3,
+   "t": 0.2
+  },
+  {
+   "a": [
+    13.6,
+    8
+   ],
+   "b": [
+    22,
+    8
+   ],
+   "top": 3.0,
+   "mat": "black_wall",
+   "gaps": [
+    [
+     4,
+     0.9
+    ]
+   ],
+   "y0": -0.3,
+   "t": 0.2
+  },
+  {
+   "a": [
+    22,
+    -2.3
+   ],
+   "b": [
+    22,
+    8
+   ],
+   "top": 3.0,
+   "mat": "black_wall",
+   "gaps": [],
+   "y0": -0.3,
+   "t": 0.2
+  }
+ ],
+ "floors": [
+  {
+   "rect": [
+    -67,
+    -46,
+    -16,
+    18
+   ],
+   "y": 7.75,
+   "thick": 0.25,
+   "mat": "roof"
+  },
+  {
+   "rect": [
+    -16,
+    -44.4,
+    -9,
+    18
+   ],
+   "y": 7.75,
+   "thick": 0.25,
+   "mat": "roof"
+  },
+  {
+   "rect": [
+    -9,
+    -42,
+    13.6,
+    -30
+   ],
+   "y": 7.75,
+   "thick": 0.25,
+   "mat": "roof"
+  },
+  {
+   "rect": [
+    -9,
+    -30,
+    -2,
+    -20
+   ],
+   "y": 7.75,
+   "thick": 0.25,
+   "mat": "roof"
+  },
+  {
+   "rect": [
+    8,
+    -30,
+    13.6,
+    -20
+   ],
+   "y": 7.75,
+   "thick": 0.25,
+   "mat": "roof"
+  },
+  {
+   "rect": [
+    -9,
+    -20,
+    13.6,
+    23.5
+   ],
+   "y": 7.75,
+   "thick": 0.25,
+   "mat": "roof"
+  },
+  {
+   "rect": [
+    -12,
+    18,
+    -9,
+    23.5
+   ],
+   "y": 7.75,
+   "thick": 0.25,
+   "mat": "roof"
+  },
+  {
+   "rect": [
+    -3,
+    23.5,
+    13.6,
+    31
+   ],
+   "y": 7.75,
+   "thick": 0.25,
+   "mat": "roof"
+  },
+  {
+   "rect": [
+    13.6,
+    -2.3,
+    67,
+    31
+   ],
+   "y": 9.75,
+   "thick": 0.25,
+   "mat": "roof"
+  },
+  {
+   "rect": [
+    -35.5,
+    18,
+    -12,
+    46.8
+   ],
+   "y": 5.05,
+   "thick": 0.25,
+   "mat": "roof"
+  },
+  {
+   "rect": [
+    -67,
+    -46,
+    -16,
+    -20
+   ],
+   "y": 0.15,
+   "thick": 0.45,
+   "mat": "bar_floor"
+  },
+  {
+   "rect": [
+    -16,
+    -44.4,
+    -9,
+    -20
+   ],
+   "y": 0.15,
+   "thick": 0.45,
+   "mat": "tile"
+  },
+  {
+   "rect": [
+    -67,
+    -20,
+    -9,
+    18
+   ],
+   "y": 0.15,
+   "thick": 0.45,
+   "mat": "carpet_cosmic"
+  },
+  {
+   "rect": [
+    -9,
+    -42,
+    13.6,
+    -2.3
+   ],
+   "y": 0.15,
+   "thick": 0.45,
+   "mat": "carpet_cosmic"
+  },
+  {
+   "rect": [
+    -9,
+    -2.3,
+    13.6,
+    23.5
+   ],
+   "y": 0.15,
+   "thick": 0.45,
+   "mat": "tile"
+  },
+  {
+   "rect": [
+    -12,
+    18,
+    -9,
+    23.5
+   ],
+   "y": 0.15,
+   "thick": 0.45,
+   "mat": "tile"
+  },
+  {
+   "rect": [
+    -3,
+    23.5,
+    13.6,
+    31
+   ],
+   "y": 0.15,
+   "thick": 0.45,
+   "mat": "tile"
+  },
+  {
+   "rect": [
+    13.6,
+    -2.3,
+    42,
+    31
+   ],
+   "y": 0.15,
+   "thick": 0.45,
+   "mat": "rubber"
+  },
+  {
+   "rect": [
+    42,
+    -2.3,
+    67,
+    31
+   ],
+   "y": 0.15,
+   "thick": 0.45,
+   "mat": "carpet_dark"
+  },
+  {
+   "rect": [
+    -35.5,
+    18,
+    -12,
+    46.8
+   ],
+   "y": 0.15,
+   "thick": 0.45,
+   "mat": "floor"
+  }
+ ],
+ "props": [
+  {
+   "box": [
+    -12.5,
+    0.6,
+    -36,
+    6,
+    1.05,
+    0.8
+   ],
+   "mat": "counter",
+   "collide": true,
+   "yaw": 0
+  },
+  {
+   "box": [
+    -12.5,
+    1.2,
+    -33.3,
+    6,
+    2.1,
+    0.4
+   ],
+   "mat": "shelf",
+   "collide": true,
+   "yaw": 0
+  },
+  {
+   "box": [
+    -32,
+    0.6,
+    -40.5,
+    14,
+    1.1,
+    0.8
+   ],
+   "mat": "bar_top",
+   "collide": true,
+   "yaw": 0
+  },
+  {
+   "box": [
+    -25.4,
+    0.6,
+    -36,
+    0.8,
+    1.1,
+    9
+   ],
+   "mat": "bar_top",
+   "collide": true,
+   "yaw": 0
+  },
+  {
+   "box": [
+    -32,
+    1.4,
+    -45.4,
+    14,
+    2.6,
+    0.6
+   ],
+   "mat": "back_bar",
+   "collide": true,
+   "yaw": 0
+  },
+  {
+   "cyl": [
+    -38.0,
+    0.15,
+    -39.5,
+    0.2,
+    0.75
+   ],
+   "mat": "steel",
+   "sides": 6,
+   "collide": false
+  },
+  {
+   "cyl": [
+    -36.7,
+    0.15,
+    -39.5,
+    0.2,
+    0.75
+   ],
+   "mat": "steel",
+   "sides": 6,
+   "collide": false
+  },
+  {
+   "cyl": [
+    -35.4,
+    0.15,
+    -39.5,
+    0.2,
+    0.75
+   ],
+   "mat": "steel",
+   "sides": 6,
+   "collide": false
+  },
+  {
+   "cyl": [
+    -34.1,
+    0.15,
+    -39.5,
+    0.2,
+    0.75
+   ],
+   "mat": "steel",
+   "sides": 6,
+   "collide": false
+  },
+  {
+   "cyl": [
+    -32.8,
+    0.15,
+    -39.5,
+    0.2,
+    0.75
+   ],
+   "mat": "steel",
+   "sides": 6,
+   "collide": false
+  },
+  {
+   "cyl": [
+    -31.5,
+    0.15,
+    -39.5,
+    0.2,
+    0.75
+   ],
+   "mat": "steel",
+   "sides": 6,
+   "collide": false
+  },
+  {
+   "cyl": [
+    -30.2,
+    0.15,
+    -39.5,
+    0.2,
+    0.75
+   ],
+   "mat": "steel",
+   "sides": 6,
+   "collide": false
+  },
+  {
+   "cyl": [
+    -28.9,
+    0.15,
+    -39.5,
+    0.2,
+    0.75
+   ],
+   "mat": "steel",
+   "sides": 6,
+   "collide": false
+  },
+  {
+   "cyl": [
+    -27.6,
+    0.15,
+    -39.5,
+    0.2,
+    0.75
+   ],
+   "mat": "steel",
+   "sides": 6,
+   "collide": false
+  },
+  {
+   "cyl": [
+    -26.299999999999997,
+    0.15,
+    -39.5,
+    0.2,
+    0.75
+   ],
+   "mat": "steel",
+   "sides": 6,
+   "collide": false
+  },
+  {
+   "box": [
+    -58,
+    0.45,
+    -38,
+    2.6,
+    0.8,
+    1.5
+   ],
+   "mat": "pool_felt",
+   "collide": true,
+   "yaw": 0
+  },
+  {
+   "box": [
+    -58,
+    0.83,
+    -38,
+    2.8,
+    0.06,
+    1.7
+   ],
+   "mat": "wood",
+   "collide": false,
+   "yaw": 0
+  },
+  {
+   "box": [
+    -50,
+    0.45,
+    -38,
+    2.6,
+    0.8,
+    1.5
+   ],
+   "mat": "charred",
+   "collide": true,
+   "yaw": 0
+  },
+  {
+   "box": [
+    -50,
+    0.83,
+    -38,
+    2.8,
+    0.06,
+    1.7
+   ],
+   "mat": "wood",
+   "collide": false,
+   "yaw": 0
+  },
+  {
+   "box": [
+    -58,
+    0.45,
+    -28,
+    2.6,
+    0.8,
+    1.5
+   ],
+   "mat": "pool_felt",
+   "collide": true,
+   "yaw": 0
+  },
+  {
+   "box": [
+    -58,
+    0.83,
+    -28,
+    2.8,
+    0.06,
+    1.7
+   ],
+   "mat": "wood",
+   "collide": false,
+   "yaw": 0
+  },
+  {
+   "box": [
+    -62,
+    0.4,
+    -22.5,
+    1.8,
+    0.75,
+    0.9
+   ],
+   "mat": "wood",
+   "collide": true,
+   "yaw": 0
+  },
+  {
+   "box": [
+    -62,
+    0.55,
+    -21.5,
+    1.8,
+    1.1,
+    0.4
+   ],
+   "mat": "booth",
+   "collide": true,
+   "yaw": 0
+  },
+  {
+   "box": [
+    -62,
+    0.55,
+    -23.6,
+    1.8,
+    1.1,
+    0.4
+   ],
+   "mat": "booth",
+   "collide": true,
+   "yaw": 0
+  },
+  {
+   "box": [
+    -55,
+    0.4,
+    -22.5,
+    1.8,
+    0.75,
+    0.9
+   ],
+   "mat": "wood",
+   "collide": true,
+   "yaw": 0
+  },
+  {
+   "box": [
+    -55,
+    0.55,
+    -21.5,
+    1.8,
+    1.1,
+    0.4
+   ],
+   "mat": "booth",
+   "collide": true,
+   "yaw": 0
+  },
+  {
+   "box": [
+    -55,
+    0.55,
+    -23.6,
+    1.8,
+    1.1,
+    0.4
+   ],
+   "mat": "booth",
+   "collide": true,
+   "yaw": 0
+  },
+  {
+   "box": [
+    -48,
+    0.4,
+    -22.5,
+    1.8,
+    0.75,
+    0.9
+   ],
+   "mat": "wood",
+   "collide": true,
+   "yaw": 0
+  },
+  {
+   "box": [
+    -48,
+    0.55,
+    -21.5,
+    1.8,
+    1.1,
+    0.4
+   ],
+   "mat": "booth",
+   "collide": true,
+   "yaw": 0
+  },
+  {
+   "box": [
+    -48,
+    0.55,
+    -23.6,
+    1.8,
+    1.1,
+    0.4
+   ],
+   "mat": "booth",
+   "collide": true,
+   "yaw": 0
+  },
+  {
+   "box": [
+    -41,
+    0.4,
+    -22.5,
+    1.8,
+    0.75,
+    0.9
+   ],
+   "mat": "wood",
+   "collide": true,
+   "yaw": 0
+  },
+  {
+   "box": [
+    -41,
+    0.55,
+    -21.5,
+    1.8,
+    1.1,
+    0.4
+   ],
+   "mat": "booth",
+   "collide": true,
+   "yaw": 0
+  },
+  {
+   "box": [
+    -41,
+    0.55,
+    -23.6,
+    1.8,
+    1.1,
+    0.4
+   ],
+   "mat": "booth",
+   "collide": true,
+   "yaw": 0
+  },
+  {
+   "box": [
+    -34,
+    0.4,
+    -22.5,
+    1.8,
+    0.75,
+    0.9
+   ],
+   "mat": "wood",
+   "collide": true,
+   "yaw": 0
+  },
+  {
+   "box": [
+    -34,
+    0.55,
+    -21.5,
+    1.8,
+    1.1,
+    0.4
+   ],
+   "mat": "booth",
+   "collide": true,
+   "yaw": 0
+  },
+  {
+   "box": [
+    -34,
+    0.55,
+    -23.6,
+    1.8,
+    1.1,
+    0.4
+   ],
+   "mat": "booth",
+   "collide": true,
+   "yaw": 0
+  },
+  {
+   "cyl": [
+    -44,
+    0.15,
+    -32,
+    0.5,
+    0.75
+   ],
+   "mat": "wood",
+   "sides": 10,
+   "collide": true
+  },
+  {
+   "box": [
+    -44,
+    0.92,
+    -32,
+    1.1,
+    0.04,
+    1.1
+   ],
+   "mat": "wood",
+   "collide": false,
+   "yaw": 0
+  },
+  {
+   "cyl": [
+    -38,
+    0.15,
+    -28,
+    0.5,
+    0.75
+   ],
+   "mat": "wood",
+   "sides": 10,
+   "collide": true
+  },
+  {
+   "box": [
+    -38,
+    0.92,
+    -28,
+    1.1,
+    0.04,
+    1.1
+   ],
+   "mat": "wood",
+   "collide": false,
+   "yaw": 0
+  },
+  {
+   "cyl": [
+    -32,
+    0.15,
+    -31,
+    0.5,
+    0.75
+   ],
+   "mat": "wood",
+   "sides": 10,
+   "collide": true
+  },
+  {
+   "box": [
+    -32,
+    0.92,
+    -31,
+    1.1,
+    0.04,
+    1.1
+   ],
+   "mat": "wood",
+   "collide": false,
+   "yaw": 0
+  },
+  {
+   "cyl": [
+    -46,
+    0.15,
+    -26,
+    0.5,
+    0.75
+   ],
+   "mat": "wood",
+   "sides": 10,
+   "collide": true
+  },
+  {
+   "box": [
+    -46,
+    0.92,
+    -26,
+    1.1,
+    0.04,
+    1.1
+   ],
+   "mat": "wood",
+   "collide": false,
+   "yaw": 0
+  },
+  {
+   "box": [
+    -60,
+    3.2,
+    -45.6,
+    1.8,
+    1.0,
+    0.1
+   ],
+   "mat": "tv",
+   "collide": false,
+   "yaw": 0
+  },
+  {
+   "box": [
+    -50,
+    3.2,
+    -45.6,
+    1.8,
+    1.0,
+    0.1
+   ],
+   "mat": "tv",
+   "collide": false,
+   "yaw": 0
+  },
+  {
+   "box": [
+    -40,
+    3.2,
+    -45.6,
+    1.8,
+    1.0,
+    0.1
+   ],
+   "mat": "tv",
+   "collide": false,
+   "yaw": 0
+  },
+  {
+   "box": [
+    -30,
+    3.2,
+    -45.6,
+    1.8,
+    1.0,
+    0.1
+   ],
+   "mat": "tv",
+   "collide": false,
+   "yaw": 0
+  },
+  {
+   "box": [
+    -20,
+    3.2,
+    -45.6,
+    1.8,
+    1.0,
+    0.1
+   ],
+   "mat": "tv",
+   "collide": false,
+   "yaw": 0
+  },
+  {
+   "box": [
+    -66.7,
+    1.75,
+    -40,
+    0.05,
+    0.5,
+    0.5
+   ],
+   "mat": "dartboard",
+   "collide": false,
+   "yaw": 0
+  },
+  {
+   "box": [
+    -66.7,
+    1.75,
+    -36,
+    0.05,
+    0.5,
+    0.5
+   ],
+   "mat": "dartboard",
+   "collide": false,
+   "yaw": 0
+  },
+  {
+   "box": [
+    -66.7,
+    1.75,
+    -32,
+    0.05,
+    0.5,
+    0.5
+   ],
+   "mat": "dartboard",
+   "collide": false,
+   "yaw": 0
+  },
+  {
+   "box": [
+    -52,
+    0.16,
+    -33,
+    3.0,
+    0.01,
+    2.5
+   ],
+   "mat": "soot",
+   "collide": false,
+   "yaw": 20
+  },
+  {
+   "box": [
+    -47,
+    0.16,
+    -35,
+    3.0,
+    0.01,
+    2.5
+   ],
+   "mat": "soot",
+   "collide": false,
+   "yaw": -15
+  },
+  {
+   "box": [
+    -55,
+    0.16,
+    -30,
+    3.0,
+    0.01,
+    2.5
+   ],
+   "mat": "soot",
+   "collide": false,
+   "yaw": 45
+  },
+  {
+   "box": [
+    -61,
+    0.16,
+    -33,
+    3.0,
+    0.01,
+    2.5
+   ],
+   "mat": "soot",
+   "collide": false,
+   "yaw": 0
+  },
+  {
+   "box": [
+    -50,
+    0.2,
+    -30,
+    1.2,
+    0.2,
+    0.6
+   ],
+   "mat": "ceiling_tile",
+   "collide": false,
+   "yaw": -350
+  },
+  {
+   "box": [
+    -53,
+    0.2,
+    -36,
+    1.2,
+    0.2,
+    0.6
+   ],
+   "mat": "ceiling_tile",
+   "collide": false,
+   "yaw": -371
+  },
+  {
+   "box": [
+    -45,
+    0.2,
+    -33,
+    1.2,
+    0.2,
+    0.6
+   ],
+   "mat": "ceiling_tile",
+   "collide": false,
+   "yaw": -315
+  },
+  {
+   "box": [
+    -64.44,
+    0.25,
+    -16.5,
+    2.6,
+    0.5,
+    0.7
+   ],
+   "mat": "settee",
+   "collide": true,
+   "yaw": 0
+  },
+  {
+   "box": [
+    -64.44,
+    0.8,
+    -17.0,
+    2.6,
+    0.6,
+    0.15
+   ],
+   "mat": "settee",
+   "collide": false,
+   "yaw": 0
+  },
+  {
+   "box": [
+    -64.44,
+    0.55,
+    -14.6,
+    0.6,
+    1.0,
+    0.5
+   ],
+   "mat": "console",
+   "collide": true,
+   "yaw": 0
+  },
+  {
+   "box": [
+    -61.32888888888888,
+    0.25,
+    -16.5,
+    2.6,
+    0.5,
+    0.7
+   ],
+   "mat": "settee",
+   "collide": true,
+   "yaw": 0
+  },
+  {
+   "box": [
+    -61.32888888888888,
+    0.8,
+    -17.0,
+    2.6,
+    0.6,
+    0.15
+   ],
+   "mat": "settee",
+   "collide": false,
+   "yaw": 0
+  },
+  {
+   "box": [
+    -61.32888888888888,
+    0.55,
+    -14.6,
+    0.6,
+    1.0,
+    0.5
+   ],
+   "mat": "console",
+   "collide": true,
+   "yaw": 0
+  },
+  {
+   "box": [
+    -58.217777777777776,
+    0.25,
+    -16.5,
+    2.6,
+    0.5,
+    0.7
+   ],
+   "mat": "settee",
+   "collide": true,
+   "yaw": 0
+  },
+  {
+   "box": [
+    -58.217777777777776,
+    0.8,
+    -17.0,
+    2.6,
+    0.6,
+    0.15
+   ],
+   "mat": "settee",
+   "collide": false,
+   "yaw": 0
+  },
+  {
+   "box": [
+    -58.217777777777776,
+    0.55,
+    -14.6,
+    0.6,
+    1.0,
+    0.5
+   ],
+   "mat": "console",
+   "collide": true,
+   "yaw": 0
+  },
+  {
+   "box": [
+    -55.10666666666666,
+    0.25,
+    -16.5,
+    2.6,
+    0.5,
+    0.7
+   ],
+   "mat": "settee",
+   "collide": true,
+   "yaw": 0
+  },
+  {
+   "box": [
+    -55.10666666666666,
+    0.8,
+    -17.0,
+    2.6,
+    0.6,
+    0.15
+   ],
+   "mat": "settee",
+   "collide": false,
+   "yaw": 0
+  },
+  {
+   "box": [
+    -55.10666666666666,
+    0.55,
+    -14.6,
+    0.6,
+    1.0,
+    0.5
+   ],
+   "mat": "console",
+   "collide": true,
+   "yaw": 0
+  },
+  {
+   "box": [
+    -51.995555555555555,
+    0.25,
+    -16.5,
+    2.6,
+    0.5,
+    0.7
+   ],
+   "mat": "settee",
+   "collide": true,
+   "yaw": 0
+  },
+  {
+   "box": [
+    -51.995555555555555,
+    0.8,
+    -17.0,
+    2.6,
+    0.6,
+    0.15
+   ],
+   "mat": "settee",
+   "collide": false,
+   "yaw": 0
+  },
+  {
+   "box": [
+    -51.995555555555555,
+    0.55,
+    -14.6,
+    0.6,
+    1.0,
+    0.5
+   ],
+   "mat": "console",
+   "collide": true,
+   "yaw": 0
+  },
+  {
+   "box": [
+    -48.88444444444444,
+    0.25,
+    -16.5,
+    2.6,
+    0.5,
+    0.7
+   ],
+   "mat": "settee",
+   "collide": true,
+   "yaw": 0
+  },
+  {
+   "box": [
+    -48.88444444444444,
+    0.8,
+    -17.0,
+    2.6,
+    0.6,
+    0.15
+   ],
+   "mat": "settee",
+   "collide": false,
+   "yaw": 0
+  },
+  {
+   "box": [
+    -48.88444444444444,
+    0.55,
+    -14.6,
+    0.6,
+    1.0,
+    0.5
+   ],
+   "mat": "console",
+   "collide": true,
+   "yaw": 0
+  },
+  {
+   "box": [
+    -45.773333333333326,
+    0.25,
+    -16.5,
+    2.6,
+    0.5,
+    0.7
+   ],
+   "mat": "settee",
+   "collide": true,
+   "yaw": 0
+  },
+  {
+   "box": [
+    -45.773333333333326,
+    0.8,
+    -17.0,
+    2.6,
+    0.6,
+    0.15
+   ],
+   "mat": "settee",
+   "collide": false,
+   "yaw": 0
+  },
+  {
+   "box": [
+    -45.773333333333326,
+    0.55,
+    -14.6,
+    0.6,
+    1.0,
+    0.5
+   ],
+   "mat": "console",
+   "collide": true,
+   "yaw": 0
+  },
+  {
+   "box": [
+    -42.66222222222222,
+    0.25,
+    -16.5,
+    2.6,
+    0.5,
+    0.7
+   ],
+   "mat": "settee",
+   "collide": true,
+   "yaw": 0
+  },
+  {
+   "box": [
+    -42.66222222222222,
+    0.8,
+    -17.0,
+    2.6,
+    0.6,
+    0.15
+   ],
+   "mat": "settee",
+   "collide": false,
+   "yaw": 0
+  },
+  {
+   "box": [
+    -42.66222222222222,
+    0.55,
+    -14.6,
+    0.6,
+    1.0,
+    0.5
+   ],
+   "mat": "console",
+   "collide": true,
+   "yaw": 0
+  },
+  {
+   "box": [
+    -39.55111111111111,
+    0.25,
+    -16.5,
+    2.6,
+    0.5,
+    0.7
+   ],
+   "mat": "settee",
+   "collide": true,
+   "yaw": 0
+  },
+  {
+   "box": [
+    -39.55111111111111,
+    0.8,
+    -17.0,
+    2.6,
+    0.6,
+    0.15
+   ],
+   "mat": "settee",
+   "collide": false,
+   "yaw": 0
+  },
+  {
+   "box": [
+    -39.55111111111111,
+    0.55,
+    -14.6,
+    0.6,
+    1.0,
+    0.5
+   ],
+   "mat": "console",
+   "collide": true,
+   "yaw": 0
+  },
+  {
+   "box": [
+    -36.44,
+    0.25,
+    -16.5,
+    2.6,
+    0.5,
+    0.7
+   ],
+   "mat": "settee",
+   "collide": true,
+   "yaw": 0
+  },
+  {
+   "box": [
+    -36.44,
+    0.8,
+    -17.0,
+    2.6,
+    0.6,
+    0.15
+   ],
+   "mat": "settee",
+   "collide": false,
+   "yaw": 0
+  },
+  {
+   "box": [
+    -36.44,
+    0.55,
+    -14.6,
+    0.6,
+    1.0,
+    0.5
+   ],
+   "mat": "console",
+   "collide": true,
+   "yaw": 0
+  },
+  {
+   "box": [
+    -33.32888888888888,
+    0.25,
+    -16.5,
+    2.6,
+    0.5,
+    0.7
+   ],
+   "mat": "settee",
+   "collide": true,
+   "yaw": 0
+  },
+  {
+   "box": [
+    -33.32888888888888,
+    0.8,
+    -17.0,
+    2.6,
+    0.6,
+    0.15
+   ],
+   "mat": "settee",
+   "collide": false,
+   "yaw": 0
+  },
+  {
+   "box": [
+    -33.32888888888888,
+    0.55,
+    -14.6,
+    0.6,
+    1.0,
+    0.5
+   ],
+   "mat": "console",
+   "collide": true,
+   "yaw": 0
+  },
+  {
+   "box": [
+    -30.21777777777778,
+    0.25,
+    -16.5,
+    2.6,
+    0.5,
+    0.7
+   ],
+   "mat": "settee",
+   "collide": true,
+   "yaw": 0
+  },
+  {
+   "box": [
+    -30.21777777777778,
+    0.8,
+    -17.0,
+    2.6,
+    0.6,
+    0.15
+   ],
+   "mat": "settee",
+   "collide": false,
+   "yaw": 0
+  },
+  {
+   "box": [
+    -30.21777777777778,
+    0.55,
+    -14.6,
+    0.6,
+    1.0,
+    0.5
+   ],
+   "mat": "console",
+   "collide": true,
+   "yaw": 0
+  },
+  {
+   "box": [
+    -27.106666666666666,
+    0.25,
+    -16.5,
+    2.6,
+    0.5,
+    0.7
+   ],
+   "mat": "settee",
+   "collide": true,
+   "yaw": 0
+  },
+  {
+   "box": [
+    -27.106666666666666,
+    0.8,
+    -17.0,
+    2.6,
+    0.6,
+    0.15
+   ],
+   "mat": "settee",
+   "collide": false,
+   "yaw": 0
+  },
+  {
+   "box": [
+    -27.106666666666666,
+    0.55,
+    -14.6,
+    0.6,
+    1.0,
+    0.5
+   ],
+   "mat": "console",
+   "collide": true,
+   "yaw": 0
+  },
+  {
+   "box": [
+    -23.99555555555556,
+    0.25,
+    -16.5,
+    2.6,
+    0.5,
+    0.7
+   ],
+   "mat": "settee",
+   "collide": true,
+   "yaw": 0
+  },
+  {
+   "box": [
+    -23.99555555555556,
+    0.8,
+    -17.0,
+    2.6,
+    0.6,
+    0.15
+   ],
+   "mat": "settee",
+   "collide": false,
+   "yaw": 0
+  },
+  {
+   "box": [
+    -23.99555555555556,
+    0.55,
+    -14.6,
+    0.6,
+    1.0,
+    0.5
+   ],
+   "mat": "console",
+   "collide": true,
+   "yaw": 0
+  },
+  {
+   "box": [
+    -20.884444444444444,
+    0.25,
+    -16.5,
+    2.6,
+    0.5,
+    0.7
+   ],
+   "mat": "settee",
+   "collide": true,
+   "yaw": 0
+  },
+  {
+   "box": [
+    -20.884444444444444,
+    0.8,
+    -17.0,
+    2.6,
+    0.6,
+    0.15
+   ],
+   "mat": "settee",
+   "collide": false,
+   "yaw": 0
+  },
+  {
+   "box": [
+    -20.884444444444444,
+    0.55,
+    -14.6,
+    0.6,
+    1.0,
+    0.5
+   ],
+   "mat": "console",
+   "collide": true,
+   "yaw": 0
+  },
+  {
+   "box": [
+    -17.773333333333337,
+    0.25,
+    -16.5,
+    2.6,
+    0.5,
+    0.7
+   ],
+   "mat": "settee",
+   "collide": true,
+   "yaw": 0
+  },
+  {
+   "box": [
+    -17.773333333333337,
+    0.8,
+    -17.0,
+    2.6,
+    0.6,
+    0.15
+   ],
+   "mat": "settee",
+   "collide": false,
+   "yaw": 0
+  },
+  {
+   "box": [
+    -17.773333333333337,
+    0.55,
+    -14.6,
+    0.6,
+    1.0,
+    0.5
+   ],
+   "mat": "console",
+   "collide": true,
+   "yaw": 0
+  },
+  {
+   "box": [
+    -14.662222222222221,
+    0.25,
+    -16.5,
+    2.6,
+    0.5,
+    0.7
+   ],
+   "mat": "settee",
+   "collide": true,
+   "yaw": 0
+  },
+  {
+   "box": [
+    -14.662222222222221,
+    0.8,
+    -17.0,
+    2.6,
+    0.6,
+    0.15
+   ],
+   "mat": "settee",
+   "collide": false,
+   "yaw": 0
+  },
+  {
+   "box": [
+    -14.662222222222221,
+    0.55,
+    -14.6,
+    0.6,
+    1.0,
+    0.5
+   ],
+   "mat": "console",
+   "collide": true,
+   "yaw": 0
+  },
+  {
+   "box": [
+    -11.551111111111107,
+    0.25,
+    -16.5,
+    2.6,
+    0.5,
+    0.7
+   ],
+   "mat": "settee",
+   "collide": true,
+   "yaw": 0
+  },
+  {
+   "box": [
+    -11.551111111111107,
+    0.8,
+    -17.0,
+    2.6,
+    0.6,
+    0.15
+   ],
+   "mat": "settee",
+   "collide": false,
+   "yaw": 0
+  },
+  {
+   "box": [
+    -11.551111111111107,
+    0.55,
+    -14.6,
+    0.6,
+    1.0,
+    0.5
+   ],
+   "mat": "console",
+   "collide": true,
+   "yaw": 0
+  },
+  {
+   "box": [
+    -60,
+    0.6,
+    -19.2,
+    3.5,
+    1.1,
+    0.5
+   ],
+   "mat": "ball_rack",
+   "collide": true,
+   "yaw": 0
+  },
+  {
+   "cyl": [
+    -61.4,
+    1.15,
+    -19.2,
+    0.11,
+    0.22
+   ],
+   "mat": "bowling_ball",
+   "sides": 8
+  },
+  {
+   "cyl": [
+    -60.699999999999996,
+    1.15,
+    -19.2,
+    0.11,
+    0.22
+   ],
+   "mat": "bowling_ball",
+   "sides": 8
+  },
+  {
+   "cyl": [
+    -60.0,
+    1.15,
+    -19.2,
+    0.11,
+    0.22
+   ],
+   "mat": "bowling_ball",
+   "sides": 8
+  },
+  {
+   "cyl": [
+    -59.3,
+    1.15,
+    -19.2,
+    0.11,
+    0.22
+   ],
+   "mat": "bowling_ball",
+   "sides": 8
+  },
+  {
+   "cyl": [
+    -58.6,
+    1.15,
+    -19.2,
+    0.11,
+    0.22
+   ],
+   "mat": "bowling_ball",
+   "sides": 8
+  },
+  {
+   "box": [
+    -48,
+    0.6,
+    -19.2,
+    3.5,
+    1.1,
+    0.5
+   ],
+   "mat": "ball_rack",
+   "collide": true,
+   "yaw": 0
+  },
+  {
+   "cyl": [
+    -49.4,
+    1.15,
+    -19.2,
+    0.11,
+    0.22
+   ],
+   "mat": "bowling_ball",
+   "sides": 8
+  },
+  {
+   "cyl": [
+    -48.699999999999996,
+    1.15,
+    -19.2,
+    0.11,
+    0.22
+   ],
+   "mat": "bowling_ball",
+   "sides": 8
+  },
+  {
+   "cyl": [
+    -48.0,
+    1.15,
+    -19.2,
+    0.11,
+    0.22
+   ],
+   "mat": "bowling_ball",
+   "sides": 8
+  },
+  {
+   "cyl": [
+    -47.3,
+    1.15,
+    -19.2,
+    0.11,
+    0.22
+   ],
+   "mat": "bowling_ball",
+   "sides": 8
+  },
+  {
+   "cyl": [
+    -46.6,
+    1.15,
+    -19.2,
+    0.11,
+    0.22
+   ],
+   "mat": "bowling_ball",
+   "sides": 8
+  },
+  {
+   "box": [
+    -36,
+    0.6,
+    -19.2,
+    3.5,
+    1.1,
+    0.5
+   ],
+   "mat": "ball_rack",
+   "collide": true,
+   "yaw": 0
+  },
+  {
+   "cyl": [
+    -37.4,
+    1.15,
+    -19.2,
+    0.11,
+    0.22
+   ],
+   "mat": "bowling_ball",
+   "sides": 8
+  },
+  {
+   "cyl": [
+    -36.699999999999996,
+    1.15,
+    -19.2,
+    0.11,
+    0.22
+   ],
+   "mat": "bowling_ball",
+   "sides": 8
+  },
+  {
+   "cyl": [
+    -36.0,
+    1.15,
+    -19.2,
+    0.11,
+    0.22
+   ],
+   "mat": "bowling_ball",
+   "sides": 8
+  },
+  {
+   "cyl": [
+    -35.3,
+    1.15,
+    -19.2,
+    0.11,
+    0.22
+   ],
+   "mat": "bowling_ball",
+   "sides": 8
+  },
+  {
+   "cyl": [
+    -34.6,
+    1.15,
+    -19.2,
+    0.11,
+    0.22
+   ],
+   "mat": "bowling_ball",
+   "sides": 8
+  },
+  {
+   "box": [
+    -24,
+    0.6,
+    -19.2,
+    3.5,
+    1.1,
+    0.5
+   ],
+   "mat": "ball_rack",
+   "collide": true,
+   "yaw": 0
+  },
+  {
+   "cyl": [
+    -25.4,
+    1.15,
+    -19.2,
+    0.11,
+    0.22
+   ],
+   "mat": "bowling_ball",
+   "sides": 8
+  },
+  {
+   "cyl": [
+    -24.7,
+    1.15,
+    -19.2,
+    0.11,
+    0.22
+   ],
+   "mat": "bowling_ball",
+   "sides": 8
+  },
+  {
+   "cyl": [
+    -24.0,
+    1.15,
+    -19.2,
+    0.11,
+    0.22
+   ],
+   "mat": "bowling_ball",
+   "sides": 8
+  },
+  {
+   "cyl": [
+    -23.299999999999997,
+    1.15,
+    -19.2,
+    0.11,
+    0.22
+   ],
+   "mat": "bowling_ball",
+   "sides": 8
+  },
+  {
+   "cyl": [
+    -22.599999999999998,
+    1.15,
+    -19.2,
+    0.11,
+    0.22
+   ],
+   "mat": "bowling_ball",
+   "sides": 8
+  },
+  {
+   "box": [
+    -14,
+    0.6,
+    -19.2,
+    3.5,
+    1.1,
+    0.5
+   ],
+   "mat": "ball_rack",
+   "collide": true,
+   "yaw": 0
+  },
+  {
+   "cyl": [
+    -15.4,
+    1.15,
+    -19.2,
+    0.11,
+    0.22
+   ],
+   "mat": "bowling_ball",
+   "sides": 8
+  },
+  {
+   "cyl": [
+    -14.700000000000001,
+    1.15,
+    -19.2,
+    0.11,
+    0.22
+   ],
+   "mat": "bowling_ball",
+   "sides": 8
+  },
+  {
+   "cyl": [
+    -14.0,
+    1.15,
+    -19.2,
+    0.11,
+    0.22
+   ],
+   "mat": "bowling_ball",
+   "sides": 8
+  },
+  {
+   "cyl": [
+    -13.3,
+    1.15,
+    -19.2,
+    0.11,
+    0.22
+   ],
+   "mat": "bowling_ball",
+   "sides": 8
+  },
+  {
+   "cyl": [
+    -12.600000000000001,
+    1.15,
+    -19.2,
+    0.11,
+    0.22
+   ],
+   "mat": "bowling_ball",
+   "sides": 8
+  },
+  {
+   "box": [
+    -7.5,
+    0.16499999999999998,
+    -11,
+    1.2,
+    0.03,
+    14
+   ],
+   "mat": "lane",
+   "collide": false,
+   "yaw": 0
+  },
+  {
+   "box": [
+    -7.5,
+    0.8,
+    -3.4,
+    1.5,
+    1.6,
+    0.6
+   ],
+   "mat": "machine",
+   "collide": true,
+   "yaw": 0
+  },
+  {
+   "box": [
+    -5.6,
+    0.16499999999999998,
+    -11,
+    1.2,
+    0.03,
+    14
+   ],
+   "mat": "lane",
+   "collide": false,
+   "yaw": 0
+  },
+  {
+   "box": [
+    -5.6,
+    0.8,
+    -3.4,
+    1.5,
+    1.6,
+    0.6
+   ],
+   "mat": "machine",
+   "collide": true,
+   "yaw": 0
+  },
+  {
+   "box": [
+    -3.7,
+    0.16499999999999998,
+    -11,
+    1.2,
+    0.03,
+    14
+   ],
+   "mat": "lane",
+   "collide": false,
+   "yaw": 0
+  },
+  {
+   "box": [
+    -3.7,
+    0.8,
+    -3.4,
+    1.5,
+    1.6,
+    0.6
+   ],
+   "mat": "machine",
+   "collide": true,
+   "yaw": 0
+  },
+  {
+   "box": [
+    -1.8000000000000007,
+    0.16499999999999998,
+    -11,
+    1.2,
+    0.03,
+    14
+   ],
+   "mat": "lane",
+   "collide": false,
+   "yaw": 0
+  },
+  {
+   "box": [
+    -1.8000000000000007,
+    0.8,
+    -3.4,
+    1.5,
+    1.6,
+    0.6
+   ],
+   "mat": "machine",
+   "collide": true,
+   "yaw": 0
+  },
+  {
+   "box": [
+    10.5,
+    0.6,
+    -39,
+    5.5,
+    1.1,
+    0.8
+   ],
+   "mat": "counter",
+   "collide": true,
+   "yaw": 0
+  },
+  {
+   "box": [
+    10.5,
+    1.25,
+    -39,
+    5.3,
+    0.25,
+    0.7
+   ],
+   "mat": "glass",
+   "collide": false,
+   "yaw": 0
+  },
+  {
+   "box": [
+    10.5,
+    1.4,
+    -41.5,
+    5.5,
+    2.6,
+    0.4
+   ],
+   "mat": "prize_wall",
+   "collide": true,
+   "yaw": 0
+  },
+  {
+   "box": [
+    1,
+    0.9,
+    -41.2,
+    0.7,
+    1.7,
+    0.6
+   ],
+   "mat": "steel",
+   "collide": true,
+   "yaw": 0
+  },
+  {
+   "box": [
+    10.5,
+    1.25,
+    -14,
+    2.6,
+    2.4,
+    2.6
+   ],
+   "mat": "vr_booth",
+   "collide": true,
+   "yaw": 0
+  },
+  {
+   "box": [
+    10.5,
+    1.25,
+    -9,
+    2.6,
+    2.4,
+    2.6
+   ],
+   "mat": "vr_booth",
+   "collide": true,
+   "yaw": 0
+  },
+  {
+   "box": [
+    3,
+    0.78,
+    -25,
+    3.5,
+    1.26,
+    2.8000000000000003
+   ],
+   "mat": "rubble",
+   "yaw": 33,
+   "collide": true
+  },
+  {
+   "box": [
+    0,
+    0.51,
+    -23,
+    2.0,
+    0.72,
+    1.6
+   ],
+   "mat": "rubble",
+   "yaw": 0,
+   "collide": true
+  },
+  {
+   "box": [
+    6,
+    0.546,
+    -27,
+    2.2,
+    0.792,
+    1.7600000000000002
+   ],
+   "mat": "rubble",
+   "yaw": 66,
+   "collide": true
+  },
+  {
+   "box": [
+    3,
+    1.2,
+    -25,
+    0.3,
+    0.3,
+    11
+   ],
+   "mat": "charred",
+   "collide": true,
+   "yaw": 30
+  },
+  {
+   "box": [
+    1,
+    0.6,
+    -26,
+    0.3,
+    0.3,
+    8
+   ],
+   "mat": "charred",
+   "collide": true,
+   "yaw": -55
+  },
+  {
+   "box": [
+    3,
+    0.16,
+    -25,
+    12,
+    0.01,
+    12
+   ],
+   "mat": "soot",
+   "collide": false,
+   "yaw": 0
+  },
+  {
+   "box": [
+    3,
+    0.6,
+    0.5,
+    10,
+    1.05,
+    0.8
+   ],
+   "mat": "counter",
+   "collide": true,
+   "yaw": 0
+  },
+  {
+   "box": [
+    3,
+    1.0,
+    7.6,
+    10,
+    1.9,
+    0.6
+   ],
+   "mat": "steel",
+   "collide": true,
+   "yaw": 0
+  },
+  {
+   "box": [
+    -1,
+    0.5,
+    4.5,
+    1.2,
+    0.9,
+    0.8
+   ],
+   "mat": "steel",
+   "collide": true,
+   "yaw": 0
+  },
+  {
+   "box": [
+    1,
+    0.5,
+    4.5,
+    1.2,
+    0.9,
+    0.8
+   ],
+   "mat": "steel",
+   "collide": true,
+   "yaw": 0
+  },
+  {
+   "box": [
+    3,
+    0.5,
+    4.5,
+    1.2,
+    0.9,
+    0.8
+   ],
+   "mat": "steel",
+   "collide": true,
+   "yaw": 0
+  },
+  {
+   "box": [
+    11.5,
+    1.3,
+    5,
+    3.6,
+    2.5,
+    4
+   ],
+   "mat": "steel",
+   "collide": true,
+   "yaw": 0
+  },
+  {
+   "cyl": [
+    -6,
+    0.15,
+    3,
+    0.5,
+    0.75
+   ],
+   "mat": "plastic_red",
+   "sides": 8,
+   "collide": true
+  },
+  {
+   "cyl": [
+    -6,
+    0.15,
+    6,
+    0.5,
+    0.75
+   ],
+   "mat": "plastic_red",
+   "sides": 8,
+   "collide": true
+  },
+  {
+   "cyl": [
+    9,
+    0.15,
+    -0.5,
+    0.5,
+    0.75
+   ],
+   "mat": "plastic_red",
+   "sides": 8,
+   "collide": true
+  },
+  {
+   "box": [
+    -8.5,
+    1.0,
+    12,
+    0.04,
+    1.8,
+    2.2
+   ],
+   "mat": "stall",
+   "collide": false,
+   "yaw": 0
+  },
+  {
+   "box": [
+    -7.4,
+    1.0,
+    12,
+    0.04,
+    1.8,
+    2.2
+   ],
+   "mat": "stall",
+   "collide": false,
+   "yaw": 0
+  },
+  {
+   "box": [
+    -6.3,
+    1.0,
+    12,
+    0.04,
+    1.8,
+    2.2
+   ],
+   "mat": "stall",
+   "collide": false,
+   "yaw": 0
+  },
+  {
+   "box": [
+    8,
+    0.4,
+    14,
+    8,
+    0.75,
+    1.2
+   ],
+   "mat": "plastic_white",
+   "collide": true,
+   "yaw": 0
+  },
+  {
+   "box": [
+    8,
+    0.78,
+    14,
+    8,
+    0.04,
+    1.2
+   ],
+   "mat": "party_cloth",
+   "collide": false,
+   "yaw": 0
+  },
+  {
+   "box": [
+    8,
+    0.4,
+    25,
+    8,
+    0.75,
+    1.2
+   ],
+   "mat": "plastic_white",
+   "collide": true,
+   "yaw": 0
+  },
+  {
+   "box": [
+    8,
+    0.78,
+    25,
+    8,
+    0.04,
+    1.2
+   ],
+   "mat": "party_cloth",
+   "collide": false,
+   "yaw": 0
+  },
+  {
+   "box": [
+    26,
+    0.8,
+    4,
+    6,
+    1.6,
+    0.4
+   ],
+   "mat": "neon_wall",
+   "collide": true,
+   "yaw": 0
+  },
+  {
+   "box": [
+    26,
+    1.62,
+    4,
+    6.02,
+    0.05,
+    0.42000000000000004
+   ],
+   "mat": "neon_trim",
+   "collide": false,
+   "yaw": 0
+  },
+  {
+   "box": [
+    32,
+    0.8,
+    10,
+    0.4,
+    1.6,
+    7
+   ],
+   "mat": "neon_wall",
+   "collide": true,
+   "yaw": 0
+  },
+  {
+   "box": [
+    32,
+    1.62,
+    10,
+    0.42000000000000004,
+    0.05,
+    7.02
+   ],
+   "mat": "neon_trim",
+   "collide": false,
+   "yaw": 0
+  },
+  {
+   "box": [
+    28,
+    0.8,
+    16,
+    5,
+    1.6,
+    0.4
+   ],
+   "mat": "neon_wall",
+   "collide": true,
+   "yaw": 0
+  },
+  {
+   "box": [
+    28,
+    1.62,
+    16,
+    5.02,
+    0.05,
+    0.42000000000000004
+   ],
+   "mat": "neon_trim",
+   "collide": false,
+   "yaw": 0
+  },
+  {
+   "box": [
+    36,
+    0.8,
+    20,
+    0.4,
+    1.6,
+    6
+   ],
+   "mat": "neon_wall",
+   "collide": true,
+   "yaw": 0
+  },
+  {
+   "box": [
+    36,
+    1.62,
+    20,
+    0.42000000000000004,
+    0.05,
+    6.02
+   ],
+   "mat": "neon_trim",
+   "collide": false,
+   "yaw": 0
+  },
+  {
+   "box": [
+    24,
+    0.8,
+    24,
+    6,
+    1.6,
+    0.4
+   ],
+   "mat": "neon_wall",
+   "collide": true,
+   "yaw": 0
+  },
+  {
+   "box": [
+    24,
+    1.62,
+    24,
+    6.02,
+    0.05,
+    0.42000000000000004
+   ],
+   "mat": "neon_trim",
+   "collide": false,
+   "yaw": 0
+  },
+  {
+   "box": [
+    34,
+    0.8,
+    27,
+    6,
+    1.6,
+    0.4
+   ],
+   "mat": "neon_wall",
+   "collide": true,
+   "yaw": 0
+  },
+  {
+   "box": [
+    34,
+    1.62,
+    27,
+    6.02,
+    0.05,
+    0.42000000000000004
+   ],
+   "mat": "neon_trim",
+   "collide": false,
+   "yaw": 0
+  },
+  {
+   "box": [
+    38,
+    0.8,
+    6,
+    0.4,
+    1.6,
+    5
+   ],
+   "mat": "neon_wall",
+   "collide": true,
+   "yaw": 0
+  },
+  {
+   "box": [
+    38,
+    1.62,
+    6,
+    0.42000000000000004,
+    0.05,
+    5.02
+   ],
+   "mat": "neon_trim",
+   "collide": false,
+   "yaw": 0
+  },
+  {
+   "box": [
+    20,
+    0.8,
+    14,
+    0.4,
+    1.6,
+    5
+   ],
+   "mat": "neon_wall",
+   "collide": true,
+   "yaw": 0
+  },
+  {
+   "box": [
+    20,
+    1.62,
+    14,
+    0.42000000000000004,
+    0.05,
+    5.02
+   ],
+   "mat": "neon_trim",
+   "collide": false,
+   "yaw": 0
+  },
+  {
+   "box": [
+    28,
+    3.25,
+    29.8,
+    28,
+    0.2,
+    2.0
+   ],
+   "mat": "steel",
+   "collide": true,
+   "yaw": 0
+  },
+  {
+   "box": [
+    40.8,
+    3.25,
+    14,
+    2.0,
+    0.2,
+    30
+   ],
+   "mat": "steel",
+   "collide": true,
+   "yaw": 0
+  },
+  {
+   "box": [
+    17,
+    1.65,
+    29.8,
+    0.1,
+    0.1,
+    0.1
+   ],
+   "mat": "steel",
+   "collide": false
+  },
+  {
+   "box": [
+    46,
+    0.18,
+    5.2,
+    3.6,
+    0.06,
+    6.6
+   ],
+   "mat": "felt",
+   "collide": false,
+   "yaw": 0
+  },
+  {
+   "box": [
+    46,
+    0.2,
+    1.9,
+    3.6,
+    0.15,
+    0.12
+   ],
+   "mat": "neon_trim",
+   "collide": false,
+   "yaw": 0
+  },
+  {
+   "box": [
+    46,
+    0.2,
+    8.5,
+    3.6,
+    0.15,
+    0.12
+   ],
+   "mat": "neon_trim",
+   "collide": false,
+   "yaw": 0
+  },
+  {
+   "cyl": [
+    45.4,
+    0.15,
+    6,
+    0.35,
+    0.5
+   ],
+   "mat": "glow_pink",
+   "sides": 8,
+   "collide": true
+  },
+  {
+   "cyl": [
+    46,
+    0.21,
+    7.6,
+    0.06,
+    0.02
+   ],
+   "mat": "cup",
+   "sides": 8
+  },
+  {
+   "box": [
+    52,
+    0.18,
+    5.2,
+    3.6,
+    0.06,
+    6.6
+   ],
+   "mat": "felt",
+   "collide": false,
+   "yaw": 0
+  },
+  {
+   "box": [
+    52,
+    0.2,
+    1.9,
+    3.6,
+    0.15,
+    0.12
+   ],
+   "mat": "neon_trim",
+   "collide": false,
+   "yaw": 0
+  },
+  {
+   "box": [
+    52,
+    0.2,
+    8.5,
+    3.6,
+    0.15,
+    0.12
+   ],
+   "mat": "neon_trim",
+   "collide": false,
+   "yaw": 0
+  },
+  {
+   "cyl": [
+    52.6,
+    0.15,
+    6,
+    0.35,
+    0.7
+   ],
+   "mat": "glow_green",
+   "sides": 8,
+   "collide": true
+  },
+  {
+   "cyl": [
+    52,
+    0.21,
+    7.6,
+    0.06,
+    0.02
+   ],
+   "mat": "cup",
+   "sides": 8
+  },
+  {
+   "box": [
+    58,
+    0.18,
+    5.2,
+    3.6,
+    0.06,
+    6.6
+   ],
+   "mat": "felt",
+   "collide": false,
+   "yaw": 0
+  },
+  {
+   "box": [
+    58,
+    0.2,
+    1.9,
+    3.6,
+    0.15,
+    0.12
+   ],
+   "mat": "neon_trim",
+   "collide": false,
+   "yaw": 0
+  },
+  {
+   "box": [
+    58,
+    0.2,
+    8.5,
+    3.6,
+    0.15,
+    0.12
+   ],
+   "mat": "neon_trim",
+   "collide": false,
+   "yaw": 0
+  },
+  {
+   "cyl": [
+    57.4,
+    0.15,
+    6,
+    0.35,
+    0.9
+   ],
+   "mat": "glow_blue",
+   "sides": 8,
+   "collide": true
+  },
+  {
+   "cyl": [
+    58,
+    0.21,
+    7.6,
+    0.06,
+    0.02
+   ],
+   "mat": "cup",
+   "sides": 8
+  },
+  {
+   "box": [
+    64,
+    0.18,
+    8.2,
+    3.6,
+    0.06,
+    6.6
+   ],
+   "mat": "felt",
+   "collide": false,
+   "yaw": 0
+  },
+  {
+   "box": [
+    64,
+    0.2,
+    4.9,
+    3.6,
+    0.15,
+    0.12
+   ],
+   "mat": "neon_trim",
+   "collide": false,
+   "yaw": 0
+  },
+  {
+   "box": [
+    64,
+    0.2,
+    11.5,
+    3.6,
+    0.15,
+    0.12
+   ],
+   "mat": "neon_trim",
+   "collide": false,
+   "yaw": 0
+  },
+  {
+   "cyl": [
+    64.6,
+    0.15,
+    9,
+    0.35,
+    0.5
+   ],
+   "mat": "glow_pink",
+   "sides": 8,
+   "collide": true
+  },
+  {
+   "cyl": [
+    64,
+    0.21,
+    10.6,
+    0.06,
+    0.02
+   ],
+   "mat": "cup",
+   "sides": 8
+  },
+  {
+   "box": [
+    64,
+    0.18,
+    16.2,
+    3.6,
+    0.06,
+    6.6
+   ],
+   "mat": "felt",
+   "collide": false,
+   "yaw": 0
+  },
+  {
+   "box": [
+    64,
+    0.2,
+    12.9,
+    3.6,
+    0.15,
+    0.12
+   ],
+   "mat": "neon_trim",
+   "collide": false,
+   "yaw": 0
+  },
+  {
+   "box": [
+    64,
+    0.2,
+    19.5,
+    3.6,
+    0.15,
+    0.12
+   ],
+   "mat": "neon_trim",
+   "collide": false,
+   "yaw": 0
+  },
+  {
+   "cyl": [
+    63.4,
+    0.15,
+    17,
+    0.35,
+    0.7
+   ],
+   "mat": "glow_green",
+   "sides": 8,
+   "collide": true
+  },
+  {
+   "cyl": [
+    64,
+    0.21,
+    18.6,
+    0.06,
+    0.02
+   ],
+   "mat": "cup",
+   "sides": 8
+  },
+  {
+   "box": [
+    58,
+    0.18,
+    14.2,
+    3.6,
+    0.06,
+    6.6
+   ],
+   "mat": "felt",
+   "collide": false,
+   "yaw": 0
+  },
+  {
+   "box": [
+    58,
+    0.2,
+    10.9,
+    3.6,
+    0.15,
+    0.12
+   ],
+   "mat": "neon_trim",
+   "collide": false,
+   "yaw": 0
+  },
+  {
+   "box": [
+    58,
+    0.2,
+    17.5,
+    3.6,
+    0.15,
+    0.12
+   ],
+   "mat": "neon_trim",
+   "collide": false,
+   "yaw": 0
+  },
+  {
+   "cyl": [
+    58.6,
+    0.15,
+    15,
+    0.35,
+    0.9
+   ],
+   "mat": "glow_blue",
+   "sides": 8,
+   "collide": true
+  },
+  {
+   "cyl": [
+    58,
+    0.21,
+    16.6,
+    0.06,
+    0.02
+   ],
+   "mat": "cup",
+   "sides": 8
+  },
+  {
+   "box": [
+    52,
+    0.18,
+    14.2,
+    3.6,
+    0.06,
+    6.6
+   ],
+   "mat": "felt",
+   "collide": false,
+   "yaw": 0
+  },
+  {
+   "box": [
+    52,
+    0.2,
+    10.9,
+    3.6,
+    0.15,
+    0.12
+   ],
+   "mat": "neon_trim",
+   "collide": false,
+   "yaw": 0
+  },
+  {
+   "box": [
+    52,
+    0.2,
+    17.5,
+    3.6,
+    0.15,
+    0.12
+   ],
+   "mat": "neon_trim",
+   "collide": false,
+   "yaw": 0
+  },
+  {
+   "cyl": [
+    51.4,
+    0.15,
+    15,
+    0.35,
+    0.5
+   ],
+   "mat": "glow_pink",
+   "sides": 8,
+   "collide": true
+  },
+  {
+   "cyl": [
+    52,
+    0.21,
+    16.6,
+    0.06,
+    0.02
+   ],
+   "mat": "cup",
+   "sides": 8
+  },
+  {
+   "box": [
+    46,
+    0.18,
+    14.2,
+    3.6,
+    0.06,
+    6.6
+   ],
+   "mat": "felt",
+   "collide": false,
+   "yaw": 0
+  },
+  {
+   "box": [
+    46,
+    0.2,
+    10.9,
+    3.6,
+    0.15,
+    0.12
+   ],
+   "mat": "neon_trim",
+   "collide": false,
+   "yaw": 0
+  },
+  {
+   "box": [
+    46,
+    0.2,
+    17.5,
+    3.6,
+    0.15,
+    0.12
+   ],
+   "mat": "neon_trim",
+   "collide": false,
+   "yaw": 0
+  },
+  {
+   "cyl": [
+    46.6,
+    0.15,
+    15,
+    0.35,
+    0.7
+   ],
+   "mat": "glow_green",
+   "sides": 8,
+   "collide": true
+  },
+  {
+   "cyl": [
+    46,
+    0.21,
+    16.6,
+    0.06,
+    0.02
+   ],
+   "mat": "cup",
+   "sides": 8
+  },
+  {
+   "box": [
+    46,
+    0.18,
+    24.2,
+    3.6,
+    0.06,
+    6.6
+   ],
+   "mat": "felt",
+   "collide": false,
+   "yaw": 0
+  },
+  {
+   "box": [
+    46,
+    0.2,
+    20.9,
+    3.6,
+    0.15,
+    0.12
+   ],
+   "mat": "neon_trim",
+   "collide": false,
+   "yaw": 0
+  },
+  {
+   "box": [
+    46,
+    0.2,
+    27.5,
+    3.6,
+    0.15,
+    0.12
+   ],
+   "mat": "neon_trim",
+   "collide": false,
+   "yaw": 0
+  },
+  {
+   "cyl": [
+    45.4,
+    0.15,
+    25,
+    0.35,
+    0.9
+   ],
+   "mat": "glow_blue",
+   "sides": 8,
+   "collide": true
+  },
+  {
+   "cyl": [
+    46,
+    0.21,
+    26.6,
+    0.06,
+    0.02
+   ],
+   "mat": "cup",
+   "sides": 8
+  },
+  {
+   "box": [
+    60,
+    1.5,
+    18,
+    2.0,
+    3.0,
+    2.0
+   ],
+   "mat": "glow_blue",
+   "collide": true,
+   "yaw": 0
+  },
+  {
+   "box": [
+    48,
+    1.5,
+    28,
+    2.0,
+    3.0,
+    2.0
+   ],
+   "mat": "glow_blue",
+   "collide": true,
+   "yaw": 0
+  },
+  {
+   "box": [
+    -30,
+    0.5,
+    26,
+    6,
+    0.95,
+    1.0
+   ],
+   "mat": "wood",
+   "collide": true,
+   "yaw": 0
+  },
+  {
+   "box": [
+    -30,
+    0.9,
+    22,
+    2.4,
+    1.6,
+    1.4
+   ],
+   "mat": "machine",
+   "collide": true,
+   "yaw": 0
+  },
+  {
+   "box": [
+    -18,
+    1.2,
+    33,
+    10,
+    2.4,
+    0.8
+   ],
+   "mat": "shelf",
+   "collide": true,
+   "yaw": 0
+  },
+  {
+   "box": [
+    -18,
+    1.2,
+    38,
+    10,
+    2.4,
+    0.8
+   ],
+   "mat": "shelf",
+   "collide": true,
+   "yaw": 0
+  },
+  {
+   "box": [
+    -18,
+    1.2,
+    43,
+    10,
+    2.4,
+    0.8
+   ],
+   "mat": "shelf",
+   "collide": true,
+   "yaw": 0
+  },
+  {
+   "box": [
+    -30,
+    0.4,
+    40,
+    1.8,
+    0.75,
+    0.8
+   ],
+   "mat": "wood",
+   "collide": true,
+   "yaw": 0
+  },
+  {
+   "box": [
+    -42,
+    0.7,
+    -50,
+    2.0,
+    1.3,
+    4.6
+   ],
+   "mat": "charred",
+   "collide": true,
+   "yaw": 12
+  },
+  {
+   "box": [
+    -25,
+    0.8,
+    21,
+    2.0,
+    1.6,
+    1.4
+   ],
+   "mat": "dumpster",
+   "collide": true,
+   "yaw": 0
+  },
+  {
+   "box": [
+    88,
+    1.5,
+    45.5,
+    7,
+    3.0,
+    9
+   ],
+   "mat": "block_wall",
+   "collide": true,
+   "yaw": 0
+  },
+  {
+   "box": [
+    93.5,
+    3.0,
+    59,
+    6,
+    0.15,
+    12
+   ],
+   "mat": "roof",
+   "collide": false,
+   "yaw": 0
+  },
+  {
+   "cyl": [
+    91,
+    0,
+    54,
+    0.08,
+    3.0
+   ],
+   "mat": "steel",
+   "sides": 8,
+   "collide": false
+  },
+  {
+   "cyl": [
+    96,
+    0,
+    54,
+    0.08,
+    3.0
+   ],
+   "mat": "steel",
+   "sides": 8,
+   "collide": false
+  },
+  {
+   "cyl": [
+    91,
+    0,
+    64,
+    0.08,
+    3.0
+   ],
+   "mat": "steel",
+   "sides": 8,
+   "collide": false
+  },
+  {
+   "cyl": [
+    96,
+    0,
+    64,
+    0.08,
+    3.0
+   ],
+   "mat": "steel",
+   "sides": 8,
+   "collide": false
+  },
+  {
+   "cyl": [
+    80,
+    0,
+    -10,
+    0.15,
+    9.0
+   ],
+   "mat": "steel",
+   "sides": 8,
+   "collide": false
+  },
+  {
+   "cyl": [
+    80,
+    0,
+    20,
+    0.15,
+    9.0
+   ],
+   "mat": "steel",
+   "sides": 8,
+   "collide": false
+  },
+  {
+   "cyl": [
+    120,
+    0,
+    -10,
+    0.15,
+    9.0
+   ],
+   "mat": "steel",
+   "sides": 8,
+   "collide": false
+  },
+  {
+   "box": [
+    -30.0,
+    0.16,
+    -32.0,
+    0.3,
+    0.01,
+    0.2
+   ],
+   "mat": "paper",
+   "collide": false,
+   "yaw": 0
+  },
+  {
+   "box": [
+    -11.5,
+    0.16,
+    10.4,
+    0.3,
+    0.01,
+    0.2
+   ],
+   "mat": "paper",
+   "collide": false,
+   "yaw": 31
+  },
+  {
+   "box": [
+    7.0,
+    0.16,
+    -11.200000000000001,
+    0.3,
+    0.01,
+    0.2
+   ],
+   "mat": "paper",
+   "collide": false,
+   "yaw": 62
+  },
+  {
+   "box": [
+    -16.0,
+    0.16,
+    9.600000000000001,
+    0.3,
+    0.01,
+    0.2
+   ],
+   "mat": "paper",
+   "collide": false,
+   "yaw": 124
+  },
+  {
+   "box": [
+    2.5,
+    0.16,
+    -12.0,
+    0.3,
+    0.01,
+    0.2
+   ],
+   "mat": "paper",
+   "collide": false,
+   "yaw": 155
+  },
+  {
+   "box": [
+    -20.5,
+    0.16,
+    8.8,
+    0.3,
+    0.01,
+    0.2
+   ],
+   "mat": "paper",
+   "collide": false,
+   "yaw": 217
+  },
+  {
+   "box": [
+    -2.0,
+    0.16,
+    -12.8,
+    0.3,
+    0.01,
+    0.2
+   ],
+   "mat": "paper",
+   "collide": false,
+   "yaw": 248
+  },
+  {
+   "box": [
+    -25.0,
+    0.16,
+    8.0,
+    0.3,
+    0.01,
+    0.2
+   ],
+   "mat": "paper",
+   "collide": false,
+   "yaw": 310
+  },
+  {
+   "box": [
+    -6.5,
+    0.16,
+    -13.600000000000001,
+    0.3,
+    0.01,
+    0.2
+   ],
+   "mat": "paper",
+   "collide": false,
+   "yaw": 341
+  },
+  {
+   "box": [
+    -29.5,
+    0.16,
+    7.2,
+    0.3,
+    0.01,
+    0.2
+   ],
+   "mat": "paper",
+   "collide": false,
+   "yaw": 403
+  },
+  {
+   "box": [
+    -11.0,
+    0.16,
+    -14.4,
+    0.3,
+    0.01,
+    0.2
+   ],
+   "mat": "paper",
+   "collide": false,
+   "yaw": 434
+  },
+  {
+   "box": [
+    26.0,
+    0.16,
+    6.4,
+    0.3,
+    0.01,
+    0.2
+   ],
+   "mat": "paper",
+   "collide": false,
+   "yaw": 496
+  },
+  {
+   "box": [
+    -15.5,
+    0.16,
+    -15.200000000000001,
+    0.3,
+    0.01,
+    0.2
+   ],
+   "mat": "paper",
+   "collide": false,
+   "yaw": 527
+  },
+  {
+   "box": [
+    21.5,
+    0.16,
+    5.6000000000000005,
+    0.3,
+    0.01,
+    0.2
+   ],
+   "mat": "paper",
+   "collide": false,
+   "yaw": 589
+  },
+  {
+   "box": [
+    -20.0,
+    0.16,
+    -16.0,
+    0.3,
+    0.01,
+    0.2
+   ],
+   "mat": "paper",
+   "collide": false,
+   "yaw": 620
+  },
+  {
+   "box": [
+    17.0,
+    0.16,
+    4.800000000000001,
+    0.3,
+    0.01,
+    0.2
+   ],
+   "mat": "paper",
+   "collide": false,
+   "yaw": 682
+  },
+  {
+   "box": [
+    -24.5,
+    0.16,
+    -16.8,
+    0.3,
+    0.01,
+    0.2
+   ],
+   "mat": "paper",
+   "collide": false,
+   "yaw": 713
+  },
+  {
+   "box": [
+    12.5,
+    0.16,
+    4.0,
+    0.3,
+    0.01,
+    0.2
+   ],
+   "mat": "paper",
+   "collide": false,
+   "yaw": 775
+  },
+  {
+   "box": [
+    -29.0,
+    0.16,
+    -17.6,
+    0.3,
+    0.01,
+    0.2
+   ],
+   "mat": "paper",
+   "collide": false,
+   "yaw": 806
+  },
+  {
+   "box": [
+    8.0,
+    0.16,
+    3.2,
+    0.3,
+    0.01,
+    0.2
+   ],
+   "mat": "paper",
+   "collide": false,
+   "yaw": 868
+  },
+  {
+   "box": [
+    26.5,
+    0.16,
+    -18.400000000000002,
+    0.3,
+    0.01,
+    0.2
+   ],
+   "mat": "paper",
+   "collide": false,
+   "yaw": 899
+  },
+  {
+   "box": [
+    -15.0,
+    0.16,
+    24.0,
+    0.3,
+    0.01,
+    0.2
+   ],
+   "mat": "paper",
+   "collide": false,
+   "yaw": 930
+  },
+  {
+   "box": [
+    3.5,
+    0.16,
+    2.4000000000000004,
+    0.3,
+    0.01,
+    0.2
+   ],
+   "mat": "paper",
+   "collide": false,
+   "yaw": 961
+  },
+  {
+   "box": [
+    22.0,
+    0.16,
+    -19.200000000000003,
+    0.3,
+    0.01,
+    0.2
+   ],
+   "mat": "paper",
+   "collide": false,
+   "yaw": 992
+  },
+  {
+   "box": [
+    -19.5,
+    0.16,
+    23.200000000000003,
+    0.3,
+    0.01,
+    0.2
+   ],
+   "mat": "paper",
+   "collide": false,
+   "yaw": 1023
+  },
+  {
+   "box": [
+    -1.0,
+    0.16,
+    1.6,
+    0.3,
+    0.01,
+    0.2
+   ],
+   "mat": "paper",
+   "collide": false,
+   "yaw": 1054
+  },
+  {
+   "box": [
+    17.5,
+    0.16,
+    -20.0,
+    0.3,
+    0.01,
+    0.2
+   ],
+   "mat": "paper",
+   "collide": false,
+   "yaw": 1085
+  },
+  {
+   "box": [
+    -24.0,
+    0.16,
+    22.400000000000002,
+    0.3,
+    0.01,
+    0.2
+   ],
+   "mat": "paper",
+   "collide": false,
+   "yaw": 1116
+  },
+  {
+   "box": [
+    -5.5,
+    0.16,
+    0.8,
+    0.3,
+    0.01,
+    0.2
+   ],
+   "mat": "paper",
+   "collide": false,
+   "yaw": 1147
+  },
+  {
+   "box": [
+    13.0,
+    0.16,
+    -20.8,
+    0.3,
+    0.01,
+    0.2
+   ],
+   "mat": "paper",
+   "collide": false,
+   "yaw": 1178
+  },
+  {
+   "box": [
+    -28.5,
+    0.16,
+    21.6,
+    0.3,
+    0.01,
+    0.2
+   ],
+   "mat": "paper",
+   "collide": false,
+   "yaw": 1209
+  },
+  {
+   "box": [
+    -40,
+    5.0,
+    -46.25,
+    16,
+    3.5,
+    0.05
+   ],
+   "mat": "soot",
+   "collide": false,
+   "yaw": 0
+  }
+ ],
+ "bowling": {
+  "lanes": 36,
+  "x0": -66,
+  "x1": -10,
+  "z_approach": -14.2,
+  "z_foul": -9.6,
+  "z_pins": 8.7,
+  "z_back": 13.5,
+  "racked_lanes": [
+   1,
+   4,
+   5,
+   9,
+   12,
+   17,
+   20,
+   23,
+   26,
+   30,
+   33
+  ]
+ },
+ "arcade_rows": [
+  {
+   "a": [
+    -8,
+    -38
+   ],
+   "b": [
+    6,
+    -38
+   ],
+   "spacing": 1.0,
+   "yaw_deg": 0,
+   "burned": 0.3,
+   "toppled": 0.1
+  },
+  {
+   "a": [
+    -8,
+    -33
+   ],
+   "b": [
+    -2.5,
+    -33
+   ],
+   "spacing": 1.0,
+   "yaw_deg": 180,
+   "burned": 0.6,
+   "toppled": 0.3
+  },
+  {
+   "a": [
+    -8,
+    -29
+   ],
+   "b": [
+    -3,
+    -29
+   ],
+   "spacing": 1.0,
+   "yaw_deg": 0,
+   "burned": 0.7,
+   "toppled": 0.4
+  },
+  {
+   "a": [
+    8.5,
+    -33
+   ],
+   "b": [
+    12.5,
+    -33
+   ],
+   "spacing": 1.0,
+   "yaw_deg": 180,
+   "burned": 0.5,
+   "toppled": 0.2
+  },
+  {
+   "a": [
+    13,
+    -36
+   ],
+   "b": [
+    13,
+    -17
+   ],
+   "spacing": 1.0,
+   "yaw_deg": 90,
+   "burned": 0.1,
+   "toppled": 0.05
+  },
+  {
+   "a": [
+    -8,
+    -19
+   ],
+   "b": [
+    6,
+    -19
+   ],
+   "spacing": 1.0,
+   "yaw_deg": 180,
+   "burned": 0.15,
+   "toppled": 0.1
+  }
+ ],
+ "kart_track": {
+  "centre": [
+   [
+    94.5,
+    76
+   ],
+   [
+    94.5,
+    56
+   ],
+   [
+    98.5,
+    47
+   ],
+   [
+    107.5,
+    44
+   ],
+   [
+    114.5,
+    49
+   ],
+   [
+    116.5,
+    66
+   ],
+   [
+    122.5,
+    75
+   ],
+   [
+    129.5,
+    70
+   ],
+   [
+    131.5,
+    55
+   ],
+   [
+    138.5,
+    45
+   ],
+   [
+    148.5,
+    47
+   ],
+   [
+    152.5,
+    58
+   ],
+   [
+    151.5,
+    73
+   ],
+   [
+    145.5,
+    81
+   ],
+   [
+    132.5,
+    84
+   ],
+   [
+    107.5,
+    84
+   ],
+   [
+    96.5,
+    81
+   ]
+  ],
+  "width": 5.5,
+  "y": 0.06,
+  "tyre_m": 3.5,
+  "karts": [
+   [
+    96,
+    70,
+    0
+   ],
+   [
+    96,
+    64,
+    0
+   ],
+   [
+    96.2,
+    58,
+    0
+   ],
+   [
+    120,
+    82,
+    95
+   ],
+   [
+    140,
+    47,
+    130
+   ],
+   [
+    88.5,
+    55,
+    90
+   ]
+  ]
+ },
+ "signs": [
+  {
+   "text": "BIG APPLE\nFUN CENTER",
+   "pos": [
+    -12.5,
+    5.6,
+    -46.25
+   ],
+   "yaw_deg": 180,
+   "size": 120,
+   "color": [
+    0.9,
+    0.15,
+    0.12
+   ],
+   "visible_m": 160.0
+  },
+  {
+   "text": "SPORTS BAR",
+   "pos": [
+    -32,
+    4.0,
+    -46.25
+   ],
+   "yaw_deg": 180,
+   "size": 70,
+   "color": [
+    0.95,
+    0.85,
+    0.4
+   ],
+   "visible_m": 100.0
+  },
+  {
+   "text": "BOWLING",
+   "pos": [
+    -38,
+    3.2,
+    -19.85
+   ],
+   "yaw_deg": 0,
+   "size": 60,
+   "color": [
+    0.95,
+    0.4,
+    0.85
+   ]
+  },
+  {
+   "text": "ARCADE",
+   "pos": [
+    2,
+    3.2,
+    -41.8
+   ],
+   "yaw_deg": 0,
+   "size": 60,
+   "color": [
+    0.3,
+    0.95,
+    0.95
+   ]
+  },
+  {
+   "text": "LASER TAG",
+   "pos": [
+    13.75,
+    4.0,
+    12
+   ],
+   "yaw_deg": -90,
+   "size": 60,
+   "color": [
+    0.4,
+    1.0,
+    0.3
+   ]
+  },
+  {
+   "text": "GLOW GOLF",
+   "pos": [
+    42.15,
+    2.8,
+    0
+   ],
+   "yaw_deg": -90,
+   "size": 50,
+   "color": [
+    1.0,
+    0.5,
+    0.9
+   ]
+  },
+  {
+   "text": "SNACK BAR",
+   "pos": [
+    3,
+    2.9,
+    -2.15
+   ],
+   "yaw_deg": 0,
+   "size": 50,
+   "color": [
+    1.0,
+    0.9,
+    0.5
+   ]
+  },
+  {
+   "text": "GO-KARTS",
+   "pos": [
+    93,
+    3.6,
+    52.9
+   ],
+   "yaw_deg": 180,
+   "size": 60,
+   "color": [
+    1.0,
+    0.8,
+    0.2
+   ],
+   "visible_m": 90.0
+  },
+  {
+   "text": "CLOSED\nFOREVER",
+   "pos": [
+    -12.5,
+    1.6,
+    -46.3
+   ],
+   "yaw_deg": 180,
+   "size": 40,
+   "color": [
+    0.95,
+    0.95,
+    0.95
+   ],
+   "visible_m": 40.0
+  }
+ ],
+ "lights": [
+  {
+   "pos": [
+    -38,
+    4.5,
+    -2
+   ],
+   "color": [
+    0.9,
+    0.4,
+    1.0
+   ],
+   "energy": 0.9,
+   "range": 22.0
+  },
+  {
+   "pos": [
+    -40,
+    3.5,
+    -32
+   ],
+   "color": [
+    1.0,
+    0.7,
+    0.4
+   ],
+   "energy": 0.6,
+   "range": 14.0
+  },
+  {
+   "pos": [
+    5,
+    4.5,
+    -12
+   ],
+   "color": [
+    0.3,
+    0.9,
+    1.0
+   ],
+   "energy": 0.8,
+   "range": 16.0
+  },
+  {
+   "pos": [
+    28,
+    5.5,
+    14
+   ],
+   "color": [
+    0.4,
+    1.0,
+    0.3
+   ],
+   "energy": 0.7,
+   "range": 18.0
+  },
+  {
+   "pos": [
+    55,
+    4.5,
+    14
+   ],
+   "color": [
+    0.7,
+    0.3,
+    1.0
+   ],
+   "energy": 0.8,
+   "range": 18.0
+  },
+  {
+   "pos": [
+    3,
+    3.2,
+    4
+   ],
+   "color": [
+    1.0,
+    0.9,
+    0.7
+   ],
+   "energy": 0.5,
+   "range": 10.0
+  }
+ ],
+ "loot": [
+  {
+   "id": "front_desk",
+   "name": "Front Desk Register",
+   "table": "bar_register",
+   "pos": [
+    -13,
+    -36.9
+   ],
+   "size": [
+    0.8,
+    0.4,
+    0.5
+   ],
+   "color": [
+    0.2,
+    0.2,
+    0.22
+   ]
+  },
+  {
+   "id": "shoe_rental",
+   "name": "Shoe Rental Cubbies",
+   "table": "junk_pile",
+   "pos": [
+    -9.6,
+    -33.4
+   ],
+   "size": [
+    0.6,
+    2.0,
+    1.6
+   ],
+   "color": [
+    0.5,
+    0.38,
+    0.25
+   ]
+  },
+  {
+   "id": "pro_shop",
+   "name": "Pro Shop Case",
+   "table": "bowling_counter",
+   "pos": [
+    -15.2,
+    -28
+   ],
+   "size": [
+    1.4,
+    1.0,
+    0.6
+   ],
+   "color": [
+    0.6,
+    0.6,
+    0.65
+   ]
+  },
+  {
+   "id": "bar_register",
+   "name": "Bar Register",
+   "table": "bar_register",
+   "pos": [
+    -30,
+    -41.0
+   ],
+   "size": [
+    0.5,
+    0.4,
+    0.4
+   ],
+   "color": [
+    0.15,
+    0.15,
+    0.15
+   ]
+  },
+  {
+   "id": "back_bar",
+   "name": "Back Bar Shelf",
+   "table": "bar_shelf",
+   "pos": [
+    -36,
+    -44.9
+   ],
+   "size": [
+    2.0,
+    1.8,
+    0.4
+   ],
+   "color": [
+    0.35,
+    0.24,
+    0.16
+   ]
+  },
+  {
+   "id": "beer_cooler",
+   "name": "Beer Cooler",
+   "table": "bar_shelf",
+   "pos": [
+    -24.6,
+    -44.6
+   ],
+   "size": [
+    1.2,
+    1.2,
+    0.7
+   ],
+   "color": [
+    0.7,
+    0.72,
+    0.75
+   ]
+  },
+  {
+   "id": "kitchen_fridge",
+   "name": "Kitchen Fridge",
+   "table": "fridge",
+   "pos": [
+    11.5,
+    2.6
+   ],
+   "size": [
+    1.2,
+    1.9,
+    0.7
+   ],
+   "color": [
+    0.8,
+    0.82,
+    0.85
+   ]
+  },
+  {
+   "id": "snack_shelf",
+   "name": "Snack Bar Shelf",
+   "table": "concessions",
+   "pos": [
+    -2,
+    7.2
+   ],
+   "size": [
+    1.4,
+    1.6,
+    0.5
+   ],
+   "color": [
+    0.6,
+    0.6,
+    0.62
+   ]
+  },
+  {
+   "id": "prize_counter",
+   "name": "Prize Counter",
+   "table": "arcade_prizes",
+   "pos": [
+    8,
+    -39.8
+   ],
+   "size": [
+    1.0,
+    1.0,
+    0.6
+   ],
+   "color": [
+    0.3,
+    0.3,
+    0.6
+   ]
+  },
+  {
+   "id": "change_machine",
+   "name": "Token Machine",
+   "table": "arcade_prizes",
+   "pos": [
+    -1,
+    -41.3
+   ],
+   "size": [
+    0.6,
+    1.6,
+    0.5
+   ],
+   "color": [
+    0.5,
+    0.5,
+    0.55
+   ]
+  },
+  {
+   "id": "vr_booth",
+   "name": "VR Gear Locker",
+   "table": "junk_pile",
+   "pos": [
+    12.9,
+    -11.5
+   ],
+   "size": [
+    0.6,
+    1.6,
+    0.8
+   ],
+   "color": [
+    0.15,
+    0.15,
+    0.2
+   ]
+  },
+  {
+   "id": "vest_rack",
+   "name": "Laser Tag Vest Rack",
+   "table": "junk_pile",
+   "pos": [
+    15,
+    3
+   ],
+   "size": [
+    0.6,
+    1.6,
+    2.0
+   ],
+   "color": [
+    0.15,
+    0.4,
+    0.15
+   ]
+  },
+  {
+   "id": "office_safe",
+   "name": "Office Safe",
+   "table": "ammo_cache",
+   "pos": [
+    -34.8,
+    44
+   ],
+   "size": [
+    0.7,
+    1.0,
+    0.7
+   ],
+   "color": [
+    0.25,
+    0.27,
+    0.3
+   ]
+  },
+  {
+   "id": "pinsetter_tools",
+   "name": "Pinsetter Mechanic's Toolbox",
+   "table": "toolbox",
+   "pos": [
+    -34.8,
+    24
+   ],
+   "size": [
+    0.6,
+    1.0,
+    1.4
+   ],
+   "color": [
+    0.7,
+    0.1,
+    0.1
+   ]
+  },
+  {
+   "id": "storage",
+   "name": "Storage Shelf",
+   "table": "poi_store",
+   "pos": [
+    -18,
+    35.6
+   ],
+   "size": [
+    2.0,
+    1.8,
+    0.5
+   ],
+   "color": [
+    0.5,
+    0.4,
+    0.28
+   ]
+  },
+  {
+   "id": "party_room",
+   "name": "Party Supply Cabinet",
+   "table": "house_cabinet",
+   "pos": [
+    13.1,
+    24
+   ],
+   "size": [
+    0.5,
+    1.6,
+    1.4
+   ],
+   "color": [
+    0.8,
+    0.3,
+    0.5
+   ]
+  },
+  {
+   "id": "first_aid",
+   "name": "First Aid Cabinet",
+   "table": "khs_nurse",
+   "pos": [
+    -8.7,
+    -25
+   ],
+   "size": [
+    0.4,
+    0.9,
+    0.7
+   ],
+   "color": [
+    0.85,
+    0.2,
+    0.2
+   ]
+  },
+  {
+   "id": "kart_pit",
+   "name": "Kart Pit Toolbox",
+   "table": "poi_garage",
+   "pos": [
+    88,
+    40
+   ],
+   "size": [
+    1.2,
+    1.0,
+    0.6
+   ],
+   "color": [
+    0.75,
+    0.6,
+    0.1
+   ]
+  },
+  {
+   "id": "kart_fuel",
+   "name": "Kart Fuel Cabinet",
+   "table": "poi_gas",
+   "pos": [
+    85,
+    46
+   ],
+   "size": [
+    0.8,
+    1.6,
+    0.8
+   ],
+   "color": [
+    0.8,
+    0.2,
+    0.1
+   ]
+  }
+ ],
+ "spawns": [
+  [
+   "lanes",
+   "zombie_shambler",
+   [
+    -40,
+    -11
+   ]
+  ],
+  [
+   "lanes_far",
+   "zombie_shambler",
+   [
+    -18,
+    -2
+   ]
+  ],
+  [
+   "arcade",
+   "zombie_shambler",
+   [
+    2,
+    -33
+   ]
+  ],
+  [
+   "bar",
+   "zombie_shambler",
+   [
+    -46,
+    -30
+   ]
+  ],
+  [
+   "laser_tag",
+   "zombie_shambler",
+   [
+    30,
+    14
+   ]
+  ],
+  [
+   "glow_golf",
+   "zombie_shambler",
+   [
+    56,
+    18
+   ]
+  ],
+  [
+   "karts",
+   "zombie_shambler",
+   [
+    120,
+    64
+   ]
+  ]
+ ]
+}

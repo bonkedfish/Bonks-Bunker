@@ -103,3 +103,14 @@ Approach — why it failed — what replaced it.
   local player exists (hud.gd `_process`), so it stayed up. Fix: hud.gd hides itself while `player.cutscene`.
 - 2026-11-13 Two chats edited the project at once (disc golf + sound) and both took D-076; the sound chat moved to
   D-077. Before writing a shared file (player.gd, director, diary), re-stage it and merge, never commit an old copy.
+- 2026-11-13 Two sessions editing disc_golf_director.gd at once: the D-076 session saved its copy after the D-077
+  session's commit, silently dropping the basket-sound hook; alpha2.2 shipped without disc golf sounds. Why it failed:
+  device_commit_files only guards the file version the committer staged, not edits made after. Lesson: after any
+  overlap, re-grep the shared file for your hooks before releasing (the disc golf test now checks contact sounds).
+
+- 2026-11-13: device_commit_files pushed STALE content twice when the container file had been edited in place after
+  an earlier commit or an earlier write to the same path (sed -i on kenwood_pool_test.gd; Edit on a p5/ copy of
+  country_club.gd). The write is reported OK but the device file keeps the old bytes. Fix that works: copy the final
+  file into a brand-new folder right before committing, then check the device size with device_list_dir.
+- 2026-11-13: the two chats shared /mnt/user-data/outputs (p5/c2 already held the other chat's files) - always use
+  a new, unique folder name per commit.

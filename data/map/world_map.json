@@ -151,6 +151,31 @@
 			"name": "Drop Zone",
 			"landmark": "dropzone",
 			"size": "poi"
+		},
+		{
+			"name": "Big Apple Fun Center",
+			"landmark": "big_apple",
+			"size": "poi"
+		},
+		{
+			"name": "Kearney RV Park (raiders)",
+			"landmark": "rv_park",
+			"size": "poi"
+		},
+		{
+			"name": "Kearney Country Club",
+			"landmark": "country_club",
+			"size": "poi"
+		},
+		{
+			"name": "Cope Stadium",
+			"landmark": "cope_stadium",
+			"size": "poi"
+		},
+		{
+			"name": "Merryman Performing Arts Center",
+			"landmark": "merryman",
+			"size": "poi"
 		}
 	]
 }

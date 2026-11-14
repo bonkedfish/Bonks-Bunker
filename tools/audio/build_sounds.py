@@ -204,3 +204,14 @@ for _, f in zl[:6]:  # the six longest = moans rather than short grunts
     save("ambience_distant", f"moan_{f[:-4]}", far(trim(load(f"{SRC}/oga_zombies/zombies/{f}"))))
 save("ambience_distant", "door_slam", far(trim(load(R + "doorClose_4.ogg"))))
 print("done")
+
+# --- disc golf contacts (added 2026-11-13): branches, trunk / wall, landing ------------------------
+kdd = SRC + "/oga_kdd/"
+leaves = [trim(load(kdd + f"leaves0{i}.ogg")) for i in (1, 2)]
+for i in range(4):
+    save("disc_tree", f"branches_{i + 1}", mix([(norm(leaves[i % 2]), 0, 1.0),
+                                                 (norm(trim(load(K + f"impactWood_light_00{i}.ogg"))), 0.01, 0.45)]))
+    save("disc_thud", f"trunk_{i + 1}", trim(load(K + f"impactWood_medium_00{i}.ogg")))
+    save("disc_land", f"land_{i + 1}", mix([(norm(trim(load(K + f"impactSoft_medium_00{i}.ogg"))), 0, 1.0),
+                                             (norm(trim(load(K + f"footstep_grass_00{i}.ogg")))  , 0.0, 0.5)]))
+print("disc contacts done")

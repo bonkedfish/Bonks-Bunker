@@ -2,12 +2,13 @@
 # removes player bodies as peers connect and leave; spawns Bonk once per session (NpcSpawner), so clients only ever
 # have the host's Bonk. MultiplayerSpawners replicate them to clients.
 # Hosting opens the world picked in the menu through the Saves node (D-037).
-# Depends on: Net autoload, scenes/player.tscn, SaveDirector ("Saves"), WorldPicker, PlayerIdentity.
+# Depends on: Net autoload, scenes/player.tscn, SaveDirector ("Saves"), WorldPicker, PlayerIdentity, PauseMenu, NamePrompt.
 extends Node3D
 
 const PLAYER_SCENE := preload("res://scenes/player.tscn")
 const BONK_SCENE := preload("res://scenes/bonk.tscn")
 const PauseMenu := preload("res://scripts/ui/pause_menu.gd")
+const NamePrompt := preload("res://scripts/ui/name_prompt.gd")
 
 @onready var players: Node3D = $Players
 @onready var spawn_points: Node3D = $SpawnPoints
@@ -30,6 +31,9 @@ func _ready() -> void:
 	var pause := PauseMenu.new()
 	pause.name = "Pause"
 	$UI.add_child(pause)
+	var prompt := NamePrompt.new()
+	prompt.name = "NamePrompt"
+	$UI.add_child(prompt)  # after Pause: it sees Esc first and keeps the pause menu shut while open
 	menu.play_offline.connect(_on_singleplayer_pressed)
 	menu.host.connect(_on_host_pressed)
 	menu.join.connect(_on_join_pressed)
@@ -43,7 +47,7 @@ func _ready() -> void:
 
 func _unhandled_input(event: InputEvent) -> void:
 	if menu.visible or $UI/InventoryUI.visible or $UI/LootUI.visible or $UI/CraftingUI.visible or $UI/WorldMapUI.visible or $UI/QuestBookUI.visible or $UI/Subtitles.choosing \
-			or $UI/Settings.visible or $UI/Pause.visible:
+			or $UI/Settings.visible or $UI/Pause.visible or $UI/NamePrompt.visible:
 		return
 	if event.is_action_pressed("ui_cancel"):
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE

@@ -238,3 +238,36 @@ Locked unless flagged. Each entry: decision — reason.
   Build notes (inside the approved design): a landing thud goes with jump; the disc clanking off the tray/pole is a
   second basket sound; jump/land/reload/dry click are heard by that player only; shots, melee hits, hurt, item use
   and basket hits are heard by everyone nearby. No hurt sound for hunger/thirst damage.
+- **D-078** (2026-11-13) Kenwood Elementary + Centennial Park pool. Kenwood (915 16th Ave, ~200 m east of Bonk's
+  house) = loot + light zombies (option A of A loot+light zombies / B lair + boss / C survivor shelter): full
+  interior, school loot, a handful of plain shamblers on lair markers, no boss. Layout = best guess fitted to the real
+  footprint (option B of A user describes rooms / B best guess): OSM way 1056847663 + Microsoft footprint + Esri
+  imagery show the CURRENT modern single-storey flat-roof school (the 1935 PWA building was elsewhere): north
+  classroom wing, central block, tall NE hall (gym, longest roof shadow), tall south hall (cafeteria / multipurpose),
+  kitchen + mechanical east of it, office + secure entry at the south tip by the parking lot, angled Pre-K wing west.
+  Centennial pool = DRAINED (option B of A filled + swim / B drained / C murky): not in OSM; from Esri imagery: 24.5 x
+  29.5 m basin, zero-depth beach curving across the SW corner, big mushroom spray, concrete deck, bathhouse +
+  concessions on the south side (matches the Microsoft footprint), 6 ft max depth (city site). Leaves, debris,
+  deflated floaties, a couple of shamblers in the deep end. Fence kept clear of disc golf holes 2 and 3. - User.
+
+- **D-079** (2026-11-13) Five more landmarks with exterior + interior + loot, on their real footprints: Big Apple Fun
+  Center (500 W 4th St), Kearney RV Park & Campground (1140 E 1st St), Kearney Country Club (2800 19th Ave; the golf
+  course is scenery only - ground, greens, bunkers, ponds, cart paths, tee signs, flags - NO golf gameplay code yet),
+  Cope Stadium at Foster Field (UNK), Merryman Performing Arts Center (225 W 22nd St). Dressing VARIED per place:
+  Merryman nearly intact, stadium + country club looted, Big Apple partly burned, RV park lived-in as a camp. Enemies:
+  light shamblers at Big Apple, Country Club, stadium and Merryman; the RV park is a raider camp (D-060 raiders).
+  Loot Kenwood-level (about 12-20 containers each), existing tables plus a few new themed tables. No unique items for
+  now. - User (options given: looted-like-Kenwood / varied / heavily ruined; shamblers+RV raiders / shamblers
+  everywhere / mostly quiet; Kenwood-level / rich at two / sparse; no uniques / one per place / stadium only).
+- **D-080** (2026-11-13) Country club course surfaces (greens, tees, fairways, bunkers, cart paths) are PAINTED onto
+  the terrain by build_cells from landmark "ground_paint" polygons (OSM golf features, way ids kept): overlay triangles
+  clipped to each terrain triangle at ground + a few cm, one mesh per paint material per cell, streamed with the
+  cells. Flags and tee signs drop onto the ground with a ray when their cell loads (like the disc golf baskets).
+  Ponds stay the existing OSM water. Still no golf gameplay (D-079). - User (options: paint onto terrain / separate
+  draped mesh / flatten the whole course with a pad).
+- **D-081** (2026-11-13) Player names: each character is named PER WORLD - the first time you enter a world (host or
+  join, singleplayer too) a "Name your survivor" prompt opens; the name is kept on that character in the world save
+  (players.<key>.name) and comes back on later visits, no prompt. Other players see it on a name tag over your head:
+  fully visible to 30 m, fades out by 40 m, hidden behind walls (no health bar, not through walls). Host cleans names
+  (printable, spaces collapsed, max 20 chars). - User (options: main menu field / per world character / ask every
+  time; name fading with range / name + health bar / always through walls).

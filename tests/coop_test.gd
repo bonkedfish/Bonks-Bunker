@@ -3,6 +3,7 @@
 # (Tube/WebRTC). The host then walks the client through steps by RPC and both sides report what they see:
 # spawn + world sync (Bonk, zombies, a drop made before joining), movement prediction vs host, timed item use,
 # drop + pickup, crafting at the bunker workbench, Bonk in the same place on both, firing, swimming, then the client leaves and the host saves.
+# Names (D-081): both get the name prompt in a new world, name themselves, and see each other's name tag.
 # Host log + client reports -> tests/_look/coop_result.txt; screenshots coop_client_*.png.
 # Depends on: scenes/main.tscn, Net, WorldDrops, Workbench, ItemUse, MovementRules, SaveStore.
 extends Node
@@ -52,6 +53,11 @@ func _host_run() -> void:
 		return
 	_say("host: lobby %s after %.1f s" % [Net.lobby_code, (Time.get_ticks_msec() - t0) / 1000.0])
 	var me: Node3D = get_tree().get_first_node_in_group("local_player")
+	var prompt: Control = get_tree().get_first_node_in_group("name_prompt")
+	_check(prompt.visible, "host: name prompt opened for a new character")
+	prompt.submit("Host Tester")
+	await get_tree().create_timer(0.3).timeout
+	_check(me.net_name == "Host Tester", "host: named '%s'" % me.net_name)
 	var drops: WorldDrops = get_tree().get_first_node_in_group("world_drops")
 	drops.host_add("water_bottle", 1, me.global_position + Vector3(1.0, 0.0, 0.0))  # made before the client joins
 	var pid := OS.create_process(OS.get_executable_path(), ["--path", ProjectSettings.globalize_path("res://"),
@@ -71,6 +77,9 @@ func _host_run() -> void:
 
 	# 1. World sync.
 	await _ask(peer, 1, null)
+	# 11. Names: the client names itself from its prompt and checks the host's tag; the host sees the client's name.
+	await _ask(peer, 11, "Host Tester")
+	_check(client.net_name == "Guest Tester", "host: client is named '%s'" % client.net_name)
 	# 3. Timed item use: hurt the client, give items, client bandages.
 	client.health.apply_damage(50.0, -1)
 	for item: String in ["bandage", "scrap_metal", "canned_beans"]:
@@ -117,6 +126,11 @@ func _host_run() -> void:
 	_check(_client_body() == null, "client left cleanly, body removed")
 	_check(_main.saves.host_save("test") and _main.saves.world.players.size() == 2,
 		"save holds host + guest characters (%d)" % _main.saves.world.players.size())
+	var names := []
+	for k: String in _main.saves.world.players:
+		names.append(str(_main.saves.world.players[k].get("name", "")))
+	names.sort()
+	_check(names == ["Guest Tester", "Host Tester"], "save keeps both names %s" % [names])
 	await _finish()
 
 
@@ -242,6 +256,18 @@ func _step(n: int, arg: Variant) -> void:
 			await _shot("coop_client_swim.png")
 			_report.rpc_id(1, n, me.water == MovementRules.Water.SWIM,
 				"in the lake: water mode %d (2 = swim), eyes %.2f m above water" % [me.water, me.eye_position().y - surf])
+		11:
+			var prompt: Control = get_tree().get_first_node_in_group("name_prompt")
+			var asked := prompt.visible
+			prompt.submit("Guest Tester")
+			Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+			await get_tree().create_timer(1.0).timeout
+			var host_tag := ""
+			for p in get_tree().get_nodes_in_group("players"):
+				if "water" in p and p.peer_id == 1 and p.get_node_or_null("NameTag"):
+					host_tag = p.get_node("NameTag").text
+			_report.rpc_id(1, n, asked and me.net_name == "Guest Tester" and host_tag == arg,
+				"name prompt %s; I'm '%s'; the host's tag reads '%s'" % ["shown" if asked else "NOT shown", me.net_name, host_tag])
 		10:
 			var bonks := get_tree().get_nodes_in_group("bonk")
 			var d: float = bonks[0].global_position.distance_to(arg) if bonks.size() > 0 else -1.0
