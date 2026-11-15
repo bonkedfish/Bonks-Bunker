@@ -1,0 +1,4 @@
+{
+	"_comment": "tools/release/push_repo.tscn: the release tag it checks is live after pushing.",
+	"check_tag": "alpha3.0"
+}

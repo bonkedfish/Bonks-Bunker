@@ -1,0 +1,6 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://tools/release/push_repo.gd" id="1_push"]
+
+[node name="PushRepo" type="Node"]
+script = ExtResource("1_push")

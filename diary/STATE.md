@@ -691,3 +691,6 @@ Player.net_look + submit_look / ask_name(name, look), SaveDirector saves "look" 
 bodies a random look, CharacterAnimator.set_model(id, fp, extra). creator_test 0 failures (pure + in game, lineup
 screenshots of every hat / extra). scripts/ui/name_prompt.gd is no longer used (superseded, safe to delete).
 Release tool: release.json "min_version" (alpha3.0) lifts the auto version for the jump.
+RELEASE alpha3.0 (2026-11-15 ~08:51): https://github.com/bonkedfish/Bonks-Bunker/releases/tag/alpha3.0 - everything
+from D-086..D-096 (gear, golf, country club, pickleball, creator, net / unstick / colour fixes). Windows + Mac, each
+split in 2 parts; page notes from data/release/notes/alpha3.0.md (release_notes exit 0). Next auto version: alpha3.1.
