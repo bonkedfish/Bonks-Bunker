@@ -1,0 +1,6 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://tools/release/copy_build.gd" id="1_copy"]
+
+[node name="CopyBuild" type="Node"]
+script = ExtResource("1_copy")

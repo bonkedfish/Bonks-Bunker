@@ -1,0 +1,6 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://tests/net_recovery_test.gd" id="1_netrec"]
+
+[node name="NetRecoveryTest" type="Node"]
+script = ExtResource("1_netrec")

@@ -1,0 +1,37 @@
+{
+	"note": "Kearney Country Club as a playable course (D-086): 18 holes, par from the tee signs (data/landmarks/country_club.json course.tee_signs), cups = the course flags, tees = the tee box near each sign whose distance matches the card (sign = where E tees off) (OSM, country_club_paint.json). Landmark-local metres (x, z) of 'country_club'. Generated once from those files; edit freely. Play (CourseGolf): E at a tee sign starts an 18-hole card from that hole. lies: power = share of the club's power from that lie, roll = roll-out friction multiplier. Putter: putting.max_speed x power, slowing at putt_decel for the lie. OB (outside bounds) and water: +1 stroke, play again from the last spot. Picked up after max_strokes.",
+	"landmark": "country_club",
+	"max_strokes": 10,
+	"lie_radius_m": 3.0,
+	"cup_r": 0.11,
+	"cup_max_speed": 1.7,
+	"slope_scale": 1.0,
+	"bounds": [-635.5, -363, 547.5, 320],
+	"lies": {
+		"tee": {"power": 1.0, "roll": 1.0, "putt_decel": 1.8},
+		"fairway": {"power": 1.0, "roll": 1.0, "putt_decel": 1.8},
+		"rough": {"power": 0.82, "roll": 2.4, "putt_decel": 3.6},
+		"bunker": {"power": 0.55, "roll": 6.0, "putt_decel": 6.0},
+		"green": {"power": 1.0, "roll": 0.7, "putt_decel": 0.6}
+	},
+	"holes": [
+		{"tee": [50.9, 14.6], "cup": [490.5, -3], "par": 4, "yards": 484, "sign": [51.1, 11.5]},
+		{"tee": [442.9, -37.4], "cup": [81, -44.5], "par": 4, "yards": 398, "sign": [443.2, -34.5]},
+		{"tee": [46.1, -82.0], "cup": [346, -123.5], "par": 4, "yards": 338, "sign": [46.0, -85.0]},
+		{"tee": [362.8, -160.2], "cup": [220.5, -159.5], "par": 3, "yards": 155, "sign": [362.6, -157.0]},
+		{"tee": [201.0, -232.2], "cup": [-77.5, -311], "par": 4, "yards": 318, "sign": [200.4, -229.1]},
+		{"tee": [-112.8, -271.5], "cup": [-556.5, -232], "par": 5, "yards": 488, "sign": [-112.2, -269.0]},
+		{"tee": [-443.2, -196.0], "cup": [-60.5, -198.5], "par": 4, "yards": 421, "sign": [-443.2, -199.0]},
+		{"tee": [-95.1, -270.0], "cup": [161, -128], "par": 4, "yards": 322, "sign": [-93.9, -273.0]},
+		{"tee": [143.8, -100.2], "cup": [5, -136], "par": 3, "yards": 157, "sign": [143.2, -97.1]},
+		{"tee": [-48.8, -149.2], "cup": [6, -61.5], "par": 3, "yards": 114, "sign": [-46.5, -151.2]},
+		{"tee": [-102.2, 138.4], "cup": [-73.5, -110.5], "par": 4, "yards": 282, "sign": [-105.5, 138.6]},
+		{"tee": [-80.0, -146.1], "cup": [-325.5, 100.5], "par": 4, "yards": 387, "sign": [-78.2, -144.1]},
+		{"tee": [-357.6, 116.4], "cup": [-336.5, -143], "par": 4, "yards": 285, "sign": [-361.0, 115.6]},
+		{"tee": [-404.5, -168.8], "cup": [-412, 116], "par": 4, "yards": 313, "sign": [-401.5, -169.1]},
+		{"tee": [-458.9, 143.6], "cup": [-490, -184], "par": 4, "yards": 368, "sign": [-461.9, 144.3]},
+		{"tee": [-552.4, -190.4], "cup": [-570, 225], "par": 5, "yards": 455, "sign": [-549.5, -190.2]},
+		{"tee": [-592.4, 276.8], "cup": [-309, 198.5], "par": 4, "yards": 342, "sign": [-593.9, 274.4]},
+		{"tee": [-323.0, 146.0], "cup": [-167, 133.5], "par": 3, "yards": 171, "sign": [-323.2, 143.0]}
+	]
+}

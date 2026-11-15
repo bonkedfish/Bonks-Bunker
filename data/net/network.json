@@ -7,8 +7,8 @@
 		"wss://tracker.androodev.com",
 		"wss://tracker.openwebtorrent.com",
 		"wss://tracker.files.fm:7073/announce",
-		"wss://tracker.btorrent.xyz/",
-		"wss://tracker.ghostchu-services.top:443/announce"
+		"wss://tracker.webtorrent.dev",
+		"wss://tracker.novage.com.ua:443/announce"
 	],
 	"stun_servers": [
 		"stun:stun.l.google.com:19302",

@@ -23,6 +23,7 @@ var _last_effects: Dictionary = {}
 var _last_meepo := Vector2i(-2, -2)
 var _last_needs := Vector2i(-1, -1)
 var _last_ammo := Vector4i(-1, -1, -1, -1)
+var _last_weapon := ""
 var _last_status := Vector4i(-1, -1, -1, -1)
 var _revive_target: Node = null
 var _scan_timer := 0.0
@@ -151,10 +152,15 @@ func _process(delta: float) -> void:
 	var w: WeaponHolder = player.weapons
 	var slot: int = player.selected_slot
 	var state := Vector4i(slot, w.net_mag, w.net_reserve, int(w.net_reloading) + 2 * w.net_slot)
-	if state != _last_ammo:
+	var weapon := w.weapon_in_slot(slot)
+	var ident := "%s|%s" % [weapon.get("name", ""), weapon.get("cond", 1.0)]
+	if state != _last_ammo or ident != _last_weapon:
 		_last_ammo = state
-		var weapon := w.weapon_in_slot(slot)
+		_last_weapon = ident
 		var text := str(weapon.get("name", ""))
+		if weapon.has("cond"):  # rolled gear (D-087): condition, name in its rarity colour
+			text += "  %d%%" % roundi(float(weapon.cond) * 100.0)
+		ammo_label.modulate = GearRules.rarity_color(str(weapon.get("rarity", "standard")))
 		if weapon.get("kind", "") == "gun" and w.net_slot == slot:
 			text += "   %d / %d" % [w.net_mag, w.net_reserve]
 			if w.net_reloading:

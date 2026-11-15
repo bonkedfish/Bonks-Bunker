@@ -1,8 +1,9 @@
 {
-	"_comment": "Release settings read by tools/release/release.tscn. The version number comes from GitHub's release tags (alpha2.1, alpha2.2, ...); first_version is only used when the repo has no alpha tags yet.",
+	"_comment": "Release settings read by tools/release/release.tscn. The version number comes from GitHub's release tags (alpha2.1, alpha2.2, ...); first_version is only used when the repo has no alpha tags yet; min_version (optional) is the lowest version to publish, for a jump like alpha3.0 (later releases go on from it: alpha3.1 ...).",
 	"repo": "Bonks-Bunker",
 	"visibility": "public",
 	"first_version": "alpha2.1",
+	"min_version": "alpha3.0",
 	"title": "Bonk's Bunker",
 	"exe_name": "BonksBunker",
 	"split_mb": 1900,

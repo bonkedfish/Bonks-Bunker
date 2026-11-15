@@ -4,9 +4,13 @@
 #   containers: { container_id: { item_id: count } }   (only containers that were opened; what's left inside)
 #   players:    { player_key: { position: [x,y,z], health, items: { item_id: count }, mags: [int],
 #                               needs: [hunger, thirst] (optional, D-046; missing = full),
-#                               name (optional, D-081; the character's name in this world, missing = not named yet) } }
+#                               name (optional, D-081; the character's name in this world, missing = not named yet),
+#                               gear (optional, D-087; {list: [{uid, id, rarity, cond, mods, perk, mag}], equip:
+#                                     {slot: uid}, next: uid} - rolled weapons / armor; missing = old save, its
+#                                     weapon counts in items become instances on load) } }
 #   bonk:       { position: [x,y,z], health }            (empty until first save)
-#   drops:      [[item_id, count, x, y, z], ...] oldest first (optional, D-046; items dropped into the world)
+#   drops:      [[item_id, count, x, y, z(, gear instance)], ...] oldest first (optional, D-046; items dropped into
+#               the world; a dropped weapon / armor piece keeps its instance, D-087)
 #   quests:     { flag: int } (optional, D-054; the party's quest flags + counters, incl. boss_<id>_dead)
 #   disc_records: { course_id: { player_key: {name, best, holes: [int], aces: [int]} } } (optional, D-082)
 #   bikes: { taken: [cell bike id], parked: { bike id: {model, scheme, fuel, pos [x, y, z], yaw, tipped} } } (optional, D-083:
@@ -85,9 +89,12 @@ static func drops_of(data: Dictionary) -> Array:
 	if typeof(list) != TYPE_ARRAY:
 		return out
 	for e: Variant in list:
-		if typeof(e) == TYPE_ARRAY and e.size() == 5 and typeof(e[0]) == TYPE_STRING and ItemDB.has_item(e[0]) \
+		if typeof(e) == TYPE_ARRAY and (e.size() == 5 or e.size() == 6) and typeof(e[0]) == TYPE_STRING and ItemDB.has_item(e[0]) \
 				and _is_number(e[1]) and int(e[1]) > 0 and _is_number(e[2]) and _is_number(e[3]) and _is_number(e[4]):
-			out.append([e[0], int(e[1]), float(e[2]), float(e[3]), float(e[4])])
+			var d := [e[0], int(e[1]), float(e[2]), float(e[3]), float(e[4])]
+			if e.size() == 6 and typeof(e[5]) == TYPE_DICTIONARY:
+				d.append(e[5])
+			out.append(d)
 	return out
 
 

@@ -70,11 +70,13 @@ func build(id: String, course: Dictionary) -> Array[RID]:
 	var dg := get_tree().get_first_node_in_group("disc_golf") if is_inside_tree() else null
 	board.text = DiscRecordsRules.board_text(dg.records.get(id, {}) if dg else {}, course)
 	var npc: Node3D = NPC_SCENE.instantiate()
+	npc.name = "JohnPork"  # fixed names: the talk request and the dock's RPCs go by node path (D-091)
 	npc.set("npc_id", "john_pork")
 	npc.position = Vector3(0, 0, -0.1)
 	npc.rotation.y = 0.0
 	add_child(npc)
 	var dock := MeepoDock.new()
+	dock.name = "Dock"
 	dock.position = Vector3(-2.75, 0, -0.5)
 	add_child(dock)
 	return [body.get_rid(), dock.get_rid(), (npc as CollisionObject3D).get_rid()]  # the ground snap ray skips them all

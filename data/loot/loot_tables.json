@@ -22,6 +22,9 @@
 	"hunter_locker": {
 		"rolls_min": 4.0, "rolls_max": 6.0,
 		"entries": [
+			{ "item": "rifle_hunting", "weight": 0.8, "min": 1.0, "max": 1.0 },
+			{ "item": "ammo_308", "weight": 2.0, "min": 4.0, "max": 10.0 },
+			{ "item": "mod_scope_4x", "weight": 0.4, "min": 1.0, "max": 1.0 },
 			{ "item": "ammo_9mm", "weight": 4.0, "min": 12.0, "max": 30.0 },
 			{ "item": "painkillers", "weight": 2.0, "min": 1.0, "max": 2.0 },
 			{ "item": "bandage", "weight": 2.0, "min": 2.0, "max": 4.0 },
@@ -74,6 +77,9 @@
 	"evan_stash": {
 		"rolls_min": 3.0, "rolls_max": 5.0,
 		"entries": [
+			{ "item": "revolver_44", "weight": 0.4, "min": 1.0, "max": 1.0 },
+			{ "item": "ammo_44", "weight": 1.5, "min": 4.0, "max": 10.0 },
+			{ "item": "chest_padded", "weight": 0.3, "min": 1.0, "max": 1.0 },
 			{ "item": "ammo_9mm", "weight": 3.0, "min": 10.0, "max": 25.0 },
 			{ "item": "painkillers", "weight": 1.5, "min": 1.0, "max": 2.0 },
 			{ "item": "bandage", "weight": 2.0, "min": 2.0, "max": 3.0 },
@@ -85,6 +91,12 @@
 	"house_cabinet": {
 		"rolls_min": 1.0, "rolls_max": 3.0,
 		"entries": [
+			{ "item": "ammo_shells", "weight": 0.5, "min": 2.0, "max": 6.0 },
+			{ "item": "revolver_44", "weight": 0.15, "min": 1.0, "max": 1.0 },
+			{ "item": "knife_combat", "weight": 0.3, "min": 1.0, "max": 1.0 },
+			{ "item": "chest_leather", "weight": 0.25, "min": 1.0, "max": 1.0 },
+			{ "item": "legs_jeans", "weight": 0.25, "min": 1.0, "max": 1.0 },
+			{ "item": "helmet_hockey", "weight": 0.2, "min": 1.0, "max": 1.0 },
 			{ "item": "canned_beans", "weight": 3.0, "min": 1.0, "max": 2.0 },
 			{ "item": "water_bottle", "weight": 3.0, "min": 1.0, "max": 2.0 },
 			{ "item": "bandage", "weight": 2.0, "min": 1.0, "max": 2.0 },
@@ -103,6 +115,9 @@
 	"toolbox": {
 		"rolls_min": 2.0, "rolls_max": 3.0,
 		"entries": [
+			{ "item": "mod_compensator", "weight": 0.3, "min": 1.0, "max": 1.0 },
+			{ "item": "mod_red_dot", "weight": 0.2, "min": 1.0, "max": 1.0 },
+			{ "item": "knife_combat", "weight": 0.4, "min": 1.0, "max": 1.0 },
 			{ "item": "scrap_metal", "weight": 3.0, "min": 1.0, "max": 3.0 },
 			{ "item": "duct_tape", "weight": 2.0, "min": 1.0, "max": 2.0 },
 			{ "item": "wrench", "weight": 1.0, "min": 1.0, "max": 1.0 },
@@ -112,6 +127,12 @@
 	"ammo_cache": {
 		"rolls_min": 1.0, "rolls_max": 2.0,
 		"entries": [
+			{ "item": "ammo_44", "weight": 3.0, "min": 4.0, "max": 10.0 },
+			{ "item": "ammo_shells", "weight": 3.0, "min": 4.0, "max": 10.0 },
+			{ "item": "ammo_308", "weight": 2.0, "min": 3.0, "max": 8.0 },
+			{ "item": "ammo_556", "weight": 3.0, "min": 10.0, "max": 25.0 },
+			{ "item": "mod_ext_mag", "weight": 0.4, "min": 1.0, "max": 1.0 },
+			{ "item": "mod_quick_mag", "weight": 0.3, "min": 1.0, "max": 1.0 },
 			{ "item": "ammo_9mm", "weight": 5.0, "min": 6.0, "max": 18.0 },
 			{ "item": "painkillers", "weight": 1.0, "min": 1.0, "max": 1.0 }
 		]
@@ -128,6 +149,7 @@
 	"poi_gas": {
 		"rolls_min": 1.0, "rolls_max": 3.0,
 		"entries": [
+			{ "item": "ammo_shells", "weight": 0.3, "min": 2.0, "max": 6.0 },
 			{ "item": "water_bottle", "weight": 3.0, "min": 1.0, "max": 2.0 },
 			{ "item": "canned_beans", "weight": 2.0, "min": 1.0, "max": 2.0 },
 			{ "item": "car_battery", "weight": 1.0, "min": 1.0, "max": 1.0 },
@@ -140,6 +162,7 @@
 	"poi_store": {
 		"rolls_min": 1.0, "rolls_max": 3.0,
 		"entries": [
+			{ "item": "helmet_hockey", "weight": 0.3, "min": 1.0, "max": 1.0 },
 			{ "item": "canned_beans", "weight": 4.0, "min": 1.0, "max": 3.0 },
 			{ "item": "water_bottle", "weight": 4.0, "min": 1.0, "max": 2.0 },
 			{ "item": "duct_tape", "weight": 1.0, "min": 1.0, "max": 1.0 },
@@ -168,6 +191,10 @@
 	"poi_garage": {
 		"rolls_min": 1.0, "rolls_max": 3.0,
 		"entries": [
+			{ "item": "axe_fire", "weight": 0.4, "min": 1.0, "max": 1.0 },
+			{ "item": "helmet_moto", "weight": 0.3, "min": 1.0, "max": 1.0 },
+			{ "item": "legs_moto", "weight": 0.3, "min": 1.0, "max": 1.0 },
+			{ "item": "mod_suppressor", "weight": 0.15, "min": 1.0, "max": 1.0 },
 			{ "item": "scrap_metal", "weight": 4.0, "min": 1.0, "max": 3.0 },
 			{ "item": "wrench", "weight": 2.0, "min": 1.0, "max": 1.0 },
 			{ "item": "car_battery", "weight": 2.0, "min": 1.0, "max": 1.0 },
@@ -199,6 +226,11 @@
 	"car_trunk": {
 		"rolls_min": 1.0, "rolls_max": 2.0,
 		"entries": [
+			{ "item": "ammo_shells", "weight": 0.8, "min": 2.0, "max": 6.0 },
+			{ "item": "shotgun_pump", "weight": 0.25, "min": 1.0, "max": 1.0 },
+			{ "item": "rifle_hunting", "weight": 0.15, "min": 1.0, "max": 1.0 },
+			{ "item": "chest_leather", "weight": 0.3, "min": 1.0, "max": 1.0 },
+			{ "item": "legs_jeans", "weight": 0.3, "min": 1.0, "max": 1.0 },
 			{ "item": "scrap_metal", "weight": 2.0, "min": 1.0, "max": 2.0 },
 			{ "item": "car_battery", "weight": 1.0, "min": 1.0, "max": 1.0 },
 			{ "item": "wrench", "weight": 1.0, "min": 1.0, "max": 1.0 },
@@ -241,6 +273,16 @@
 	"raider_stash": {
 		"rolls_min": 2.0, "rolls_max": 4.0,
 		"entries": [
+			{ "item": "smg_9mm", "weight": 0.35, "min": 1.0, "max": 1.0 },
+			{ "item": "shotgun_pump", "weight": 0.3, "min": 1.0, "max": 1.0 },
+			{ "item": "rifle_ar", "weight": 0.15, "min": 1.0, "max": 1.0 },
+			{ "item": "ammo_556", "weight": 1.0, "min": 10.0, "max": 30.0 },
+			{ "item": "ammo_shells", "weight": 1.0, "min": 4.0, "max": 10.0 },
+			{ "item": "chest_padded", "weight": 0.3, "min": 1.0, "max": 1.0 },
+			{ "item": "helmet_riot", "weight": 0.15, "min": 1.0, "max": 1.0 },
+			{ "item": "legs_riot", "weight": 0.15, "min": 1.0, "max": 1.0 },
+			{ "item": "mod_red_dot", "weight": 0.25, "min": 1.0, "max": 1.0 },
+			{ "item": "mod_suppressor", "weight": 0.2, "min": 1.0, "max": 1.0 },
 			{ "item": "ammo_9mm", "weight": 3.0, "min": 4.0, "max": 10.0 },
 			{ "item": "canned_beans", "weight": 2.0, "min": 1.0, "max": 2.0 },
 			{ "item": "water_bottle", "weight": 2.0, "min": 1.0, "max": 2.0 },
@@ -253,6 +295,10 @@
 	"raider_ammo": {
 		"rolls_min": 1.0, "rolls_max": 3.0,
 		"entries": [
+			{ "item": "ammo_shells", "weight": 3.0, "min": 4.0, "max": 12.0 },
+			{ "item": "ammo_556", "weight": 3.0, "min": 10.0, "max": 30.0 },
+			{ "item": "ammo_44", "weight": 2.0, "min": 4.0, "max": 12.0 },
+			{ "item": "mod_ext_mag", "weight": 0.3, "min": 1.0, "max": 1.0 },
 			{ "item": "ammo_9mm", "weight": 5.0, "min": 6.0, "max": 15.0 },
 			{ "item": "bandage", "weight": 1.0, "min": 1.0, "max": 1.0 },
 			{ "item": "duct_tape", "weight": 1.0, "min": 1.0, "max": 1.0 }
@@ -261,6 +307,11 @@
 	"copperhead_stash": {
 		"rolls_min": 4.0, "rolls_max": 6.0,
 		"entries": [
+			{ "item": "rifle_sniper", "weight": 0.6, "min": 1.0, "max": 1.0 },
+			{ "item": "rifle_ar", "weight": 0.6, "min": 1.0, "max": 1.0 },
+			{ "item": "chest_kevlar", "weight": 0.6, "min": 1.0, "max": 1.0 },
+			{ "item": "mod_scope_4x", "weight": 0.6, "min": 1.0, "max": 1.0 },
+			{ "item": "ammo_308", "weight": 2.0, "min": 4.0, "max": 12.0 },
 			{ "item": "ammo_9mm", "weight": 4.0, "min": 10.0, "max": 25.0 },
 			{ "item": "bandage", "weight": 2.0, "min": 2.0, "max": 3.0 },
 			{ "item": "painkillers", "weight": 2.0, "min": 1.0, "max": 2.0 },
@@ -354,6 +405,8 @@
 	"locker_room": {
 		"rolls_min": 2.0, "rolls_max": 4.0,
 		"entries": [
+			{ "item": "helmet_hockey", "weight": 1.0, "min": 1.0, "max": 1.0 },
+			{ "item": "axe_fire", "weight": 0.3, "min": 1.0, "max": 1.0 },
 			{ "item": "bandage", "weight": 3.0, "min": 1.0, "max": 3.0 },
 			{ "item": "painkillers", "weight": 2.0, "min": 1.0, "max": 2.0 },
 			{ "item": "water_bottle", "weight": 2.0, "min": 1.0, "max": 2.0 },
@@ -365,6 +418,8 @@
 	"press_box": {
 		"rolls_min": 2.0, "rolls_max": 4.0,
 		"entries": [
+			{ "item": "helmet_moto", "weight": 0.3, "min": 1.0, "max": 1.0 },
+			{ "item": "mod_red_dot", "weight": 0.2, "min": 1.0, "max": 1.0 },
 			{ "item": "water_bottle", "weight": 2.0, "min": 1.0, "max": 2.0 },
 			{ "item": "canned_beans", "weight": 2.0, "min": 1.0, "max": 2.0 },
 			{ "item": "car_battery", "weight": 1.5, "min": 1.0, "max": 1.0 },

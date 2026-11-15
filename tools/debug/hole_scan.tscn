@@ -1,0 +1,6 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://tools/debug/hole_scan.gd" id="1_hole"]
+
+[node name="HoleScan" type="Node"]
+script = ExtResource("1_hole")

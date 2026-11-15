@@ -1,5 +1,5 @@
 # WorldMapUI — full-screen map on M (D-048): the pipeline's map picture (tools/map_import/build_world_map) with
-# landmark labels, an arrow for you, dots for teammates and Bonk, and a diamond on the tracked quest objective. Mouse wheel zooms about the cursor, left-drag
+# landmark labels, an arrow for you, dots for teammates (their colour + name, D-092) and Bonk, and a diamond on the tracked quest objective. Mouse wheel zooms about the cursor, left-drag
 # pans; opens centred on you. M / Esc / Tab close. Loads the texture the first time it opens. Markers redraw
 # 10x a second while open; nothing runs while closed. Group "world_map_ui".
 # Depends on: DataLoader, world/generated/map/world_map.json (+ its texture), Player (group "players", "local_player"),
@@ -124,11 +124,9 @@ func _draw() -> void:
 	if bonk:
 		_dot(bonk.global_position, Color(1.0, 0.55, 0.15), "Bonk")
 	var me := get_tree().get_first_node_in_group("local_player") as Node3D
-	var n := 2
 	for p in get_tree().get_nodes_in_group("players"):
-		if p != me and "water" in p:
-			_dot(p.global_position, Color(0.4, 0.85, 1.0), "P%d" % n)
-			n += 1
+		if p != me and "water" in p:  # their own colour and name (D-092)
+			_dot(p.global_position, PlayerColors.color(int(p.net_color)), str(p.net_name) if str(p.net_name) != "" else "Player")
 	if me:
 		var c := _screen(me.global_position)
 		var f := Vector2(-sin(me.rotation.y), -cos(me.rotation.y))
@@ -136,7 +134,7 @@ func _draw() -> void:
 		var pts := PackedVector2Array([c + f * 12.0, c - f * 7.0 + s * 7.0, c - f * 3.0, c - f * 7.0 - s * 7.0])
 		draw_colored_polygon(pts, Color(0, 0, 0))
 		draw_colored_polygon(PackedVector2Array([c + f * 10.0, c - f * 5.5 + s * 5.5, c - f * 2.0, c - f * 5.5 - s * 5.5]),
-			Color(1.0, 0.85, 0.2))
+			PlayerColors.color(int(me.get("net_color"))))
 	draw_string_outline(_font, Vector2(16, size.y - 16), "M / Esc  close     wheel  zoom     drag  pan", HORIZONTAL_ALIGNMENT_LEFT,
 		-1, 14, 4, Color(0, 0, 0, 0.85))
 	draw_string(_font, Vector2(16, size.y - 16), "M / Esc  close     wheel  zoom     drag  pan", HORIZONTAL_ALIGNMENT_LEFT,

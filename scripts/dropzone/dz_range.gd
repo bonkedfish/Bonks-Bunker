@@ -1,12 +1,13 @@
 # DzRange — the Drop Zone target game at the 32 bays (D-074), DropZone child "Range".
 #   Host: E at a bay screen gives that player a game of `balls` balls in that bay (one player per bay). Validates
-#         shot intents (in a game, balls left, standing in the bay, no ball in the air), simulates the whole shot at
+#         shot intents (in a game, balls left, standing in the bay, no ball in the air; power and the swing meter's
+#         error clamped, D-086), simulates the whole shot at
 #         once (GolfBallRules: flight, first bounce, roll-out; the side and far nets stop it), sends the path to
 #         everyone, and when it has landed on screen scores the first landing on the targets (bullseye doubles), tells
 #         the player and syncs the board. The last ball ends the game (best score: quest flag "dz_best_range").
 #         Walking away from the bay forfeits.
 #   Every peer: `games` (peer -> {bay, balls, score, last}), synced whole on change; ball playback; puts the local
-#         player's SportInput into "range" mode while they have a game.
+#         player's SportInput into "range" mode while they have a game; answers the golf view's aim_* questions.
 # Depends on: DropZone (parent: data, sender_player, toast), GolfBallRules, BallPlayback, SportInput (Player "sport"),
 # QuestDirector (group "quests").
 class_name DzRange
@@ -64,11 +65,11 @@ func request_use(index: int) -> void:
 			return
 	games[p.peer_id] = {"bay": index, "balls": int(_t.range.balls), "score": 0, "last": -1}
 	_sync.rpc(games)
-	_say.rpc_id(p.peer_id, "Bay %d: %d balls. Hold left click to swing, 3 = next club. Land it on a target!" % [index + 1, int(_t.range.balls)])
+	_say.rpc_id(p.peer_id, "Bay %d: %d balls. Click to swing, click for power, click on the line. 3 / wheel: club. Land it on a target!" % [index + 1, int(_t.range.balls)])
 
 
 @rpc("any_peer", "call_local", "reliable")
-func request_shot(club_id: String, power: float, yaw: float) -> void:
+func request_shot(club_id: String, power: float, yaw: float, error := 0.0) -> void:
 	var p := DropZone.sender_player(self)
 	if p == null or not games.has(p.peer_id) or _in_flight.has(p.peer_id) or not _t.clubs.has(club_id):
 		return
@@ -81,7 +82,8 @@ func request_shot(club_id: String, power: float, yaw: float) -> void:
 		_say.rpc_id(p.peer_id, "Step up to the mat in your bay")
 		return
 	var local_yaw: float = yaw - dz().global_rotation.y
-	var shot := GolfBallRules.launch(_t.clubs[club_id], power, Vector3(tee.x, 0.0, tee.z), local_yaw, _t)
+	var shot := GolfBallRules.launch(_t.clubs[club_id], clampf(power, 0.0, 1.0), Vector3(tee.x, 0.0, tee.z), local_yaw, _t,
+		clampf(error, -1.5, 1.5))
 	var path := _simulate(shot, tee.y)
 	var score := GolfBallRules.target_score(shot.land if shot.landed else Vector3.INF, dz().data.targets, _t)
 	g.balls = int(g.balls) - 1
@@ -113,6 +115,54 @@ func _simulate(s: GolfBallRules.Shot, y0: float) -> PackedVector3Array:
 			path.append(s.pos)
 	path.append(s.pos)
 	return path
+
+
+# --- the local player's golf view (SportInput / GolfView) -----------------------------------------
+
+func aim_ball() -> Vector3:
+	var g: Dictionary = games.get(multiplayer.get_unique_id(), {})
+	return Vector3.INF if g.is_empty() else dz().to_world(bay_spot(int(g.bay)))
+
+
+func aim_ready() -> bool:
+	var me := get_tree().get_first_node_in_group("local_player")
+	var ball := aim_ball()
+	if me == null or ball == Vector3.INF or aim_flying() or int(games[multiplayer.get_unique_id()].balls) <= 0:
+		return false
+	return Vector2(me.global_position.x - ball.x, me.global_position.z - ball.z).length() <= float(_t.range.bay_radius_m)
+
+
+func aim_flying() -> bool:
+	return is_flying(multiplayer.get_unique_id())
+
+
+func aim_flight_pos() -> Vector3:
+	return _play.world_pos(multiplayer.get_unique_id())
+
+
+func aim_cup() -> Vector3:
+	return Vector3.INF
+
+
+func aim_clubs() -> Array:
+	return _t.club_order
+
+
+func aim_power_mult() -> float:
+	return 1.0
+
+
+func aim_slope() -> Vector2:
+	return Vector2.ZERO
+
+
+func aim_on_green() -> bool:
+	return false
+
+
+func aim_ground(p: Vector3) -> Vector3:
+	var local: Vector3 = dz().to_local_pos(p)
+	return dz().to_world(Vector3(local.x, 0.0, local.z))
 
 
 # --- host tick ----------------------------------------------------------------------------------

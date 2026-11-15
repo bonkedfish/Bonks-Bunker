@@ -1,0 +1,4 @@
+{
+	"note": "Player colours (D-092): the host gives each player the first colour no one else in the game has when they spawn (6 players, 6 colours); the minimap, the M map and minigame scorecards draw them in it. Bonk's marker is orange, so no colour here is orange.",
+	"colors": [[1.0, 0.84, 0.2], [0.25, 0.85, 1.0], [1.0, 0.4, 0.8], [0.5, 1.0, 0.35], [1.0, 0.35, 0.3], [0.68, 0.55, 1.0]]
+}

@@ -1,14 +1,16 @@
-# GolfBallRules — pure golf ball rules for Drop Zone (D-074): the range shot (club launch, flight with drag and
-# backspin lift, first bounce, roll-out), target scoring at the first landing, and the putting course (ball rolling
-# on green / fringe / sand, water, cup capture, power for a distance). Positions are landmark-local; the ground of the
-# range and putting course is flat at y 0. Flight objects allocate once per shot. Depends on: DataLoader,
-# data/tuning/drop_zone.json.
+# GolfBallRules — pure golf ball rules for Drop Zone (D-074) and the country club course (D-086): the full shot
+# (club launch, flight with drag, backspin lift and sidespin curve from the swing meter's error, first bounce,
+# roll-out), target scoring at the first landing, and the putting course (ball rolling on green / fringe / sand,
+# the hole's slope, water, cup capture, power for a distance). Drop Zone positions are landmark-local with flat
+# ground at y 0; the course passes the ground height under the ball each step (CourseShot). Flight objects allocate
+# once per shot. Depends on: DataLoader, data/tuning/drop_zone.json.
 class_name GolfBallRules
 extends RefCounted
 
 const TUNING_PATH := "res://data/tuning/drop_zone.json"
 const TUNING_SCHEMA := {"note": TYPE_STRING, "clubs": TYPE_DICTIONARY, "club_order": TYPE_ARRAY, "ball": TYPE_DICTIONARY,
-	"range": TYPE_DICTIONARY, "putting": TYPE_DICTIONARY, "pickleball": TYPE_DICTIONARY}
+	"range": TYPE_DICTIONARY, "putting": TYPE_DICTIONARY, "pickleball": TYPE_DICTIONARY, "swing": TYPE_DICTIONARY,
+	"course_clubs": TYPE_ARRAY}
 const G := 9.8
 
 enum Lie { GREEN, FRINGE, SAND, WATER, OUT }
@@ -24,6 +26,8 @@ class Shot:
 	var landed := false           # touched the ground once
 	var land := Vector3.INF       # first touch
 	var stopped := false
+	var side := 0.0               # sidespin: sideways acceleration (m/s2, + = right of the flight), decays like backspin
+	var roll_mult := 1.0          # the lie it's rolling on (course): roll-out friction multiplier
 
 
 static func tuning() -> Dictionary:
@@ -34,9 +38,13 @@ static func tuning() -> Dictionary:
 
 # --- range ----------------------------------------------------------------------------------
 
-static func launch(club: Dictionary, power: float, from: Vector3, yaw: float, t: Dictionary) -> Shot:
+# error: the swing meter's (-1 hook .. +1 slice): starts the ball a little off line and curves it.
+static func launch(club: Dictionary, power: float, from: Vector3, yaw: float, t: Dictionary, error := 0.0) -> Shot:
 	var s := Shot.new()
 	var b: Dictionary = t.ball
+	var sw: Dictionary = t.swing
+	yaw -= deg_to_rad(error * float(sw.max_yaw_deg))  # + yaw turns left, so a slice takes some off
+	s.side = error * float(sw.max_curve)
 	var speed := float(club.speed) * pow(clampf(power, 0.02, 1.0), float(b.power_curve))
 	var loft := deg_to_rad(float(club.loft_deg))
 	s.pos = from + Vector3.UP * float(b.tee_height_m)
@@ -44,21 +52,22 @@ static func launch(club: Dictionary, power: float, from: Vector3, yaw: float, t:
 	return s
 
 
-# One step: flight (drag + decaying backspin lift), first bounce, then rolling to a stop on the flat ground.
-static func step(s: Shot, dt: float, t: Dictionary) -> void:
+# One step: flight (drag + decaying backspin lift + sidespin), first bounce, then rolling to a stop on the ground
+# (flat at `ground`; the course moves `ground` under the ball and adds the slope itself).
+static func step(s: Shot, dt: float, t: Dictionary, ground := 0.0) -> void:
 	var b: Dictionary = t.ball
 	s.time += dt
-	if s.landed and s.pos.y <= 0.0 and s.vel.y <= 0.0:  # rolling
+	if s.landed and s.pos.y <= ground and s.vel.y <= 0.0:  # rolling
 		var h := Vector2(s.vel.x, s.vel.z)
 		var roll := h.length()
 		if roll < 0.05:
 			s.stopped = true
 			s.vel = Vector3.ZERO
 			return
-		h *= maxf(0.0, roll - float(b.roll_friction) * dt) / roll
+		h *= maxf(0.0, roll - float(b.roll_friction) * s.roll_mult * dt) / roll
 		s.vel = Vector3(h.x, 0.0, h.y)
 		s.pos += s.vel * dt
-		s.pos.y = 0.0
+		s.pos.y = ground
 		return
 	var v := s.vel.length()
 	var hdir := Vector2(s.vel.x, s.vel.z)
@@ -68,13 +77,14 @@ static func step(s: Shot, dt: float, t: Dictionary) -> void:
 	if v > 0.01 and not s.landed:
 		var lift_dir := Vector3(-s.vel.y * hdir.x, vh, -s.vel.y * hdir.y) / v
 		acc += lift_dir * (float(b.lift) * exp(-float(b.spin_decay) * s.time) * v * v)
+		acc += Vector3(-hdir.y, 0.0, hdir.x) * (s.side * exp(-float(b.spin_decay) * s.time))
 	s.vel += acc * dt
 	s.pos += s.vel * dt
-	if s.pos.y <= 0.0 and s.vel.y < 0.0:
+	if s.pos.y <= ground and s.vel.y < 0.0:
 		if not s.landed:
 			s.landed = true
-			s.land = Vector3(s.pos.x, 0.0, s.pos.z)
-		s.pos.y = 0.0
+			s.land = Vector3(s.pos.x, ground, s.pos.z)
+		s.pos.y = ground
 		s.vel = Vector3(s.vel.x * float(b.roll_keep), -s.vel.y * float(b.bounce), s.vel.z * float(b.roll_keep))
 		if s.vel.y < 0.6:
 			s.vel.y = 0.0
@@ -138,8 +148,12 @@ static func putt_power(metres: float, t: Dictionary) -> float:
 
 
 # Rolls one putt to the end: returns {path: PackedVector2Array (sample_hz), end: Vector2, holed, water, out}.
-static func roll_putt(from: Vector2, yaw: float, power: float, hole: Dictionary, area: Array, t: Dictionary) -> Dictionary:
+# error (swing meter) pushes it off line by up to swing.putt_yaw_deg; the hole's "slope" [x, z] (m/s2 downhill,
+# optional) pulls it while it rolls on the green and fringe.
+static func roll_putt(from: Vector2, yaw: float, power: float, hole: Dictionary, area: Array, t: Dictionary, error := 0.0) -> Dictionary:
 	var p: Dictionary = t.putting
+	yaw -= deg_to_rad(clampf(error, -1.5, 1.5) * float(t.swing.putt_yaw_deg))
+	var slope := _v2(hole.slope) if hole.has("slope") else Vector2.ZERO
 	var dt := 1.0 / float(t.ball.step_hz)
 	var every := maxi(1, roundi(float(t.ball.step_hz) / float(t.ball.sample_hz)))
 	var vel := Vector2(-sin(yaw), -cos(yaw)) * clampf(power, 0.0, 1.0) * float(p.max_speed)
@@ -157,7 +171,11 @@ static func roll_putt(from: Vector2, yaw: float, power: float, hole: Dictionary,
 			out.holed = true
 			pos = cup
 			break
+		if lie == Lie.GREEN or lie == Lie.FRINGE:
+			vel += slope * dt
 		var v := vel.length()
+		if v < 0.0001:
+			break
 		vel *= maxf(0.0, v - decel(lie, t) * dt) / v
 		pos += vel * dt
 		steps += 1

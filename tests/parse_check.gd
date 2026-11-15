@@ -1,7 +1,19 @@
 # ParseCheck — loads the given scripts and prints whether each compiled (parse errors print above). Dev helper.
 extends Node
 
-const PATHS := ["res://scripts/rules/disc_flight_rules.gd", "res://scripts/rules/disc_golf_rules.gd",
+const PATHS := ["res://scripts/rules/appearance_rules.gd", "res://scripts/ui/character_creator.gd",
+	"res://tests/creator_test.gd", "res://scripts/rules/swing_meter.gd", "res://scripts/rules/course_lie_rules.gd",
+	"res://scripts/golf/course_shot.gd", "res://scripts/golf/course_golf.gd", "res://scripts/ui/course_golf_hud.gd",
+	"res://scripts/ui/swing_meter_draw.gd", "res://scripts/player/golf_view.gd", "res://tests/golf_test.gd", "res://tests/pickleball_test.gd",
+	"res://tests/gear_test.gd", "res://scripts/rules/gear_rules.gd", "res://scripts/rules/inventory.gd",
+	"res://scripts/inventory/inventory_holder.gd", "res://scripts/combat/weapon_holder.gd", "res://scripts/combat/combat_world.gd",
+	"res://scripts/combat/health.gd", "res://scripts/data/weapon_db.gd", "res://scripts/data/item_db.gd",
+	"res://scripts/ui/inventory_ui.gd", "res://scripts/ui/crafting_ui.gd", "res://scripts/inventory/workbench.gd",
+	"res://scripts/inventory/world_drops.gd", "res://scripts/save/save_director.gd", "res://scripts/save/save_format.gd",
+	"res://scripts/audio/sfx.gd", "res://scripts/visual/character_animator.gd", "res://scripts/player/viewmodel.gd",
+	"res://scripts/vehicles/bike_rider.gd", "res://scripts/rules/player_colors.gd", "res://scripts/net/net.gd",
+	"res://scripts/main.gd", "res://scripts/ui/world_map_ui.gd", "res://scripts/ui/pause_menu.gd",
+	"res://scripts/rules/disc_flight_rules.gd", "res://scripts/rules/disc_golf_rules.gd",
 	"res://scripts/discgolf/disc_course.gd", "res://scripts/discgolf/disc_golf_director.gd",
 	"res://scripts/player/disc_thrower.gd", "res://scripts/ui/disc_golf_hud.gd", "res://scripts/player/player.gd",
 	"res://scripts/ui/hud.gd", "res://scripts/ui/minimap.gd", "res://scripts/ui/controls_list.gd",

@@ -3,14 +3,16 @@
 # have the host's Bonk. MultiplayerSpawners replicate them to clients.
 # Hosting opens the world picked in the menu through the Saves node (D-037).
 # Also makes "Bikes" (BikeDirector, D-083: the parked motorcycles) on every peer.
-# Depends on: Net autoload, scenes/player.tscn, SaveDirector ("Saves"), WorldPicker, PlayerIdentity, PauseMenu, NamePrompt,
-# BikeDirector.
+# Any failed, timed-out or ended session reloads Main with a fresh lobby client (Net.leave_to_menu, D-091) and the
+# start screen shows why (Net.menu_message).
+# Depends on: Net autoload, scenes/player.tscn, SaveDirector ("Saves"), WorldPicker, PlayerIdentity, PauseMenu,
+# CharacterCreator, AppearanceRules (a new body starts with a random look, D-096), BikeDirector.
 extends Node3D
 
 const PLAYER_SCENE := preload("res://scenes/player.tscn")
 const BONK_SCENE := preload("res://scenes/bonk.tscn")
 const PauseMenu := preload("res://scripts/ui/pause_menu.gd")
-const NamePrompt := preload("res://scripts/ui/name_prompt.gd")
+const CharacterCreator := preload("res://scripts/ui/character_creator.gd")
 
 @onready var players: Node3D = $Players
 @onready var spawn_points: Node3D = $SpawnPoints
@@ -33,9 +35,9 @@ func _ready() -> void:
 	var pause := PauseMenu.new()
 	pause.name = "Pause"
 	$UI.add_child(pause)
-	var prompt := NamePrompt.new()
-	prompt.name = "NamePrompt"
-	$UI.add_child(prompt)  # after Pause: it sees Esc first and keeps the pause menu shut while open
+	var creator := CharacterCreator.new()
+	creator.name = "Creator"
+	$UI.add_child(creator)  # after Pause: it sees Esc first and keeps the pause menu shut while open
 	var bikes := BikeDirector.new()
 	bikes.name = "Bikes"
 	add_child(bikes)
@@ -48,11 +50,14 @@ func _ready() -> void:
 	Net.lobby_code_changed.connect(_on_lobby_code_changed)
 	multiplayer.peer_connected.connect(_spawn_player)
 	multiplayer.peer_disconnected.connect(_remove_player)
+	if Net.menu_message != "":
+		status_label.text = Net.menu_message
+		Net.menu_message = ""
 
 
 func _unhandled_input(event: InputEvent) -> void:
 	if menu.visible or $UI/InventoryUI.visible or $UI/LootUI.visible or $UI/CraftingUI.visible or $UI/WorldMapUI.visible or $UI/QuestBookUI.visible or $UI/Subtitles.choosing \
-			or $UI/Settings.visible or $UI/Pause.visible or $UI/NamePrompt.visible:
+			or $UI/Settings.visible or $UI/Pause.visible or $UI/Creator.visible:
 		return
 	if event.is_action_pressed("ui_cancel"):
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
@@ -101,15 +106,13 @@ func _on_session_started() -> void:
 
 
 func _on_session_failed(reason: String) -> void:
-	status_label.text = reason
+	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+	Net.leave_to_menu.call_deferred(self, reason)
 
 
 func _on_session_ended() -> void:
-	for p in players.get_children() + $NPCs.get_children():
-		p.queue_free()
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
-	status_label.text = "Host ended the session"
-	menu.show()
+	Net.leave_to_menu.call_deferred(self, "Lost the connection to the host (they quit, or the network dropped).")
 
 
 func _spawn_player(id: int) -> void:
@@ -119,8 +122,15 @@ func _spawn_player(id: int) -> void:
 	var holder := get_tree().get_first_node_in_group("player_spawns")
 	var points := (holder if holder else spawn_points).get_children()
 	var spot: Vector3 = points[players.get_child_count() % points.size()].global_position
+	var used := []
+	for other in players.get_children():
+		used.append(int(other.net_color))
 	var p := PLAYER_SCENE.instantiate()
 	p.name = str(id)
+	p.net_color = PlayerColors.pick(used)  # D-092
+	var rng := RandomNumberGenerator.new()
+	rng.randomize()
+	p.net_look = AppearanceRules.random_look(rng)  # D-096: a saved character's own look replaces it
 	p.position = spot
 	p.net_position = spot
 	players.add_child(p, true)

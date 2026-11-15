@@ -44,7 +44,7 @@
 		"alley_debris_chance": 0.35,
 		"debris_kinds": ["tyre", "wheel_rim", "trashbag", "trashbag", "cardboard_box", "barrel"],
 		"barrier_spacing_m": 120.0,
-		"barrier_chance": 0.3,
+		"barrier_chance": 0.0,
 		"barrier_kinds": ["tertiary", "secondary", "primary"],
 		"utility_box_spacing_m": 75.0,
 		"utility_box_chance": 0.3,

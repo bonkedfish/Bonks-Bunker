@@ -5,7 +5,7 @@ extends RefCounted
 const CONTROLS := [
 	["move_forward", "Move forward"], ["move_back", "Move back"], ["move_left", "Move left"], ["move_right", "Move right"],
 	["jump", "Jump"], ["sprint", "Sprint"], ["crouch", "Crouch"], ["fire", "Shoot / swing"], ["reload", "Reload"],
-	["weapon_1", "Pistol"], ["weapon_2", "Bat"], ["interact", "Use / talk / loot / revive"], ["inventory", "Inventory"],
+	["weapon_1", "Gun slot 1"], ["weapon_2", "Gun slot 2"], ["weapon_3", "Melee / thrown slot"], ["aim", "Aim / scope (zooming guns)"], ["interact", "Use / talk / loot / revive"], ["inventory", "Inventory"],
 	["quick_heal", "Quick heal (bandage)"], ["quick_eat", "Quick eat"], ["ride", "Hop on / off the Meepo (Shift = boost)"],
 	["disc_mode", "Next disc (disc golf) / next club (Drop Zone)"], ["disc_tilt_left", "Disc: tilt left (curve left)"],
 	["disc_tilt_right", "Disc: tilt right (curve right)"], ["disc_grip", "Disc: backhand / forehand"], ["scorecard", "Disc golf scorecard"],

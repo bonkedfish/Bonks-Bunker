@@ -5,6 +5,8 @@
 # John Pork's VendorCamp (tent, vendor, records board, Meepo dock) where the course has a "camp" (D-082).
 # Course data is in map coordinates; each piece drops onto the ground with a ray when its cell has loaded.
 # Group "disc_courses". Course box body: group "course_boxes" (display_name, course_id) on the interactable layer.
+# Every node it makes gets a fixed name (Anchor<n>, Camp) so paths match on every peer: the vendor and the dock
+# are used over the network (D-091; before, a client's E on John Pork reached nobody on the host).
 # Visual + colliders only; rounds live in DiscGolfDirector. Depends on: DiscGolfRules, VendorCamp, WorldStreamer
 # (group "world_streamer": cell_loaded).
 class_name DiscCourse
@@ -21,6 +23,7 @@ var _baskets: Array[Node3D] = []
 var _tees: Array[Node3D] = []
 var _box: Node3D
 var camp: VendorCamp
+var _anchor_count := 0
 var _unsnapped: Array[Node3D] = []
 var _rids: Array[RID] = []
 
@@ -109,6 +112,8 @@ func _snap() -> void:
 
 func _anchor(local: Vector3) -> Node3D:
 	var n := Node3D.new()
+	n.name = "Anchor%d" % _anchor_count  # built in the same order on every peer
+	_anchor_count += 1
 	n.position = local
 	add_child(n)
 	_unsnapped.append(n)
@@ -195,6 +200,7 @@ func _add_camp(def: Dictionary) -> void:
 	var face := _map(def.get("face", course.box))
 	var a := _anchor(at)
 	camp = VendorCamp.new()
+	camp.name = "Camp"
 	camp.rotation.y = atan2(-(face.x - at.x), -(face.z - at.z))  # its -Z toward `face`
 	a.add_child(camp)
 	_rids.append_array(camp.build(course_id, course))

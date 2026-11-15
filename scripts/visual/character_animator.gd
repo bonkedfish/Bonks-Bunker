@@ -4,7 +4,8 @@
 # host and interpolated clients look the same), attacking, dead/downed, armed (gun clips), crouched, and a health
 # drop (hit react). Walk/run clips are sped up/slowed to match the speed so feet don't slide. Far from the camera
 # the animation is advanced at far_animation_hz instead of every frame.
-# Survivor models carry every weapon as a separate mesh: set_weapon_slot() shows only the one in weapons_by_slot.
+# Survivor models carry every weapon as a separate mesh: set_weapon_slot() shows only the one in weapons_by_slot;
+# set_weapon_mesh() (players, D-087) shows any of them by its mesh name.
 # First-person mode (set_model(id, true)): model placed at fp_offset under the camera, no shadows, and the bones
 # in fp_hide_bones (head, legs) shrunk to nothing every frame so only arms + weapon are seen.
 # Universal-rig models (D-058, Quaternius base characters): "path" (full res path), "anim_source" (a .glb whose
@@ -53,7 +54,8 @@ var _far_period := 0.1
 
 
 # Loads model `id` (replacing any previous one). Returns false if the ID or file is missing.
-func set_model(id: String, first_person := false) -> bool:
+# extra: keys that replace the model's own (a player's look from AppearanceRules.dress, D-096).
+func set_model(id: String, first_person := false, extra := {}) -> bool:
 	if _data.is_empty():
 		_data = DataLoader.load_json(DATA_PATH)
 	var models: Dictionary = _data.get("models", {})
@@ -61,6 +63,9 @@ func set_model(id: String, first_person := false) -> bool:
 		push_error("CharacterAnimator: unknown model '%s'" % id)
 		return false
 	_def = models[id]
+	if not extra.is_empty():
+		_def = _def.duplicate()
+		_def.merge(extra, true)
 	_blend = float(_data.get("blend_seconds", 0.2))
 	_far_m = float(_data.get("far_animation_m", 35.0))
 	_far_period = 1.0 / maxf(float(_data.get("far_animation_hz", 10.0)), 1.0)
@@ -247,6 +252,15 @@ func set_weapon_slot(slot: int) -> void:
 		slot = -1  # throwing a disc: no gun in the hand
 	var names: Array = _def.get("weapons_by_slot", [])
 	var want := str(names[slot]) if slot >= 0 and slot < names.size() else ""
+	for mi in _props:
+		mi.visible = str(mi.name) == want
+
+
+# Shows the hand-held weapon mesh with this node name (D-087: any kit weapon - Pistol, SMG, Shotgun, Rifle, Knife,
+# Axe, WoodenBat_Barbed ...), or nothing for "".
+func set_weapon_mesh(want: String) -> void:
+	if on_bike or _oneshot_left > 0.0 and (_oneshot_key == "throw" or _oneshot_key == "putt"):
+		want = ""
 	for mi in _props:
 		mi.visible = str(mi.name) == want
 

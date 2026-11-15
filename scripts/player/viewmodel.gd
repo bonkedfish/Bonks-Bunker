@@ -12,7 +12,8 @@ extends Node3D
 var _rest_position: Vector3
 var _bat_rest: Vector3
 var _tween: Tween
-var _slot := 0
+var _armed := true
+var _mesh := "Pistol"
 
 
 func _ready() -> void:
@@ -24,15 +25,17 @@ func set_arms_model(id: String) -> void:
 	arms.set_model(str(CharacterAnimator.model_def(id).get("fp_model", id)), true)  # base-body models use a survivor's arms + guns
 
 
-func show_slot(slot: int) -> void:
-	_slot = slot
-	arms.set_weapon_slot(slot)
+# The weapon in hand (D-087): its kit mesh name ("" = empty hands) and whether it's a gun (gun idle / walk clips).
+func show_weapon(mesh: String, armed: bool) -> void:
+	_mesh = mesh
+	_armed = armed
+	arms.set_weapon_mesh(mesh)
 
 
 func _process(delta: float) -> void:
 	if visible:
 		arms.riding = owner != null and "riding" in owner and owner.riding  # on the Meepo: no walk/run bob (D-065)
-		arms.update(delta, false, false, 100.0, _slot == 0, false)
+		arms.update(delta, false, false, 100.0, _armed, false)
 
 
 func kick() -> void:

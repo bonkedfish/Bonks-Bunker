@@ -43,6 +43,13 @@ func duration(path: PackedVector3Array, hz: float) -> float:
 	return maxf(0.0, path.size() - 1) / hz
 
 
+# Where this player's ball is shown now (global), Vector3.INF if it isn't.
+func world_pos(peer: int) -> Vector3:
+	if not _balls.has(peer) or not _balls[peer].node.visible:
+		return Vector3.INF
+	return (_balls[peer].node as Node3D).global_position
+
+
 func is_playing(peer: int) -> bool:
 	if not _balls.has(peer):
 		return false

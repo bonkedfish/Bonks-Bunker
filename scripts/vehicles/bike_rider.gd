@@ -491,7 +491,7 @@ func _apply_ride() -> void:
 			player.rotation.y = player.yaw
 			player.camera.position = Vector3.ZERO
 			player.body.visible = false
-			player.viewmodel.show_slot(player.selected_slot)
+			player.show_held_weapon()
 
 
 func _build_visual() -> void:

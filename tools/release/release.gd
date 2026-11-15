@@ -1,5 +1,5 @@
 # Release — one-run GitHub release (run this scene directly). Picks the next version from the repo's tags
-# (alpha2.1 -> alpha2.2 ...), exports Windows + macOS from the same commit, smoke-tests the Windows exe, zips,
+# (alpha2.1 -> alpha2.2 ...; release.json "min_version" lifts it to a bigger jump like alpha3.0), exports Windows + macOS from the same commit, smoke-tests the Windows exe, zips,
 # splits any file over split_mb (GitHub caps release files at 2 GiB), commits + pushes the source, then publishes
 # ONE prerelease with both platforms. Creates the GitHub repo on first run. Nothing is published if any step fails.
 # Log: tests/_look/release_result.txt.
@@ -38,6 +38,10 @@ func _run() -> bool:
 	var ver := _next_version(str(cfg.first_version))
 	if ver == "":
 		return false
+	var floor_ver := _parse_version(str(cfg.get("min_version", "")))  # a version jump (alpha3.0): never below it
+	var picked := _parse_version(ver)
+	if not floor_ver.is_empty() and (floor_ver[0] > picked[0] or (floor_ver[0] == picked[0] and floor_ver[1] > picked[1])):
+		ver = "alpha%d.%d" % [floor_ver[0], floor_ver[1]]
 	_say("version: " + ver)
 
 	var out_dir := ProjectSettings.globalize_path(BUILD_DIR) + "/" + ver

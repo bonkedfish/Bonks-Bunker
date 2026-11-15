@@ -1,10 +1,14 @@
-# CraftingUI — window for the workbench the local player is using (D-046): every recipe with what it makes and
-# what it needs ("have / need", short items in red), Craft for the selected one (or double-click). Craft is only
-# enabled when you hold everything; the host checks again. Updates live as the inventory changes. Closes with
-# E / Esc / Tab, or if you die or walk out of reach. Builds its controls in code. Group "crafting_ui".
-# Depends on: RecipeDB, CraftingRules, ItemDB, Workbench, Player (group "local_player").
+# CraftingUI — window for the workbench the local player is using (D-046). Two tabs:
+#   Recipes: every recipe with what it makes and what it needs ("have / need", short items in red), Craft for the
+#            selected one (or double-click). Craft is only enabled when you hold everything; the host checks again.
+#   Gear (D-087): your weapons and armor with condition and the scrap a repair costs (Repair); under each gun the
+#            mods on it (Remove gives the mod back) and the mods you carry that fit a free slot (Attach).
+# Updates live as the inventory changes. Closes with E / Esc / Tab, or if you die or walk out of reach. Builds its
+# controls in code. Group "crafting_ui".
+# Depends on: RecipeDB, CraftingRules, ItemDB, GearRules, Workbench, Player (group "local_player").
 extends Control
 
+var _tabs: TabBar
 var _tree: Tree
 var _craft: Button
 var _bench: Node
@@ -22,7 +26,7 @@ func _ready() -> void:
 	center.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(center)
 	var panel := PanelContainer.new()
-	panel.custom_minimum_size = Vector2(780, 380)
+	panel.custom_minimum_size = Vector2(780, 420)
 	center.add_child(panel)
 	var box := VBoxContainer.new()
 	box.add_theme_constant_override("separation", 8)
@@ -31,15 +35,18 @@ func _ready() -> void:
 	title.text = "WORKBENCH"
 	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	box.add_child(title)
+	_tabs = TabBar.new()
+	_tabs.focus_mode = Control.FOCUS_NONE
+	_tabs.add_tab("Recipes")
+	_tabs.add_tab("Gear: mods + repair")
+	_tabs.tab_changed.connect(func(_i: int) -> void: _refresh())
+	box.add_child(_tabs)
 	_tree = Tree.new()
 	_tree.focus_mode = Control.FOCUS_NONE
 	_tree.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	_tree.hide_root = true
 	_tree.columns = 3
 	_tree.column_titles_visible = true
-	for i in 3:
-		_tree.set_column_title(i, ["Recipe", "Makes", "Needs (have / need)"][i])
-		_tree.set_column_expand(i, true)
 	_tree.item_selected.connect(_update_button)
 	_tree.item_activated.connect(_craft_selected)
 	box.add_child(_tree)
@@ -88,9 +95,20 @@ func _refresh() -> void:
 	if not visible or not is_instance_valid(_player):
 		return
 	var keep := _selected_id()
-	var inv: InventoryHolder = _player.inventory
 	_tree.clear()
 	var root := _tree.create_item()
+	if _tabs.current_tab == 0:
+		_fill_recipes(root, keep)
+	else:
+		_fill_gear(root, keep)
+	_update_button()
+
+
+func _fill_recipes(root: TreeItem, keep: String) -> void:
+	for i in 3:
+		_tree.set_column_title(i, ["Recipe", "Makes", "Needs (have / need)"][i])
+		_tree.set_column_expand(i, true)
+	var inv: InventoryHolder = _player.inventory
 	for id: String in RecipeDB.ids():
 		var r := RecipeDB.get_recipe(id)
 		var row := _tree.create_item(root)
@@ -107,7 +125,44 @@ func _refresh() -> void:
 			row.set_custom_color(2, Color(1.0, 0.45, 0.4))
 		if id == keep:
 			row.select(0)
-	_update_button()
+
+
+# Rows: "repair:<uid>" for a piece of gear, "detach:<uid>:<mod>" / "attach:<uid>:<mod>" under guns.
+func _fill_gear(root: TreeItem, keep: String) -> void:
+	for i in 3:
+		_tree.set_column_title(i, ["Gear", "Condition", "Repair / mods"][i])
+		_tree.set_column_expand(i, i != 1)
+	var inv: InventoryHolder = _player.inventory
+	var scrap := inv.count("scrap_metal")
+	for g: Dictionary in inv.gear_list():
+		var uid := int(g.uid)
+		var row := _tree.create_item(root)
+		row.set_text(0, GearRules.display_name(g))
+		row.set_custom_color(0, GearRules.rarity_color(str(g.rarity)))
+		row.set_metadata(0, "repair:%d" % uid)
+		row.set_text(1, "%d%%" % roundi(float(g.cond) * 100.0))
+		var cost := GearRules.repair_cost(g)
+		row.set_text(2, "full condition" if cost == 0 else "repair: %d scrap (have %d)" % [cost, scrap])
+		if cost > scrap:
+			row.set_custom_color(2, Color(1.0, 0.45, 0.4))
+		if row.get_metadata(0) == keep:
+			row.select(0)
+		if not GearRules.is_weapon(str(g.id)):
+			continue
+		for m: String in g.get("mods", []):
+			var mr := _tree.create_item(row)
+			mr.set_text(0, "   Remove %s" % ItemDB.get_item(m).get("name", m))
+			mr.set_metadata(0, "detach:%d:%s" % [uid, m])
+			if mr.get_metadata(0) == keep:
+				mr.select(0)
+		for m: String in inv.model.items:
+			if GearRules.can_attach(g, m):
+				var ar := _tree.create_item(row)
+				ar.set_text(0, "   Attach %s (have %d)" % [ItemDB.get_item(m).get("name", m), inv.count(m)])
+				ar.set_custom_color(0, Color(0.6, 0.95, 0.6))
+				ar.set_metadata(0, "attach:%d:%s" % [uid, m])
+				if ar.get_metadata(0) == keep:
+					ar.select(0)
 
 
 func _stacks(stacks: Dictionary) -> String:
@@ -124,14 +179,44 @@ func _selected_id() -> String:
 
 func _update_button() -> void:
 	var id := _selected_id()
-	_craft.disabled = id == "" or not is_instance_valid(_player) \
-		or not CraftingRules.can_craft(RecipeDB.get_recipe(id), _player.inventory.count)
+	if _tabs.current_tab == 0:
+		_craft.text = "Craft"
+		_craft.disabled = id == "" or not is_instance_valid(_player) \
+			or not CraftingRules.can_craft(RecipeDB.get_recipe(id), _player.inventory.count)
+		return
+	var parts := id.split(":")
+	match parts[0]:
+		"repair":
+			var g: Dictionary = _player.inventory.get_gear(int(parts[1]))
+			var cost := GearRules.repair_cost(g)
+			_craft.text = "Repair (%d scrap)" % cost
+			_craft.disabled = cost <= 0 or _player.inventory.count("scrap_metal") < cost
+		"attach":
+			_craft.text = "Attach"
+			_craft.disabled = false
+		"detach":
+			_craft.text = "Remove"
+			_craft.disabled = false
+		_:
+			_craft.text = "Pick a weapon or mod"
+			_craft.disabled = true
 
 
 func _craft_selected() -> void:
 	var id := _selected_id()
-	if id != "" and is_instance_valid(_bench) and not _craft.disabled:
+	if id == "" or not is_instance_valid(_bench) or _craft.disabled:
+		return
+	if _tabs.current_tab == 0:
 		_bench.request_craft.rpc_id(1, id)
+		return
+	var parts := id.split(":")
+	match parts[0]:
+		"repair":
+			_bench.request_repair.rpc_id(1, int(parts[1]))
+		"attach":
+			_bench.request_attach.rpc_id(1, int(parts[1]), parts[2])
+		"detach":
+			_bench.request_detach.rpc_id(1, int(parts[1]), parts[2])
 
 
 func _unhandled_input(event: InputEvent) -> void:

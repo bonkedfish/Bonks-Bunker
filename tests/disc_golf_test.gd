@@ -138,7 +138,7 @@ func _ready() -> void:
 	await get_tree().create_timer(1.0).timeout
 	await _shot("dg_basket.png")
 	# Score the rest directly (3 each, an ace on hole 5) and finish.
-	var before: int = player.inventory.count("disc_golden_ace")
+	var before: int = _aces(player)
 	for h in range(1, 9):
 		dg.card[me].throws = 1 if h == 4 else 3
 		if h != 4:
@@ -170,7 +170,7 @@ func _ready() -> void:
 	for s: Variant in dg.card[me].strokes:
 		total += int(s)
 	_check("card finished: total %d" % total, dg.card[me].done and not dg.round_active)
-	_check("ace reward (Golden Ace Disc)", player.inventory.count("disc_golden_ace") == before + 1)
+	_check("ace reward (Golden Ace Disc, a legendary weapon now - D-088)", _aces(player) == before + 1)
 	var quests := get_tree().get_first_node_in_group("quests")
 	_check("best score saved as a flag (%d)" % int(quests.flags.get("dg_best_centennial", 0)), int(quests.flags.get("dg_best_centennial", 0)) == total)
 	var hud_dg: Node = null
@@ -336,3 +336,12 @@ func _check(what: String, ok: bool) -> void:
 func _say(s: String) -> void:
 	print("DISCGOLF: " + s)
 	_log.append(s)
+
+
+# Golden Aces the player holds: rolled gear since D-087 / D-088 (count() only counts stackable items).
+func _aces(player: Node) -> int:
+	var n := 0
+	for g: Dictionary in player.inventory.gear_list():
+		if str(g.id) == "disc_golden_ace":
+			n += 1
+	return n

@@ -1,11 +1,18 @@
 {
-	"note": "Drop Zone games (D-074). Range ball (GolfBallRules): launch speed = club speed x power^power_curve at the club's loft, quadratic drag, backspin lift (decays at spin_decay/s) -> full-power carry ~200 m driver / 140 m 7-iron / 90 m wedge; first bounce keeps bounce of the vertical and roll_keep of the horizontal speed, then it rolls out at roll_friction m/s2. Targets score where the ball first lands (inner bullseye_frac of the radius x bullseye_mult). Putting: speed = power x max_speed, slowing at decel_green / decel_fringe / decel_sand m/s2; drops into the cup when within cup_r below cup_max_speed; water = +1 stroke, back to the last spot. Pickleball (PickleballRules): rally scoring to win_points (win by win_by), CPU opponent.",
+	"note": "Drop Zone games (D-074). Range ball (GolfBallRules): launch speed = club speed x power^power_curve at the club's loft, quadratic drag, backspin lift (decays at spin_decay/s) -> full-power carry ~200 m driver / 180 3 wood / 158 5 iron / 140 m 7 iron / 115 9 iron / 90 m wedge; the swing meter's error (D-086) starts the ball up to swing.max_yaw_deg off line and curves it with sidespin up to swing.max_curve m/s2 (about 27 m of slice on a full driver); first bounce keeps bounce of the vertical and roll_keep of the horizontal speed, then it rolls out at roll_friction m/s2. Targets score where the ball first lands (inner bullseye_frac of the radius x bullseye_mult). Putting: speed = power x max_speed, slowing at decel_green / decel_fringe / decel_sand m/s2; drops into the cup when within cup_r below cup_max_speed; water = +1 stroke, back to the last spot; a hole's optional slope [x, z] (m/s2 downhill) bends putts on the green / fringe; the meter's error pushes a putt up to swing.putt_yaw_deg off line. Swing meter (SwingMeter, D-086): up_s for the bar to fill, down_s to come back (putts: putt_up_s / putt_down_s), accuracy zone below the line, sweet = PERFECT, good = GOOD (half the error), shank = past the zone. course_clubs: the bag on the country club course (putter = putting roll). Pickleball (PickleballRules): rally scoring to win_points (win by win_by), CPU opponent. D-089: a click starts a swing that makes contact windup_s later and needs recovery_s before the next; timing grades by the ball's time to closest approach at contact (perfect_s / good_s, else early / late; reach_m + reach_slack_m or it's a whiff): PERFECT flies flat (perfect_apex_m) and deep and adds ai_miss_perfect to the CPU's miss chance, EARLY is pulled mistime_yaw_deg left and short, LATE pushed right and floats (late_apex_m, the CPU smashes it). Volleys: not the serve or the return (two-bounce rule), not from within kitchen_m of the net. The CPU lobs (lob_apex_m) a player within net_camp_m of the net. callout_s: how long the point callout stays up.",
 	"clubs": {
 		"driver": {"name": "Driver", "speed": 77.7, "loft_deg": 11.0},
+		"wood3": {"name": "3 Wood", "speed": 68.6, "loft_deg": 14.0},
+		"iron5": {"name": "5 Iron", "speed": 59.9, "loft_deg": 17.0},
 		"iron7": {"name": "7 Iron", "speed": 53.5, "loft_deg": 19.0},
+		"iron9": {"name": "9 Iron", "speed": 43.8, "loft_deg": 27.0},
 		"wedge": {"name": "Wedge", "speed": 36.0, "loft_deg": 33.0}
 	},
-	"club_order": ["driver", "iron7", "wedge"],
+	"club_order": ["driver", "wood3", "iron5", "iron7", "iron9", "wedge"],
+	"course_clubs": ["driver", "wood3", "iron5", "iron7", "iron9", "wedge", "putter"],
+	"swing": {"up_s": 1.05, "down_s": 0.75, "putt_up_s": 1.5, "putt_down_s": 1.0, "zone": 0.14, "sweet": 0.025, "good": 0.065,
+		"shank": 1.5, "shank_power": 0.6, "max_yaw_deg": 2.5, "max_curve": 2.4, "putt_yaw_deg": 4.0, "cam_back_m": 5.0,
+		"cam_up_m": 2.4, "putt_cam_back_m": 2.6, "putt_cam_up_m": 1.1, "grade_show_s": 1.6},
 	"ball": {"drag": 0.006, "lift": 0.0035, "spin_decay": 0.12, "power_curve": 0.5, "bounce": 0.3, "roll_keep": 0.55,
 		"roll_friction": 2.5, "max_flight_s": 14.0, "step_hz": 60.0, "sample_hz": 30.0, "tee_height_m": 0.05},
 	"range": {"balls": 20, "bullseye_frac": 0.34, "bullseye_mult": 2.0, "bay_radius_m": 2.5, "charge_seconds": 1.3},
@@ -13,5 +20,8 @@
 		"cup_max_speed": 1.4, "max_strokes": 6, "lie_radius_m": 1.6, "start_radius_m": 10.0, "charge_seconds": 1.2},
 	"pickleball": {"g": 9.8, "ball_r": 0.037, "bounce": 0.62, "skid_keep": 0.85, "net_h": 0.86, "reach_m": 1.8,
 		"hit_speed_apex_m": [1.7, 2.5], "serve_apex_m": 2.4, "ai_speed": 4.3, "ai_reach_m": 1.4, "ai_miss": 0.07,
-		"ai_miss_per_mps": 0.012, "win_points": 11, "win_by": 2, "serve_delay_s": 1.6, "point_pause_s": 1.6, "join_radius_m": 6.0}
+		"ai_miss_per_mps": 0.012, "win_points": 11, "win_by": 2, "serve_delay_s": 1.6, "point_pause_s": 1.6, "join_radius_m": 6.0,
+		"kitchen_m": 2.13, "windup_s": 0.12, "recovery_s": 0.5, "perfect_s": 0.06, "good_s": 0.15, "reach_slack_m": 0.6,
+		"perfect_apex_m": 1.45, "late_apex_m": 3.4, "mistime_yaw_deg": 12.0, "lob_apex_m": 5.5, "net_camp_m": 3.0,
+		"ai_miss_perfect": 0.18, "callout_s": 2.0}
 }

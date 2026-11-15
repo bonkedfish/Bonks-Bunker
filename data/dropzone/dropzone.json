@@ -1,5 +1,5 @@
 {
- "note": "Drop Zone (D-074), 101 11th Ave, Kearney: layout in landmark-local metres (origin = building centre, map (692.2, 1316.5); x east, z south). Building = OSM footprint; 32 bays (16 per level) on the east face looking down the range between Kea Lake (north) and I-80 (south); targets as in the user's drone photo (3 red, 2 blue, yellow, white; distances from the bay line); 18-hole putting course north-west of the building by the lake (layout generated, not surveyed); 4 pickleball courts on the OSM pitch. Built by tools/landmarks/build_dropzone.tscn; games read the same file.",
+ "note": "Putting holes carry a slope [x, z] (m/s2 the green pulls the ball downhill, D-086). Drop Zone (D-074), 101 11th Ave, Kearney: layout in landmark-local metres (origin = building centre, map (692.2, 1316.5); x east, z south). Building = OSM footprint; 32 bays (16 per level) on the east face looking down the range between Kea Lake (north) and I-80 (south); targets as in the user's drone photo (3 red, 2 blue, yellow, white; distances from the bay line); 18-hole putting course north-west of the building by the lake (layout generated, not surveyed); 4 pickleball courts on the OSM pitch. Built by tools/landmarks/build_dropzone.tscn; games read the same file.",
  "out_dir": "res://world/landmarks",
  "scene": "res://world/landmarks/dropzone.scn",
  "building": {
@@ -291,7 +291,7 @@
      -6.71,
      -92.28
     ],
-    "par": 3,
+    "par": 3, "slope": [0.0, 0.0],
     "green": {
      "c": [
       -13.0,
@@ -318,7 +318,7 @@
      9.06,
      -93.45
     ],
-    "par": 2,
+    "par": 2, "slope": [0.12, -0.0],
     "green": {
      "c": [
       5.0,
@@ -345,7 +345,7 @@
      27.83,
      -94.1
     ],
-    "par": 3,
+    "par": 3, "slope": [-0.062, 0.169],
     "green": {
      "c": [
       23.0,
@@ -372,7 +372,7 @@
      18.2,
      -80.27
     ],
-    "par": 2,
+    "par": 2, "slope": [-0.05, -0.087],
     "green": {
      "c": [
       23.0,
@@ -392,7 +392,7 @@
      -0.18,
      -79.96
     ],
-    "par": 3,
+    "par": 3, "slope": [0.156, 0.156],
     "green": {
      "c": [
       5.0,
@@ -419,7 +419,7 @@
      -17.33,
      -79.54
     ],
-    "par": 2,
+    "par": 2, "slope": [0.026, -0.148],
     "green": {
      "c": [
       -13.0,
@@ -439,7 +439,7 @@
      -8.22,
      -69.53
     ],
-    "par": 2,
+    "par": 2, "slope": [-0.235, 0.086],
     "green": {
      "c": [
       -13.0,
@@ -466,7 +466,7 @@
      9.9,
      -69.88
     ],
-    "par": 2,
+    "par": 2, "slope": [-0.104, -0.06],
     "green": {
      "c": [
       5.0,
@@ -493,7 +493,7 @@
      27.92,
      -70.84
     ],
-    "par": 3,
+    "par": 3, "slope": [0.173, -0.1],
     "green": {
      "c": [
       23.0,
@@ -520,7 +520,7 @@
      19.05,
      -59.44
     ],
-    "par": 2,
+    "par": 2, "slope": [0.049, 0.276],
     "green": {
      "c": [
       23.0,
@@ -540,7 +540,7 @@
      0.22,
      -59.18
     ],
-    "par": 2,
+    "par": 2, "slope": [-0.158, 0.028],
     "green": {
      "c": [
       5.0,
@@ -560,7 +560,7 @@
      -19.28,
      -59.54
     ],
-    "par": 3,
+    "par": 3, "slope": [0.12, -0.208],
     "green": {
      "c": [
       -13.0,
@@ -587,7 +587,7 @@
      -7.38,
      -45.9
     ],
-    "par": 3,
+    "par": 3, "slope": [-0.116, 0.138],
     "green": {
      "c": [
       -13.0,
@@ -614,7 +614,7 @@
      8.58,
      -45.96
     ],
-    "par": 2,
+    "par": 2, "slope": [0.282, 0.103],
     "green": {
      "c": [
       5.0,
@@ -634,7 +634,7 @@
      27.08,
      -47.38
     ],
-    "par": 2,
+    "par": 2, "slope": [-0.07, -0.121],
     "green": {
      "c": [
       23.0,
@@ -661,7 +661,7 @@
      17.12,
      -35.89
     ],
-    "par": 3,
+    "par": 3, "slope": [-0.256, -0.045],
     "green": {
      "c": [
       23.0,
@@ -688,7 +688,7 @@
      0.98,
      -35.12
     ],
-    "par": 2,
+    "par": 2, "slope": [0.1, 0.173],
     "green": {
      "c": [
       5.0,
@@ -715,7 +715,7 @@
      -18.24,
      -34.42
     ],
-    "par": 3,
+    "par": 3, "slope": [0.212, -0.212],
     "green": {
      "c": [
       -13.0,

@@ -1,23 +1,61 @@
 {
 	"pistol_9mm": {
-		"name": "9mm Pistol",
-		"kind": "gun",
-		"damage": 25.0,
-		"fire_interval": 0.2,
-		"range": 80.0,
-		"mag_size": 12.0,
-		"ammo_item": "ammo_9mm",
-		"reload_time": 1.4,
-		"noise_radius": 35.0
+		"name": "9mm Pistol", "kind": "gun", "damage": 25.0, "fire_interval": 0.2, "range": 80.0, "mag_size": 12.0,
+		"ammo_item": "ammo_9mm", "reload_time": 1.4, "noise_radius": 35.0,
+		"mesh": "Pistol", "spread_deg": 0.6, "wear": 0.0012, "mod_slots": ["optic", "muzzle", "mag"]
+	},
+	"revolver_44": {
+		"name": "Prairie .44 Revolver", "kind": "gun", "damage": 55.0, "fire_interval": 0.55, "range": 90.0, "mag_size": 6.0,
+		"ammo_item": "ammo_44", "reload_time": 2.4, "noise_radius": 45.0,
+		"mesh": "Pistol", "spread_deg": 0.8, "wear": 0.002, "mod_slots": ["optic", "muzzle"]
+	},
+	"smg_9mm": {
+		"name": "Scrapper SMG", "kind": "gun", "damage": 15.0, "fire_interval": 0.08, "range": 60.0, "mag_size": 30.0,
+		"ammo_item": "ammo_9mm", "reload_time": 2.0, "noise_radius": 40.0,
+		"mesh": "SMG", "spread_deg": 2.6, "auto": true, "wear": 0.0006, "mod_slots": ["optic", "muzzle", "mag"]
+	},
+	"shotgun_pump": {
+		"name": "Platte Pump Shotgun", "kind": "gun", "damage": 12.0, "fire_interval": 0.9, "range": 30.0, "mag_size": 6.0,
+		"ammo_item": "ammo_shells", "reload_time": 2.8, "noise_radius": 55.0,
+		"mesh": "Shotgun", "pellets": 8.0, "spread_deg": 6.0, "wear": 0.002, "mod_slots": ["muzzle", "mag"]
+	},
+	"rifle_hunting": {
+		"name": "Sandhills Hunting Rifle", "kind": "gun", "damage": 70.0, "fire_interval": 1.1, "range": 160.0, "mag_size": 5.0,
+		"ammo_item": "ammo_308", "reload_time": 2.6, "noise_radius": 70.0,
+		"mesh": "Rifle", "spread_deg": 0.15, "zoom": 1.6, "wear": 0.002, "mod_slots": ["optic", "muzzle", "mag"]
+	},
+	"rifle_ar": {
+		"name": "Union Pacific AR-15", "kind": "gun", "damage": 28.0, "fire_interval": 0.11, "range": 120.0, "mag_size": 30.0,
+		"ammo_item": "ammo_556", "reload_time": 2.2, "noise_radius": 60.0,
+		"mesh": "Rifle", "spread_deg": 1.4, "auto": true, "zoom": 1.3, "wear": 0.0008, "mod_slots": ["optic", "muzzle", "mag"]
+	},
+	"rifle_sniper": {
+		"name": "Cornhusker Long Rifle", "kind": "gun", "damage": 120.0, "fire_interval": 1.6, "range": 260.0, "mag_size": 4.0,
+		"ammo_item": "ammo_308", "reload_time": 3.2, "noise_radius": 85.0,
+		"mesh": "Rifle", "spread_deg": 0.05, "zoom": 3.0, "wear": 0.0025, "mod_slots": ["optic", "muzzle"]
 	},
 	"bat_baseball": {
-		"name": "Baseball Bat",
-		"kind": "melee",
-		"damage": 40.0,
-		"windup": 0.2,
-		"swing_interval": 0.75,
-		"range": 2.2,
-		"arc_degrees": 80.0,
-		"noise_radius": 3.0
+		"name": "Baseball Bat", "kind": "melee", "damage": 40.0, "windup": 0.2, "swing_interval": 0.75, "range": 2.2,
+		"arc_degrees": 80.0, "noise_radius": 3.0,
+		"mesh": "WoodenBat_Barbed", "wear": 0.003
+	},
+	"knife_combat": {
+		"name": "Combat Knife", "kind": "melee", "damage": 30.0, "windup": 0.08, "swing_interval": 0.4, "range": 1.8,
+		"arc_degrees": 60.0, "noise_radius": 2.0,
+		"mesh": "Knife", "wear": 0.002
+	},
+	"axe_fire": {
+		"name": "Fire Axe", "kind": "melee", "damage": 65.0, "windup": 0.35, "swing_interval": 1.05, "range": 2.3,
+		"arc_degrees": 70.0, "noise_radius": 4.0,
+		"mesh": "Axe", "wear": 0.003
+	},
+	"disc_golden_ace": {
+		"name": "Golden Ace", "kind": "thrown", "damage": 60.0, "fire_interval": 0.3, "range": 20.0, "speed": 24.0,
+		"noise_radius": 2.0, "mesh": "", "wear": 0.0
+	},
+	"fists": {
+		"name": "Fists", "kind": "melee", "damage": 8.0, "windup": 0.1, "swing_interval": 0.5, "range": 1.6,
+		"arc_degrees": 60.0, "noise_radius": 1.0,
+		"mesh": "", "wear": 0.0
 	}
 }

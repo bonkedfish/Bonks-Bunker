@@ -2,7 +2,9 @@
 # window (CraftingUI, group "crafting_ui") locally; Craft asks the host, which checks the player is alive and in
 # reach and holds every ingredient, then takes the ingredients and gives the result. Instant. Recipes are data
 # (RecipeDB). Group "workbenches". Built from `size` in code like a loot container (bench top, legs, a vise).
-# Depends on: RecipeDB, CraftingRules, CarryRules (interact range), InventoryHolder.
+# Gear (D-087): also where weapon mods go on / come off (the mod item moves between the inventory and the gun) and
+# where gear is repaired to full condition for scrap metal (GearRules.repair_cost).
+# Depends on: RecipeDB, CraftingRules, CarryRules (interact range), InventoryHolder, GearRules.
 extends StaticBody3D
 
 signal crafted(recipe_id: String)
@@ -55,6 +57,52 @@ func request_craft(recipe_id: String) -> void:
 	for item: String in recipe.gives:
 		inv.host_add(item, int(recipe.gives[item]))
 	crafted.emit(recipe_id)
+
+
+@rpc("any_peer", "call_local", "reliable")
+func request_attach(uid: int, mod_id: String) -> void:
+	var player := _sender_player() if multiplayer.is_server() else null
+	if player == null or player.inventory.count(mod_id) <= 0:
+		return
+	player.weapons.host_flush()
+	var g: Dictionary = player.inventory.get_gear(uid)
+	if g.is_empty() or not GearRules.can_attach(g, mod_id):
+		return
+	player.inventory.host_remove(mod_id, 1)
+	var c := g.duplicate(true)
+	(c.mods as Array).append(mod_id)
+	player.inventory.host_set_gears({uid: c})
+
+
+@rpc("any_peer", "call_local", "reliable")
+func request_detach(uid: int, mod_id: String) -> void:
+	var player := _sender_player() if multiplayer.is_server() else null
+	if player == null:
+		return
+	player.weapons.host_flush()
+	var g: Dictionary = player.inventory.get_gear(uid)
+	if g.is_empty() or not mod_id in g.get("mods", []):
+		return
+	var c := g.duplicate(true)
+	(c.mods as Array).erase(mod_id)
+	player.inventory.host_set_gears({uid: c})
+	player.inventory.host_add(mod_id, 1)
+
+
+@rpc("any_peer", "call_local", "reliable")
+func request_repair(uid: int) -> void:
+	var player := _sender_player() if multiplayer.is_server() else null
+	if player == null:
+		return
+	player.weapons.host_flush()
+	var g: Dictionary = player.inventory.get_gear(uid)
+	var cost := GearRules.repair_cost(g) if not g.is_empty() else 0
+	if cost <= 0 or player.inventory.count("scrap_metal") < cost:
+		return
+	player.inventory.host_remove("scrap_metal", cost)
+	var c := g.duplicate(true)
+	c.cond = 1.0
+	player.inventory.host_set_gears({uid: c})
 
 
 func _sender_player() -> Node:

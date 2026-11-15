@@ -1,4 +1,5 @@
 # PauseMenu — Esc in game (D-068): Resume, Settings (the shared SettingsMenu on top), Controls (keybind list),
+# Respawn at Bunker (D-091: back to your spawn if you're stuck; asks the host, closes the menu),
 # Save & Quit (host / singleplayer saves the world first, then everyone in this game goes back to the start screen)
 # and Quit to Desktop (saves first when you're the host). Singleplayer freezes the game while it's open; in co-op the
 # world keeps running. Leaves Esc to any other open window (inventory, loot, map, quest book, dialogue choice).
@@ -43,7 +44,7 @@ func _ready() -> void:
 	_note.add_theme_color_override("font_color", Color(0.75, 0.72, 0.65))
 	box.add_child(_note)
 	for spec: Array in [["Resume", close], ["Settings", _settings], ["Controls", _toggle_controls],
-			["Save & Quit to Menu", save_and_quit], ["Quit to Desktop", _quit_desktop]]:
+			["Respawn at Bunker", _respawn_bunker], ["Save & Quit to Menu", save_and_quit], ["Quit to Desktop", _quit_desktop]]:
 		var b := Button.new()
 		b.text = str(spec[0])
 		b.custom_minimum_size = Vector2(0, 34)
@@ -104,6 +105,13 @@ func close() -> void:
 	hide()
 	get_tree().paused = false
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+
+
+func _respawn_bunker() -> void:
+	var me := get_tree().get_first_node_in_group("local_player")
+	if me:
+		me.request_respawn_bunker.rpc_id(1)
+	close()
 
 
 func save_and_quit() -> void:

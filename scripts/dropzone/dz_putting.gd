@@ -1,12 +1,14 @@
 # DzPutting — Drop Zone's 18-hole putting course (D-074), DropZone child "Putting".
 #   Host: E at the start sign gives that player a card (ball on hole 1's tee). Validates putt intents (has a card,
-#         standing by their ball, ball at rest), rolls the putt at once (GolfBallRules.roll_putt: green / fringe /
-#         sand speeds, water and out of the course = +1 and back to the last spot, the cup catches slow balls),
+#         standing by their ball, ball at rest; power / meter error clamped), rolls the putt at once
+#         (GolfBallRules.roll_putt: green / fringe / sand speeds, the hole's slope, the swing meter's push (D-086),
+#         water and out of the course = +1 and back to the last spot, the cup catches slow balls),
 #         sends the path to everyone, and when it has stopped on screen moves the ball, scores holed / picked-up
 #         holes (max_strokes) and moves on to the next tee. After 18 the card is done (best: quest flag
 #         "dz_best_putting", lowest). Walking off the course drops the card.
 #   Every peer: `cards` (peer -> {hole, strokes: Array, ball: Vector2, throws, done}) synced whole; ball playback /
-#         resting balls; puts the local player's SportInput into "putt" mode while they have a card.
+#         resting balls; puts the local player's SportInput into "putt" mode while they have a card; answers the
+#         golf view's aim_* questions (putt line, slope ticks).
 # Depends on: DropZone (parent: data, sender_player, toast), GolfBallRules, BallPlayback, SportInput, QuestDirector.
 class_name DzPutting
 extends Node3D
@@ -70,11 +72,11 @@ func request_use(_index: int) -> void:
 	var tee: Array = hole_def(0).tee
 	cards[p.peer_id] = {"hole": 0, "strokes": strokes, "ball": Vector2(tee[0], tee[1]), "throws": 0, "done": false}
 	_sync.rpc(cards)
-	_say.rpc_id(p.peer_id, "Putting course: 18 holes, par %d. Stand by your ball, hold left click to putt." % par_total())
+	_say.rpc_id(p.peer_id, "Putting course: 18 holes, par %d. Stand by your ball: click, click for power, click on the line. Mind the slope." % par_total())
 
 
 @rpc("any_peer", "call_local", "reliable")
-func request_shot(_club: String, power: float, yaw: float) -> void:
+func request_shot(_club: String, power: float, yaw: float, error := 0.0) -> void:
 	var p := DropZone.sender_player(self)
 	if p == null or not cards.has(p.peer_id) or _in_flight.has(p.peer_id):
 		return
@@ -86,12 +88,76 @@ func request_shot(_club: String, power: float, yaw: float) -> void:
 	if Vector2(at.x, at.z).distance_to(ball) > float(_t.putting.lie_radius_m):
 		_say.rpc_id(p.peer_id, "Walk up to your ball")
 		return
-	var res := GolfBallRules.roll_putt(ball, yaw - dz().global_rotation.y, power, hole_def(int(c.hole)), dz().data.putting.area, _t)
+	var res := GolfBallRules.roll_putt(ball, yaw - dz().global_rotation.y, clampf(power, 0.0, 1.0), hole_def(int(c.hole)),
+		dz().data.putting.area, _t, clampf(error, -1.5, 1.5))
 	var path3 := PackedVector3Array()
 	for q: Vector2 in res.path:
 		path3.append(Vector3(q.x, BALL_Y, q.y))
 	_in_flight[p.peer_id] = [_play.duration(path3, float(_t.ball.sample_hz)) + 0.2, res, ball]
 	_show.rpc(p.peer_id, path3)
+
+
+# --- the local player's golf view (SportInput / GolfView) -----------------------------------------
+
+func _my_card() -> Dictionary:
+	var c: Dictionary = cards.get(multiplayer.get_unique_id(), {})
+	return {} if c.is_empty() or c.done else c
+
+
+func aim_ball() -> Vector3:
+	var c := _my_card()
+	return Vector3.INF if c.is_empty() else dz().to_world(Vector3(c.ball.x, 0.0, c.ball.y))
+
+
+func aim_ready() -> bool:
+	var me := get_tree().get_first_node_in_group("local_player")
+	var ball := aim_ball()
+	if me == null or ball == Vector3.INF or aim_flying():
+		return false
+	return Vector2(me.global_position.x - ball.x, me.global_position.z - ball.z).length() <= float(_t.putting.lie_radius_m)
+
+
+func aim_flying() -> bool:
+	return is_rolling(multiplayer.get_unique_id())
+
+
+func aim_flight_pos() -> Vector3:
+	return _play.world_pos(multiplayer.get_unique_id())
+
+
+func aim_cup() -> Vector3:
+	var c := _my_card()
+	if c.is_empty():
+		return Vector3.INF
+	var cup: Array = hole_def(int(c.hole)).cup
+	return dz().to_world(Vector3(float(cup[0]), 0.0, float(cup[1])))
+
+
+func aim_clubs() -> Array:
+	return ["putter"]
+
+
+func aim_power_mult() -> float:
+	return 1.0
+
+
+# Downhill pull of this hole's green, rotated into world space.
+func aim_slope() -> Vector2:
+	var c := _my_card()
+	if c.is_empty() or not hole_def(int(c.hole)).has("slope"):
+		return Vector2.ZERO
+	var s: Array = hole_def(int(c.hole)).slope
+	var w: Vector3 = dz().global_basis * Vector3(float(s[0]), 0.0, float(s[1]))
+	return Vector2(w.x, w.z)
+
+
+func aim_on_green() -> bool:
+	return true
+
+
+func aim_ground(p: Vector3) -> Vector3:
+	var local: Vector3 = dz().to_local_pos(p)
+	return dz().to_world(Vector3(local.x, 0.0, local.z))
 
 
 func _physics_process(delta: float) -> void:

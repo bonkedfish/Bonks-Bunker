@@ -11,14 +11,22 @@
 # loot container under the crosshair (10x/sec) and opens it on E. Hunger/thirst live in "Needs" (low = no
 # sprint) and timed item use in "ItemUse" (D-046); the host ticks both. Water (D-047): a ray against the water
 # surface colliders (layer 32) gives the depth at the feet; wading slows, swimming floats (no sprint, no firing).
-# Name (D-081): net_name is the character's name in this world (host sets it from the save or from the owner's
-# NamePrompt via submit_name); other players see it on a NameTag over this body.
+# Colour (D-092): net_color picks this player's PlayerColors colour on maps and scorecards.
+# Name + look (D-081, D-096): net_name / net_look are the character's name and creator look in this world (host sets
+# them from the save, then from the owner's CharacterCreator on every load-in via submit_look); other players see
+# the name on a NameTag and the look on this body.
 # Motorcycle (D-083): while "Bike" (BikeRider) is mounted, _simulate hands the intent (plus the gear the rider picked,
 # sent with every intent) to it, the mouse orbits its camera, fire / reload / weapon swaps are off.
+# Gear (D-087): keys 1 / 2 / 3 pick gun1 / gun2 / melee (WeaponHolder reads them from the equipped gear; empty =
+# fists); right mouse zooms with guns that have a zoom (scopes); equipped armor sets health.resist and wears when it
+# blocks damage.
+# Unstick (D-091): the host puts a player who has been falling for fall_rescue_seconds back where they last stood
+# (only a hole in the map is that deep), and the pause menu's "Respawn at bunker" (request_respawn_bunker) puts the
+# owner back at their spawn.
 # Depends on: MovementRules, CombatRules, CarryRules, DataLoader, NetClock, Health, WeaponHolder, LifeState,
 #             InventoryHolder, Viewmodel, CharacterAnimator (Body: other players see an animated survivor model,
 #             D-045), data/tuning/player_movement.json, combat.json, inventory.json, data/art/character_models.json,
-#             NameTag, NameRules, NamePrompt (group "name_prompt"), BikeRider.
+#             NameTag, NameRules, CharacterCreator (group "name_prompt"), AppearanceRules, BikeRider.
 extends CharacterBody3D
 
 const NameTag := preload("res://scripts/player/name_tag.gd")
@@ -29,7 +37,7 @@ const FLAG_JUMP := 1
 const FLAG_SPRINT := 2
 const FLAG_CROUCH := 4
 const FLAG_INTERACT := 64             # held: revive a downed teammate in range
-const ALL_FLAGS := 127                # movement + WeaponHolder FIRE/RELOAD/SLOT2 + INTERACT
+const ALL_FLAGS := 255                # movement + WeaponHolder FIRE/RELOAD/SLOT2/SLOT3 + INTERACT
 const DOWNED_EYE_HEIGHT := 0.45
 const INTERACT_MASK := 9              # world + interactables (layer 4); containers are on both
 const LOOK_INTERVAL := 0.1
@@ -50,11 +58,17 @@ var net_yaw := 0.0
 var net_pitch := 0.0
 var net_crouched := false
 var net_ack_seq := 0
+var net_color := 0  # D-092: index into PlayerColors, set by the host when this body spawns
 var net_name := "":  # D-081, "" until named
 	set(value):
 		net_name = value
 		if _tag:
 			_tag.text = value
+var net_look := {}:  # D-096: the character creator's look (AppearanceRules), set by the host; others see the body
+	set(value):
+		net_look = value
+		if is_inside_tree() and not is_local:
+			_dress_body()
 
 var peer_id := 1
 var is_local := false
@@ -70,6 +84,11 @@ var water := MovementRules.Water.DRY
 var _clock: NetClock
 var _hit_history := PositionHistory.new()
 var _spawn_point := Vector3.ZERO
+var _base_fov := 75.0
+var _scoped := false
+var _safe_pos := Vector3.ZERO   # host: where this player last stood on solid ground (fall rescue, D-091)
+var _safe_timer := 0.0
+var _fall_time := 0.0
 var _shown_life_state := -1
 var _revive_range := 2.0
 var _carry: Dictionary = {}
@@ -155,13 +174,15 @@ func _ready() -> void:
 	if is_local:
 		viewmodel.set_arms_model(model)
 	else:
-		body.set_model(model)
+		_dress_body()
 		_tag = NameTag.new()
 		add_child(_tag)
 		_tag.text = net_name
-	viewmodel.show_slot(0)
 	weapons.viewmodel = viewmodel
 	weapons.inventory = inventory
+	show_held_weapon()
+	inventory.changed.connect(_update_armor)
+	_base_fov = camera.fov
 	_carry = CarryRules.load_tuning()
 
 	var combat_tuning := CombatRules.load_tuning()
@@ -186,6 +207,7 @@ func _ready() -> void:
 		health.reset()
 		health.died.connect(_on_died)
 		health.damaged.connect(_on_hurt)
+		health.armor_blocked.connect(_on_armor_blocked)
 		life.revived.connect(_on_revived)
 		life.bled_out.connect(_on_bled_out)
 		_spawn_point = global_position
@@ -195,28 +217,39 @@ func _ready() -> void:
 		sync.synchronized.connect(_on_snapshot)
 
 
-# Host -> the owning peer: this character has no name in this world yet (D-081), so open the name prompt.
+# Host -> the owning peer, every time they load in (D-096): open the character creator with this character's
+# name ("" for a new one, D-081) and look filled in.
 @rpc("authority", "call_local", "reliable")
-func ask_name() -> void:
-	var prompt := get_tree().get_first_node_in_group("name_prompt")
-	if is_local and prompt:
-		prompt.open(self)
+func ask_name(char_name := "", look := {}) -> void:
+	var creator := get_tree().get_first_node_in_group("name_prompt")
+	if is_local and creator:
+		creator.open(self, char_name, look)
 
 
-# Owning peer -> host: the typed name. The host cleans it (asks again if nothing usable is left) and sets net_name,
-# which Sync sends to everyone and SaveDirector keeps in the world save.
+# Owning peer -> host: the name and look from the creator. The host cleans the name (asks again if nothing usable
+# is left) and the look (AppearanceRules.sanitize), sets net_name / net_look, which Sync sends to everyone and
+# SaveDirector keeps in the world save.
 @rpc("any_peer", "call_local", "reliable")
-func submit_name(raw: String) -> void:
+func submit_look(raw_name: String, look: Dictionary) -> void:
 	if not multiplayer.is_server():
 		return
 	var sender := multiplayer.get_remote_sender_id()
 	if sender != peer_id and not (is_local and sender in [0, multiplayer.get_unique_id()]):
 		return
-	var clean := NameRules.clean(raw, int(NameTag.load_tuning().get("max_length", 20)))
+	var clean := NameRules.clean(raw_name, int(NameTag.load_tuning().get("max_length", 20)))
 	if clean == "":
-		ask_name.rpc_id(peer_id)
+		ask_name.rpc_id(peer_id, net_name, net_look)
 		return
 	net_name = clean
+	net_look = AppearanceRules.sanitize(look)
+
+
+# This body in its look (or the old by-peer survivor before the host has sent one).
+func _dress_body() -> void:
+	if net_look.is_empty():
+		body.set_model(_model_id())
+	else:
+		body.set_model(AppearanceRules.model_of(net_look), false, AppearanceRules.dress(net_look))
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -231,6 +264,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		if bike.mounted:  # orbit the bike camera
 			bike.look(motion.relative.x * sens, motion.relative.y * sens)
 			return
+		sens *= camera.fov / _base_fov  # zoomed in (D-087): finer aim
 		yaw = wrapf(yaw - motion.relative.x * sens, -PI, PI)
 		pitch = clampf(pitch - motion.relative.y * sens, -PITCH_LIMIT, PITCH_LIMIT)
 		rotation.y = yaw
@@ -256,6 +290,7 @@ func _physics_process(delta: float) -> void:
 		effects.host_tick(delta, life.net_state == LifeState.ALIVE)
 		meepo.host_tick(delta)
 		bike.host_tick(delta)
+		_host_fall_guard(delta)
 		_hit_history.record(_clock.tick, global_position, _current_height())
 		net_position = global_position
 		net_yaw = yaw
@@ -264,7 +299,7 @@ func _physics_process(delta: float) -> void:
 		net_ack_seq = _last_processed_seq
 	elif is_local:
 		var move := Vector2.ZERO if dead else _read_local_move()
-		var flags := _read_local_flags() if not dead else (WeaponHolder.FLAG_SLOT2 if selected_slot == 1 else 0)
+		var flags := _read_local_flags() if not dead else WeaponHolder.slot_flags(selected_slot)
 		_seq += 1
 		if bike.mounted:
 			yaw = bike.look_yaw()
@@ -278,15 +313,18 @@ func _physics_process(delta: float) -> void:
 		_interpolate_remote()
 	if is_local:
 		_update_look(delta)
+		_update_aim(delta)
 	else:
-		body.set_weapon_slot(-1 if bike.mounted else weapons.net_slot)
+		body.set_weapon_mesh("" if bike.mounted else weapons.net_mesh)
 		body.riding = meepo.net_riding
-		body.update(delta, false, life.net_state != LifeState.ALIVE, health.current, weapons.net_slot == 0, crouched)
+		body.update(delta, false, life.net_state != LifeState.ALIVE, health.current, weapons.net_armed, crouched)
 	_update_life_visuals()
 
 
-# Survivor model for this player (by peer id until character creation exists).
+# Survivor model for this player: the look's base body (D-096), else by peer id.
 func _model_id() -> String:
+	if not net_look.is_empty():
+		return AppearanceRules.model_of(net_look)
 	var list: Array = DataLoader.load_json(CharacterAnimator.DATA_PATH).get("player_models", [])
 	return str(list[absi(peer_id) % list.size()]) if not list.is_empty() else ""
 
@@ -378,6 +416,7 @@ func _give_starting_items(combat_tuning: Dictionary) -> void:
 	var start: Dictionary = _carry.get("starting_items", {})
 	for id: String in start:
 		inventory.host_add(id, int(start[id]))
+	weapons.reset_loadout()  # rolled starting guns come with a full magazine
 
 
 func _update_look(delta: float) -> void:
@@ -449,6 +488,50 @@ func _downed_teammate_near() -> bool:
 
 func _on_bled_out() -> void:
 	get_tree().create_timer(CombatRules.load_tuning().get("respawn_seconds", 5.0)).timeout.connect(_respawn)
+
+
+# --- unstick (D-091) ---------------------------------------------------------
+
+# Pause menu "Respawn at bunker": the owner asks, the host moves them back to their spawn (the bunker), off any bike
+# or Meepo; health, needs and items stay as they are. Not while down or dead (that has its own respawn).
+@rpc("any_peer", "call_local", "reliable")
+func request_respawn_bunker() -> void:
+	if not multiplayer.is_server():
+		return
+	var sender := multiplayer.get_remote_sender_id()
+	if sender == 0:
+		sender = multiplayer.get_unique_id()
+	if sender != peer_id or life.net_state != LifeState.ALIVE:
+		return
+	_host_teleport(_spawn_point)
+
+
+# Falling this long can only be a hole in the map (no drop in Kearney takes 8 s): back to the last solid ground.
+func _host_fall_guard(delta: float) -> void:
+	if is_on_floor():
+		_fall_time = 0.0
+		_safe_timer += delta
+		if _safe_timer >= 0.5:
+			_safe_timer = 0.0
+			_safe_pos = global_position
+		return
+	if water != MovementRules.Water.DRY or velocity.y > -2.0:
+		_fall_time = 0.0
+		return
+	_fall_time += delta
+	if _fall_time >= float(tuning.get("fall_rescue_seconds", 8.0)):
+		push_warning("Player %d fell for %.0f s at %s (a hole in the map); back to %s" % [peer_id, _fall_time,
+			global_position, _safe_pos])
+		_host_teleport((_safe_pos if _safe_pos != Vector3.ZERO else _spawn_point) + Vector3(0, 0.3, 0))
+
+
+func _host_teleport(to: Vector3) -> void:
+	if bike.mounted:
+		bike.host_dismount(false)
+	meepo.net_riding = false
+	global_position = to
+	velocity = Vector3.ZERO
+	_fall_time = 0.0
 
 
 func _respawn() -> void:
@@ -545,6 +628,8 @@ func _read_local_flags() -> int:
 			_select_slot(0)
 		if Input.is_action_just_pressed("weapon_2"):
 			_select_slot(1)
+		if Input.is_action_just_pressed("weapon_3"):
+			_select_slot(2)
 		if Input.is_action_just_pressed("jump") or (bike.mounted and Input.is_action_pressed("jump")):  # bike: lean back
 			flags |= FLAG_JUMP
 		if Input.is_action_pressed("sprint"):
@@ -557,8 +642,7 @@ func _read_local_flags() -> int:
 			flags |= WeaponHolder.FLAG_RELOAD
 		if Input.is_action_pressed("interact"):
 			flags |= FLAG_INTERACT
-	if selected_slot == 1:
-		flags |= WeaponHolder.FLAG_SLOT2
+	flags |= WeaponHolder.slot_flags(selected_slot)
 	return flags
 
 
@@ -566,7 +650,58 @@ func _select_slot(slot: int) -> void:
 	if bike.mounted or slot == selected_slot or weapons.weapon_in_slot(slot).is_empty():
 		return
 	selected_slot = slot
-	viewmodel.show_slot(slot)
+	show_held_weapon()
+
+
+# The first-person view shows the weapon in the selected slot (D-087).
+func show_held_weapon() -> void:
+	var w: Dictionary = weapons.weapon_in_slot(selected_slot)
+	viewmodel.show_weapon(str(w.get("mesh", "")), str(w.get("kind", "")) == "gun")
+
+
+# Right mouse with a zooming gun (iron sights / scopes, D-087): narrower view, slower mouse.
+func _update_aim(delta: float) -> void:
+	var w: Dictionary = weapons.weapon_in_slot(selected_slot)
+	var zoom := float(w.get("zoom", 1.0))
+	var aiming := zoom > 1.0 and not bike.mounted and Input.mouse_mode == Input.MOUSE_MODE_CAPTURED \
+		and Input.is_action_pressed("aim") and not health.is_dead()
+	var want := _base_fov / zoom if aiming else _base_fov
+	if absf(camera.fov - want) > 0.01:
+		camera.fov = lerpf(camera.fov, want, minf(delta * 14.0, 1.0))
+	var scoped := aiming and zoom >= 2.5  # a real scope: hide the gun while looking through it
+	if scoped != _scoped:
+		_scoped = scoped
+		if scoped:
+			viewmodel.visible = false
+		else:
+			viewmodel.visible = life.net_state == LifeState.ALIVE and not bike.mounted and not disc.active and sport.mode == ""
+
+
+# Armor (D-087): resistance from the equipped pieces; blocking damage wears them (host).
+func _update_armor() -> void:
+	health.resist = GearRules.total_resist(_armor_pieces())
+
+
+func _armor_pieces() -> Array:
+	var out := []
+	for s: String in GearRules.ARMOR_SLOTS:
+		var g: Dictionary = inventory.equipped(s)
+		if not g.is_empty():
+			out.append(g)
+	return out
+
+
+func _on_armor_blocked(blocked: float) -> void:
+	var pieces := _armor_pieces()
+	if pieces.is_empty():
+		return
+	var conds := GearRules.armor_wear(pieces, blocked)
+	var changes := {}
+	for i in pieces.size():
+		var c: Dictionary = (pieces[i] as Dictionary).duplicate(true)
+		c.cond = snappedf(conds[i], 0.0001)
+		changes[int(c.uid)] = c
+	inventory.host_set_gears(changes)
 
 
 func _on_snapshot() -> void:
@@ -615,7 +750,7 @@ func _send_intent(seq: int, move: Vector2, flags: int, look_yaw: float, look_pit
 		move = move.normalized()
 	if cutscene:  # ace replay: hold still whatever the client sends
 		move = Vector2.ZERO
-		flags &= WeaponHolder.FLAG_SLOT2
+		flags &= WeaponHolder.FLAG_SLOT2 | WeaponHolder.FLAG_SLOT3
 	_q_move[_q_next] = move
 	_q_flags[_q_next] = flags & ALL_FLAGS
 	_q_yaw[_q_next] = wrapf(look_yaw, -PI, PI)

@@ -330,3 +330,65 @@ Locked unless flagged. Each entry: decision — reason.
   * The riding controls are listed in the bottom-right corner above the bike gauges while on a bike; the
     performance readout hides itself while a BikeHud is up, since they share that corner.
   * Settings now opens over the pause menu (it used to draw underneath it).
+- **D-086** (2026-11-14) Golf plays like a golf game, not a throw — User.
+  * Swing meter (user pick over a PGA-2K mouse swing / arcade hold-and-release): camera behind the ball, pick a
+    club, aim arrow + predicted shot arc, then a 3-click meter (start, power, accuracy) like Hot Shots / Mario Golf.
+    Putting gets a putt line and the green's slope.
+  * Replaces the throw-the-ball controls at the Drop Zone range and putting green (D-074).
+  * The Kearney Country Club course (scenery only since D-079) becomes playable with the same swing.
+- **D-087** (2026-11-14) Armor + more weapons, full loot game — User (pick over slots + 8 weapons / light).
+  * Armor slots: helmet, chest, legs, each with damage resistance; found as loot with a condition that wears down.
+  * About 8 new weapons filling the missing roles (shotgun, hunting rifle, AR, SMG, revolver, sniper, machete,
+    crowbar), with their own ammo.
+  * Weapon mods (scopes, mags, suppressors, ...) and rarity rolls (worn to legendary) on guns and armor.
+- **D-088** (2026-11-14) The Golden Ace disc is a throwable weapon — User (pick over golf perk / trophy + trade).
+  Thrown at enemies like a disc: heavy damage, flies back to the thrower.
+- **D-089** (2026-11-14) Pickleball rework: real rules + timed swings — User (pick over Wii-style timing only /
+  light fix). Kitchen rule (no volleys near the net), swings have a wind-up and recovery so spam clicking whiffs,
+  timing grades the shot (early / perfect / late), the AI lobs players camping the net. Feedback: ball shadow,
+  landing marker, timing popups, rally counter, score callouts.
+- **D-090** (2026-11-14) No road blocks: the concrete road barriers the clutter pass dropped on bigger roads are
+  removed (barrier_chance 0, cells rebuilt). Also asked: a pause-menu "Respawn at bunker", unique player colours on
+  the minimap, player names on the minimap and in minigames instead of P1 / P2. — User.
+- **D-091** (2026-11-15) Bug-fix pass after alpha2.6 — User asked; the fixes inside it are mine:
+  * Lobby recovery: every failed / timed-out / ended session reloads Main with a brand-new TubeClient (Net.
+    leave_to_menu, reason shown on the start screen); host goes live on LAN after 8 s if no tracker answered;
+    joining gives up after 30 s with a reason. Dead trackers btorrent.xyz + ghostchu swapped for webtorrent.dev +
+    novage. TURN relay: waiting on the user (needs a free account; ExpressTURN recommended).
+  * Disc golf tents (DiscCourse anchors, Camp, JohnPork, Dock) get fixed node names: auto names differ per peer,
+    so a client's E on John Pork (and the camp Meepo dock RPCs) reached nobody on the host.
+  * Fall rescue: falling for fall_rescue_seconds (8) puts the player back where they last stood; pause menu
+    "Respawn at Bunker" (owner asks, host moves them to their spawn, off bike / Meepo).
+  * Country club pool: the ground hole was bigger than the kidney, its corners dropped through the map - deck fill
+    over the slabs' opening, plus a ramp out of the 1.6 m deep end (higher than a jump).
+  * Colliders match models: tree trunk = a cylinder along the drawn trunk (TreeMesh "tree_shape" metadata);
+    collide_radius props as tall as their model (stumps had a 3 m invisible column); discs hit the drawn branches
+    (always) and leaf clumps (canopy_hits_per_m), not an ellipsoid around the crown.
+- **D-092** (2026-11-15) Player colours + names (user): the host gives each player the first free of 6 colours
+  (data/tuning/player_colors.json, Player.net_color replicated); minimap and M map draw teammates in their colour
+  with their name, your own arrow in yours; disc golf toasts / scorecard use character names ("You" for yourself
+  in toasts), scorecard rows in the player's colour.
+- **D-093** (2026-11-15) Gear build notes (inside D-087 / D-088, mine): equip slots gun1 / gun2 / melee (melee and
+  thrown) + head / chest / legs; every weapon or armor piece is a rolled instance {uid, id, rarity, cond, mods, perk,
+  mag} (GearRules, Inventory.gear, saved with the player, old saves' weapon counts rolled on load). Keys 1 / 2 =
+  guns, **4 = melee / thrown slot** (3 stays the disc key), right mouse = aim / scope. Machete and crowbar
+  became a combat knife and a fire axe (those meshes exist in the character pack). Armor shows only as numbers (no
+  armor on the character models yet). Workbench: attach / detach mods, repair with scrap.
+- **D-094** (2026-11-15) Golf build notes (inside D-086, mine): 6 clubs + putter (driver 200 m ... wedge 90 m);
+  3-click SwingMeter (early = hook, late = slice, missed = shank); camera behind and a little right of the ball with
+  the full-power arc and a landing ring, putts get a ground line + slope ticks; Drop Zone putting holes got slopes.
+  Country club: 18 holes from the tee signs / flags / OSM tee boxes (data/golf/country_club_course.json), lies
+  from the painted course (green / fairway / tee / bunker / rough), real terrain heights and slopes,
+  trees knock balls down, water and out of bounds = +1. You walk (or ride) to your ball; a marker with your name
+  floats over it. Best round = quest flag kcc_best_round.
+- **D-095** (2026-11-15) Pickleball build notes (inside D-089, mine): a click = windup 0.12 s, contact, recovery
+  0.5 s (clicks during it do nothing); grade by the ball's time to its closest pass at contact (PERFECT within
+  0.06 s, GOOD 0.15 s, else EARLY / LATE, out of reach = WHIFF). Two-bounce rule + kitchen volley faults for both
+  sides; the CPU lobs a player within 3 m of the net and smashes LATE floaters, misses more against PERFECT shots.
+- **D-096** (2026-11-15) Character creator (user: "Full creator", shown on every load-in). Built from the parts the
+  project already has (Quaternius UBC male / female bodies, 6 hairstyles, beard, eyebrows; the outfit shader for
+  skin / shirt / pants / shoes colours) plus hats and extras made as bone-attached shapes (gear pieces) - no new
+  asset pack needed. Options live in data/art/appearance.json; a look is a small dict saved per character and synced
+  as Player.net_look (Sync prop 28); the host sanitizes it (AppearanceRules). The creator replaces the name prompt
+  and opens every load-in, filled in. New characters (and pre-3.0 saves) start with a random look. First-person arms
+  stay the survivor arms. The boxy utility vest looked wrong on the female body, so it became a bandolier.

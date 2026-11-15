@@ -120,7 +120,39 @@ static func step(f: Flight, dt: float, t: Dictionary) -> void:
 	f.time += dt
 
 
-# True if pos is inside the crown of a tree standing at base with height h (bare trees: thinner crowns).
+enum Canopy { NONE, LEAVES, WOOD }
+const DISC_RADIUS_M := 0.105
+
+
+# What a disc touches in a tree drawn by TreeMesh (D-091). `local` is the disc's position in the tree's own units
+# (height 1, trunk base at the origin: the instance transform's inverse); `shape` is the mesh's "tree_shape"
+# {limbs: [[a, b, r0, r1]], blobs: [[centre, radius]]}; `pad` = the disc's radius in those units. WOOD = a branch
+# (the trunk is a physics collider), LEAVES = inside a leaf clump, NONE = the air between them.
+static func canopy_contact(local: Vector3, shape: Dictionary, pad: float) -> int:
+	for limb: Array in shape.get("limbs", []):
+		var a: Vector3 = limb[0]
+		var ab: Vector3 = (limb[1] as Vector3) - a
+		var k := clampf((local - a).dot(ab) / maxf(ab.length_squared(), 1e-8), 0.0, 1.0)
+		if local.distance_to(a + ab * k) <= lerpf(float(limb[2]), float(limb[3]), k) + pad:
+			return Canopy.WOOD
+	for blob: Array in shape.get("blobs", []):
+		if local.distance_to(blob[0]) <= float(blob[1]) + pad:
+			return Canopy.LEAVES
+	return Canopy.NONE
+
+
+# Horizontal reach of a tree_shape from its trunk, in its own units (for bucketing trees by area).
+static func canopy_reach(shape: Dictionary) -> float:
+	var r := 0.0
+	for limb: Array in shape.get("limbs", []):
+		r = maxf(r, Vector2((limb[1] as Vector3).x, (limb[1] as Vector3).z).length() + float(limb[2]))
+	for blob: Array in shape.get("blobs", []):
+		r = maxf(r, Vector2((blob[0] as Vector3).x, (blob[0] as Vector3).z).length() + float(blob[1]))
+	return r
+
+
+# Old cells without a tree_shape: true if pos is inside the crown of a tree standing at base with height h (bare
+# trees: thinner crowns).
 static func in_canopy(pos: Vector3, base: Vector3, h: float, bare: bool) -> bool:
 	var c := base + Vector3.UP * (0.75 if bare else 0.7) * h
 	var rh := (0.32 if bare else 0.42) * h

@@ -23,6 +23,7 @@ const SCHEMA := {
 	"swim_speed_mult": TYPE_FLOAT,
 	"swim_vertical_speed": TYPE_FLOAT,
 	"swim_buoyancy": TYPE_FLOAT,
+	"fall_rescue_seconds": TYPE_FLOAT,
 }
 
 enum Water { DRY, WADE, SWIM }

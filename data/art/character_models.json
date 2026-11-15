@@ -297,6 +297,86 @@
 						0
 					],
 					"scale": 0.25
+				},
+				{
+					"node": "SMG",
+					"from": "res://assets/characters/zombie_apocalypse_kit/glTF/Characters_Matt.gltf",
+					"bone": "hand_r",
+					"pos": [
+						0.0,
+						0.08,
+						0.03
+					],
+					"rot_deg": [
+						0,
+						90,
+						90
+					],
+					"scale": 0.25
+				},
+				{
+					"node": "Shotgun",
+					"from": "res://assets/characters/zombie_apocalypse_kit/glTF/Characters_Matt.gltf",
+					"bone": "hand_r",
+					"pos": [
+						0.0,
+						0.08,
+						0.03
+					],
+					"rot_deg": [
+						0,
+						90,
+						90
+					],
+					"scale": 0.25
+				},
+				{
+					"node": "Rifle",
+					"from": "res://assets/characters/zombie_apocalypse_kit/glTF/Characters_Matt.gltf",
+					"bone": "hand_r",
+					"pos": [
+						0.0,
+						0.08,
+						0.03
+					],
+					"rot_deg": [
+						0,
+						90,
+						90
+					],
+					"scale": 0.25
+				},
+				{
+					"node": "Knife",
+					"from": "res://assets/characters/zombie_apocalypse_kit/glTF/Characters_Matt.gltf",
+					"bone": "hand_r",
+					"pos": [
+						0.0,
+						0.08,
+						0.03
+					],
+					"rot_deg": [
+						-90,
+						180,
+						0
+					],
+					"scale": 0.25
+				},
+				{
+					"node": "Axe",
+					"from": "res://assets/characters/zombie_apocalypse_kit/glTF/Characters_Matt.gltf",
+					"bone": "hand_r",
+					"pos": [
+						0.0,
+						0.08,
+						0.03
+					],
+					"rot_deg": [
+						-90,
+						180,
+						0
+					],
+					"scale": 0.25
 				}
 			],
 			"weapons_by_slot": [
@@ -391,6 +471,86 @@
 				},
 				{
 					"node": "WoodenBat_Barbed",
+					"from": "res://assets/characters/zombie_apocalypse_kit/glTF/Characters_Matt.gltf",
+					"bone": "hand_r",
+					"pos": [
+						0.0,
+						0.08,
+						0.03
+					],
+					"rot_deg": [
+						-90,
+						180,
+						0
+					],
+					"scale": 0.25
+				},
+				{
+					"node": "SMG",
+					"from": "res://assets/characters/zombie_apocalypse_kit/glTF/Characters_Matt.gltf",
+					"bone": "hand_r",
+					"pos": [
+						0.0,
+						0.08,
+						0.03
+					],
+					"rot_deg": [
+						0,
+						90,
+						90
+					],
+					"scale": 0.25
+				},
+				{
+					"node": "Shotgun",
+					"from": "res://assets/characters/zombie_apocalypse_kit/glTF/Characters_Matt.gltf",
+					"bone": "hand_r",
+					"pos": [
+						0.0,
+						0.08,
+						0.03
+					],
+					"rot_deg": [
+						0,
+						90,
+						90
+					],
+					"scale": 0.25
+				},
+				{
+					"node": "Rifle",
+					"from": "res://assets/characters/zombie_apocalypse_kit/glTF/Characters_Matt.gltf",
+					"bone": "hand_r",
+					"pos": [
+						0.0,
+						0.08,
+						0.03
+					],
+					"rot_deg": [
+						0,
+						90,
+						90
+					],
+					"scale": 0.25
+				},
+				{
+					"node": "Knife",
+					"from": "res://assets/characters/zombie_apocalypse_kit/glTF/Characters_Matt.gltf",
+					"bone": "hand_r",
+					"pos": [
+						0.0,
+						0.08,
+						0.03
+					],
+					"rot_deg": [
+						-90,
+						180,
+						0
+					],
+					"scale": 0.25
+				},
+				{
+					"node": "Axe",
 					"from": "res://assets/characters/zombie_apocalypse_kit/glTF/Characters_Matt.gltf",
 					"bone": "hand_r",
 					"pos": [
@@ -510,6 +670,86 @@
 						0
 					],
 					"scale": 0.25
+				},
+				{
+					"node": "SMG",
+					"from": "res://assets/characters/zombie_apocalypse_kit/glTF/Characters_Matt.gltf",
+					"bone": "hand_r",
+					"pos": [
+						0.0,
+						0.08,
+						0.03
+					],
+					"rot_deg": [
+						0,
+						90,
+						90
+					],
+					"scale": 0.25
+				},
+				{
+					"node": "Shotgun",
+					"from": "res://assets/characters/zombie_apocalypse_kit/glTF/Characters_Matt.gltf",
+					"bone": "hand_r",
+					"pos": [
+						0.0,
+						0.08,
+						0.03
+					],
+					"rot_deg": [
+						0,
+						90,
+						90
+					],
+					"scale": 0.25
+				},
+				{
+					"node": "Rifle",
+					"from": "res://assets/characters/zombie_apocalypse_kit/glTF/Characters_Matt.gltf",
+					"bone": "hand_r",
+					"pos": [
+						0.0,
+						0.08,
+						0.03
+					],
+					"rot_deg": [
+						0,
+						90,
+						90
+					],
+					"scale": 0.25
+				},
+				{
+					"node": "Knife",
+					"from": "res://assets/characters/zombie_apocalypse_kit/glTF/Characters_Matt.gltf",
+					"bone": "hand_r",
+					"pos": [
+						0.0,
+						0.08,
+						0.03
+					],
+					"rot_deg": [
+						-90,
+						180,
+						0
+					],
+					"scale": 0.25
+				},
+				{
+					"node": "Axe",
+					"from": "res://assets/characters/zombie_apocalypse_kit/glTF/Characters_Matt.gltf",
+					"bone": "hand_r",
+					"pos": [
+						0.0,
+						0.08,
+						0.03
+					],
+					"rot_deg": [
+						-90,
+						180,
+						0
+					],
+					"scale": 0.25
 				}
 			],
 			"weapons_by_slot": [
@@ -603,6 +843,86 @@
 				},
 				{
 					"node": "WoodenBat_Barbed",
+					"from": "res://assets/characters/zombie_apocalypse_kit/glTF/Characters_Matt.gltf",
+					"bone": "hand_r",
+					"pos": [
+						0.0,
+						0.08,
+						0.03
+					],
+					"rot_deg": [
+						-90,
+						180,
+						0
+					],
+					"scale": 0.25
+				},
+				{
+					"node": "SMG",
+					"from": "res://assets/characters/zombie_apocalypse_kit/glTF/Characters_Matt.gltf",
+					"bone": "hand_r",
+					"pos": [
+						0.0,
+						0.08,
+						0.03
+					],
+					"rot_deg": [
+						0,
+						90,
+						90
+					],
+					"scale": 0.25
+				},
+				{
+					"node": "Shotgun",
+					"from": "res://assets/characters/zombie_apocalypse_kit/glTF/Characters_Matt.gltf",
+					"bone": "hand_r",
+					"pos": [
+						0.0,
+						0.08,
+						0.03
+					],
+					"rot_deg": [
+						0,
+						90,
+						90
+					],
+					"scale": 0.25
+				},
+				{
+					"node": "Rifle",
+					"from": "res://assets/characters/zombie_apocalypse_kit/glTF/Characters_Matt.gltf",
+					"bone": "hand_r",
+					"pos": [
+						0.0,
+						0.08,
+						0.03
+					],
+					"rot_deg": [
+						0,
+						90,
+						90
+					],
+					"scale": 0.25
+				},
+				{
+					"node": "Knife",
+					"from": "res://assets/characters/zombie_apocalypse_kit/glTF/Characters_Matt.gltf",
+					"bone": "hand_r",
+					"pos": [
+						0.0,
+						0.08,
+						0.03
+					],
+					"rot_deg": [
+						-90,
+						180,
+						0
+					],
+					"scale": 0.25
+				},
+				{
+					"node": "Axe",
 					"from": "res://assets/characters/zombie_apocalypse_kit/glTF/Characters_Matt.gltf",
 					"bone": "hand_r",
 					"pos": [
@@ -722,6 +1042,86 @@
 						0
 					],
 					"scale": 0.25
+				},
+				{
+					"node": "SMG",
+					"from": "res://assets/characters/zombie_apocalypse_kit/glTF/Characters_Matt.gltf",
+					"bone": "hand_r",
+					"pos": [
+						0.0,
+						0.08,
+						0.03
+					],
+					"rot_deg": [
+						0,
+						90,
+						90
+					],
+					"scale": 0.25
+				},
+				{
+					"node": "Shotgun",
+					"from": "res://assets/characters/zombie_apocalypse_kit/glTF/Characters_Matt.gltf",
+					"bone": "hand_r",
+					"pos": [
+						0.0,
+						0.08,
+						0.03
+					],
+					"rot_deg": [
+						0,
+						90,
+						90
+					],
+					"scale": 0.25
+				},
+				{
+					"node": "Rifle",
+					"from": "res://assets/characters/zombie_apocalypse_kit/glTF/Characters_Matt.gltf",
+					"bone": "hand_r",
+					"pos": [
+						0.0,
+						0.08,
+						0.03
+					],
+					"rot_deg": [
+						0,
+						90,
+						90
+					],
+					"scale": 0.25
+				},
+				{
+					"node": "Knife",
+					"from": "res://assets/characters/zombie_apocalypse_kit/glTF/Characters_Matt.gltf",
+					"bone": "hand_r",
+					"pos": [
+						0.0,
+						0.08,
+						0.03
+					],
+					"rot_deg": [
+						-90,
+						180,
+						0
+					],
+					"scale": 0.25
+				},
+				{
+					"node": "Axe",
+					"from": "res://assets/characters/zombie_apocalypse_kit/glTF/Characters_Matt.gltf",
+					"bone": "hand_r",
+					"pos": [
+						0.0,
+						0.08,
+						0.03
+					],
+					"rot_deg": [
+						-90,
+						180,
+						0
+					],
+					"scale": 0.25
 				}
 			],
 			"weapons_by_slot": [
@@ -828,6 +1228,86 @@
 						0
 					],
 					"scale": 0.25
+				},
+				{
+					"node": "SMG",
+					"from": "res://assets/characters/zombie_apocalypse_kit/glTF/Characters_Matt.gltf",
+					"bone": "hand_r",
+					"pos": [
+						0.0,
+						0.08,
+						0.03
+					],
+					"rot_deg": [
+						0,
+						90,
+						90
+					],
+					"scale": 0.25
+				},
+				{
+					"node": "Shotgun",
+					"from": "res://assets/characters/zombie_apocalypse_kit/glTF/Characters_Matt.gltf",
+					"bone": "hand_r",
+					"pos": [
+						0.0,
+						0.08,
+						0.03
+					],
+					"rot_deg": [
+						0,
+						90,
+						90
+					],
+					"scale": 0.25
+				},
+				{
+					"node": "Rifle",
+					"from": "res://assets/characters/zombie_apocalypse_kit/glTF/Characters_Matt.gltf",
+					"bone": "hand_r",
+					"pos": [
+						0.0,
+						0.08,
+						0.03
+					],
+					"rot_deg": [
+						0,
+						90,
+						90
+					],
+					"scale": 0.25
+				},
+				{
+					"node": "Knife",
+					"from": "res://assets/characters/zombie_apocalypse_kit/glTF/Characters_Matt.gltf",
+					"bone": "hand_r",
+					"pos": [
+						0.0,
+						0.08,
+						0.03
+					],
+					"rot_deg": [
+						-90,
+						180,
+						0
+					],
+					"scale": 0.25
+				},
+				{
+					"node": "Axe",
+					"from": "res://assets/characters/zombie_apocalypse_kit/glTF/Characters_Matt.gltf",
+					"bone": "hand_r",
+					"pos": [
+						0.0,
+						0.08,
+						0.03
+					],
+					"rot_deg": [
+						-90,
+						180,
+						0
+					],
+					"scale": 0.25
 				}
 			],
 			"weapons_by_slot": [
@@ -919,6 +1399,86 @@
 				},
 				{
 					"node": "WoodenBat_Barbed",
+					"from": "res://assets/characters/zombie_apocalypse_kit/glTF/Characters_Matt.gltf",
+					"bone": "hand_r",
+					"pos": [
+						0.0,
+						0.08,
+						0.03
+					],
+					"rot_deg": [
+						-90,
+						180,
+						0
+					],
+					"scale": 0.25
+				},
+				{
+					"node": "SMG",
+					"from": "res://assets/characters/zombie_apocalypse_kit/glTF/Characters_Matt.gltf",
+					"bone": "hand_r",
+					"pos": [
+						0.0,
+						0.08,
+						0.03
+					],
+					"rot_deg": [
+						0,
+						90,
+						90
+					],
+					"scale": 0.25
+				},
+				{
+					"node": "Shotgun",
+					"from": "res://assets/characters/zombie_apocalypse_kit/glTF/Characters_Matt.gltf",
+					"bone": "hand_r",
+					"pos": [
+						0.0,
+						0.08,
+						0.03
+					],
+					"rot_deg": [
+						0,
+						90,
+						90
+					],
+					"scale": 0.25
+				},
+				{
+					"node": "Rifle",
+					"from": "res://assets/characters/zombie_apocalypse_kit/glTF/Characters_Matt.gltf",
+					"bone": "hand_r",
+					"pos": [
+						0.0,
+						0.08,
+						0.03
+					],
+					"rot_deg": [
+						0,
+						90,
+						90
+					],
+					"scale": 0.25
+				},
+				{
+					"node": "Knife",
+					"from": "res://assets/characters/zombie_apocalypse_kit/glTF/Characters_Matt.gltf",
+					"bone": "hand_r",
+					"pos": [
+						0.0,
+						0.08,
+						0.03
+					],
+					"rot_deg": [
+						-90,
+						180,
+						0
+					],
+					"scale": 0.25
+				},
+				{
+					"node": "Axe",
 					"from": "res://assets/characters/zombie_apocalypse_kit/glTF/Characters_Matt.gltf",
 					"bone": "hand_r",
 					"pos": [
@@ -1170,6 +1730,86 @@
 						0
 					],
 					"scale": 0.25
+				},
+				{
+					"node": "SMG",
+					"from": "res://assets/characters/zombie_apocalypse_kit/glTF/Characters_Matt.gltf",
+					"bone": "hand_r",
+					"pos": [
+						0.0,
+						0.08,
+						0.03
+					],
+					"rot_deg": [
+						0,
+						90,
+						90
+					],
+					"scale": 0.25
+				},
+				{
+					"node": "Shotgun",
+					"from": "res://assets/characters/zombie_apocalypse_kit/glTF/Characters_Matt.gltf",
+					"bone": "hand_r",
+					"pos": [
+						0.0,
+						0.08,
+						0.03
+					],
+					"rot_deg": [
+						0,
+						90,
+						90
+					],
+					"scale": 0.25
+				},
+				{
+					"node": "Rifle",
+					"from": "res://assets/characters/zombie_apocalypse_kit/glTF/Characters_Matt.gltf",
+					"bone": "hand_r",
+					"pos": [
+						0.0,
+						0.08,
+						0.03
+					],
+					"rot_deg": [
+						0,
+						90,
+						90
+					],
+					"scale": 0.25
+				},
+				{
+					"node": "Knife",
+					"from": "res://assets/characters/zombie_apocalypse_kit/glTF/Characters_Matt.gltf",
+					"bone": "hand_r",
+					"pos": [
+						0.0,
+						0.08,
+						0.03
+					],
+					"rot_deg": [
+						-90,
+						180,
+						0
+					],
+					"scale": 0.25
+				},
+				{
+					"node": "Axe",
+					"from": "res://assets/characters/zombie_apocalypse_kit/glTF/Characters_Matt.gltf",
+					"bone": "hand_r",
+					"pos": [
+						0.0,
+						0.08,
+						0.03
+					],
+					"rot_deg": [
+						-90,
+						180,
+						0
+					],
+					"scale": 0.25
 				}
 			],
 			"weapons_by_slot": [
@@ -1380,6 +2020,86 @@
 				},
 				{
 					"node": "WoodenBat_Barbed",
+					"from": "res://assets/characters/zombie_apocalypse_kit/glTF/Characters_Matt.gltf",
+					"bone": "hand_r",
+					"pos": [
+						0.0,
+						0.08,
+						0.03
+					],
+					"rot_deg": [
+						-90,
+						180,
+						0
+					],
+					"scale": 0.25
+				},
+				{
+					"node": "SMG",
+					"from": "res://assets/characters/zombie_apocalypse_kit/glTF/Characters_Matt.gltf",
+					"bone": "hand_r",
+					"pos": [
+						0.0,
+						0.08,
+						0.03
+					],
+					"rot_deg": [
+						0,
+						90,
+						90
+					],
+					"scale": 0.25
+				},
+				{
+					"node": "Shotgun",
+					"from": "res://assets/characters/zombie_apocalypse_kit/glTF/Characters_Matt.gltf",
+					"bone": "hand_r",
+					"pos": [
+						0.0,
+						0.08,
+						0.03
+					],
+					"rot_deg": [
+						0,
+						90,
+						90
+					],
+					"scale": 0.25
+				},
+				{
+					"node": "Rifle",
+					"from": "res://assets/characters/zombie_apocalypse_kit/glTF/Characters_Matt.gltf",
+					"bone": "hand_r",
+					"pos": [
+						0.0,
+						0.08,
+						0.03
+					],
+					"rot_deg": [
+						0,
+						90,
+						90
+					],
+					"scale": 0.25
+				},
+				{
+					"node": "Knife",
+					"from": "res://assets/characters/zombie_apocalypse_kit/glTF/Characters_Matt.gltf",
+					"bone": "hand_r",
+					"pos": [
+						0.0,
+						0.08,
+						0.03
+					],
+					"rot_deg": [
+						-90,
+						180,
+						0
+					],
+					"scale": 0.25
+				},
+				{
+					"node": "Axe",
 					"from": "res://assets/characters/zombie_apocalypse_kit/glTF/Characters_Matt.gltf",
 					"bone": "hand_r",
 					"pos": [
@@ -1772,6 +2492,86 @@
 						0
 					],
 					"scale": 0.25
+				},
+				{
+					"node": "SMG",
+					"from": "res://assets/characters/zombie_apocalypse_kit/glTF/Characters_Matt.gltf",
+					"bone": "hand_r",
+					"pos": [
+						0.0,
+						0.08,
+						0.03
+					],
+					"rot_deg": [
+						0,
+						90,
+						90
+					],
+					"scale": 0.25
+				},
+				{
+					"node": "Shotgun",
+					"from": "res://assets/characters/zombie_apocalypse_kit/glTF/Characters_Matt.gltf",
+					"bone": "hand_r",
+					"pos": [
+						0.0,
+						0.08,
+						0.03
+					],
+					"rot_deg": [
+						0,
+						90,
+						90
+					],
+					"scale": 0.25
+				},
+				{
+					"node": "Rifle",
+					"from": "res://assets/characters/zombie_apocalypse_kit/glTF/Characters_Matt.gltf",
+					"bone": "hand_r",
+					"pos": [
+						0.0,
+						0.08,
+						0.03
+					],
+					"rot_deg": [
+						0,
+						90,
+						90
+					],
+					"scale": 0.25
+				},
+				{
+					"node": "Knife",
+					"from": "res://assets/characters/zombie_apocalypse_kit/glTF/Characters_Matt.gltf",
+					"bone": "hand_r",
+					"pos": [
+						0.0,
+						0.08,
+						0.03
+					],
+					"rot_deg": [
+						-90,
+						180,
+						0
+					],
+					"scale": 0.25
+				},
+				{
+					"node": "Axe",
+					"from": "res://assets/characters/zombie_apocalypse_kit/glTF/Characters_Matt.gltf",
+					"bone": "hand_r",
+					"pos": [
+						0.0,
+						0.08,
+						0.03
+					],
+					"rot_deg": [
+						-90,
+						180,
+						0
+					],
+					"scale": 0.25
 				}
 			],
 			"weapons_by_slot": [
@@ -2074,6 +2874,86 @@
 				},
 				{
 					"node": "WoodenBat_Barbed",
+					"from": "res://assets/characters/zombie_apocalypse_kit/glTF/Characters_Matt.gltf",
+					"bone": "hand_r",
+					"pos": [
+						0.0,
+						0.08,
+						0.03
+					],
+					"rot_deg": [
+						-90,
+						180,
+						0
+					],
+					"scale": 0.25
+				},
+				{
+					"node": "SMG",
+					"from": "res://assets/characters/zombie_apocalypse_kit/glTF/Characters_Matt.gltf",
+					"bone": "hand_r",
+					"pos": [
+						0.0,
+						0.08,
+						0.03
+					],
+					"rot_deg": [
+						0,
+						90,
+						90
+					],
+					"scale": 0.25
+				},
+				{
+					"node": "Shotgun",
+					"from": "res://assets/characters/zombie_apocalypse_kit/glTF/Characters_Matt.gltf",
+					"bone": "hand_r",
+					"pos": [
+						0.0,
+						0.08,
+						0.03
+					],
+					"rot_deg": [
+						0,
+						90,
+						90
+					],
+					"scale": 0.25
+				},
+				{
+					"node": "Rifle",
+					"from": "res://assets/characters/zombie_apocalypse_kit/glTF/Characters_Matt.gltf",
+					"bone": "hand_r",
+					"pos": [
+						0.0,
+						0.08,
+						0.03
+					],
+					"rot_deg": [
+						0,
+						90,
+						90
+					],
+					"scale": 0.25
+				},
+				{
+					"node": "Knife",
+					"from": "res://assets/characters/zombie_apocalypse_kit/glTF/Characters_Matt.gltf",
+					"bone": "hand_r",
+					"pos": [
+						0.0,
+						0.08,
+						0.03
+					],
+					"rot_deg": [
+						-90,
+						180,
+						0
+					],
+					"scale": 0.25
+				},
+				{
+					"node": "Axe",
 					"from": "res://assets/characters/zombie_apocalypse_kit/glTF/Characters_Matt.gltf",
 					"bone": "hand_r",
 					"pos": [

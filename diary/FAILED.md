@@ -130,3 +130,22 @@ Approach — why it failed — what replaced it.
   building behind the stage house - door removed. (4) Cope's north end-zone building stuck out of its terrain pad
   (pad z -80, building to -95) so the ground outside its north door was a hill above the floor - pad extended.
   Also: the first walk test spawned players at local y 0.6, under higher terrain, and they fell through the world.
+- 2026-11-15 NetProbe NAT check, first try: one WebRTCPeerConnection per STUN server - each opens its own local
+  socket, so different public ports were guaranteed and it falsely said "symmetric NAT". Fixed: one connection with
+  all STUN servers on the same socket (one public port = endpoint-independent NAT; the user's PC is fine).
+- 2026-11-15 HoleScan, first try: called WorldStreamer._load_now(cell) right after moving the player; _add_cell
+  refuses cells outside the stale _keep_near set, so only 291 of 800 cells loaded and it reported 0 holes. Fixed:
+  call streamer._update() (re-reads positions, blocking-loads the cell underneath). The real result: one hole.
+- 2026-11-15 John Pork "can't talk on one save": not the save - john_pork_saves_check (copies each save, presses E
+  through the real Player path) passed on the user's only save and a new world. The real cause was co-op only:
+  runtime-built tent nodes had auto names, different on every peer, so the host couldn't find the client's NPC path.
+- 2026-11-15 gear_test reload: Input.action_press, one `await physics_frame`, release - the press was never seen.
+  SceneTree.physics_frame fires before the nodes' _physics_process, so the test released before the player read
+  its input. Hold test inputs for 2-3 physics frames.
+- 2026-11-15 gear_test shotgun "0 damage": the code was fine - Bonk follows you into the bunker and stood between
+  the player and the dummy, eating the pellets ("Wrong guy! I'm the good guy!"). Tests that shoot park Bonk first.
+  Same thing in golf: Bonk stood where the golf camera goes - GolfView now hides bodies between camera and ball.
+- 2026-11-15 gear_test perf "33-64 ms frames": not a steady cost. A blame pass (switch off processing per subtree)
+  found the time gone within 30 frames whatever was switched off: one-off hitches the first time new meshes /
+  materials draw (shader pipeline compiles: shotgun, Golden Ace, new drop colours) inside a 120-frame average.
+  Steady state 5.7-6.1 ms (perf_probe, golf_test, dropzone_test).

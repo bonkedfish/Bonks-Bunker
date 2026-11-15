@@ -1,15 +1,19 @@
 # Health — hit points for anything that can be damaged. Only the host changes it;
 # `current` replicates to clients through the owner's MultiplayerSynchronizer ("Health:current").
+# Armor (D-087): `resist` (0-1, set by the player from equipped armor) blocks that share of each hit after
+# damage_mult; armor_blocked reports the blocked amount so the armor can wear.
 class_name Health
 extends Node
 
 signal died(attacker_peer: int)
 signal damaged(amount: float, attacker_peer: int)
+signal armor_blocked(amount: float)
 
 @export var max_health := 100.0
 var current := 100.0
 var damage_mult := 1.0  # host: damage-taken multiplier (player effects, D-052)
 var invulnerable := false  # host: takes no damage (ace replay, D-076)
+var resist := 0.0  # host: share of damage blocked by armor (D-087)
 
 
 func is_dead() -> bool:
@@ -25,6 +29,10 @@ func apply_damage(amount: float, attacker_peer: int) -> bool:
 	if current <= 0.0 or amount <= 0.0 or invulnerable:
 		return false
 	amount *= damage_mult
+	if resist > 0.0:
+		var blocked := amount * clampf(resist, 0.0, 0.95)
+		amount -= blocked
+		armor_blocked.emit(blocked)
 	current = maxf(current - amount, 0.0)
 	damaged.emit(amount, attacker_peer)
 	if current <= 0.0:

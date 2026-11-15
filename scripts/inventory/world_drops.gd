@@ -5,7 +5,9 @@
 #            (oldest removed), sends spawns/despawns to every peer and the full list to peers that join.
 #   All:     show each drop as a small coloured box (pooled bodies on the interactables layer, so the player's
 #            look ray finds them; they don't block movement).
-# Depends on: DropRules, ItemDB, CarryRules (interact range), InventoryHolder, WorldStreamer (group
+# Gear (D-087): a dropped weapon / armor piece keeps its rolled instance (rarity, condition, mods) and gives it back
+# on pickup; it's saved with the drop.
+# Depends on: DropRules, ItemDB, CarryRules (interact range), InventoryHolder, GearRules, WorldStreamer (group
 # "world_streamer", for cells).
 class_name WorldDrops
 extends Node3D
@@ -13,7 +15,7 @@ extends Node3D
 const LAYER := 8  # layer 4 = interactables (bit value 8)
 const GROUND_MASK := 17  # world + water bed
 
-var drops: Dictionary = {}  # id -> [item_id, count, Vector3]  (all peers)
+var drops: Dictionary = {}  # id -> [item_id, count, Vector3, gear instance or {}]  (all peers)
 
 var _next_id := 1
 var _pool: Array[StaticBody3D] = []
@@ -46,6 +48,8 @@ func display_name(id: int) -> String:
 	if not drops.has(id):
 		return ""
 	var d: Array = drops[id]
+	if not (d[3] as Dictionary).is_empty():
+		return GearRules.display_name(d[3])
 	var item_name := str(ItemDB.get_item(d[0]).get("name", d[0]))
 	return item_name if int(d[1]) == 1 else "%s x%d" % [item_name, int(d[1])]
 
@@ -69,6 +73,21 @@ func request_drop(item_id: String, n: int) -> void:
 	host_add(item_id, count, _ground(player.global_position + fwd.normalized() * float(DropRules.tuning().drop_distance_m) + jitter))
 
 
+# A weapon / armor piece (D-087), by its uid in the dropper's inventory.
+@rpc("any_peer", "call_local", "reliable")
+func request_drop_gear(uid: int) -> void:
+	var player := _sender_player()
+	if player == null:
+		return
+	player.weapons.host_flush()
+	var inst: Dictionary = player.inventory.host_remove_gear(uid)
+	if inst.is_empty():
+		return
+	var fwd: Vector3 = -player.global_basis.z
+	fwd.y = 0.0
+	host_add(str(inst.id), 1, _ground(player.global_position + fwd.normalized() * float(DropRules.tuning().drop_distance_m)), inst)
+
+
 @rpc("any_peer", "call_local", "reliable")
 func request_pickup(id: int) -> void:
 	var player := _sender_player()
@@ -77,35 +96,41 @@ func request_pickup(id: int) -> void:
 	var d: Array = drops[id]
 	if player.global_position.distance_to(d[2]) > _range + 1.0:
 		return
-	player.inventory.host_add(str(d[0]), int(d[1]))
+	if not (d[3] as Dictionary).is_empty():
+		player.inventory.host_add_gear(d[3])
+	else:
+		player.inventory.host_add(str(d[0]), int(d[1]))
 	_remove.rpc(id)
 
 
 # --- host --------------------------------------------------------------------------------
 
-func host_add(item_id: String, count: int, pos: Vector3) -> void:
+func host_add(item_id: String, count: int, pos: Vector3, inst: Dictionary = {}) -> void:
 	if count <= 0:
 		return
 	var id := _next_id
 	_next_id += 1
-	_spawn.rpc(id, item_id, count, pos)
+	_spawn.rpc(id, item_id, count, pos, inst)
 	_enforce_cap(pos)
 
 
-# Oldest first: [[item_id, count, x, y, z], ...]
+# Oldest first: [[item_id, count, x, y, z(, gear instance)], ...]
 func host_save_state() -> Array:
 	var ids: Array = drops.keys()
 	ids.sort()
 	var out: Array = []
 	for id: int in ids:
 		var d: Array = drops[id]
-		out.append([d[0], d[1], snappedf(d[2].x, 0.01), snappedf(d[2].y, 0.01), snappedf(d[2].z, 0.01)])
+		var e := [d[0], d[1], snappedf(d[2].x, 0.01), snappedf(d[2].y, 0.01), snappedf(d[2].z, 0.01)]
+		if not (d[3] as Dictionary).is_empty():
+			e.append(d[3])
+		out.append(e)
 	return out
 
 
 func host_load_state(entries: Array) -> void:
 	for e: Array in entries:
-		host_add(str(e[0]), int(e[1]), Vector3(e[2], e[3], e[4]))
+		host_add(str(e[0]), int(e[1]), Vector3(e[2], e[3], e[4]), e[5] if e.size() > 5 and e[5] is Dictionary else {})
 
 
 func _enforce_cap(pos: Vector3) -> void:
@@ -144,14 +169,14 @@ func _on_peer_connected(peer: int) -> void:
 		return
 	for id: int in drops:
 		var d: Array = drops[id]
-		_spawn.rpc_id(peer, id, d[0], d[1], d[2])
+		_spawn.rpc_id(peer, id, d[0], d[1], d[2], d[3])
 
 
 # --- host -> peers -------------------------------------------------------------------------
 
 @rpc("authority", "call_local", "reliable")
-func _spawn(id: int, item_id: String, count: int, pos: Vector3) -> void:
-	drops[id] = [item_id, count, pos]
+func _spawn(id: int, item_id: String, count: int, pos: Vector3, inst: Dictionary) -> void:
+	drops[id] = [item_id, count, pos, inst]
 	var body: StaticBody3D = _pool.pop_back() if not _pool.is_empty() else _new_body()
 	var mesh: BoxMesh = _meshes.get(str(ItemDB.get_item(item_id).get("category", "junk")), _meshes.junk)
 	(body.get_child(0) as MeshInstance3D).mesh = mesh

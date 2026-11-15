@@ -644,3 +644,50 @@ seconds 30->90, hold 120->360; big_update_test timings scaled). Performance read
 (BikeHud CONTROLS, group "bike_hud"); the readout hides itself while that HUD is up. Settings opens over the pause
 menu now (move_to_front; it drew underneath before). Tests 0 failures: parse_check (92), bike, big_update,
 hud_pause, menu, coop, chillers.
+
+RELEASE alpha2.6 (2026-11-14): https://github.com/bonkedfish/Bonks-Bunker/releases/tag/alpha2.6 - the D-085 tweaks.
+Windows + Mac exports exit 0, Windows smoke test exit 0, zips split in 2 parts each, published in 1174 s. Patch notes
+on the page from data/release/notes/alpha2.6.md via tools/release/release_notes.tscn (exit 0 for 2.5 and 2.6).
+The device bridge dropped during the upload; the release finished on its own and was confirmed afterwards.
+
+BUG PASS (D-091 / D-092, 2026-11-15) - user list after alpha2.6. Design picks recorded as D-086..D-090 (golf swing
+meter + country club course, full loot armor + 8 weapons + mods + rarity, Golden Ace = returning throwable,
+pickleball rules + timed swings, road barriers removed). Done + tested so far:
+- Multiplayer: net_recovery_test 0 failures (bogus code -> fresh menu with reason in 17.7 s, host twice in a row
+  without restarting); coop_test 0 failures incl. new step 12 (client presses E on John Pork, host starts the talk).
+  tools/net/net_probe.tscn: 5 of 7 trackers answer; the user's NAT is endpoint-independent. TURN still to add once
+  the user picks a provider (asked; recommended ExpressTURN free 1000 GB/month, static user/pass).
+- John Pork: tests/john_pork_saves_check.tscn passes on the user's save "Kearney" (both tents) and a new world.
+- Holes: tools/debug/hole_scan.tscn rays every 3 m over all 800 cells with the player mask: one hole (country club
+  pool corners) -> fixed, rescan 0. Fall rescue + "Respawn at Bunker" in player.gd / pause_menu.gd (not yet run).
+- Trees / props colliders + disc canopy from TreeMesh shapes, road barriers off: code in, build_cells running
+  (started ~00:57 local). After it: disc_golf_test, bike_test, five_pois, door_walk, hole_scan again.
+- Player colours / names: code in (PlayerColors, net_color Sync prop 24), not yet run.
+NEXT: golf (D-086), armor + weapons (D-087), Golden Ace (D-088), pickleball (D-089); then tests, perf, STATE.
+
+BUG PASS + FEATURES DONE (2026-11-15, D-086..D-095). Everything from the user's list is in and tested:
+- Cells rebuilt (build_cells ~57 min): road barriers gone (barrier_chance 0), tree trunk / prop colliders match the
+  models. hole_scan after the rebuild: 0 holes in 800 cells. Country club scene rebuilt with the Golf node.
+- Gear (D-087 / D-088 / D-093): gear_test 0 failures - roll odds, stats, mods, equip rules, armor resist + wear,
+  repair, shotgun pellets on a dummy, Golden Ace thrown and back in 0.5 s, dropped gear keeps its roll, save +
+  legacy upgrade. coop_test 0 failures with gear (client fire, craft, John Pork). Melee slot = key 4 (3 = discs).
+- Golf (D-086 / D-094): golf_test 0 failures - meter grades, curve (full slice 29 m), carries, putt break, lies;
+  range swing with the meter, golf camera, putting line + slope; country club hole 4 played out in 5 by the test
+  bot. dropzone_test 0 failures (old pickleball check relaxed: rallies run longer now).
+- Pickleball (D-089 / D-095): pickleball_test 0 failures - net camping + spam clicks lose 0-8 (Out, two-bounce
+  faults); a timed player gets PERFECT grades and 15-shot rallies.
+- Unstick / colours (D-091 / D-092): unstick_test 0 failures - fell under the map, back on ground in 8.2 s; pause
+  menu "Respawn at Bunker" works; colours assigned. disc_golf_test 0 failures (Golden Ace reward counted as gear).
+- Regressions 0 failures: parse_check (125 scripts), coop, disc_golf, big_update, bike, hud_pause, dropzone.
+- Perf: steady 5.6-6.8 ms frames (perf_probe, golf, dropzone, disc golf); one-off hitches when new meshes first
+  draw (see FAILED).
+Open: TURN relay provider (user to pick; ExpressTURN recommended). Not removed (ask): the D-062 raider barricades
+and the RV park junk-gate barricade. No armor visuals on characters yet. Bonk can wander into the golf view
+(hidden while in the way).
+
+CHARACTER CREATOR (D-096, 2026-11-15): scripts/ui/character_creator.gd (CharacterCreator, $UI/Creator, group
+"name_prompt" so tests' submit("Name") still works), scripts/rules/appearance_rules.gd, data/art/appearance.json,
+Player.net_look + submit_look / ask_name(name, look), SaveDirector saves "look" and asks every load-in, Main gives new
+bodies a random look, CharacterAnimator.set_model(id, fp, extra). creator_test 0 failures (pure + in game, lineup
+screenshots of every hat / extra). scripts/ui/name_prompt.gd is no longer used (superseded, safe to delete).
+Release tool: release.json "min_version" (alpha3.0) lifts the auto version for the jump.

@@ -2,12 +2,17 @@
 #   Host: E at the court post starts a game (if the court is free). The player takes the south half (z > 0 in court
 #         space), the CPU the north. Runs the ball every physics tick (PickleballRules): serves (the player clicks to
 #         serve; the CPU serves after serve_delay_s), bounces, the net, out balls, second bounces, rally scoring to
-#         win_points. Player hit intents (click) are accepted when the ball is on their side, within reach, and
-#         they didn't hit it last; the ball flies where they look, landing ~2/3 of the way to the far baseline. The
-#         CPU runs to the ball's line and returns it with a miss chance that grows with ball speed. Sends the ball
-#         and CPU positions 20x a second (unreliable) and the score on change (reliable). Walking off ends the game.
-#   Every peer: shows the ball and the CPU player, interpolating; puts the local player's SportInput into
-#         "pickle" mode while it's their game.
+#         win_points. A click starts a swing (D-089): windup_s later it makes contact, then recovery_s before the
+#         next swing can start (clicks meanwhile are ignored, so spamming whiffs). At contact the ball must be on
+#         their side, within reach and not theirs to leave; the timing grades the shot (PERFECT: flat and deep,
+#         GOOD, EARLY: pulled left and short, LATE: pushed right and floaty) and volleys are checked for faults
+#         (two-bounce rule on the serve and the return, no volleys from the kitchen). The ball flies where they
+#         look. The CPU runs to the ball, obeys the same volley rules, lobs a player camped at the net, smashes
+#         floaters, and misses more against perfect shots. Sends the ball and CPU positions 20x a second
+#         (unreliable), the score on change and each hit / point callout (reliable). Walking off ends the game.
+#   Every peer: shows the ball (with its shadow and a ring where it will land) and the CPU player, interpolating;
+#         the rally count and the last point's callout for the HUD; the local player's timing grade pops up through
+#         their SportInput; puts the local player's SportInput into "pickle" mode while it's their game.
 # Depends on: DropZone (parent: data, sender_player, toast), PickleballRules, SportInput.
 class_name DzCourt
 extends Node3D
@@ -39,6 +44,18 @@ var _ball_mesh: MeshInstance3D
 var _cpu_mesh: MeshInstance3D
 var _shown_ball := Vector3.ZERO
 var _shown_cpu := Vector2.ZERO
+var rally := 0             # hits this rally (every peer, for the HUD)
+var callout := ""          # the last point, e.g. "Kitchen volley! CPU point   3 - 4" (every peer)
+var callout_time := 0.0    # seconds it stays up
+var _clock := 0.0          # host
+var _swing_at := -1.0      # host: contact time of the player's swing in progress
+var _swing_yaw := 0.0
+var _ready_at := 0.0       # host: the player can start a new swing from here
+var _shots := 0            # host: hits this rally (0 before the serve)
+var _player_grade := ""    # host: the player's last shot grade (the CPU smashes LATE floaters)
+var _shadow: MeshInstance3D
+var _ring: MeshInstance3D
+var _land_timer := 0.0
 
 
 func _ready() -> void:
@@ -67,7 +84,31 @@ func _ready() -> void:
 	_cpu_mesh.mesh = cm
 	_cpu_mesh.visible = false
 	add_child(_cpu_mesh)
+	_shadow = _flat_mesh(CylinderMesh.new(), Color(0, 0, 0, 0.45))
+	(_shadow.mesh as CylinderMesh).top_radius = 0.09
+	(_shadow.mesh as CylinderMesh).bottom_radius = 0.09
+	(_shadow.mesh as CylinderMesh).height = 0.004
+	var torus := TorusMesh.new()
+	torus.inner_radius = 0.2
+	torus.outer_radius = 0.26
+	torus.rings = 16
+	torus.ring_segments = 4
+	_ring = _flat_mesh(torus, Color(1.0, 0.85, 0.2, 0.8))
 	multiplayer.peer_connected.connect(_on_peer_connected)
+
+
+func _flat_mesh(mesh: PrimitiveMesh, col: Color) -> MeshInstance3D:
+	var mat := StandardMaterial3D.new()
+	mat.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+	mat.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+	mat.albedo_color = col
+	mesh.material = mat
+	var mi := MeshInstance3D.new()
+	mi.mesh = mesh
+	mi.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	mi.visible = false
+	add_child(mi)
+	return mi
 
 
 func dz() -> Node:
@@ -108,32 +149,82 @@ func request_hit(yaw: float) -> void:
 		_hit(1, yaw, true)
 		phase = "rally"
 		return
-	if phase != "rally" or _last_hitter == 1 or PickleballRules.side_of(_ball.pos) != 1:
+	if phase != "rally" or _clock < _ready_at:  # mid-swing or recovering: spam does nothing
 		return
-	if me.distance_to(_ball.pos) > float(_p.reach_m) + 1.0:  # + slack for the client's delay
-		return
-	_hit(1, yaw, false)
+	_swing_at = _clock + float(_p.windup_s)
+	_swing_yaw = yaw
+	_ready_at = _swing_at + float(_p.recovery_s)
 
 
-# Launches the ball from its spot toward the other side: `who` 1 player (aimed by yaw), -1 CPU.
-func _hit(who: int, yaw: float, serve: bool) -> void:
+# The player's swing reaches the contact point: grade it, check the volley rules, hit or whiff.
+func _contact() -> void:
+	var p := DropZone.player_by_peer(self, player_peer)
+	if p == null:
+		return
+	var me := court_pos(p.global_position) + Vector3.UP * 1.0
+	var grade := "WHIFF"
+	if _last_hitter != 1 and PickleballRules.side_of(_ball.pos) == 1:
+		grade = PickleballRules.swing_grade(_ball.pos - me, _ball.vel, _p, float(_p.reach_slack_m))
+	_fx.rpc(1, grade, rally)
+	if grade == "WHIFF":
+		return
+	var fault := PickleballRules.volley_fault(_bounce_side == 1 and _bounces > 0, _shots, me.z, _p)
+	if fault != "":
+		_point(-1, fault)
+		return
+	_hit(1, _swing_yaw, false, grade)
+
+
+# Launches the ball from its spot toward the other side: `who` 1 player (aimed by yaw, shaped by the timing
+# grade), -1 CPU (a lob over a net camper, a smash on a floater, else a rally ball).
+func _hit(who: int, yaw: float, serve: bool, grade := "GOOD") -> void:
 	var far := -who * _half.y
 	var depth := _rng.randf_range(0.45, 0.85)
+	var apex: Array = _p.hit_speed_apex_m
+	var h := _rng.randf_range(float(apex[0]), float(apex[1]))
 	var target := Vector2.ZERO
 	if who == 1:
+		_player_grade = grade
+		match grade:
+			"PERFECT":
+				depth = _rng.randf_range(0.8, 0.92)
+				h = float(_p.perfect_apex_m)
+			"EARLY":
+				yaw += deg_to_rad(float(_p.mistime_yaw_deg))
+				depth = _rng.randf_range(0.35, 0.6)
+			"LATE":
+				yaw -= deg_to_rad(float(_p.mistime_yaw_deg))
+				h = float(_p.late_apex_m)
 		var dir := Vector2(-sin(yaw - dz().global_rotation.y), -cos(yaw - dz().global_rotation.y))
 		var t := (far * depth - _ball.pos.z) / dir.y if dir.y < -0.05 else 4.0
 		target = Vector2(_ball.pos.x, _ball.pos.z) + dir * clampf(t, 1.0, 16.0)
 	else:
+		var pz := _player_court_pos()
 		target = Vector2(_rng.randf_range(-_half.x * 0.85, _half.x * 0.85), far * depth)
+		if not serve and PickleballRules.cpu_should_lob(pz.z, _p):  # over the head of a net camper
+			target = Vector2(_rng.randf_range(-_half.x * 0.6, _half.x * 0.6), far * _rng.randf_range(0.85, 0.95))
+			h = float(_p.lob_apex_m)
+			grade = "LOB"
+		elif not serve and _player_grade == "LATE":  # put the floater away, away from the player
+			target = Vector2(-signf(pz.x if pz.x != 0.0 else 1.0) * _half.x * 0.8, far * 0.8)
+			h = float(_p.perfect_apex_m)
+			grade = "SMASH"
 	if serve:  # diagonal service box, past the kitchen
 		target.y = signf(far) * _rng.randf_range(3.2, _half.y - 0.6)
-	var apex: Array = _p.hit_speed_apex_m
-	var h := float(_p.serve_apex_m) if serve else _rng.randf_range(float(apex[0]), float(apex[1]))
+		h = float(_p.serve_apex_m)
 	_ball.vel = PickleballRules.aim(_ball.pos, target, h, _p)
 	_last_hitter = who
 	_bounces = 0
 	_bounce_side = 0
+	_shots += 1
+	rally += 1
+	if who == -1:
+		_fx.rpc(-1, grade, rally)
+
+
+func _player_court_pos() -> Vector3:
+	var p := DropZone.player_by_peer(self, player_peer)
+	return court_pos(p.global_position) if p else Vector3(0, 0, _half.y)
 
 
 func _start_point() -> void:
@@ -141,6 +232,11 @@ func _start_point() -> void:
 	_timer = float(_p.serve_delay_s)
 	_last_hitter = 0
 	_bounces = 0
+	_shots = 0
+	rally = 0
+	_swing_at = -1.0
+	_ready_at = 0.0
+	_player_grade = ""
 	_ball.vel = Vector3.ZERO
 	_ball.pos = Vector3(0.0, -5.0, 0.0) if serving == 1 else Vector3(_cpu.x, 0.9, -_half.y + 0.4)
 
@@ -152,6 +248,7 @@ func _physics_process(delta: float) -> void:
 
 
 func _host_tick(delta: float) -> void:
+	_clock += delta
 	var p := DropZone.player_by_peer(self, player_peer)
 	if p == null or court_pos(p.global_position).length() > LEAVE_M + _half.y:
 		player_peer = 0
@@ -193,6 +290,11 @@ func _host_tick(delta: float) -> void:
 
 
 func _rally(delta: float) -> void:
+	if _swing_at >= 0.0 and _clock >= _swing_at:
+		_swing_at = -1.0
+		_contact()
+		if phase != "rally":
+			return
 	var ev := PickleballRules.step(_ball, delta, _p)
 	if ev == PickleballRules.Event.NET:
 		_point(-_last_hitter, "Into the net")
@@ -213,10 +315,15 @@ func _rally(delta: float) -> void:
 	if absf(_ball.pos.z) > _half.y + 4.0 or absf(_ball.pos.x) > _half.x + 4.0:
 		_point(-PickleballRules.side_of(_ball.pos) if _bounces > 0 else -_last_hitter, "Out")
 		return
-	# CPU return: its side, in reach, after a bounce (no volleys near the net).
-	if _last_hitter == 1 and PickleballRules.side_of(_ball.pos) == -1 and (_bounces > 0 or _ball.pos.z < -2.2):
+	# CPU return: its side, in reach; volleys only where the rules allow them (not the serve / return, not from the
+	# kitchen).
+	var bounced := _bounces > 0 and _bounce_side == -1
+	if _last_hitter == 1 and PickleballRules.side_of(_ball.pos) == -1 and PickleballRules.volley_fault(bounced, _shots, _cpu.y, _p) == "":
 		if Vector2(_cpu.x - _ball.pos.x, _cpu.y - _ball.pos.z).length() <= float(_p.ai_reach_m) and _ball.pos.y < 2.2:
-			if _rng.randf() < PickleballRules.cpu_miss_chance(_ball.vel.length(), _p):
+			var miss := PickleballRules.cpu_miss_chance(_ball.vel.length(), _p)
+			if _player_grade == "PERFECT":
+				miss += float(_p.ai_miss_perfect)
+			if _rng.randf() < miss:
 				_ball.vel = Vector3(_rng.randf_range(-2, 2), 1.5, 3.0)  # framed it into the net
 				_last_hitter = -1
 			else:
@@ -231,8 +338,10 @@ func _point(to: int, why: String) -> void:
 	serving = to
 	phase = "pause"
 	_timer = float(_p.point_pause_s)
+	_swing_at = -1.0
 	_state.rpc(player_peer, score, serving, phase)
-	_say.rpc_id(player_peer, "%s%s   %d - %d" % [(why + ": ") if why != "" else "", "your point" if to == 1 else "CPU point", score.x, score.y])
+	var called := Vector2i(score.x, score.y) if to == 1 else Vector2i(score.y, score.x)  # the server's score first
+	_callout.rpc("%s%s   %d - %d" % [(why + "! ") if why != "" else "", "Your point" if to == 1 else "CPU point", called.x, called.y])
 
 
 func _on_peer_connected(peer: int) -> void:
@@ -259,6 +368,25 @@ func _state(peer: int, new_score: Vector2i, new_serving: int, new_phase: String)
 	changed.emit()
 
 
+# A hit (who 1 player / -1 CPU) or the player's whiff: the rally count for everyone, the grade for the player.
+@rpc("authority", "call_local", "reliable")
+func _fx(who: int, grade: String, count: int) -> void:
+	rally = count
+	var me := get_tree().get_first_node_in_group("local_player")
+	if me and "sport" in me and player_peer == multiplayer.get_unique_id() and me.sport.game == self:
+		if who == 1 or grade in ["LOB", "SMASH"]:
+			me.sport.last_grade = grade if who == 1 else "CPU " + grade
+			me.sport.grade_time = float(GolfBallRules.tuning().swing.grade_show_s)
+	changed.emit()
+
+
+@rpc("authority", "call_local", "reliable")
+func _callout(text: String) -> void:
+	callout = text
+	callout_time = float(_p.callout_s)
+	changed.emit()
+
+
 @rpc("authority", "call_remote", "unreliable_ordered")
 func _ball_state(pos: Vector3, vel: Vector3, cpu: Vector2) -> void:
 	_ball.pos = pos
@@ -267,7 +395,10 @@ func _ball_state(pos: Vector3, vel: Vector3, cpu: Vector2) -> void:
 
 
 func _show(delta: float) -> void:
+	callout_time = maxf(0.0, callout_time - delta)
+	_shadow.visible = _ball_mesh.visible and _ball.pos.y > 0.0
 	if not _ball_mesh.visible:
+		_ring.visible = false
 		return
 	if not multiplayer.is_server() and phase == "rally":  # clients run the ball on between updates
 		_ball.pos += _ball.vel * delta
@@ -278,6 +409,16 @@ func _show(delta: float) -> void:
 	_shown_cpu = _shown_cpu.lerp(_cpu, minf(1.0, delta * 12.0))
 	_ball_mesh.position = _shown_ball
 	_cpu_mesh.position = Vector3(_shown_cpu.x, 0.9, _shown_cpu.y)
+	_shadow.position = Vector3(_shown_ball.x, 0.012, _shown_ball.z)
+	var s := clampf(1.3 - _shown_ball.y * 0.15, 0.5, 1.3)  # smaller and lighter the higher it is
+	_shadow.scale = Vector3(s, 1.0, s)
+	_land_timer -= delta
+	if _land_timer <= 0.0:  # where it comes down: 10x a second
+		_land_timer = 0.1
+		var land := PickleballRules.landing(_ball, _p) if phase == "rally" else Vector3.INF
+		_ring.visible = land != Vector3.INF
+		if _ring.visible:
+			_ring.position = Vector3(land.x, 0.015, land.z)
 
 
 @rpc("authority", "call_local", "reliable")

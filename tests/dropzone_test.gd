@@ -123,7 +123,7 @@ func _ready() -> void:
 		if ct.score.x + ct.score.y >= 4:
 			break
 	_check("pickleball points scored: you %d - %d CPU (%d swings, CPU returned %d)" % [ct.score.x, ct.score.y, hits, cpu_returns],
-		ct.score.x + ct.score.y >= 2 and cpu_returns >= 1)
+		ct.score.x + ct.score.y >= 1 and cpu_returns >= 1)  # rules / timing are pickleball_test's (D-089): rallies run longer now
 	await _perf()
 	SaveStore.delete(slug)
 	_say("%d failure(s)" % _fails)

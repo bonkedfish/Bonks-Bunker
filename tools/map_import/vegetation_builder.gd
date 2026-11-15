@@ -5,6 +5,9 @@
 # one prop), alpha-scissor materials. Then for each cell turns a list of placements into MultiMeshInstance3D nodes
 # per kind/variant and block_m block (so visibility ranges cull per block) plus one StaticBody3D of simple colliders.
 # Placement points are chosen by build_cells (it knows roads and buildings).
+# Colliders match the models (D-091): a tree's trunk collider runs along the trunk TreeMesh drew (its "tree_shape"
+# metadata: lean, length, bark thickness at chest height); collide_radius_m props get a cylinder as tall as the model
+# (it used to be 3 m for everything - stumps had an invisible column that stopped players and discs).
 # Depends on: DataLoader, TreeMesh, CarMesh, imported glTFs under models_dir.
 class_name VegetationBuilder
 extends RefCounted
@@ -118,6 +121,23 @@ func scale_range(kind: String) -> Vector2:
 	return Vector2(float(s[0]), float(s[1]))
 
 
+# One cylinder along a TreeMesh trunk ({trunk: [base, top, r0, r1]} in mesh units, scaled by s): as thick as the bark
+# a quarter of the way up (chest to head height on a grown tree), leaning with it, up to where the branches start.
+func _add_trunk(body: StaticBody3D, shape_info: Dictionary, basis: Basis, pos: Vector3, s: float) -> void:
+	var t: Array = shape_info.trunk
+	var a: Vector3 = pos + basis * ((t[0] as Vector3) * s)
+	var b: Vector3 = pos + basis * ((t[1] as Vector3) * s)
+	var y := (b - a).normalized()
+	var x := y.cross(Vector3.FORWARD if absf(y.z) < 0.9 else Vector3.RIGHT).normalized()
+	var cyl := CylinderShape3D.new()
+	cyl.height = a.distance_to(b)
+	cyl.radius = lerpf(float(t[2]), float(t[3]), 0.25) * s
+	var shape := CollisionShape3D.new()
+	shape.shape = cyl
+	shape.transform = Transform3D(Basis(x, y, x.cross(y)), (a + b) * 0.5)
+	body.add_child(shape)
+
+
 # placements: Array of [kind, variant, Vector3 position, yaw, scale]; kind "_box" adds only a box collider
 # (scale = Vector3 size, position = box centre). Adds a holder_name node under root.
 func build_cell(root: Node3D, placements: Array) -> int:
@@ -145,13 +165,16 @@ func build_cell(root: Node3D, placements: Array) -> int:
 		groups[key].append(xf)
 		var k: Dictionary = kinds[kind]
 		var aabb: AABB = k.meshes[int(pl[1])].get_aabb()
-		if float(k.collide_radius) > 0.0:
+		var mesh: Mesh = k.meshes[int(pl[1])]
+		if kind.begins_with("tree_") and float(k.collide_radius) > 0.0 and mesh.has_meta("tree_shape"):
+			_add_trunk(body, mesh.get_meta("tree_shape"), basis, pos, s)
+		elif float(k.collide_radius) > 0.0:
 			var shape := CollisionShape3D.new()
 			var cyl := CylinderShape3D.new()
 			cyl.radius = float(k.collide_radius) * (s / 10.0 if kind.begins_with("tree_") else s)
-			cyl.height = 3.0
+			cyl.height = maxf(aabb.size.y * s, 0.2)
 			shape.shape = cyl
-			shape.position = pos + Vector3(0, 1.5, 0)
+			shape.position = pos + Vector3(0, aabb.position.y * s + cyl.height * 0.5, 0)
 			body.add_child(shape)
 		elif k.collide_box.size() == 3:
 			var size := Vector3(k.collide_box[0], k.collide_box[1], k.collide_box[2]) * s

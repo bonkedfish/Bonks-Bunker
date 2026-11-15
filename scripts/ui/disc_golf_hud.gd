@@ -252,7 +252,7 @@ func _scorecard(c: DiscCourse) -> void:
 	for peer: int in ids:
 		y += row_h
 		var e: Dictionary = _dg.card[peer]
-		_text(Vector2(r.position.x + 10.0, y), _dg.player_label(peer), 15, Color(1, 1, 1) if peer == multiplayer.get_unique_id() else Color(0.85, 0.85, 0.85))
+		_text(Vector2(r.position.x + 10.0, y), _dg.player_name(peer), 15, _dg.player_color(peer))  # D-092
 		var total := 0
 		var par := 0
 		for i in holes.size():

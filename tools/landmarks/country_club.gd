@@ -1,16 +1,18 @@
 # CountryClub — builds Kearney Country Club's grounds (D-079; 2800 19th Ave) into a LandmarkKit from
 # data/landmarks/country_club.json. Local frame = map axes (x east, z south), origin at the clubhouse. Clubhouse,
 # pro shop + cart barn, maintenance shed, pool house, parking, rooms, furniture, signs, lights, loot and lair markers
-# are data (LandmarkParts); this file adds the drained pool basin (sunk into a landmarks.json ground hole) and the
+# are data (LandmarkParts); this file adds the drained pool basin (sunk into a landmarks.json ground hole; the deck
+# fills the rest of the deck slabs' opening and a ramp climbs out of the deep end, D-091) and the
 # round wading pool, the two tennis courts (surface, lines, nets), chain-link fences, parked golf carts, and the GroundProps node
 # that stands the hole flags and tee signs on the real ground across the course. The course surfaces themselves are
-# painted onto the terrain by build_cells from data/landmarks/country_club_paint.json (D-080). Scenery only: no golf
-# gameplay (D-079).
-# Depends on: LandmarkKit, landmark_parts.gd, scripts/world/ground_props.gd.
+# painted onto the terrain by build_cells from data/landmarks/country_club_paint.json (D-080). The "Golf" node
+# (CourseGolf, D-086) makes the course playable at runtime from data/golf/country_club_course.json.
+# Depends on: LandmarkKit, landmark_parts.gd, scripts/world/ground_props.gd, scripts/golf/course_golf.gd.
 extends RefCounted
 
 const Parts := preload("res://tools/landmarks/landmark_parts.gd")
 const GroundProps := preload("res://scripts/world/ground_props.gd")
+const CourseGolfScript := preload("res://scripts/golf/course_golf.gd")
 
 
 static func build(k: LandmarkKit, d: Dictionary, _rng: RandomNumberGenerator) -> void:
@@ -32,6 +34,10 @@ static func build(k: LandmarkKit, d: Dictionary, _rng: RandomNumberGenerator) ->
 	props.set("flags", flags)
 	props.set("signs", d.course.tee_signs)  # [x, z, yaw_deg, text] per hole, from the OSM hole lines
 	k.root.add_child(props)
+	var golf := Node3D.new()
+	golf.name = "Golf"
+	golf.set_script(CourseGolfScript)
+	k.root.add_child(golf)
 	Parts.signs(k, d.course.signs)  # clubhouse / pro shop / pool wall signs
 
 
@@ -59,6 +65,9 @@ static func _pool(k: LandmarkKit, p: Dictionary) -> void:
 		var dir := b - a
 		k.box(Vector3(mid.x, top + 0.02, mid.y), Vector3(0.35, 0.04, dir.length() + 0.2), "coping", atan2(dir.x, dir.y), false)
 	k.trimesh(faces)
+	_deck_fill(k, p.deck_opening, poly, top)
+	var rp: Dictionary = p.ramp  # a way out: 1.6 m walls are higher than a jump
+	k.ramp(Vector3(rp.bottom[0], floor_y, rp.bottom[1]), Vector3(rp.top[0], top, rp.top[1]), float(rp.width), 0.3, "pool_floor")
 	var c := Vector3(p.puddle[0], floor_y + 0.01, p.puddle[1])
 	k.disc(c, float(p.puddle[2]), "puddle", 12)
 	var w: Array = p.wading  # [x, z, radius]
@@ -66,6 +75,25 @@ static func _pool(k: LandmarkKit, p: Dictionary) -> void:
 	var r := float(w[2])
 	k.disc(wc + Vector3(0, 0.005, 0), r, "pool_floor", 18)
 	k.sweep(wc, PackedVector2Array([Vector2(r, 0.0), Vector2(r, 0.3), Vector2(r + 0.3, 0.3), Vector2(r + 0.3, 0.0)]), 0.0, TAU, 18, "coping", "pool_wall")
+
+
+# Deck surface (and collision) over the deck slabs' opening [x0, z0, x1, z1] except the kidney: the ground hole under
+# it was bigger than the pool, so its corners dropped through the map (D-091). Split down the middle so each half is a
+# plain polygon (clip_polygons gives an outline + a hole when the pool sits wholly inside).
+static func _deck_fill(k: LandmarkKit, opening: Array, poly: PackedVector2Array, top: float) -> void:
+	var cx := (float(opening[0]) + float(opening[2])) * 0.5
+	var faces := PackedVector3Array()
+	for half: Array in [[float(opening[0]), cx], [cx, float(opening[2])]]:
+		var r := PackedVector2Array([Vector2(half[0], opening[1]), Vector2(half[1], opening[1]),
+			Vector2(half[1], opening[3]), Vector2(half[0], opening[3])])
+		for piece: PackedVector2Array in Geometry2D.clip_polygons(r, poly):
+			var idx := Geometry2D.triangulate_polygon(piece)
+			for i in range(0, idx.size(), 3):
+				var v := [Vector3(piece[idx[i]].x, top, piece[idx[i]].y), Vector3(piece[idx[i + 1]].x, top, piece[idx[i + 1]].y),
+					Vector3(piece[idx[i + 2]].x, top, piece[idx[i + 2]].y)]
+				k.tri(v[0], v[1], v[2], "deck")
+				faces.append_array(PackedVector3Array(v))
+	k.trimesh(faces)
 
 
 static func _court(k: LandmarkKit, c: Dictionary) -> void:

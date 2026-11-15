@@ -1,6 +1,6 @@
 # Minimap — top-left corner map (D-067): the same pipeline map picture as the M map, turned so the way you face is
 # always up, about view_m across. Shows landmark / bar markers, teammates, Bonk and a diamond per tracked quest
-# objective (pinned to the edge when it's off the map), your disc golf basket and tee pad during a round (D-076), street names
+# objective (pinned to the edge when it's off the map), teammates in their own colour with their name (D-092), your disc golf basket and tee pad during a round (D-076), street names
 # (upright, from the map meta, D-070), plus a north tick. Hidden when you have no body or a
 # full-screen window (map, quest book, inventory, pause) is open. Redraws 20x a second. Presentation only.
 # Depends on: world/generated/map/world_map.json (+ texture), Player (groups "local_player", "players"), Bonk
@@ -135,11 +135,17 @@ func _draw() -> void:
 	if bonk:
 		_dot(_screen(bonk.global_position, c, yaw), Color(1.0, 0.55, 0.15))
 	for pl in get_tree().get_nodes_in_group("players"):
-		if pl != _me and "water" in pl:
-			_dot(_screen(pl.global_position, c, yaw), Color(0.4, 0.85, 1.0))
+		if pl != _me and "water" in pl:  # each in their own colour, with their name (D-092)
+			var pp := _screen(pl.global_position, c, yaw)
+			var col := PlayerColors.color(int(pl.net_color))
+			_dot(pp, col)
+			if Rect2(Vector2.ZERO, size).has_point(pp) and str(pl.net_name) != "":
+				draw_string_outline(_font, pp + Vector2(7, 4), str(pl.net_name), HORIZONTAL_ALIGNMENT_LEFT, -1, 11, 3, Color(0, 0, 0, 0.9))
+				draw_string(_font, pp + Vector2(7, 4), str(pl.net_name), HORIZONTAL_ALIGNMENT_LEFT, -1, 11, col)
 	# You: an arrow pointing up. North tick on the rim.
 	draw_colored_polygon(PackedVector2Array([c + Vector2(0, -11), c + Vector2(8, 8), c + Vector2(0, 3), c + Vector2(-8, 8)]), Color(0, 0, 0))
-	draw_colored_polygon(PackedVector2Array([c + Vector2(0, -9), c + Vector2(6, 6), c + Vector2(0, 2), c + Vector2(-6, 6)]), Color(1.0, 0.85, 0.2))
+	draw_colored_polygon(PackedVector2Array([c + Vector2(0, -9), c + Vector2(6, 6), c + Vector2(0, 2), c + Vector2(-6, 6)]),
+		PlayerColors.color(int(_me.get("net_color"))) if is_instance_valid(_me) else Color(1.0, 0.85, 0.2))
 	var north := (Vector2(0, -1).rotated(yaw)).normalized()
 	var np := c + north * (SIZE * 0.5 - 12.0)
 	draw_string_outline(_font, np - Vector2(5, -5), "N", HORIZONTAL_ALIGNMENT_LEFT, -1, 14, 4, Color(0, 0, 0, 0.9))

@@ -1,6 +1,8 @@
 # Sfx — autoload (D-077): plays sound events by string ID. Event tuning (volume, pitch jitter, range, bus) is in
 # data/audio/sounds.json; the sounds are every .ogg / .wav / .mp3 in res://assets/audio/<event id>/ (one picked at
 # random per play, so drop in as many variants as you like). An event with no files warns once, then stays silent.
+# Optional per event (D-087): "alias" plays another event's files (so new weapons can share recordings), "pitch"
+# shifts it (a deeper rifle, a snappier SMG).
 # Makes the "SFX" and "Ambience" buses and remembers their volumes in user://settings.cfg [audio].
 # Voices are created once and reused (the oldest is stolen); a 3D event farther than its max_distance from the camera
 # is skipped. Owns the Ambience node. Presentation only: never decides anything for the game.
@@ -46,9 +48,14 @@ func _ready() -> void:
 		return
 	for id: String in data.events:
 		var def: Variant = data.events[id]
-		if typeof(def) == TYPE_DICTIONARY and DataLoader.validate(def, EVENT_SCHEMA, "%s:%s" % [DATA_PATH, id]):
+		if typeof(def) != TYPE_DICTIONARY:
+			continue
+		var required: Dictionary = (def as Dictionary).duplicate()
+		required.erase("alias")
+		required.erase("pitch")
+		if DataLoader.validate(required, EVENT_SCHEMA, "%s:%s" % [DATA_PATH, id]):
 			_defs[id] = def
-			_streams[id] = _load_streams(id)
+			_streams[id] = _load_streams(str(def.get("alias", id)))
 	_n3 = int(data.voices_3d)
 	for i in _n3:
 		var p := AudioStreamPlayer3D.new()
@@ -160,7 +167,7 @@ func _start(i: int, stream: AudioStream, def: Dictionary) -> int:
 	var j := float(def.pitch_jitter)
 	p.stream = stream
 	p.volume_db = float(def.volume_db)
-	p.pitch_scale = 1.0 + _rng.randf_range(-j, j)
+	p.pitch_scale = float(def.get("pitch", 1.0)) * (1.0 + _rng.randf_range(-j, j))
 	p.bus = str(def.bus)
 	p.play()
 	_serial += 1

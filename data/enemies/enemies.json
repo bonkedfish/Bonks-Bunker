@@ -146,7 +146,7 @@
 			"speed_mult": 1.3,
 			"cooldown_mult": 0.6
 		},
-		"drops": {
+		"drops": { "smg_9mm": 1,
 			"ammo_9mm": 30,
 			"bandage": 2,
 			"molly": 1
@@ -191,7 +191,7 @@
 			"speed_mult": 1.6,
 			"cooldown_mult": 0.5
 		},
-		"drops": {
+		"drops": { "shotgun_pump": 1, "chest_padded": 1,
 			"canned_beans": 4,
 			"painkillers": 2,
 			"ammo_9mm": 20
@@ -239,7 +239,7 @@
 		},
 		"bark_prefix": "hunter_fight_",
 		"subtitle_range": 45.0,
-		"drops": {
+		"drops": { "rifle_hunting": 1,
 			"eagle_keycard": 1,
 			"ammo_9mm": 45,
 			"painkillers": 2
@@ -340,7 +340,7 @@
 			"speed_mult": 1.4,
 			"cooldown_mult": 0.55
 		},
-		"drops": {
+		"drops": { "rifle_ar": 1, "chest_kevlar": 1,
 			"ammo_9mm": 40,
 			"bandage": 3,
 			"molly": 1

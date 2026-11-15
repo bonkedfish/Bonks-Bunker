@@ -53,7 +53,7 @@ var _in_flight: Dictionary = {}  # host: peer -> [seconds left, rest, holed, sho
 var _order: Array = []           # host: tee order for the current hole (peers)
 var _wind_left := 0.0            # host: seconds to the next wind shift
 var _announced := []             # host: [peer, hole, throws] of the last throw announced
-var _trees: Array = []           # host: [base: Vector3, height, bare], gathered again after cells load
+var _trees: Array = []           # host: [base: Vector3, height, bare, to_local: Transform3D, tree_shape or {}], gathered again after cells load
 var _tree_grid: Dictionary = {}  # host: Vector2i -> Array of indexes into _trees
 var _trees_dirty := true         # host: a cell overlapping the course loaded since the trees were gathered
 var _visual: Dictionary = {}     # peer -> {node: MeshInstance3D, path, rolls, t, hand}
@@ -126,15 +126,24 @@ func is_flying(peer: int) -> bool:
 	return _visual.has(peer) and float(_visual[peer].t) < _duration(_visual[peer].path)
 
 
-# "You", "Host", "P2" ... for the scorecard.
+# "You" for yourself, everyone else by their character name (D-092), for toasts and the turn banner.
 func player_label(peer: int) -> String:
 	if peer == multiplayer.get_unique_id():
 		return "You"
-	if peer == 1:
-		return "Host"
-	var ids := card.keys()
-	ids.sort()
-	return "P%d" % (ids.find(peer) + 1)
+	return player_name(peer)
+
+
+# The character's name (yours too), for scorecard rows.
+func player_name(peer: int) -> String:
+	var p := _player(peer)
+	var n := str(p.get("net_name")) if p != null else ""
+	return n if n != "" else "Player"
+
+
+# That player's map colour (PlayerColors, D-092).
+func player_color(peer: int) -> Color:
+	var p := _player(peer)
+	return PlayerColors.color(int(p.get("net_color"))) if p != null else Color(0.85, 0.85, 0.85)
 
 
 # At the round's course (its bounds + 40 m): the scorecard only shows here (D-071).
@@ -625,9 +634,16 @@ func _canopy_hit(f: DiscFlightRules.Flight, metres: float) -> bool:
 	var key := Vector2i(floori(f.pos.x / TREE_GRID), floori(f.pos.z / TREE_GRID))
 	for i: int in _tree_grid.get(key, []):
 		var tree: Array = _trees[i]
-		if not DiscFlightRules.in_canopy(f.pos, tree[0], tree[1], tree[2]):
+		var shape: Dictionary = tree[4]
+		var touch := DiscFlightRules.Canopy.NONE
+		if not shape.is_empty():  # the branches and leaf clumps actually drawn (D-091)
+			touch = DiscFlightRules.canopy_contact((tree[3] as Transform3D) * f.pos, shape,
+				DiscFlightRules.DISC_RADIUS_M / float(tree[1]))
+		elif DiscFlightRules.in_canopy(f.pos, tree[0], tree[1], tree[2]):
+			touch = DiscFlightRules.Canopy.LEAVES
+		if touch == DiscFlightRules.Canopy.NONE:
 			continue
-		if _rng.randf() >= DiscFlightRules.canopy_hit_chance(metres, tree[2], _t):
+		if touch == DiscFlightRules.Canopy.LEAVES and _rng.randf() >= DiscFlightRules.canopy_hit_chance(metres, tree[2], _t):
 			return false
 		var slow: Array = _t.canopy_slow
 		var speed := f.vel.length() * _rng.randf_range(float(slow[0]), float(slow[1]))
@@ -658,14 +674,16 @@ func _gather_trees(c: DiscCourse) -> void:
 				continue
 			var bare := str(mmi.name).begins_with("tree_bare")
 			var mm: MultiMesh = mmi.multimesh
+			var shape: Dictionary = mm.mesh.get_meta("tree_shape", {}) if mm.mesh else {}
+			var reach := DiscFlightRules.canopy_reach(shape) if not shape.is_empty() else 0.42
 			for i in mm.instance_count:
 				var xf: Transform3D = mmi.global_transform * mm.get_instance_transform(i)
 				if not area.has_point(_flat(xf.origin)):
 					continue
 				var h := xf.basis.y.length()
 				var idx := _trees.size()
-				_trees.append([xf.origin, h, bare])
-				var r := 0.42 * h
+				_trees.append([xf.origin, h, bare, xf.affine_inverse(), shape])
+				var r := reach * h
 				for gx in range(floori((xf.origin.x - r) / TREE_GRID), floori((xf.origin.x + r) / TREE_GRID) + 1):
 					for gz in range(floori((xf.origin.z - r) / TREE_GRID), floori((xf.origin.z + r) / TREE_GRID) + 1):
 						var k := Vector2i(gx, gz)
@@ -812,7 +830,7 @@ func _say(text: String) -> void:
 	_toast(text)
 
 
-# Like _say, with {p} = that player's name as each peer calls them ("You", "Host", "P2").
+# Like _say, with {p} = that player's name as each peer calls them ("You" or their character name).
 @rpc("authority", "call_local", "reliable")
 func _say_p(peer: int, text: String) -> void:
 	_toast(text.replace("{p}", player_label(peer)))

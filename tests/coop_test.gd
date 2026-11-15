@@ -4,6 +4,7 @@
 # spawn + world sync (Bonk, zombies, a drop made before joining), movement prediction vs host, timed item use,
 # drop + pickup, crafting at the bunker workbench, Bonk in the same place on both, firing, swimming, then the client leaves and the host saves.
 # Names (D-081): both get the name prompt in a new world, name themselves, and see each other's name tag.
+# John Pork (D-091): the client walks up to his tent and presses E; the host must see the talk start.
 # Host log + client reports -> tests/_look/coop_result.txt; screenshots coop_client_*.png.
 # Depends on: scenes/main.tscn, Net, WorldDrops, Workbench, ItemUse, MovementRules, SaveStore.
 extends Node
@@ -120,6 +121,25 @@ func _host_run() -> void:
 	await get_tree().create_timer(5.0).timeout
 	await _ask(peer, 8, null)
 	_check(client.water == MovementRules.Water.SWIM, "host: client is swimming (mode %d)" % client.water)
+	# 12. John Pork from the client (D-091: the tent used to get a different node path on every peer, so a
+	# client's E reached nobody on the host).
+	var dg: DiscGolfDirector = get_tree().get_first_node_in_group("disc_golf")
+	var course: DiscCourse = dg.course_node("centennial")
+	_teleport(client, course.box_position() + Vector3(2.5, 1.5, 0))
+	for i in 30:
+		await get_tree().create_timer(0.5).timeout
+		if course.is_snapped():
+			break
+	await get_tree().create_timer(4.0).timeout
+	var front := -course.camp.global_basis.z
+	_teleport(client, course.camp.global_position + front * 1.85 + Vector3(0, 0.3, 0))
+	await get_tree().create_timer(1.0).timeout
+	await _ask(peer, 12, null)
+	var dlg: Node = get_tree().get_first_node_in_group("dialogue")
+	_check(int(dlg._talker) == int(client.peer_id), "host: the client's E started a talk with John Pork (talker %d, client %d)" % [
+		int(dlg._talker), int(client.peer_id)])
+	if int(dlg._talker) == int(client.peer_id):
+		dlg._end()
 	# 9. Leave + save.
 	_step.rpc_id(peer, 9, null)
 	await get_tree().create_timer(4.0).timeout
@@ -274,6 +294,30 @@ func _step(n: int, arg: Variant) -> void:
 			_report.rpc_id(1, n, bonks.size() == 1 and d >= 0.0 and d < 1.5,
 				"I see %d Bonk(s); my Bonk is %.2f m from the host's Bonk (%s vs %s)" % [bonks.size(), d,
 				bonks[0].global_position.snapped(Vector3.ONE * 0.1) if bonks.size() > 0 else "-", (arg as Vector3).snapped(Vector3.ONE * 0.1)])
+		12:
+			var dg: DiscGolfDirector = get_tree().get_first_node_in_group("disc_golf")
+			var course: DiscCourse = dg.course_node("centennial")
+			var t1 := Time.get_ticks_msec()
+			while not course.is_snapped() and Time.get_ticks_msec() - t1 < 6000:
+				await get_tree().create_timer(0.25).timeout
+			var npc: Node3D = null
+			for n2 in get_tree().get_nodes_in_group("npcs"):
+				if "npc_id" in n2 and n2.npc_id == "john_pork" and course.camp != null and course.camp.is_ancestor_of(n2):
+					npc = n2
+			if npc == null:
+				_report.rpc_id(1, n, false, "no John Pork at my Centennial camp")
+				return
+			var d: Vector3 = npc.global_position + Vector3(0, 1.3, 0) - me.camera.global_position
+			me.yaw = atan2(-d.x, -d.z)
+			me.pitch = atan2(d.y, Vector2(d.x, d.z).length())
+			me.rotation.y = me.yaw
+			me.head.rotation.x = me.pitch
+			await get_tree().create_timer(0.3).timeout
+			me._update_look(1.0)
+			var looked: bool = me.looked_talkable == npc
+			me._try_open_container()
+			await get_tree().create_timer(1.0).timeout
+			_report.rpc_id(1, n, looked, "pressed E on John Pork at %s (crosshair on him: %s)" % [npc.get_path(), looked])
 		9:
 			get_tree().quit()
 

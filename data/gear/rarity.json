@@ -1,0 +1,29 @@
+{
+	"note": "Gear rarity (D-087). Every weapon or armor piece a player gets is rolled once into an instance: a tier by weight, a condition in that tier's range, and (pristine / legendary) a chance of a free mod; legendary also rolls a perk for its kind. mult scales damage (weapons) or damage resistance (armor). Condition 0-1 wears with use: damage x lerp(cond_floor_weapon, 1, cond), resistance x lerp(cond_floor_armor, 1, cond). Repair at a workbench: repair_scrap_per_cond scrap per full bar (rounded up, at least 1). Golden Ace and other fixed items set their own tier in items.json (fixed_rarity).",
+	"tiers": {
+		"worn": {"name": "Worn", "weight": 50.0, "mult": 0.85, "cond": [0.35, 0.7], "mod_chance": 0.0, "color": [0.62, 0.6, 0.55]},
+		"standard": {"name": "", "weight": 32.0, "mult": 1.0, "cond": [0.6, 0.9], "mod_chance": 0.1, "color": [0.92, 0.92, 0.9]},
+		"pristine": {"name": "Pristine", "weight": 14.0, "mult": 1.12, "cond": [0.85, 1.0], "mod_chance": 0.35, "color": [0.35, 0.65, 1.0]},
+		"legendary": {"name": "Legendary", "weight": 4.0, "mult": 1.25, "cond": [1.0, 1.0], "mod_chance": 0.6, "color": [1.0, 0.75, 0.15]}
+	},
+	"perks": {
+		"gun": {
+			"rapid": {"name": "Rapid", "fire_interval": 0.75},
+			"deadeye": {"name": "Deadeye", "spread_deg": 0.5, "damage": 1.1},
+			"bottomless": {"name": "Bottomless", "mag_size": 2.0},
+			"brutal": {"name": "Brutal", "damage": 1.25}
+		},
+		"melee": {
+			"brutal": {"name": "Brutal", "damage": 1.25},
+			"swift": {"name": "Swift", "swing_interval": 0.75, "windup": 0.75}
+		},
+		"armor": {
+			"sturdy": {"name": "Sturdy", "dr": 1.25},
+			"unbreakable": {"name": "Unbreakable", "wear": 0.25}
+		}
+	},
+	"cond_floor_weapon": 0.6,
+	"cond_floor_armor": 0.5,
+	"repair_scrap_per_cond": 6.0,
+	"resist_cap": 0.7
+}

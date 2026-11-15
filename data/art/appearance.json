@@ -1,0 +1,51 @@
+{
+	"note": "Character creator options (D-096). A look is saved per character: {body, skin, hair, hair_color, beard, shirt, pants, shoes, hat, extra, accent} - body / hair / hat / extra are keys below, the rest are indexes into the colour lists (beard is true / false, men only). bodies: the base model in character_models.json + eyebrows. hats / extras: pieces built from simple shapes on a bone (CharacterAnimator gear: shape box / cylinder / cone / sphere, size, pos, rot_deg on that bone, metres), colour \"accent\" = the look's accent colour, \"dark\" = glass / strap black, or [r, g, b]. Add an option by adding a key; old saves with a removed key fall back to the default.",
+	"bodies": {
+		"male": {"name": "Male", "model": "ubc_scavenger_m", "eyebrows": "res://assets/characters/ubc/hair/Eyebrows_Regular.gltf"},
+		"female": {"name": "Female", "model": "ubc_ranger_f", "eyebrows": "res://assets/characters/ubc/hair/Eyebrows_Female.gltf"}
+	},
+	"skin_tones": [[0.96, 0.8, 0.69], [0.9, 0.72, 0.58], [0.82, 0.64, 0.5], [0.74, 0.56, 0.43], [0.64, 0.46, 0.33], [0.55, 0.38, 0.27], [0.43, 0.29, 0.2], [0.31, 0.21, 0.15]],
+	"hair_styles": {
+		"none": {"name": "Bald", "parts": []},
+		"buzzed": {"name": "Buzzed", "parts": ["res://assets/characters/ubc/hair/Hair_Buzzed.gltf"]},
+		"buzzed_f": {"name": "Buzz cut", "parts": ["res://assets/characters/ubc/hair/Hair_BuzzedFemale.gltf"]},
+		"parted": {"name": "Parted", "parts": ["res://assets/characters/ubc/hair/Hair_SimpleParted.gltf"]},
+		"long": {"name": "Long", "parts": ["res://assets/characters/ubc/hair/Hair_Long.gltf"]},
+		"buns": {"name": "Buns", "parts": ["res://assets/characters/ubc/hair/Hair_Buns.gltf"]}
+	},
+	"beard": "res://assets/characters/ubc/hair/Hair_Beard.gltf",
+	"hair_colors": [[0.06, 0.05, 0.04], [0.2, 0.14, 0.08], [0.35, 0.22, 0.12], [0.55, 0.36, 0.18], [0.82, 0.66, 0.4], [0.55, 0.22, 0.08], [0.6, 0.6, 0.6], [0.2, 0.45, 0.75]],
+	"cloth_colors": [[0.3, 0.33, 0.2], [0.22, 0.26, 0.36], [0.14, 0.1, 0.07], [0.55, 0.12, 0.1], [0.45, 0.4, 0.28], [0.35, 0.3, 0.2], [0.08, 0.07, 0.07], [0.7, 0.7, 0.68], [0.15, 0.3, 0.55], [0.2, 0.42, 0.25], [0.75, 0.55, 0.15], [0.45, 0.2, 0.45], [0.85, 0.4, 0.12], [0.5, 0.5, 0.52]],
+	"hats": {
+		"none": {"name": "None", "parts": []},
+		"cap": {"name": "Ball cap", "parts": [
+			{"shape": "cylinder", "bone": "Head", "pos": [0, 0.175, -0.005], "size": [0.108, 0.07, 0], "color": "accent"},
+			{"shape": "box", "bone": "Head", "pos": [0, 0.145, 0.1], "size": [0.17, 0.012, 0.1], "color": "accent"}]},
+		"beanie": {"name": "Beanie", "parts": [
+			{"shape": "sphere", "bone": "Head", "pos": [0, 0.17, -0.01], "size": [0.112, 0, 0], "color": "accent"}]},
+		"hard_hat": {"name": "Hard hat", "parts": [
+			{"shape": "sphere", "bone": "Head", "pos": [0, 0.17, -0.005], "size": [0.118, 0, 0], "color": "accent", "metal": 0.2},
+			{"shape": "cylinder", "bone": "Head", "pos": [0, 0.155, -0.005], "size": [0.15, 0.012, 0], "color": "accent", "metal": 0.2}]},
+		"cowboy": {"name": "Cowboy hat", "parts": [
+			{"shape": "cylinder", "bone": "Head", "pos": [0, 0.17, -0.005], "size": [0.2, 0.012, 0], "color": "accent"},
+			{"shape": "cylinder", "bone": "Head", "pos": [0, 0.225, -0.005], "size": [0.095, 0.11, 0], "color": "accent"}]},
+		"bandana": {"name": "Bandana", "parts": [
+			{"shape": "cylinder", "bone": "Head", "pos": [0, 0.165, -0.005], "size": [0.107, 0.045, 0], "color": "accent"}]}
+	},
+	"extras": {
+		"none": {"name": "None", "parts": []},
+		"backpack": {"name": "Backpack", "parts": [
+			{"shape": "box", "bone": "spine_03", "pos": [0, -0.02, -0.18], "size": [0.28, 0.36, 0.13], "color": "accent"},
+			{"shape": "box", "bone": "spine_03", "pos": [0, 0.15, -0.18], "size": [0.26, 0.08, 0.14], "color": "dark"}]},
+		"bandolier": {"name": "Bandolier", "parts": [
+			{"shape": "box", "bone": "spine_03", "pos": [0, -0.03, 0.105], "size": [0.05, 0.46, 0.025], "rot_deg": [0, 0, 38], "color": "accent"},
+			{"shape": "box", "bone": "spine_03", "pos": [0, -0.03, -0.1], "size": [0.05, 0.46, 0.025], "rot_deg": [0, 0, -38], "color": "accent"}]},
+		"goggles": {"name": "Goggles", "parts": [
+			{"shape": "cylinder", "bone": "Head", "pos": [0, 0.09, -0.005], "size": [0.106, 0.025, 0], "color": "dark"},
+			{"shape": "cylinder", "bone": "Head", "pos": [0.035, 0.088, 0.1], "size": [0.026, 0.02, 0], "rot_deg": [90, 0, 0], "color": "accent", "metal": 0.6},
+			{"shape": "cylinder", "bone": "Head", "pos": [-0.035, 0.088, 0.1], "size": [0.026, 0.02, 0], "rot_deg": [90, 0, 0], "color": "accent", "metal": 0.6}]},
+		"scarf": {"name": "Scarf", "parts": [
+			{"shape": "cylinder", "bone": "neck_01", "pos": [0, 0.03, 0.0], "size": [0.075, 0.07, 0], "color": "accent"}]}
+	},
+	"dark": [0.06, 0.06, 0.07]
+}

@@ -1,6 +1,8 @@
 # WeaponDB — weapon definitions from data/weapons/weapons.json, looked up by string ID.
-# Each entry is validated against the schema for its "kind" (gun or melee).
-# Pure: no scene or rendering dependencies. Depends on: DataLoader.
+# Each entry is validated against the schema for its "kind" (gun, melee or thrown, D-088), plus optional keys
+# (D-087): mesh (kit weapon mesh shown in hand), spread_deg, pellets, auto (fires while held), zoom, wear
+# (condition lost per attack), mod_slots, speed (thrown). Pure: no scene or rendering dependencies.
+# Depends on: DataLoader.
 class_name WeaponDB
 extends RefCounted
 
@@ -16,6 +18,14 @@ const SCHEMAS := {
 		"swing_interval": TYPE_FLOAT, "range": TYPE_FLOAT, "arc_degrees": TYPE_FLOAT,
 		"noise_radius": TYPE_FLOAT,
 	},
+	"thrown": {
+		"name": TYPE_STRING, "kind": TYPE_STRING, "damage": TYPE_FLOAT, "fire_interval": TYPE_FLOAT,
+		"range": TYPE_FLOAT, "speed": TYPE_FLOAT, "noise_radius": TYPE_FLOAT,
+	},
+}
+const OPTIONAL := {
+	"mesh": TYPE_STRING, "spread_deg": TYPE_FLOAT, "pellets": TYPE_FLOAT, "auto": TYPE_BOOL, "zoom": TYPE_FLOAT,
+	"wear": TYPE_FLOAT, "mod_slots": TYPE_ARRAY,
 }
 
 static var _weapons: Dictionary = {}
@@ -31,6 +41,12 @@ static func get_weapon(id: String) -> Dictionary:
 	return _weapons[id]
 
 
+static func has_weapon(id: String) -> bool:
+	if not _loaded:
+		_load()
+	return _weapons.has(id)
+
+
 static func _load() -> void:
 	_loaded = true
 	var raw := DataLoader.load_json(PATH)
@@ -43,6 +59,14 @@ static func _load() -> void:
 		if not SCHEMAS.has(kind):
 			push_error("WeaponDB: %s:%s has unknown kind '%s'" % [PATH, id, kind])
 			continue
-		if DataLoader.validate(entry, SCHEMAS[kind], "%s:%s" % [PATH, id]):
+		var required: Dictionary = entry.duplicate()
+		var ok := true
+		for key: String in OPTIONAL:
+			if required.has(key):
+				if typeof(required[key]) != OPTIONAL[key]:
+					push_error("WeaponDB: %s:%s '%s' should be %s" % [PATH, id, key, type_string(OPTIONAL[key])])
+					ok = false
+				required.erase(key)
+		if ok and DataLoader.validate(required, SCHEMAS[kind], "%s:%s" % [PATH, id]):
 			entry["id"] = id  # sound events are named after the weapon (Sfx, D-077)
 			_weapons[id] = entry

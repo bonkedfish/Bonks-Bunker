@@ -1,0 +1,12 @@
+{
+	"note": "Armor pieces (D-087), by item id. slot: head / chest / legs. dr: share of incoming damage this piece blocks at full condition, standard rarity (pieces add up; the total is capped by rarity.json resist_cap). wear: condition lost per point of damage it blocks.",
+	"helmet_hockey": {"slot": "head", "dr": 0.06, "wear": 0.006},
+	"helmet_moto": {"slot": "head", "dr": 0.1, "wear": 0.005},
+	"helmet_riot": {"slot": "head", "dr": 0.14, "wear": 0.004},
+	"chest_leather": {"slot": "chest", "dr": 0.1, "wear": 0.004},
+	"chest_padded": {"slot": "chest", "dr": 0.15, "wear": 0.0035},
+	"chest_kevlar": {"slot": "chest", "dr": 0.24, "wear": 0.003},
+	"legs_jeans": {"slot": "legs", "dr": 0.05, "wear": 0.006},
+	"legs_moto": {"slot": "legs", "dr": 0.09, "wear": 0.005},
+	"legs_riot": {"slot": "legs", "dr": 0.13, "wear": 0.004}
+}

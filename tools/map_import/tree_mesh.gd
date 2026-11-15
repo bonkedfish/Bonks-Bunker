@@ -1,7 +1,10 @@
 # TreeMesh — builds one low-poly tree mesh for the map importer (D-043): a tapered trunk, a few branches and
 # (unless bare) clumps of lumpy low-poly canopy. Vertex coloured (bark / leaves); origin at the trunk base,
 # height 1 (scaled per instance). Deterministic from the RandomNumberGenerator passed in. No rendering imports
-# beyond building the ArrayMesh. Depends on: nothing.
+# beyond building the ArrayMesh. The mesh carries what it drew as metadata "tree_shape" (D-091), in the same units:
+# {trunk: [base, top, r0, r1], limbs: [[a, b, r0, r1], ...], blobs: [[centre, radius], ...]} - the trunk collider
+# (VegetationBuilder) and disc golf's branch / leaf hits (DiscFlightRules.canopy_contact) are built from it, so they
+# match the model. Depends on: nothing.
 class_name TreeMesh
 extends RefCounted
 
@@ -13,6 +16,8 @@ static func build(rng: RandomNumberGenerator, bare: bool, trunk_radius: float, b
 	st.begin(Mesh.PRIMITIVE_TRIANGLES)
 	var top := Vector3(rng.randf_range(-0.04, 0.04), 0.55 if not bare else 0.7, rng.randf_range(-0.04, 0.04))
 	_limb(st, Vector3.ZERO, top, trunk_radius, trunk_radius * 0.6, bark)
+	var limbs := []
+	var blobs := []
 	var branches := rng.randi_range(3, 5) if not bare else rng.randi_range(5, 7)
 	for i in branches:
 		var a := TAU * (float(i) + rng.randf() * 0.5) / branches
@@ -20,15 +25,24 @@ static func build(rng: RandomNumberGenerator, bare: bool, trunk_radius: float, b
 		var reach := rng.randf_range(0.18, 0.3)
 		var end := start + Vector3(cos(a) * reach, rng.randf_range(0.15, 0.3), sin(a) * reach)
 		_limb(st, start, end, trunk_radius * 0.45, trunk_radius * 0.15, bark)
+		limbs.append([start, end, trunk_radius * 0.45, trunk_radius * 0.15])
 		if bare:
 			var end2 := end + Vector3(cos(a + 0.6) * reach * 0.5, rng.randf_range(0.08, 0.18), sin(a + 0.6) * reach * 0.5)
 			_limb(st, end, end2, trunk_radius * 0.15, trunk_radius * 0.05, bark)
+			limbs.append([end, end2, trunk_radius * 0.15, trunk_radius * 0.05])
 		else:
-			_blob(st, rng, end + Vector3(0, 0.05, 0), rng.randf_range(0.16, 0.24), leaf)
+			var r := rng.randf_range(0.16, 0.24)
+			_blob(st, rng, end + Vector3(0, 0.05, 0), r, leaf)
+			blobs.append([end + Vector3(0, 0.05, 0), r])
 	if not bare:
-		_blob(st, rng, top + Vector3(0, 0.22, 0), rng.randf_range(0.24, 0.3), leaf)
+		var r := rng.randf_range(0.24, 0.3)
+		_blob(st, rng, top + Vector3(0, 0.22, 0), r, leaf)
+		blobs.append([top + Vector3(0, 0.22, 0), r])
 	st.generate_normals()
-	return st.commit()
+	var mesh := st.commit()
+	mesh.set_meta("tree_shape", {"trunk": [Vector3.ZERO, top, trunk_radius, trunk_radius * 0.6], "limbs": limbs,
+		"blobs": blobs})
+	return mesh
 
 
 # Tapered 6-sided tube from a to b (radii r0 -> r1), no caps.
