@@ -11,6 +11,8 @@ Godot 4.7.2 · Forward+ · Jolt physics · 60 Hz physics tick.
 | `addons/webrtc_native/` | webrtc-native GDExtension (third-party) |
 | `server/` | UNUSED old signaling server — delete |
 | `tools/release/release.gd` | One-run GitHub release: next alphaX.Y from tags, export Windows + Mac, smoke, zip/split, push, publish |
+| `data/release/notes/<tag>.md` | Patch notes for that release's GitHub page (written by hand, applied by release_notes.gd) |
+| `tools/release/release_notes.gd` | One-run: `gh release edit <tag> --notes-file` for every `data/release/notes/<tag>.md` (release page body) |
 | `data/release/release.json` | Release settings: repo name, private/public, first version, title, exe name, split size |
 | `scripts/main.gd` + `scenes/main.tscn` | Gray-box test level, host/join menu, host spawns/removes players (MultiplayerSpawner replicates) |
 | `scripts/player/player.gd` + `scenes/player.tscn` | Player body: host simulates from intents, owner predicts + reconciles, others interpolate |

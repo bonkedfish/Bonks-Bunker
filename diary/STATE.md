@@ -628,3 +628,19 @@ table). Regressions 0 failures: parse_check (92), menu, hud_pause, meepo, big_up
 FAIL both runs on the scripted pickleball rally (1-0 / 0-0 in 30 s, 12-14 CPU returns). Pickleball code + tuning are
 untouched since D-074; the check depends on the CPU's random misses, so the test needs a longer window or a seeded rng.
 Not verified: a pool game between two real players over the network.
+
+RELEASE alpha2.5 (2026-11-14): https://github.com/bonkedfish/Bonks-Bunker/releases/tag/alpha2.5 - door fix (45 doors
+walkable), motorcycles (D-083), Big Apple pool (D-084). Windows + Mac exports exit 0, Windows smoke test exit 0,
+zips split in 2 parts each, published in 813 s.
+Release page notes: data/release/notes/alpha2.5.md (full changelog + install steps) set on GitHub with the new
+tools/release/release_notes.tscn (gh release edit, exit 0). First run failed: gh's debug log on stderr got mixed into
+the repo name, so the login lookup now reads stdout only.
+
+TWEAKS (D-085, 2026-11-14): user asks after alpha2.5. Bikes turn sharper (tuning turn_grip 2.0 in bikes.json x the
+lean turn rate; bike_test now measures it: 11.8 m radius at 56 km/h full lean, was ~24). Booze 3x longer (drunk
+seconds 30->90, hold 120->360; big_update_test timings scaled). Performance readout can be turned off in Settings
+("Show performance stats (F3)", saved user://settings.cfg [ui] debug_overlay; DebugOverlay.set_shown, group
+"debug_overlay"); hud_pause_test opens Settings and flips it. Riding controls listed above the bike gauges
+(BikeHud CONTROLS, group "bike_hud"); the readout hides itself while that HUD is up. Settings opens over the pause
+menu now (move_to_front; it drew underneath before). Tests 0 failures: parse_check (92), bike, big_update,
+hud_pause, menu, coop, chillers.

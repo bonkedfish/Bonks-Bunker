@@ -96,6 +96,16 @@ func _pure() -> void:
 		BikeRules.step(s, cr, t, 1.0, 0.0, 0.0, 1.0, false, true, 1.0 / 60.0)
 		max_p = maxf(max_p, float(s.pitch))
 	_check(max_p < deg_to_rad(40.0), "cruiser: hard to wheelie (%.0f deg)" % rad_to_deg(max_p))
+	# Turn radius at a steady 15 m/s on full lean (D-085: turn_grip).
+	s = BikeRules.new_state(5.0)
+	s.speed = 15.0
+	s.gear = 3
+	s.clutch = 0.0
+	for i in 120:
+		BikeRules.step(s, dirt, t, 0.32, 0.0, 1.0, 0.0, false, true, 1.0 / 60.0)
+	var radius := float(s.speed) / maxf(absf(float(s.yaw_rate)), 0.001)
+	_check(radius < 16.0, "turn radius at %.0f km/h full lean: %.1f m" % [float(s.speed) * 3.6, radius])
+
 	var a := BikeRules.cell_bike(1234, Vector2i(3, -2), 12)
 	_check(a == BikeRules.cell_bike(1234, Vector2i(3, -2), 12), "cell bikes are the same for the same world")
 	var found := 0

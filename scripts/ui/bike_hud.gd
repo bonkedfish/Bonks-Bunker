@@ -1,11 +1,14 @@
 # BikeHud — the rider's gauges while on a motorcycle (D-083), added to the HUD by BikeRider: speed (km/h), gear
 # (N, 1-6), a rev bar with the redline marked (flashes red on the limiter), a CLUTCH light while Shift is held, the
-# fuel bar, and STALLED / OUT OF GAS. Bottom right, built in code; texts only change when the numbers do.
+# fuel bar, and STALLED / OUT OF GAS, with the riding controls listed above the gauges. Bottom right, built in code;
+# texts only change when the numbers do. Group "bike_hud" (the debug readout hides while it's up).
 # Presentation only. Depends on: nothing.
 class_name BikeHud
 extends Control
 
 const W := 260.0
+const CONTROLS := [["W / S", "throttle / brake"], ["A / D", "lean"], ["Shift + E / Q", "shift up / down"],
+	["Space / Ctrl", "wheelie / stoppie"], ["B / R", "start / refuel"], ["F", "get off (slow)"], ["V", "camera"]]
 
 var _speed: Label
 var _gear: Label
@@ -21,6 +24,7 @@ var _flash := 0.0
 
 
 func _ready() -> void:
+	add_to_group("bike_hud")
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
 	anchor_left = 1.0
 	anchor_top = 1.0
@@ -52,6 +56,20 @@ func _ready() -> void:
 	_clutch.add_theme_color_override("font_color", Color(0.4, 0.8, 1.0))
 	_warn = _label(16, Vector2(14, 124))
 	_warn.add_theme_color_override("font_color", Color(1.0, 0.35, 0.3))
+	var rows := CONTROLS.size()
+	var top := -8.0 - rows * 19.0 - 12.0
+	var back := ColorRect.new()
+	back.color = Color(0, 0, 0, 0.35)
+	back.position = Vector2(0, top)
+	back.size = Vector2(W, rows * 19.0 + 12.0)
+	back.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	add_child(back)
+	for i in rows:
+		var key := _label(14, Vector2(12, top + 5.0 + i * 19.0))
+		key.text = str(CONTROLS[i][0])
+		key.add_theme_color_override("font_color", Color(1.0, 0.82, 0.4))
+		var what := _label(14, Vector2(118, top + 5.0 + i * 19.0))
+		what.text = str(CONTROLS[i][1])
 
 
 func show_state(speed_mps: float, gear: int, rpm: float, redline: float, clutch_in: bool, fuel: float, tank: float,

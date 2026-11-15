@@ -24,7 +24,7 @@ const BIKE_SCHEMA := {
 	"schemes": TYPE_ARRAY,
 }
 const TUNING_KEYS := ["clutch_release_s", "stall_rpm_frac", "rev_up_rpm_s", "rev_down_rpm_s", "rolling_mps2",
-	"engine_brake_mps2", "low_speed_turn", "lean_rate", "full_lean_mps", "gravity_pitch", "rider_pitch", "air_pitch",
+	"engine_brake_mps2", "low_speed_turn", "turn_grip", "lean_rate", "full_lean_mps", "gravity_pitch", "rider_pitch", "air_pitch",
 	"pitch_damping", "pitch_spring", "clutch_kick", "stoppie", "loop_deg", "endo_deg", "land_pitch_deg", "land_vy", "impact_mps",
 	"crash_safe_mps", "crash_damage_per_mps", "crash_damage_max", "knock_off_damage", "back_push_mps", "idle_lpm",
 	"full_lpm", "gas_can_l", "spawn_chance", "dismount_max_mps", "zombie_hit_mps", "zombie_damage_per_mps",
@@ -164,7 +164,7 @@ static func step(s: Dictionary, b: Dictionary, t: Dictionary, throttle: float, b
 	var v := absf(speed)
 	var full := clampf(v / float(t.full_lean_mps), 0.0, 1.0)
 	s.lean = move_toward(float(s.lean), steer * deg_to_rad(float(b.lean_deg)) * full, float(t.lean_rate) * dt)
-	var turn := lerpf(steer * float(t.low_speed_turn), GRAVITY * tan(float(s.lean)) / maxf(v, 0.1),
+	var turn := lerpf(steer * float(t.low_speed_turn), GRAVITY * tan(float(s.lean)) * float(t.turn_grip) / maxf(v, 0.1),
 		clampf((v - 2.0) / 4.0, 0.0, 1.0))
 	if speed < 0.0:
 		turn = -turn * 0.5

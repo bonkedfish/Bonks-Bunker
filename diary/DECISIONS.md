@@ -320,3 +320,13 @@ Locked unless flagged. Each entry: decision — reason.
     leaves. Games aren't saved.
   * Host-authoritative like the other sports: the shooter sends only power + aim, the host runs the shot (pure
     PoolRules) and sends every peer the ball paths to play back.
+- **D-085** (2026-11-14) alpha2.5 tweaks — User.
+  * Bikes turn sharper: new tuning `turn_grip` (2.0) multiplies the turn rate a lean gives at speed, so the
+    radius is half what the lean physics alone would give (11.8 m at 56 km/h on full lean, was ~24 m).
+    Kept as one tuning number rather than per-bike, so lean_deg still makes the cruiser the widest.
+  * Booze lasts 3x: drunk `seconds` 30 -> 90 per drink, `hold_seconds` 120 -> 360. Chems unchanged.
+  * The bottom-right performance readout can be turned off: Settings > "Show performance stats (F3)", saved per
+    PC in user://settings.cfg [ui] debug_overlay. F3 still toggles it and writes the same setting.
+  * The riding controls are listed in the bottom-right corner above the bike gauges while on a bike; the
+    performance readout hides itself while a BikeHud is up, since they share that corner.
+  * Settings now opens over the pause menu (it used to draw underneath it).

@@ -1,16 +1,24 @@
 # DebugOverlay — F3 performance readout from the Perf autoload (D-038): graphics tier + GPU, frame time
 # (average and worst in the last second), CPU/physics time, draw calls, primitives, RAM, VRAM, nodes,
 # players, peers, zombies, and the CSV log path while hosting. Values over budget show in red with the budget.
-# Rebuilds its text once per Perf sample, not every frame.
-# Depends on: Perf and Graphics autoloads, "toggle_debug" input action.
+# Rebuilds its text once per Perf sample, not every frame. On / off from F3 or the Settings menu, remembered per PC
+# (user://settings.cfg [ui] debug_overlay); hidden while riding a bike (the bike HUD + controls use that corner).
+# Group "debug_overlay". Depends on: Perf and Graphics autoloads, "toggle_debug" input action, group "bike_hud".
 extends RichTextLabel
 
 const RED := "#ff5a4a"
+const SETTINGS_PATH := "user://settings.cfg"
 
+var shown := true  # the player's choice (visible also drops while riding)
 var _accum := 0.0
 
 
 func _ready() -> void:
+	add_to_group("debug_overlay")
+	var cfg := ConfigFile.new()
+	if cfg.load(SETTINGS_PATH) == OK:
+		shown = bool(cfg.get_value("ui", "debug_overlay", true))
+	visible = shown
 	bbcode_enabled = true
 	fit_content = true
 	scroll_active = false
@@ -26,9 +34,12 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	_accum += delta
-	if _accum < 0.5 or not visible:
+	if _accum < 0.5:
 		return
 	_accum = 0.0
+	visible = shown and get_tree().get_first_node_in_group("bike_hud") == null
+	if not visible:
+		return
 	var peers := multiplayer.get_peers().size() if multiplayer.has_multiplayer_peer() else 0
 	text = "Graphics %s (%s)  %s\n" % [Graphics.tier.to_upper(), Graphics.choice, Graphics.adapter_name] \
 		+ "FPS %d   frame %s   worst %.1f ms   cpu %.1f ms   physics %.1f ms\n" % [
@@ -50,4 +61,15 @@ func _val(key: String, value: float, fmt: String) -> String:
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("toggle_debug"):
-		visible = not visible
+		set_shown(not shown)
+
+
+# Turns the readout on / off and remembers it.
+func set_shown(on: bool) -> void:
+	shown = on
+	visible = on
+	_accum = 0.5  # refresh the text on the next frame
+	var cfg := ConfigFile.new()
+	cfg.load(SETTINGS_PATH)
+	cfg.set_value("ui", "debug_overlay", on)
+	cfg.save(SETTINGS_PATH)

@@ -192,15 +192,15 @@ func _pure() -> void:
 	_check("one beer: strength %.1f" % EffectRules.strengths(a, d).drunk, is_equal_approx(float(EffectRules.strengths(a, d).drunk), 1.0))
 	for i in 7:
 		a = EffectRules.add(a, "drunk", 1.0, d)
-	_check("8 drinks: strength %.1f, held %.0f s" % [EffectRules.strengths(a, d).drunk, a.drunk.hold], float(EffectRules.strengths(a, d).drunk) >= 8.0 and float(a.drunk.hold) > 100.0)
-	var b := EffectRules.tick(a, 100.0, d)
-	_check("still wasted after 100 s (hold)", float(EffectRules.strengths(b, d).drunk) >= 8.0)
-	b = EffectRules.tick(b, 80.0, d)
+	_check("8 drinks: strength %.1f, held %.0f s" % [EffectRules.strengths(a, d).drunk, a.drunk.hold], float(EffectRules.strengths(a, d).drunk) >= 8.0 and float(a.drunk.hold) > 300.0)
+	var b := EffectRules.tick(a, 300.0, d)
+	_check("still wasted after 300 s (hold)", float(EffectRules.strengths(b, d).drunk) >= 8.0)
+	b = EffectRules.tick(b, 240.0, d)
 	_check("sobering up after the hold: %.1f" % EffectRules.strengths(b, d).drunk, float(EffectRules.strengths(b, d).drunk) < 8.0 and float(EffectRules.strengths(b, d).drunk) > 4.0)
 	for i in 100:
 		if not b.has("drunk"):
 			break
-		b = EffectRules.tick(b, 5.0, d)
+		b = EffectRules.tick(b, 15.0, d)
 	_check("drunk wears off into a hangover: %s" % str(b.keys()), not b.has("drunk") and b.has("hungover"))
 	var look := EffectRules.look(EffectRules.strengths(a, d), d)
 	_check("8 drinks look: sway %.1f deg, drift %.1f deg/s, stumble %.2f, double %.0f px, blur %.2f" % [look.sway_deg, look.drift_deg_s,

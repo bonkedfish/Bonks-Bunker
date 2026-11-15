@@ -1,8 +1,10 @@
 # HudPauseTest — checks D-066..D-068: starts an offline singleplayer world, adds every chem effect and a Meepo,
 # screenshots the HUD (icon chips + minimap) into res://tests/_look/hud_icons.png and an effect close-up, checks the
 # minimap shows and hides under the big map, opens the pause menu with Esc (solo -> tree paused), its Controls list,
+# the Settings "Show performance stats" switch (D-085: turns the bottom-right readout off and back on, remembered),
 # Esc closes it (unpaused), then Save & Quit -> back on a fresh start screen with the world saved.
-# Results: tests/_look/hud_pause_result.txt. Depends on: scenes/main.tscn, PauseMenu, StatusBar, Minimap, SaveStore.
+# Results: tests/_look/hud_pause_result.txt. Depends on: scenes/main.tscn, PauseMenu, StatusBar, Minimap, SaveStore,
+# SettingsMenu, DebugOverlay (group "debug_overlay").
 extends Node
 
 const OUT_DIR := "res://tests/_look"
@@ -54,6 +56,25 @@ func _ready() -> void:
 	_check("Esc opens the pause menu, solo game paused", pause.visible and get_tree().paused)
 	pause._toggle_controls()
 	await _shot("pause_menu.png")
+	# Settings: the performance stats switch (D-085).
+	pause._toggle_controls()  # close the controls list so it isn't over the panel
+	var settings: Control = get_tree().get_first_node_in_group("settings_menu")
+	var overlay: Control = get_tree().get_first_node_in_group("debug_overlay")
+	settings.open()
+	await get_tree().create_timer(0.3).timeout
+	await _shot("settings_menu.png")
+	settings._on_stats_toggled(false)
+	await get_tree().create_timer(0.3).timeout
+	var cfg := ConfigFile.new()
+	cfg.load("user://settings.cfg")
+	_check("Settings: performance stats off hides the readout (saved %s)" % cfg.get_value("ui", "debug_overlay", true),
+		overlay != null and not overlay.visible and not bool(overlay.shown)
+		and not bool(cfg.get_value("ui", "debug_overlay", true)))
+	settings._on_stats_toggled(true)
+	await get_tree().create_timer(0.3).timeout
+	_check("back on again", overlay.visible and bool(overlay.shown))
+	settings.close()
+	await get_tree().create_timer(0.3).timeout
 	_esc()
 	await get_tree().create_timer(0.3).timeout
 	_check("Esc again resumes (unpaused)", not pause.visible and not get_tree().paused)

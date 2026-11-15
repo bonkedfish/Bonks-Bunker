@@ -1,9 +1,10 @@
 # SettingsMenu — opened from the start screen (button or Esc) or the pause menu (D-068); Esc or Back closes it (D-038).
 # Graphics: Auto (shows what it picked) / Low / Medium / High, applied at once and remembered per PC.
 # Sound effects / Ambience volume sliders (D-077): applied while dragging, saved by Sfx when the panel closes.
+# "Show performance stats" (the bottom-right debug readout, same as F3): saved by the DebugOverlay.
 # Doesn't pause (co-op). Leaves Esc alone while the inventory, a loot window or a dialogue choice is open.
 # Builds its controls in code. Group "settings_menu". Depends on: Graphics autoload, groups
-# "inventory_ui", "loot_ui", "subtitles"; Main's menu ($UI/Menu, read through the parent); Sfx autoload.
+# "inventory_ui", "loot_ui", "subtitles", "debug_overlay"; Main's menu ($UI/Menu, read through the parent); Sfx autoload.
 extends Control
 
 const CHOICES := ["auto", "low", "medium", "high"]
@@ -12,6 +13,7 @@ var _graphics: OptionButton
 var _gpu: Label
 var _sfx: HSlider
 var _amb: HSlider
+var _stats: CheckButton
 
 
 func _ready() -> void:
@@ -47,6 +49,10 @@ func _ready() -> void:
 	box.add_child(_gpu)
 	_sfx = _volume_slider(box, "Sound effects", "SFX")
 	_amb = _volume_slider(box, "Ambience", "Ambience")
+	_stats = CheckButton.new()
+	_stats.text = "Show performance stats (F3)"
+	_stats.toggled.connect(_on_stats_toggled)
+	box.add_child(_stats)
 	var resume := Button.new()
 	resume.text = "Back"
 	resume.pressed.connect(close)
@@ -60,6 +66,9 @@ func open() -> void:
 	_refresh()
 	_sfx.set_value_no_signal(Sfx.get_volume("SFX"))
 	_amb.set_value_no_signal(Sfx.get_volume("Ambience"))
+	var overlay := get_tree().get_first_node_in_group("debug_overlay")
+	_stats.set_pressed_no_signal(overlay != null and bool(overlay.shown))
+	move_to_front()  # over the pause menu, which stays up behind it
 	show()
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 
@@ -94,6 +103,12 @@ func _volume_slider(box: VBoxContainer, text: String, bus: String) -> HSlider:
 	s.value_changed.connect(func(v: float) -> void: Sfx.set_volume(bus, v))
 	box.add_child(s)
 	return s
+
+
+func _on_stats_toggled(on: bool) -> void:
+	var overlay := get_tree().get_first_node_in_group("debug_overlay")
+	if overlay:
+		overlay.set_shown(on)
 
 
 func _on_graphics_selected(index: int) -> void:
