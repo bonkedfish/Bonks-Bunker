@@ -104,6 +104,9 @@ func _run() -> bool:
 	if r.code != 0:
 		_say("gh release %s failed:\n%s" % ["upload" if exists else "create", r.text])
 		return false
+	if exists and int(_exec(_gh, ["release", "edit", ver, "--draft=false"]).code) != 0:  # a cut-off create leaves a draft
+		_say("gh release edit %s --draft=false failed" % ver)
+		return false
 	_say("%s %s in %.0f s: %s" % ["REPLACED THE FILES ON" if exists else "PUBLISHED", ver,
 		(Time.get_ticks_msec() - t0) / 1000.0, r.text.strip_edges()])
 	return true
