@@ -776,3 +776,12 @@ a release, then gh release view) went to main as 02768d7.
   Open / not verified: no second player has seen the clock sync or a sleep skip yet; the dusk band is more pink
   than orange (dusk_color / dusk strength in day_night.json if you want it warmer); nothing else reacts to night
   yet (no lights in buildings, no NPC schedules, loot and encounters are unchanged after dark).
+- 2026-11-21 RELEASED alpha3.1 "Nights, Strangers & Weird Nebraska"
+  (https://github.com/bonkedfish/Bonks-Bunker/releases/tag/alpha3.1), prerelease, Windows + Mac, 4 split assets.
+  Covers D-097..D-110. Source pushed first as 5db9539 (156 files). Timings for next time: Windows export 44 s,
+  macOS export 228 s, smoke test ok, windows zip 2429 MB -> 2 parts, mac zip -> 2 parts, upload + publish 810 s
+  (about 13 min for the two big parts in parallel) - roughly 20 minutes end to end. Notes written by hand in
+  data/release/notes/alpha3.1.md and applied afterwards with tools/release/release_notes.tscn (release.tscn
+  publishes generic install-only notes first; that is the two-step flow). push_repo.tscn now takes its commit
+  message from data/release/push.json "message" (blank = the old release-tidy default); check_tag is alpha3.1.
+  Next auto version is alpha3.2.
