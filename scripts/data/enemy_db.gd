@@ -1,7 +1,9 @@
 # EnemyDB — enemy definitions from data/enemies/enemies.json, looked up by string ID and validated.
 # Optional per enemy (D-055): scale, tint [r,g,b,a], boss, armed, ranged {damage, range, noise_radius, spread_degrees},
 # enrage {below, speed_mult, cooldown_mult}, drops {item: n}, bark_prefix + subtitle_range; faction ("zombies" or
-# "raiders", D-060), weapon_slot (prop shown without gun animations), kill_count_as (quest kill counter name).
+# "raiders", D-060), weapon_slot (prop shown without gun animations), kill_count_as (quest kill counter name);
+# D-100 open-world types: armor {body_mult, head_mult, melee_mult, head_from}, burst {radius_m, damage, edge_frac},
+# hearing_mult (noise radius multiplier), rush_noise (runs to noises), drop_table (LootDB table rolled on death).
 # Pure: no scene or rendering dependencies. Depends on: DataLoader.
 class_name EnemyDB
 extends RefCounted
@@ -16,7 +18,7 @@ const SCHEMA := {
 	"models": TYPE_ARRAY,  # CharacterAnimator model IDs (data/art/character_models.json), picked per pool slot
 }
 const OPTIONAL := ["scale", "tint", "boss", "armed", "ranged", "enrage", "drops", "bark_prefix", "subtitle_range",
-	"faction", "weapon_slot", "kill_count_as"]
+	"faction", "weapon_slot", "kill_count_as", "armor", "burst", "hearing_mult", "rush_noise", "drop_table"]
 
 static var _enemies: Dictionary = {}
 static var _loaded := false

@@ -1,0 +1,3782 @@
+{
+	"note": "World oddities (D-106): hand-placed odd little scenes, each at a real roadside point near a known Kearney landmark. at = map [x, z]; the scene is dropped onto the ground and skipped if the spot is blocked. props / loot / npc / use are the same shapes EncounterSite builds. A use fires once per world and is saved. shuffle re-places its props on every cell load. All text is placeholder - edit freely.",
+	"oddities": {
+		"toilet_skeleton": {
+			"at": [
+				269.8,
+				-91.9
+			],
+			"yaw": 231.0,
+			"clear_m": 3.0,
+			"props": [
+				{
+					"box": [
+						0,
+						1.2,
+						-1.6,
+						3.0,
+						2.4,
+						0.2
+					],
+					"mat": "plaster",
+					"yaw": 0
+				},
+				{
+					"box": [
+						-1.5,
+						1.2,
+						0,
+						0.2,
+						2.4,
+						3.2
+					],
+					"mat": "plaster",
+					"yaw": 0
+				},
+				{
+					"box": [
+						1.5,
+						1.2,
+						0,
+						0.2,
+						2.4,
+						3.2
+					],
+					"mat": "plaster",
+					"yaw": 0
+				},
+				{
+					"box": [
+						0,
+						0.03,
+						0,
+						3.0,
+						0.06,
+						3.2
+					],
+					"mat": "white",
+					"collide": false
+				},
+				{
+					"kit": "toilet",
+					"at": [
+						0,
+						0,
+						-1.1
+					],
+					"yaw": 0
+				},
+				{
+					"kit": "skeleton_sitting",
+					"at": [
+						0,
+						0.45,
+						-1.05
+					],
+					"yaw": 0
+				},
+				{
+					"cyl": [
+						0.72,
+						0.78,
+						-0.78,
+						0.02,
+						0.12
+					],
+					"mat": "chrome",
+					"yaw": 90
+				},
+				{
+					"cyl": [
+						0.72,
+						0.79,
+						-0.78,
+						0.055,
+						0.1
+					],
+					"mat": "bone",
+					"yaw": 90
+				},
+				{
+					"sign": "OUT OF ORDER",
+					"at": [
+						0,
+						1.9,
+						-1.45
+					],
+					"size": 28,
+					"mat": "dark",
+					"visible_m": 18
+				}
+			],
+			"use": {
+				"label": "Take the empty roll",
+				"flag": "odd_tp_roll",
+				"say": "Empty. Completely empty. He waited. He really did wait."
+			}
+		},
+		"cone_kingdom": {
+			"at": [
+				1181.4,
+				471.8
+			],
+			"yaw": 286.0,
+			"clear_m": 4.0,
+			"props": [
+				{
+					"kit": "traffic_cone",
+					"at": [
+						2.4,
+						0,
+						0.0
+					],
+					"yaw": 0
+				},
+				{
+					"kit": "traffic_cone",
+					"at": [
+						3.03,
+						0,
+						0.75
+					],
+					"yaw": 37
+				},
+				{
+					"kit": "traffic_cone",
+					"at": [
+						3.4,
+						0,
+						1.78
+					],
+					"yaw": 74
+				},
+				{
+					"kit": "traffic_cone",
+					"at": [
+						2.07,
+						0,
+						1.83
+					],
+					"yaw": 111
+				},
+				{
+					"kit": "traffic_cone",
+					"at": [
+						1.98,
+						0,
+						2.86
+					],
+					"yaw": 148
+				},
+				{
+					"kit": "traffic_cone",
+					"at": [
+						0.85,
+						0,
+						2.24
+					],
+					"yaw": 185
+				},
+				{
+					"kit": "traffic_cone",
+					"at": [
+						0.38,
+						0,
+						3.1
+					],
+					"yaw": 222
+				},
+				{
+					"kit": "traffic_cone",
+					"at": [
+						-0.46,
+						0,
+						3.81
+					],
+					"yaw": 259
+				},
+				{
+					"kit": "traffic_cone",
+					"at": [
+						-0.98,
+						0,
+						2.58
+					],
+					"yaw": 296
+				},
+				{
+					"kit": "traffic_cone",
+					"at": [
+						-1.98,
+						0,
+						2.86
+					],
+					"yaw": 333
+				},
+				{
+					"kit": "traffic_cone",
+					"at": [
+						-1.8,
+						0,
+						1.59
+					],
+					"yaw": 10
+				},
+				{
+					"kit": "traffic_cone",
+					"at": [
+						-2.76,
+						0,
+						1.45
+					],
+					"yaw": 47
+				},
+				{
+					"kit": "traffic_cone",
+					"at": [
+						-3.73,
+						0,
+						0.92
+					],
+					"yaw": 84
+				},
+				{
+					"kit": "traffic_cone",
+					"at": [
+						-2.76,
+						0,
+						0.0
+					],
+					"yaw": 121
+				},
+				{
+					"kit": "traffic_cone",
+					"at": [
+						-3.38,
+						0,
+						-0.83
+					],
+					"yaw": 158
+				},
+				{
+					"kit": "traffic_cone",
+					"at": [
+						-2.13,
+						0,
+						-1.12
+					],
+					"yaw": 195
+				},
+				{
+					"kit": "traffic_cone",
+					"at": [
+						-2.34,
+						0,
+						-2.07
+					],
+					"yaw": 232
+				},
+				{
+					"kit": "traffic_cone",
+					"at": [
+						-2.18,
+						0,
+						-3.16
+					],
+					"yaw": 269
+				},
+				{
+					"kit": "traffic_cone",
+					"at": [
+						-0.98,
+						0,
+						-2.58
+					],
+					"yaw": 306
+				},
+				{
+					"kit": "traffic_cone",
+					"at": [
+						-0.42,
+						0,
+						-3.45
+					],
+					"yaw": 343
+				},
+				{
+					"kit": "traffic_cone",
+					"at": [
+						0.29,
+						0,
+						-2.38
+					],
+					"yaw": 20
+				},
+				{
+					"kit": "traffic_cone",
+					"at": [
+						1.11,
+						0,
+						-2.92
+					],
+					"yaw": 57
+				},
+				{
+					"kit": "traffic_cone",
+					"at": [
+						2.18,
+						0,
+						-3.16
+					],
+					"yaw": 94
+				},
+				{
+					"kit": "traffic_cone",
+					"at": [
+						2.07,
+						0,
+						-1.83
+					],
+					"yaw": 131
+				},
+				{
+					"kit": "traffic_cone",
+					"at": [
+						3.08,
+						0,
+						-1.62
+					],
+					"yaw": 168
+				},
+				{
+					"kit": "traffic_cone",
+					"at": [
+						2.33,
+						0,
+						-0.57
+					],
+					"yaw": 205
+				},
+				{
+					"kit": "crate",
+					"at": [
+						0,
+						0,
+						0
+					],
+					"yaw": 0
+				},
+				{
+					"kit": "crate",
+					"at": [
+						0,
+						0.6,
+						0
+					],
+					"yaw": 45
+				},
+				{
+					"kit": "traffic_cone",
+					"at": [
+						0,
+						1.2,
+						0
+					],
+					"yaw": 0
+				},
+				{
+					"kit": "office_chair",
+					"at": [
+						1.4,
+						0,
+						0.6
+					],
+					"yaw": 200
+				},
+				{
+					"sign": "THE CONE THRONE\nDO NOT TOUCH THE CONE",
+					"at": [
+						0,
+						2.3,
+						0
+					],
+					"size": 34,
+					"mat": "orange",
+					"visible_m": 60
+				}
+			],
+			"npc": {
+				"id": "odd_cone_king",
+				"at": [
+					1.9,
+					0,
+					0.2
+				],
+				"yaw": -110
+			}
+		},
+		"office_skeleton": {
+			"at": [
+				1827.9,
+				-1548.8
+			],
+			"yaw": 238.0,
+			"clear_m": 3.0,
+			"props": [
+				{
+					"box": [
+						-1.6,
+						0.7,
+						0,
+						0.08,
+						1.4,
+						2.4
+					],
+					"mat": "tan",
+					"yaw": 0
+				},
+				{
+					"box": [
+						0,
+						0.7,
+						-1.2,
+						3.2,
+						1.4,
+						0.08
+					],
+					"mat": "tan",
+					"yaw": 0
+				},
+				{
+					"kit": "office_desk",
+					"at": [
+						0,
+						0,
+						-0.5
+					],
+					"yaw": 0
+				},
+				{
+					"kit": "office_chair",
+					"at": [
+						0,
+						0,
+						0.35
+					],
+					"yaw": 180
+				},
+				{
+					"kit": "skeleton_sitting",
+					"at": [
+						0,
+						0.45,
+						0.3
+					],
+					"yaw": 180
+				},
+				{
+					"box": [
+						-1.55,
+						1.6,
+						0,
+						0.1,
+						0.3,
+						0.22
+					],
+					"mat": "steel"
+				},
+				{
+					"sign": "CLOCK IN / CLOCK OUT",
+					"at": [
+						-1.45,
+						1.85,
+						0
+					],
+					"size": 20,
+					"mat": "white",
+					"visible_m": 14,
+					"yaw": 90
+				}
+			],
+			"use": {
+				"label": "Clock him out",
+				"flag": "odd_clocked_out",
+				"gives": {
+					"bottle_cap": 5
+				},
+				"say": "CLOCKED OUT 03:14. Five years and eleven minutes of overtime. Nobody is going to pay it."
+			}
+		},
+		"sheriff_skeleton": {
+			"at": [
+				1497.4,
+				-1784.3
+			],
+			"yaw": 231.0,
+			"clear_m": 3.0,
+			"props": [
+				{
+					"kit": "lawn_chair",
+					"at": [
+						0,
+						0,
+						0
+					],
+					"yaw": 0
+				},
+				{
+					"kit": "skeleton_sitting",
+					"at": [
+						0,
+						0.38,
+						0.02
+					],
+					"yaw": 0
+				},
+				{
+					"box": [
+						0,
+						0.78,
+						0.14,
+						0.08,
+						0.08,
+						0.02
+					],
+					"mat": "yellow",
+					"collide": false
+				},
+				{
+					"kit": "cooler",
+					"at": [
+						0.9,
+						0,
+						0.2
+					],
+					"yaw": -20
+				},
+				{
+					"box": [
+						0,
+						0.785,
+						0.145,
+						0.075,
+						0.075,
+						0.012
+					],
+					"mat": "yellow",
+					"collide": false
+				}
+			],
+			"use": {
+				"label": "Take the badge",
+				"gives": {
+					"deputy_star": 1
+				},
+				"flag": "odd_badge",
+				"say": "The badge says SHERIFF. The chair says he was off duty."
+			}
+		},
+		"bottle_room": {
+			"at": [
+				1784.3,
+				-1117.5
+			],
+			"yaw": 231.0,
+			"clear_m": 5.0,
+			"props": [
+				{
+					"box": [
+						0,
+						1.3,
+						-2.6,
+						5.4,
+						2.6,
+						0.2
+					],
+					"mat": "plaster",
+					"yaw": 0
+				},
+				{
+					"box": [
+						0,
+						1.3,
+						2.6,
+						5.4,
+						2.6,
+						0.2
+					],
+					"mat": "plaster",
+					"yaw": 0
+				},
+				{
+					"box": [
+						-2.6,
+						1.3,
+						0,
+						0.2,
+						2.6,
+						5.4
+					],
+					"mat": "plaster",
+					"yaw": 0
+				},
+				{
+					"box": [
+						2.6,
+						1.3,
+						0,
+						0.2,
+						2.6,
+						5.4
+					],
+					"mat": "plaster",
+					"yaw": 0
+				},
+				{
+					"box": [
+						0,
+						0.03,
+						0,
+						5.4,
+						0.06,
+						5.4
+					],
+					"mat": "dark",
+					"collide": false
+				},
+				{
+					"cyl": [
+						0.54,
+						0,
+						1.06,
+						0.035,
+						0.28
+					],
+					"mat": "glass",
+					"collide": false
+				},
+				{
+					"cyl": [
+						1.95,
+						0,
+						1.06,
+						0.035,
+						0.29
+					],
+					"mat": "green",
+					"collide": false
+				},
+				{
+					"cyl": [
+						-2.07,
+						0,
+						-0.15,
+						0.035,
+						0.29
+					],
+					"mat": "green",
+					"collide": false
+				},
+				{
+					"cyl": [
+						0.66,
+						0,
+						1.76,
+						0.035,
+						0.19
+					],
+					"mat": "glass",
+					"collide": false
+				},
+				{
+					"cyl": [
+						-0.14,
+						0,
+						-1.12,
+						0.035,
+						0.25
+					],
+					"mat": "green",
+					"collide": false
+				},
+				{
+					"cyl": [
+						0.33,
+						0,
+						-2.14,
+						0.035,
+						0.21
+					],
+					"mat": "green",
+					"collide": false
+				},
+				{
+					"cyl": [
+						-0.97,
+						0,
+						1.83,
+						0.035,
+						0.27
+					],
+					"mat": "glass",
+					"collide": false
+				},
+				{
+					"cyl": [
+						-1.5,
+						0,
+						1.31,
+						0.035,
+						0.2
+					],
+					"mat": "green",
+					"collide": false
+				},
+				{
+					"cyl": [
+						0.52,
+						0,
+						-1.64,
+						0.035,
+						0.18
+					],
+					"mat": "green",
+					"collide": false
+				},
+				{
+					"cyl": [
+						1.63,
+						0,
+						-1.28,
+						0.035,
+						0.21
+					],
+					"mat": "glass",
+					"collide": false
+				},
+				{
+					"cyl": [
+						2.12,
+						0,
+						1.64,
+						0.035,
+						0.21
+					],
+					"mat": "green",
+					"collide": false
+				},
+				{
+					"cyl": [
+						2.03,
+						0,
+						0.17,
+						0.035,
+						0.26
+					],
+					"mat": "green",
+					"collide": false
+				},
+				{
+					"cyl": [
+						-1.3,
+						0,
+						1.94,
+						0.035,
+						0.26
+					],
+					"mat": "glass",
+					"collide": false
+				},
+				{
+					"cyl": [
+						2.05,
+						0,
+						1.73,
+						0.035,
+						0.22
+					],
+					"mat": "green",
+					"collide": false
+				},
+				{
+					"cyl": [
+						-0.61,
+						0,
+						-1.47,
+						0.035,
+						0.2
+					],
+					"mat": "green",
+					"collide": false
+				},
+				{
+					"cyl": [
+						-1.91,
+						0,
+						-0.87,
+						0.035,
+						0.25
+					],
+					"mat": "glass",
+					"collide": false
+				},
+				{
+					"cyl": [
+						-2.19,
+						0,
+						0.78,
+						0.035,
+						0.22
+					],
+					"mat": "green",
+					"collide": false
+				},
+				{
+					"cyl": [
+						-0.84,
+						0,
+						1.4,
+						0.035,
+						0.24
+					],
+					"mat": "green",
+					"collide": false
+				},
+				{
+					"cyl": [
+						-0.81,
+						0,
+						-0.08,
+						0.035,
+						0.26
+					],
+					"mat": "glass",
+					"collide": false
+				},
+				{
+					"cyl": [
+						-1.95,
+						0,
+						2.09,
+						0.035,
+						0.18
+					],
+					"mat": "green",
+					"collide": false
+				},
+				{
+					"cyl": [
+						1.1,
+						0,
+						1.52,
+						0.035,
+						0.18
+					],
+					"mat": "green",
+					"collide": false
+				},
+				{
+					"cyl": [
+						1.27,
+						0,
+						-0.59,
+						0.035,
+						0.25
+					],
+					"mat": "glass",
+					"collide": false
+				},
+				{
+					"cyl": [
+						-2.16,
+						0,
+						-1.99,
+						0.035,
+						0.2
+					],
+					"mat": "green",
+					"collide": false
+				},
+				{
+					"cyl": [
+						2.0,
+						0,
+						-1.34,
+						0.035,
+						0.27
+					],
+					"mat": "green",
+					"collide": false
+				},
+				{
+					"cyl": [
+						1.89,
+						0,
+						1.94,
+						0.035,
+						0.22
+					],
+					"mat": "glass",
+					"collide": false
+				},
+				{
+					"cyl": [
+						-0.64,
+						0,
+						0.11,
+						0.035,
+						0.27
+					],
+					"mat": "green",
+					"collide": false
+				},
+				{
+					"cyl": [
+						-1.72,
+						0,
+						1.09,
+						0.035,
+						0.28
+					],
+					"mat": "green",
+					"collide": false
+				},
+				{
+					"cyl": [
+						1.58,
+						0,
+						-2.04,
+						0.035,
+						0.29
+					],
+					"mat": "glass",
+					"collide": false
+				},
+				{
+					"cyl": [
+						-1.8,
+						0,
+						-0.7,
+						0.035,
+						0.25
+					],
+					"mat": "green",
+					"collide": false
+				},
+				{
+					"cyl": [
+						1.84,
+						0,
+						-0.7,
+						0.035,
+						0.29
+					],
+					"mat": "green",
+					"collide": false
+				},
+				{
+					"cyl": [
+						0.2,
+						0,
+						-0.83,
+						0.035,
+						0.22
+					],
+					"mat": "glass",
+					"collide": false
+				},
+				{
+					"cyl": [
+						-1.42,
+						0,
+						-1.86,
+						0.035,
+						0.2
+					],
+					"mat": "green",
+					"collide": false
+				},
+				{
+					"cyl": [
+						0.83,
+						0,
+						2.19,
+						0.035,
+						0.2
+					],
+					"mat": "green",
+					"collide": false
+				},
+				{
+					"cyl": [
+						-1.99,
+						0,
+						2.14,
+						0.035,
+						0.24
+					],
+					"mat": "glass",
+					"collide": false
+				},
+				{
+					"cyl": [
+						-0.41,
+						0,
+						-1.16,
+						0.035,
+						0.25
+					],
+					"mat": "green",
+					"collide": false
+				},
+				{
+					"cyl": [
+						1.44,
+						0,
+						-0.2,
+						0.035,
+						0.23
+					],
+					"mat": "green",
+					"collide": false
+				},
+				{
+					"cyl": [
+						-1.95,
+						0,
+						1.83,
+						0.035,
+						0.18
+					],
+					"mat": "glass",
+					"collide": false
+				},
+				{
+					"cyl": [
+						-0.03,
+						0,
+						1.49,
+						0.035,
+						0.2
+					],
+					"mat": "green",
+					"collide": false
+				},
+				{
+					"cyl": [
+						1.02,
+						0,
+						1.98,
+						0.035,
+						0.26
+					],
+					"mat": "green",
+					"collide": false
+				},
+				{
+					"cyl": [
+						1.27,
+						0,
+						-1.73,
+						0.035,
+						0.23
+					],
+					"mat": "glass",
+					"collide": false
+				},
+				{
+					"cyl": [
+						-1.54,
+						0,
+						1.52,
+						0.035,
+						0.22
+					],
+					"mat": "green",
+					"collide": false
+				},
+				{
+					"cyl": [
+						-0.21,
+						0,
+						2.2,
+						0.035,
+						0.28
+					],
+					"mat": "green",
+					"collide": false
+				},
+				{
+					"cyl": [
+						2.09,
+						0,
+						-0.2,
+						0.035,
+						0.24
+					],
+					"mat": "glass",
+					"collide": false
+				},
+				{
+					"cyl": [
+						1.01,
+						0,
+						-0.09,
+						0.035,
+						0.21
+					],
+					"mat": "green",
+					"collide": false
+				},
+				{
+					"cyl": [
+						-0.42,
+						0,
+						-1.56,
+						0.035,
+						0.23
+					],
+					"mat": "green",
+					"collide": false
+				},
+				{
+					"cyl": [
+						2.15,
+						0,
+						2.02,
+						0.035,
+						0.26
+					],
+					"mat": "glass",
+					"collide": false
+				},
+				{
+					"cyl": [
+						-0.0,
+						0,
+						-0.71,
+						0.035,
+						0.19
+					],
+					"mat": "green",
+					"collide": false
+				},
+				{
+					"cyl": [
+						-1.0,
+						0,
+						1.24,
+						0.035,
+						0.28
+					],
+					"mat": "green",
+					"collide": false
+				},
+				{
+					"cyl": [
+						-0.61,
+						0,
+						1.26,
+						0.035,
+						0.27
+					],
+					"mat": "glass",
+					"collide": false
+				},
+				{
+					"cyl": [
+						0.86,
+						0,
+						0.72,
+						0.035,
+						0.27
+					],
+					"mat": "green",
+					"collide": false
+				},
+				{
+					"cyl": [
+						-0.6,
+						0,
+						0.9,
+						0.035,
+						0.21
+					],
+					"mat": "green",
+					"collide": false
+				},
+				{
+					"cyl": [
+						-0.06,
+						0,
+						1.19,
+						0.035,
+						0.26
+					],
+					"mat": "glass",
+					"collide": false
+				},
+				{
+					"cyl": [
+						-0.91,
+						0,
+						1.96,
+						0.035,
+						0.26
+					],
+					"mat": "green",
+					"collide": false
+				},
+				{
+					"cyl": [
+						0.35,
+						0,
+						-2.15,
+						0.035,
+						0.25
+					],
+					"mat": "green",
+					"collide": false
+				},
+				{
+					"cyl": [
+						-1.1,
+						0,
+						0.76,
+						0.035,
+						0.24
+					],
+					"mat": "glass",
+					"collide": false
+				},
+				{
+					"cyl": [
+						1.39,
+						0,
+						0.65,
+						0.035,
+						0.28
+					],
+					"mat": "green",
+					"collide": false
+				},
+				{
+					"cyl": [
+						-0.67,
+						0,
+						0.63,
+						0.035,
+						0.27
+					],
+					"mat": "green",
+					"collide": false
+				},
+				{
+					"cyl": [
+						1.44,
+						0,
+						-0.66,
+						0.035,
+						0.28
+					],
+					"mat": "glass",
+					"collide": false
+				},
+				{
+					"cyl": [
+						1.63,
+						0,
+						0.83,
+						0.035,
+						0.3
+					],
+					"mat": "green",
+					"collide": false
+				},
+				{
+					"cyl": [
+						2.01,
+						0,
+						0.08,
+						0.035,
+						0.24
+					],
+					"mat": "green",
+					"collide": false
+				},
+				{
+					"cyl": [
+						-1.47,
+						0,
+						1.48,
+						0.035,
+						0.29
+					],
+					"mat": "glass",
+					"collide": false
+				},
+				{
+					"cyl": [
+						-0.1,
+						0,
+						0.84,
+						0.035,
+						0.27
+					],
+					"mat": "green",
+					"collide": false
+				},
+				{
+					"cyl": [
+						1.01,
+						0,
+						-1.44,
+						0.035,
+						0.27
+					],
+					"mat": "green",
+					"collide": false
+				},
+				{
+					"cyl": [
+						0.36,
+						0,
+						0.73,
+						0.035,
+						0.23
+					],
+					"mat": "glass",
+					"collide": false
+				},
+				{
+					"cyl": [
+						0.54,
+						0,
+						1.21,
+						0.035,
+						0.26
+					],
+					"mat": "green",
+					"collide": false
+				},
+				{
+					"cyl": [
+						0.97,
+						0,
+						-2.08,
+						0.035,
+						0.2
+					],
+					"mat": "green",
+					"collide": false
+				},
+				{
+					"cyl": [
+						-0.26,
+						0,
+						0.66,
+						0.035,
+						0.21
+					],
+					"mat": "glass",
+					"collide": false
+				},
+				{
+					"cyl": [
+						0.82,
+						0,
+						0.58,
+						0.035,
+						0.19
+					],
+					"mat": "green",
+					"collide": false
+				},
+				{
+					"cyl": [
+						-0.13,
+						0,
+						-1.2,
+						0.035,
+						0.19
+					],
+					"mat": "green",
+					"collide": false
+				},
+				{
+					"cyl": [
+						-1.61,
+						0,
+						-0.8,
+						0.035,
+						0.2
+					],
+					"mat": "glass",
+					"collide": false
+				},
+				{
+					"cyl": [
+						-1.35,
+						0,
+						-2.04,
+						0.035,
+						0.24
+					],
+					"mat": "green",
+					"collide": false
+				},
+				{
+					"cyl": [
+						-0.53,
+						0,
+						0.49,
+						0.035,
+						0.25
+					],
+					"mat": "green",
+					"collide": false
+				},
+				{
+					"cyl": [
+						-1.15,
+						0,
+						1.77,
+						0.035,
+						0.18
+					],
+					"mat": "glass",
+					"collide": false
+				},
+				{
+					"cyl": [
+						-0.42,
+						0,
+						-0.97,
+						0.035,
+						0.23
+					],
+					"mat": "green",
+					"collide": false
+				},
+				{
+					"cyl": [
+						-1.69,
+						0,
+						1.46,
+						0.035,
+						0.22
+					],
+					"mat": "green",
+					"collide": false
+				},
+				{
+					"cyl": [
+						-2.04,
+						0,
+						0.5,
+						0.035,
+						0.19
+					],
+					"mat": "glass",
+					"collide": false
+				},
+				{
+					"cyl": [
+						0.2,
+						0,
+						-0.71,
+						0.035,
+						0.25
+					],
+					"mat": "green",
+					"collide": false
+				},
+				{
+					"cyl": [
+						2.02,
+						0,
+						1.4,
+						0.035,
+						0.23
+					],
+					"mat": "green",
+					"collide": false
+				},
+				{
+					"cyl": [
+						1.38,
+						0,
+						0.63,
+						0.035,
+						0.22
+					],
+					"mat": "glass",
+					"collide": false
+				},
+				{
+					"cyl": [
+						-1.57,
+						0,
+						0.42,
+						0.035,
+						0.25
+					],
+					"mat": "green",
+					"collide": false
+				},
+				{
+					"cyl": [
+						2.01,
+						0,
+						2.06,
+						0.035,
+						0.25
+					],
+					"mat": "green",
+					"collide": false
+				},
+				{
+					"cyl": [
+						-0.66,
+						0,
+						1.73,
+						0.035,
+						0.18
+					],
+					"mat": "glass",
+					"collide": false
+				},
+				{
+					"cyl": [
+						-1.73,
+						0,
+						0.29,
+						0.035,
+						0.25
+					],
+					"mat": "green",
+					"collide": false
+				},
+				{
+					"cyl": [
+						-1.58,
+						0,
+						0.57,
+						0.035,
+						0.29
+					],
+					"mat": "green",
+					"collide": false
+				},
+				{
+					"cyl": [
+						-0.55,
+						0,
+						-0.3,
+						0.035,
+						0.21
+					],
+					"mat": "glass",
+					"collide": false
+				},
+				{
+					"cyl": [
+						-0.92,
+						0,
+						2.08,
+						0.035,
+						0.23
+					],
+					"mat": "green",
+					"collide": false
+				},
+				{
+					"cyl": [
+						2.03,
+						0,
+						1.82,
+						0.035,
+						0.25
+					],
+					"mat": "green",
+					"collide": false
+				},
+				{
+					"cyl": [
+						-1.06,
+						0,
+						2.12,
+						0.035,
+						0.24
+					],
+					"mat": "glass",
+					"collide": false
+				},
+				{
+					"cyl": [
+						-0.37,
+						0,
+						-0.8,
+						0.035,
+						0.3
+					],
+					"mat": "green",
+					"collide": false
+				},
+				{
+					"cyl": [
+						-0.04,
+						0,
+						-0.94,
+						0.035,
+						0.24
+					],
+					"mat": "green",
+					"collide": false
+				},
+				{
+					"cyl": [
+						-1.66,
+						0,
+						0.54,
+						0.035,
+						0.23
+					],
+					"mat": "glass",
+					"collide": false
+				},
+				{
+					"cyl": [
+						-0.91,
+						0,
+						1.24,
+						0.035,
+						0.28
+					],
+					"mat": "green",
+					"collide": false
+				},
+				{
+					"cyl": [
+						-2.14,
+						0,
+						0.14,
+						0.035,
+						0.21
+					],
+					"mat": "green",
+					"collide": false
+				},
+				{
+					"cyl": [
+						1.92,
+						0,
+						1.24,
+						0.035,
+						0.21
+					],
+					"mat": "glass",
+					"collide": false
+				},
+				{
+					"cyl": [
+						-1.02,
+						0,
+						-1.52,
+						0.035,
+						0.3
+					],
+					"mat": "green",
+					"collide": false
+				},
+				{
+					"cyl": [
+						-0.91,
+						0,
+						0.48,
+						0.035,
+						0.24
+					],
+					"mat": "green",
+					"collide": false
+				},
+				{
+					"cyl": [
+						0.64,
+						0,
+						0.46,
+						0.035,
+						0.27
+					],
+					"mat": "glass",
+					"collide": false
+				},
+				{
+					"cyl": [
+						-1.68,
+						0,
+						1.15,
+						0.035,
+						0.22
+					],
+					"mat": "green",
+					"collide": false
+				},
+				{
+					"cyl": [
+						0.15,
+						0,
+						-0.72,
+						0.035,
+						0.22
+					],
+					"mat": "green",
+					"collide": false
+				},
+				{
+					"cyl": [
+						0.13,
+						0,
+						-0.16,
+						0.035,
+						0.22
+					],
+					"mat": "glass",
+					"collide": false
+				},
+				{
+					"cyl": [
+						1.08,
+						0,
+						0.4,
+						0.035,
+						0.18
+					],
+					"mat": "green",
+					"collide": false
+				},
+				{
+					"cyl": [
+						-1.09,
+						0,
+						-0.2,
+						0.035,
+						0.29
+					],
+					"mat": "green",
+					"collide": false
+				},
+				{
+					"cyl": [
+						1.71,
+						0,
+						0.2,
+						0.035,
+						0.18
+					],
+					"mat": "glass",
+					"collide": false
+				},
+				{
+					"cyl": [
+						1.22,
+						0,
+						-0.32,
+						0.035,
+						0.25
+					],
+					"mat": "green",
+					"collide": false
+				},
+				{
+					"cyl": [
+						0.92,
+						0,
+						0.58,
+						0.035,
+						0.24
+					],
+					"mat": "green",
+					"collide": false
+				},
+				{
+					"cyl": [
+						1.81,
+						0,
+						-0.5,
+						0.035,
+						0.23
+					],
+					"mat": "glass",
+					"collide": false
+				},
+				{
+					"cyl": [
+						1.55,
+						0,
+						-1.34,
+						0.035,
+						0.22
+					],
+					"mat": "green",
+					"collide": false
+				},
+				{
+					"cyl": [
+						1.45,
+						0,
+						-1.91,
+						0.035,
+						0.28
+					],
+					"mat": "green",
+					"collide": false
+				},
+				{
+					"cyl": [
+						0.86,
+						0,
+						-0.3,
+						0.035,
+						0.21
+					],
+					"mat": "glass",
+					"collide": false
+				},
+				{
+					"cyl": [
+						1.24,
+						0,
+						1.81,
+						0.035,
+						0.2
+					],
+					"mat": "green",
+					"collide": false
+				},
+				{
+					"cyl": [
+						-0.09,
+						0,
+						0.22,
+						0.035,
+						0.24
+					],
+					"mat": "green",
+					"collide": false
+				},
+				{
+					"cyl": [
+						-0.74,
+						0,
+						-1.52,
+						0.035,
+						0.25
+					],
+					"mat": "glass",
+					"collide": false
+				},
+				{
+					"cyl": [
+						1.37,
+						0,
+						-1.9,
+						0.035,
+						0.21
+					],
+					"mat": "green",
+					"collide": false
+				},
+				{
+					"cyl": [
+						1.41,
+						0,
+						1.28,
+						0.035,
+						0.26
+					],
+					"mat": "green",
+					"collide": false
+				},
+				{
+					"cyl": [
+						-2.09,
+						0,
+						0.98,
+						0.035,
+						0.3
+					],
+					"mat": "glass",
+					"collide": false
+				},
+				{
+					"cyl": [
+						2.19,
+						0,
+						0.89,
+						0.035,
+						0.19
+					],
+					"mat": "green",
+					"collide": false
+				},
+				{
+					"cyl": [
+						1.51,
+						0,
+						-1.24,
+						0.035,
+						0.26
+					],
+					"mat": "green",
+					"collide": false
+				},
+				{
+					"cyl": [
+						1.99,
+						0,
+						0.93,
+						0.035,
+						0.2
+					],
+					"mat": "glass",
+					"collide": false
+				},
+				{
+					"cyl": [
+						-0.91,
+						0,
+						1.84,
+						0.035,
+						0.2
+					],
+					"mat": "green",
+					"collide": false
+				},
+				{
+					"cyl": [
+						0.49,
+						0,
+						-0.38,
+						0.035,
+						0.2
+					],
+					"mat": "green",
+					"collide": false
+				},
+				{
+					"sign": "NO VACANCY",
+					"at": [
+						0,
+						2.2,
+						-2.45
+					],
+					"size": 24,
+					"mat": "white",
+					"visible_m": 16
+				}
+			],
+			"use": {
+				"label": "Search the bottles",
+				"gives": {
+					"strange_key": 1,
+					"bottle_cap": 18
+				},
+				"flag": "odd_bottle_key",
+				"say": "Three hundred and nine bottles. One key. It fits nothing you own."
+			}
+		},
+		"gym_treadmill": {
+			"at": [
+				645.3,
+				-2311.3
+			],
+			"yaw": 286.0,
+			"clear_m": 3.0,
+			"props": [
+				{
+					"box": [
+						0,
+						1.3,
+						-2.2,
+						5.0,
+						2.6,
+						0.2
+					],
+					"mat": "plaster",
+					"yaw": 0
+				},
+				{
+					"box": [
+						-2.5,
+						1.3,
+						0,
+						0.2,
+						2.6,
+						4.6
+					],
+					"mat": "plaster",
+					"yaw": 0
+				},
+				{
+					"box": [
+						0,
+						0.03,
+						0,
+						5.0,
+						0.06,
+						4.6
+					],
+					"mat": "dark",
+					"collide": false
+				},
+				{
+					"kit": "treadmill",
+					"at": [
+						0,
+						0,
+						-0.6
+					],
+					"yaw": 0
+				},
+				{
+					"kit": "skeleton_standing",
+					"at": [
+						0,
+						0.27,
+						-0.2
+					],
+					"yaw": 0
+				},
+				{
+					"kit": "treadmill",
+					"at": [
+						2.0,
+						0,
+						-0.6
+					],
+					"yaw": 0
+				}
+			],
+			"use": {
+				"label": "Read the display",
+				"flag": "odd_treadmill",
+				"say": "TIME 00:41:02   DISTANCE 41,228 MI   CALORIES ---   The belt is still warm."
+			}
+		},
+		"mannequins": {
+			"at": [
+				1898.7,
+				-1509.5
+			],
+			"yaw": 238.0,
+			"clear_m": 5.0,
+			"shuffle": {
+				"kit": "mannequin",
+				"count": 5,
+				"radius_m": 2.4
+			},
+			"props": [
+				{
+					"box": [
+						0,
+						1.4,
+						-3.0,
+						6.0,
+						2.8,
+						0.2
+					],
+					"mat": "plaster",
+					"yaw": 0
+				},
+				{
+					"box": [
+						-3.0,
+						1.4,
+						0,
+						0.2,
+						2.8,
+						6.0
+					],
+					"mat": "plaster",
+					"yaw": 0
+				},
+				{
+					"box": [
+						3.0,
+						1.4,
+						0,
+						0.2,
+						2.8,
+						6.0
+					],
+					"mat": "plaster",
+					"yaw": 0
+				},
+				{
+					"box": [
+						0,
+						0.03,
+						0,
+						6.0,
+						0.06,
+						6.0
+					],
+					"mat": "tan",
+					"collide": false
+				},
+				{
+					"sign": "FALL COLLECTION",
+					"at": [
+						0,
+						2.3,
+						-2.85
+					],
+					"size": 26,
+					"mat": "white",
+					"visible_m": 20
+				}
+			],
+			"note": "shuffle: these props are rebuilt in new spots every time the cell reloads."
+		},
+		"elevator_nowhere": {
+			"at": [
+				5429.5,
+				1330.1
+			],
+			"yaw": 231.0,
+			"clear_m": 3.0,
+			"props": [
+				{
+					"box": [
+						0,
+						1.4,
+						-1.3,
+						2.6,
+						2.8,
+						0.2
+					],
+					"mat": "steel",
+					"yaw": 0
+				},
+				{
+					"box": [
+						-1.3,
+						1.4,
+						0,
+						0.2,
+						2.8,
+						2.6
+					],
+					"mat": "steel",
+					"yaw": 0
+				},
+				{
+					"box": [
+						1.3,
+						1.4,
+						0,
+						0.2,
+						2.8,
+						2.6
+					],
+					"mat": "steel",
+					"yaw": 0
+				},
+				{
+					"box": [
+						0,
+						1.4,
+						1.3,
+						2.6,
+						2.8,
+						0.1
+					],
+					"mat": "chrome"
+				},
+				{
+					"box": [
+						0,
+						2.9,
+						0,
+						2.8,
+						0.2,
+						2.8
+					],
+					"mat": "steel"
+				},
+				{
+					"box": [
+						-0.5,
+						1.3,
+						1.26,
+						0.02,
+						2.4,
+						1.1
+					],
+					"mat": "dark",
+					"collide": false
+				},
+				{
+					"box": [
+						0.5,
+						1.3,
+						1.26,
+						0.02,
+						2.4,
+						1.1
+					],
+					"mat": "dark",
+					"collide": false
+				},
+				{
+					"sign": "2",
+					"at": [
+						0,
+						2.5,
+						1.28
+					],
+					"size": 30,
+					"mat": "yellow",
+					"visible_m": 20
+				}
+			],
+			"use": {
+				"label": "Press the button",
+				"flag": "odd_elevator",
+				"say": "The doors close. Something hums. The doors open. You are exactly where you were."
+			}
+		},
+		"solitaire_pc": {
+			"at": [
+				134.3,
+				-83.0
+			],
+			"yaw": 260.0,
+			"clear_m": 3.0,
+			"props": [
+				{
+					"kit": "office_desk",
+					"at": [
+						0,
+						0,
+						0
+					],
+					"yaw": 0
+				},
+				{
+					"kit": "office_chair",
+					"at": [
+						0,
+						0,
+						0.85
+					],
+					"yaw": 180
+				},
+				{
+					"box": [
+						0,
+						1.1,
+						-1.0,
+						2.6,
+						2.2,
+						0.12
+					],
+					"mat": "tan",
+					"yaw": 0
+				}
+			],
+			"use": {
+				"label": "Wake the computer",
+				"flag": "odd_solitaire",
+				"gives": {
+					"bottle_cap": 3
+				},
+				"say": "SOLITAIRE  -  games played: 61,402  -  games won: 3  -  time played: 4y 2m 19d"
+			}
+		},
+		"bathtub_caps": {
+			"at": [
+				-270.6,
+				-179.8
+			],
+			"yaw": 300.0,
+			"clear_m": 3.0,
+			"props": [
+				{
+					"kit": "bathtub",
+					"at": [
+						0,
+						0,
+						0
+					],
+					"yaw": 0
+				},
+				{
+					"box": [
+						0,
+						0.46,
+						0,
+						0.64,
+						0.06,
+						1.56
+					],
+					"mat": "yellow",
+					"collide": false
+				},
+				{
+					"kit": "lawn_chair",
+					"at": [
+						1.6,
+						0,
+						0.4
+					],
+					"yaw": -70
+				},
+				{
+					"sign": "MY LIFE'S WORK",
+					"at": [
+						0,
+						1.1,
+						0
+					],
+					"size": 24,
+					"mat": "white",
+					"visible_m": 18
+				}
+			],
+			"use": {
+				"label": "Dig through the caps",
+				"gives": {
+					"bottle_cap": 37,
+					"cap_37": 1
+				},
+				"flag": "odd_bathtub",
+				"say": "Thirty-seven caps. Thirty-six designs. The odd one out is bent, scorched and worth, according to one woman in town, a great deal."
+			}
+		},
+		"lottery_skeleton": {
+			"at": [
+				967.1,
+				-284.3
+			],
+			"yaw": 97.0,
+			"clear_m": 3.0,
+			"props": [
+				{
+					"kit": "skeleton_slumped",
+					"at": [
+						0,
+						0,
+						0
+					],
+					"yaw": 20
+				},
+				{
+					"box": [
+						0.3,
+						0.06,
+						0.42,
+						0.1,
+						0.01,
+						0.18
+					],
+					"mat": "white",
+					"yaw": 20,
+					"collide": false
+				},
+				{
+					"kit": "cooler",
+					"at": [
+						-0.9,
+						0,
+						0.3
+					],
+					"yaw": 15
+				}
+			],
+			"use": {
+				"label": "Take the ticket",
+				"gives": {
+					"lottery_ticket": 1
+				},
+				"flag": "odd_lottery",
+				"say": "All six numbers. Drawn the day before. He is still holding it up."
+			}
+		},
+		"wall_room": {
+			"at": [
+				3000.5,
+				1194.0
+			],
+			"yaw": 94.0,
+			"clear_m": 5.5,
+			"props": [
+				{
+					"box": [
+						0,
+						1.4,
+						-3.2,
+						6.4,
+						2.8,
+						0.2
+					],
+					"mat": "plaster",
+					"yaw": 0
+				},
+				{
+					"box": [
+						-3.2,
+						1.4,
+						0,
+						0.2,
+						2.8,
+						6.4
+					],
+					"mat": "plaster",
+					"yaw": 0
+				},
+				{
+					"box": [
+						3.2,
+						1.4,
+						0,
+						0.2,
+						2.8,
+						6.4
+					],
+					"mat": "plaster",
+					"yaw": 0
+				},
+				{
+					"box": [
+						0,
+						1.4,
+						3.2,
+						6.4,
+						2.8,
+						0.2
+					],
+					"mat": "plaster",
+					"yaw": 0
+				},
+				{
+					"box": [
+						0,
+						0.03,
+						0,
+						6.4,
+						0.06,
+						6.4
+					],
+					"mat": "wood",
+					"collide": false
+				},
+				{
+					"kit": "office_chair",
+					"at": [
+						-2.4,
+						0,
+						-2.6
+					],
+					"yaw": 0
+				},
+				{
+					"kit": "office_chair",
+					"at": [
+						-1.0,
+						0,
+						-2.6
+					],
+					"yaw": 0
+				},
+				{
+					"kit": "office_chair",
+					"at": [
+						0.4,
+						0,
+						-2.6
+					],
+					"yaw": 0
+				},
+				{
+					"kit": "office_desk",
+					"at": [
+						2.4,
+						0,
+						-2.4
+					],
+					"yaw": 0
+				},
+				{
+					"kit": "fridge",
+					"at": [
+						-2.8,
+						0,
+						2.6
+					],
+					"yaw": 180
+				},
+				{
+					"kit": "treadmill",
+					"at": [
+						2.6,
+						0,
+						1.6
+					],
+					"yaw": 90
+				},
+				{
+					"kit": "lawn_chair",
+					"at": [
+						0.2,
+						0,
+						2.7
+					],
+					"yaw": 180
+				}
+			],
+			"use": {
+				"label": "Turn a chair around",
+				"flag": "odd_wall_room",
+				"say": "You turn it to face the room. It feels worse."
+			}
+		},
+		"not_a_trap": {
+			"at": [
+				714.6,
+				1353.8
+			],
+			"yaw": 262.0,
+			"clear_m": 3.0,
+			"props": [
+				{
+					"box": [
+						0,
+						0.04,
+						0,
+						2.2,
+						0.08,
+						2.2
+					],
+					"mat": "steel"
+				},
+				{
+					"box": [
+						0,
+						1.9,
+						-1.6,
+						0.1,
+						3.8,
+						0.1
+					],
+					"mat": "wood"
+				},
+				{
+					"sign": "DEFINITELY\nNOT A TRAP",
+					"at": [
+						0,
+						3.1,
+						-1.5
+					],
+					"size": 46,
+					"mat": "red",
+					"visible_m": 70
+				}
+			],
+			"use": {
+				"label": "Stand on the plate",
+				"flag": "odd_not_a_trap",
+				"say": "Nothing happens. Nothing at all happens. Somehow that is worse."
+			},
+			"loot": [
+				{
+					"id": "bait",
+					"name": "Suspiciously Good Crate",
+					"table": "ammo_cache",
+					"at": [
+						0,
+						0.45,
+						0
+					],
+					"size": [
+						0.8,
+						0.7,
+						0.8
+					],
+					"mat": "wood"
+				}
+			]
+		},
+		"vending_machine": {
+			"at": [
+				1949.3,
+				-1849.8
+			],
+			"yaw": 243.0,
+			"clear_m": 3.0,
+			"props": [
+				{
+					"kit": "vending_machine",
+					"at": [
+						0,
+						0,
+						0
+					],
+					"yaw": 0
+				},
+				{
+					"box": [
+						0,
+						1.4,
+						-0.6,
+						2.4,
+						2.8,
+						0.2
+					],
+					"mat": "plaster",
+					"yaw": 0
+				},
+				{
+					"sign": "EXACT CHANGE",
+					"at": [
+						0.8,
+						1.9,
+						0.4
+					],
+					"size": 20,
+					"mat": "white",
+					"visible_m": 14
+				}
+			],
+			"use": {
+				"label": "Buy something (40 caps)",
+				"needs": {
+					"bottle_cap": 40
+				},
+				"gives": {
+					"corn_dog": 1,
+					"pork_rinds": 1
+				},
+				"flag": "odd_vending",
+				"fail_say": "Forty caps. The machine is not negotiating.",
+				"say": "It takes your caps, thinks about it for eleven seconds, and drops a corn dog from 2019."
+			}
+		},
+		"stolen_cart": {
+			"at": [
+				755.8,
+				-2306.3
+			],
+			"yaw": 322.0,
+			"clear_m": 3.0,
+			"props": [
+				{
+					"kit": "shopping_cart",
+					"at": [
+						0,
+						0,
+						0
+					],
+					"yaw": 35
+				},
+				{
+					"box": [
+						-1.2,
+						0.15,
+						0.6,
+						2.0,
+						0.3,
+						1.4
+					],
+					"mat": "ash",
+					"yaw": 20,
+					"collide": false
+				},
+				{
+					"kit": "crate",
+					"at": [
+						1.3,
+						0,
+						-0.8
+					],
+					"yaw": 10
+				}
+			],
+			"use": {
+				"label": "Check the cart",
+				"flag": "sq_cart_found",
+				"gives": {
+					"cart_wheel": 1
+				},
+				"say": "It's the cart. One wheel is off and in the weeds."
+			}
+		},
+		"ticket_car": {
+			"at": [
+				1901.3,
+				-1623.9
+			],
+			"yaw": 314.0,
+			"clear_m": 3.0,
+			"props": [
+				{
+					"car": [
+						0,
+						0,
+						0
+					],
+					"body": "sedan",
+					"mat": "tan",
+					"yaw": 0
+				},
+				{
+					"sign": "4,118",
+					"at": [
+						0,
+						1.45,
+						2.05
+					],
+					"size": 16,
+					"mat": "yellow",
+					"visible_m": 16
+				},
+				{
+					"box": [
+						-0.29,
+						1.01,
+						1.72,
+						0.11,
+						0.08,
+						0.004
+					],
+					"mat": "white",
+					"yaw": 8.3,
+					"collide": false
+				},
+				{
+					"box": [
+						0.14,
+						0.9,
+						1.65,
+						0.11,
+						0.08,
+						0.004
+					],
+					"mat": "white",
+					"yaw": 27.0,
+					"collide": false
+				},
+				{
+					"box": [
+						-0.26,
+						0.94,
+						1.85,
+						0.11,
+						0.08,
+						0.004
+					],
+					"mat": "white",
+					"yaw": -2.4,
+					"collide": false
+				},
+				{
+					"box": [
+						0.37,
+						0.99,
+						1.78,
+						0.11,
+						0.08,
+						0.004
+					],
+					"mat": "white",
+					"yaw": -28.0,
+					"collide": false
+				},
+				{
+					"box": [
+						0.15,
+						1.09,
+						1.75,
+						0.11,
+						0.08,
+						0.004
+					],
+					"mat": "white",
+					"yaw": 19.3,
+					"collide": false
+				},
+				{
+					"box": [
+						0.19,
+						0.9,
+						1.8,
+						0.11,
+						0.08,
+						0.004
+					],
+					"mat": "white",
+					"yaw": 7.3,
+					"collide": false
+				},
+				{
+					"box": [
+						-0.22,
+						0.89,
+						1.82,
+						0.11,
+						0.08,
+						0.004
+					],
+					"mat": "white",
+					"yaw": -2.2,
+					"collide": false
+				},
+				{
+					"box": [
+						0.24,
+						1.09,
+						1.79,
+						0.11,
+						0.08,
+						0.004
+					],
+					"mat": "white",
+					"yaw": 33.7,
+					"collide": false
+				},
+				{
+					"box": [
+						-0.12,
+						1.07,
+						1.74,
+						0.11,
+						0.08,
+						0.004
+					],
+					"mat": "white",
+					"yaw": 34.8,
+					"collide": false
+				},
+				{
+					"box": [
+						0.42,
+						0.9,
+						1.68,
+						0.11,
+						0.08,
+						0.004
+					],
+					"mat": "white",
+					"yaw": -22.6,
+					"collide": false
+				},
+				{
+					"box": [
+						0.51,
+						0.98,
+						1.78,
+						0.11,
+						0.08,
+						0.004
+					],
+					"mat": "white",
+					"yaw": -15.9,
+					"collide": false
+				},
+				{
+					"box": [
+						0.01,
+						0.97,
+						1.72,
+						0.11,
+						0.08,
+						0.004
+					],
+					"mat": "white",
+					"yaw": 6.8,
+					"collide": false
+				},
+				{
+					"box": [
+						0.09,
+						1.1,
+						1.79,
+						0.11,
+						0.08,
+						0.004
+					],
+					"mat": "white",
+					"yaw": 34.3,
+					"collide": false
+				},
+				{
+					"box": [
+						0.39,
+						1.12,
+						1.78,
+						0.11,
+						0.08,
+						0.004
+					],
+					"mat": "white",
+					"yaw": -27.0,
+					"collide": false
+				},
+				{
+					"box": [
+						0.4,
+						1.11,
+						1.83,
+						0.11,
+						0.08,
+						0.004
+					],
+					"mat": "white",
+					"yaw": 5.5,
+					"collide": false
+				},
+				{
+					"box": [
+						0.24,
+						0.93,
+						1.82,
+						0.11,
+						0.08,
+						0.004
+					],
+					"mat": "white",
+					"yaw": 5.9,
+					"collide": false
+				},
+				{
+					"box": [
+						-0.24,
+						0.9,
+						1.82,
+						0.11,
+						0.08,
+						0.004
+					],
+					"mat": "white",
+					"yaw": 39.2,
+					"collide": false
+				},
+				{
+					"box": [
+						-0.45,
+						1.07,
+						1.73,
+						0.11,
+						0.08,
+						0.004
+					],
+					"mat": "white",
+					"yaw": -27.9,
+					"collide": false
+				},
+				{
+					"box": [
+						-0.23,
+						1.06,
+						1.82,
+						0.11,
+						0.08,
+						0.004
+					],
+					"mat": "white",
+					"yaw": -36.5,
+					"collide": false
+				},
+				{
+					"box": [
+						0.13,
+						0.89,
+						1.79,
+						0.11,
+						0.08,
+						0.004
+					],
+					"mat": "white",
+					"yaw": -13.5,
+					"collide": false
+				},
+				{
+					"box": [
+						0.42,
+						1.12,
+						1.75,
+						0.11,
+						0.08,
+						0.004
+					],
+					"mat": "white",
+					"yaw": 39.9,
+					"collide": false
+				},
+				{
+					"box": [
+						-0.21,
+						0.9,
+						1.77,
+						0.11,
+						0.08,
+						0.004
+					],
+					"mat": "white",
+					"yaw": -37.5,
+					"collide": false
+				},
+				{
+					"box": [
+						-0.33,
+						0.98,
+						1.77,
+						0.11,
+						0.08,
+						0.004
+					],
+					"mat": "white",
+					"yaw": -27.5,
+					"collide": false
+				},
+				{
+					"box": [
+						-0.5,
+						1.09,
+						1.71,
+						0.11,
+						0.08,
+						0.004
+					],
+					"mat": "white",
+					"yaw": 36.7,
+					"collide": false
+				},
+				{
+					"box": [
+						0.44,
+						0.97,
+						1.74,
+						0.11,
+						0.08,
+						0.004
+					],
+					"mat": "white",
+					"yaw": 1.6,
+					"collide": false
+				},
+				{
+					"box": [
+						0.16,
+						1.02,
+						1.76,
+						0.11,
+						0.08,
+						0.004
+					],
+					"mat": "white",
+					"yaw": 9.6,
+					"collide": false
+				},
+				{
+					"box": [
+						0.97,
+						0.02,
+						2.31,
+						0.11,
+						0.004,
+						0.08
+					],
+					"mat": "white",
+					"yaw": 77.6,
+					"collide": false
+				},
+				{
+					"box": [
+						0.48,
+						0.02,
+						1.93,
+						0.11,
+						0.004,
+						0.08
+					],
+					"mat": "white",
+					"yaw": 54.2,
+					"collide": false
+				},
+				{
+					"box": [
+						1.05,
+						0.02,
+						2.33,
+						0.11,
+						0.004,
+						0.08
+					],
+					"mat": "white",
+					"yaw": 98.7,
+					"collide": false
+				},
+				{
+					"box": [
+						-1.07,
+						0.02,
+						2.18,
+						0.11,
+						0.004,
+						0.08
+					],
+					"mat": "white",
+					"yaw": 104.4,
+					"collide": false
+				},
+				{
+					"box": [
+						-1.06,
+						0.02,
+						2.46,
+						0.11,
+						0.004,
+						0.08
+					],
+					"mat": "white",
+					"yaw": 113.8,
+					"collide": false
+				},
+				{
+					"box": [
+						-0.97,
+						0.02,
+						2.48,
+						0.11,
+						0.004,
+						0.08
+					],
+					"mat": "white",
+					"yaw": 83.9,
+					"collide": false
+				},
+				{
+					"box": [
+						0.39,
+						0.02,
+						2.09,
+						0.11,
+						0.004,
+						0.08
+					],
+					"mat": "white",
+					"yaw": 127.3,
+					"collide": false
+				},
+				{
+					"box": [
+						0.52,
+						0.02,
+						1.63,
+						0.11,
+						0.004,
+						0.08
+					],
+					"mat": "white",
+					"yaw": 10.9,
+					"collide": false
+				},
+				{
+					"box": [
+						0.39,
+						0.02,
+						2.95,
+						0.11,
+						0.004,
+						0.08
+					],
+					"mat": "white",
+					"yaw": 45.2,
+					"collide": false
+				},
+				{
+					"box": [
+						-0.1,
+						0.02,
+						2.43,
+						0.11,
+						0.004,
+						0.08
+					],
+					"mat": "white",
+					"yaw": 57.6,
+					"collide": false
+				},
+				{
+					"box": [
+						-0.3,
+						0.02,
+						2.04,
+						0.11,
+						0.004,
+						0.08
+					],
+					"mat": "white",
+					"yaw": 66.4,
+					"collide": false
+				},
+				{
+					"box": [
+						0.21,
+						0.02,
+						2.02,
+						0.11,
+						0.004,
+						0.08
+					],
+					"mat": "white",
+					"yaw": 67.9,
+					"collide": false
+				},
+				{
+					"box": [
+						0.6,
+						0.02,
+						1.64,
+						0.11,
+						0.004,
+						0.08
+					],
+					"mat": "white",
+					"yaw": 102.5,
+					"collide": false
+				},
+				{
+					"box": [
+						0.52,
+						0.02,
+						2.03,
+						0.11,
+						0.004,
+						0.08
+					],
+					"mat": "white",
+					"yaw": 40.1,
+					"collide": false
+				}
+			],
+			"use": {
+				"label": "Pull the tickets off the windshield",
+				"flag": "sq_parking_start",
+				"gives": {
+					"parking_tickets": 1
+				},
+				"say": "Four thousand one hundred and eighteen tickets. The newest one is from last Tuesday."
+			}
+		},
+		"donut_case": {
+			"at": [
+				1312.5,
+				472.0
+			],
+			"yaw": 95.0,
+			"clear_m": 3.0,
+			"props": [
+				{
+					"kit": "crate",
+					"at": [
+						0,
+						0,
+						0
+					],
+					"yaw": 0
+				},
+				{
+					"box": [
+						0,
+						0.75,
+						0,
+						0.9,
+						0.3,
+						0.6
+					],
+					"mat": "glass",
+					"collide": false
+				},
+				{
+					"cyl": [
+						0,
+						0.66,
+						0,
+						0.09,
+						0.05
+					],
+					"mat": "tan",
+					"collide": false
+				},
+				{
+					"sign": "DO NOT EAT\n(PROPERTY OF EVERYONE)",
+					"at": [
+						0,
+						1.3,
+						0
+					],
+					"size": 24,
+					"mat": "white",
+					"visible_m": 20
+				}
+			],
+			"use": {
+				"label": "Take the last donut",
+				"flag": "sq_donut_taken",
+				"gives": {
+					"last_donut": 1
+				},
+				"say": "It is hard as a hockey puck and three separate people believe it is theirs."
+			}
+		},
+		"corn_plot": {
+			"at": [
+				-157.6,
+				-2226.2
+			],
+			"yaw": 48.0,
+			"clear_m": 5.0,
+			"props": [
+				{
+					"box": [
+						0,
+						0.6,
+						0,
+						6.0,
+						0.1,
+						6.0
+					],
+					"mat": "green",
+					"collide": false
+				},
+				{
+					"kit": "crate",
+					"at": [
+						2.6,
+						0,
+						2.6
+					],
+					"yaw": 0
+				},
+				{
+					"sign": "EXPERIMENTAL PLOT 4\nDO NOT DISCUSS",
+					"at": [
+						0,
+						1.6,
+						-2.4
+					],
+					"size": 28,
+					"mat": "yellow",
+					"visible_m": 40
+				},
+				{
+					"cyl": [
+						-2.5,
+						0,
+						-2.5,
+						0.04,
+						1.6
+					],
+					"mat": "green",
+					"collide": false
+				},
+				{
+					"cyl": [
+						-1.5,
+						0,
+						-2.5,
+						0.04,
+						2.5
+					],
+					"mat": "green",
+					"collide": false
+				},
+				{
+					"cyl": [
+						-0.5,
+						0,
+						-2.5,
+						0.04,
+						2.2
+					],
+					"mat": "green",
+					"collide": false
+				},
+				{
+					"cyl": [
+						0.5,
+						0,
+						-2.5,
+						0.04,
+						1.9
+					],
+					"mat": "green",
+					"collide": false
+				},
+				{
+					"cyl": [
+						1.5,
+						0,
+						-2.5,
+						0.04,
+						1.6
+					],
+					"mat": "green",
+					"collide": false
+				},
+				{
+					"cyl": [
+						2.5,
+						0,
+						-2.5,
+						0.04,
+						2.5
+					],
+					"mat": "green",
+					"collide": false
+				},
+				{
+					"cyl": [
+						-2.5,
+						0,
+						-1.5,
+						0.04,
+						2.2
+					],
+					"mat": "green",
+					"collide": false
+				},
+				{
+					"cyl": [
+						-1.5,
+						0,
+						-1.5,
+						0.04,
+						1.9
+					],
+					"mat": "green",
+					"collide": false
+				},
+				{
+					"cyl": [
+						-0.5,
+						0,
+						-1.5,
+						0.04,
+						1.6
+					],
+					"mat": "green",
+					"collide": false
+				},
+				{
+					"cyl": [
+						0.5,
+						0,
+						-1.5,
+						0.04,
+						2.5
+					],
+					"mat": "green",
+					"collide": false
+				},
+				{
+					"cyl": [
+						1.5,
+						0,
+						-1.5,
+						0.04,
+						2.2
+					],
+					"mat": "green",
+					"collide": false
+				},
+				{
+					"cyl": [
+						2.5,
+						0,
+						-1.5,
+						0.04,
+						1.9
+					],
+					"mat": "green",
+					"collide": false
+				},
+				{
+					"cyl": [
+						-2.5,
+						0,
+						-0.5,
+						0.04,
+						1.6
+					],
+					"mat": "green",
+					"collide": false
+				},
+				{
+					"cyl": [
+						-1.5,
+						0,
+						-0.5,
+						0.04,
+						2.5
+					],
+					"mat": "green",
+					"collide": false
+				},
+				{
+					"cyl": [
+						-0.5,
+						0,
+						-0.5,
+						0.04,
+						2.2
+					],
+					"mat": "green",
+					"collide": false
+				},
+				{
+					"cyl": [
+						0.5,
+						0,
+						-0.5,
+						0.04,
+						1.9
+					],
+					"mat": "green",
+					"collide": false
+				},
+				{
+					"cyl": [
+						1.5,
+						0,
+						-0.5,
+						0.04,
+						1.6
+					],
+					"mat": "green",
+					"collide": false
+				},
+				{
+					"cyl": [
+						2.5,
+						0,
+						-0.5,
+						0.04,
+						2.5
+					],
+					"mat": "green",
+					"collide": false
+				},
+				{
+					"cyl": [
+						-2.5,
+						0,
+						0.5,
+						0.04,
+						2.2
+					],
+					"mat": "green",
+					"collide": false
+				},
+				{
+					"cyl": [
+						-1.5,
+						0,
+						0.5,
+						0.04,
+						1.9
+					],
+					"mat": "green",
+					"collide": false
+				},
+				{
+					"cyl": [
+						-0.5,
+						0,
+						0.5,
+						0.04,
+						1.6
+					],
+					"mat": "green",
+					"collide": false
+				},
+				{
+					"cyl": [
+						0.5,
+						0,
+						0.5,
+						0.04,
+						2.5
+					],
+					"mat": "green",
+					"collide": false
+				},
+				{
+					"cyl": [
+						1.5,
+						0,
+						0.5,
+						0.04,
+						2.2
+					],
+					"mat": "green",
+					"collide": false
+				},
+				{
+					"cyl": [
+						2.5,
+						0,
+						0.5,
+						0.04,
+						1.9
+					],
+					"mat": "green",
+					"collide": false
+				},
+				{
+					"cyl": [
+						-2.5,
+						0,
+						1.5,
+						0.04,
+						1.6
+					],
+					"mat": "green",
+					"collide": false
+				},
+				{
+					"cyl": [
+						-1.5,
+						0,
+						1.5,
+						0.04,
+						2.5
+					],
+					"mat": "green",
+					"collide": false
+				},
+				{
+					"cyl": [
+						-0.5,
+						0,
+						1.5,
+						0.04,
+						2.2
+					],
+					"mat": "green",
+					"collide": false
+				},
+				{
+					"cyl": [
+						0.5,
+						0,
+						1.5,
+						0.04,
+						1.9
+					],
+					"mat": "green",
+					"collide": false
+				},
+				{
+					"cyl": [
+						1.5,
+						0,
+						1.5,
+						0.04,
+						1.6
+					],
+					"mat": "green",
+					"collide": false
+				},
+				{
+					"cyl": [
+						2.5,
+						0,
+						1.5,
+						0.04,
+						2.5
+					],
+					"mat": "green",
+					"collide": false
+				},
+				{
+					"cyl": [
+						-2.5,
+						0,
+						2.5,
+						0.04,
+						2.2
+					],
+					"mat": "green",
+					"collide": false
+				},
+				{
+					"cyl": [
+						-1.5,
+						0,
+						2.5,
+						0.04,
+						1.9
+					],
+					"mat": "green",
+					"collide": false
+				},
+				{
+					"cyl": [
+						-0.5,
+						0,
+						2.5,
+						0.04,
+						1.6
+					],
+					"mat": "green",
+					"collide": false
+				},
+				{
+					"cyl": [
+						0.5,
+						0,
+						2.5,
+						0.04,
+						2.5
+					],
+					"mat": "green",
+					"collide": false
+				},
+				{
+					"cyl": [
+						1.5,
+						0,
+						2.5,
+						0.04,
+						2.2
+					],
+					"mat": "green",
+					"collide": false
+				},
+				{
+					"cyl": [
+						2.5,
+						0,
+						2.5,
+						0.04,
+						1.9
+					],
+					"mat": "green",
+					"collide": false
+				}
+			],
+			"use": {
+				"label": "Take a bag of seed corn",
+				"flag": "sq_corn_start",
+				"gives": {
+					"seed_corn": 1
+				},
+				"say": "Dent corn. Or flint corn. People have died over less in this county."
+			}
+		}
+	}
+}

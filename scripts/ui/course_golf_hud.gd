@@ -1,21 +1,21 @@
 # CourseGolfHud — the country club round on the HUD (D-086), added under the HUD by CourseGolf. While the local
 # player's SportInput is in "course" mode: hole / par / stroke / yards to the pin / lie / round total (to par) on
-# top; the bag (3 / wheel to change, the putter picked on the green), carry of the club from this lie, the swing
+# top; the pin marker (arrow + distance over the cup, pinned to the screen edge when it's off screen, D-097); the bag
+# (3 / wheel to change, the putter picked on the green), carry of the club from this lie, the swing
 # meter (SwingMeterDraw) with the "reaches the pin" mark, the green's slope while putting; Q shows the card.
-# Away from the ball: "walk to your ball - N yd". Presentation only, redraws ~15x a second (every frame mid-swing).
+# Away from the ball: "walk to your ball - N yd". Presentation only, redraws every frame (the pin marker tracks the
+# camera; the carry sims behind it are cached).
 # Depends on: SportInput (local player "sport"), CourseGolf (sp.game), GolfBallRules, SwingMeterDraw, DzHud
 # (slope_text).
 extends Control
 
 const DzHud := preload("res://scripts/ui/drop_zone_hud.gd")
-const REDRAW_SECONDS := 0.066
 const YD := 1.09361
 const FT := 3.28084
 const BAR_W := 560.0
 
 var _font: Font
 var _bg := StyleBoxFlat.new()
-var _redraw := 0.0
 var _me: Node
 var _aim_key := ""
 var _full := 0.0
@@ -30,17 +30,14 @@ func _ready() -> void:
 	_bg.set_corner_radius_all(6)
 
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	_me = get_tree().get_first_node_in_group("local_player")
 	var show_it: bool = _me != null and "sport" in _me and _me.sport.mode == "course"
 	if visible != show_it:
 		visible = show_it
 	if not visible:
 		return
-	_redraw -= delta
-	if _redraw <= 0.0 or _me.sport.meter.busy() or _me.sport.grade_time > 0.0:
-		_redraw = REDRAW_SECONDS
-		queue_redraw()
+	queue_redraw()  # every frame: the pin marker follows the camera
 
 
 func _draw() -> void:
@@ -66,6 +63,8 @@ func _draw() -> void:
 			total += int(c.strokes[i])
 			par_so_far += int(cg.hole_def(i).par)
 	var to_par := DiscGolfRules.to_par_text(total, par_so_far) if total > 0 else "E"
+	if cup != Vector3.INF:
+		_pin_marker(cup, dist)
 	var lie := str(c.get("lie", "rough")).capitalize()
 	_line(Vector2(size.x * 0.5, size.y - 262.0), "HOLE %d   Par %d   Stroke %d   %s   %s   Round %d (%s)   %d of 18" % [hole + 1, int(h.par),
 		int(c.throws) + 1, ("%d ft" % roundi(dist * FT)) if cg.aim_on_green() else ("%d yd to the pin" % roundi(dist * YD)), lie,
@@ -120,6 +119,35 @@ func _power_for(club: Dictionary, mult: float, metres: float, t: Dictionary) -> 
 		else:
 			hi = mid
 	return hi
+
+
+# The pin on screen (D-097, like the disc golf basket marker): a yellow arrow over it with the yards (feet on the
+# green), drawn through trees; pinned to the screen edge pointing at it when it's off screen or behind you.
+func _pin_marker(cup: Vector3, metres: float) -> void:
+	var cam := get_viewport().get_camera_3d()
+	if cam == null:
+		return
+	var at := cup + Vector3.UP * 3.0
+	var behind := cam.is_position_behind(at)
+	var p := cam.unproject_position(at)
+	if behind:
+		p = size - p
+	var inner := Rect2(Vector2.ZERO, size).grow(-48.0)
+	var col := Color(1.0, 0.82, 0.18)
+	var label := ("%d ft" % roundi(metres * FT)) if metres < 30.0 else ("%d yd" % roundi(metres * YD))
+	if not behind and inner.has_point(p):
+		draw_colored_polygon(PackedVector2Array([p + Vector2(0, 3), p + Vector2(-14, -18), p + Vector2(14, -18)]), Color(0, 0, 0, 0.8))
+		draw_colored_polygon(PackedVector2Array([p, p + Vector2(-11, -16), p + Vector2(11, -16)]), col)
+		_text(p + Vector2(-_font.get_string_size(label, HORIZONTAL_ALIGNMENT_LEFT, -1, 15).x * 0.5, -24.0), label, 15, col)
+		return
+	var c := size * 0.5
+	var dir := (p - c).normalized() if (p - c).length() > 0.001 else Vector2.UP
+	var k := minf(absf(inner.size.x * 0.5 / dir.x) if dir.x != 0.0 else INF, absf(inner.size.y * 0.5 / dir.y) if dir.y != 0.0 else INF)
+	var e := c + dir * k
+	var side := Vector2(-dir.y, dir.x)
+	draw_colored_polygon(PackedVector2Array([e + dir * 16.0, e - dir * 6.0 + side * 13.0, e - dir * 6.0 - side * 13.0]), Color(0, 0, 0, 0.8))
+	draw_colored_polygon(PackedVector2Array([e + dir * 13.0, e - dir * 4.0 + side * 10.0, e - dir * 4.0 - side * 10.0]), col)
+	_text(e - dir * 30.0 - Vector2(_font.get_string_size(label, HORIZONTAL_ALIGNMENT_LEFT, -1, 14).x * 0.5, -5.0), label, 14, col)
 
 
 func _card(cg: Node, c: Dictionary) -> void:

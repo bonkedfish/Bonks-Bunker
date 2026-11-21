@@ -75,6 +75,7 @@ var _water: WaterBuilder
 var _paint: GroundPaint  # landmark ground paint (D-080)
 var _landmarks: Dictionary = {}
 var _no_plant: Array[Rect2] = []  # landmark "no_plant_rects" in map coords
+var _roughs: Array = []  # landmark "rough_trees" (D-098): [spec, map pos, rot, paint shapes [[poly map, Rect2, pad]]]
 var _corners: Array = []  # [point, way direction, way index, half width] where a street meets a crossing street
 var _ways: Array = []  # every highway way kept by _build_roads (for street trees)
 var _clear_hash: Dictionary = {}  # Vector2i (STREET_GRID cell) -> Array of [a, b, reach]: roads + sidewalks to keep clear
@@ -151,6 +152,9 @@ func _ready() -> void:
 			_field.add_pad(_landmark_rect(r, pos, rot), _field.sample(pos.x, pos.y), float(lm.get("terrain_pad_blend_m", 10.0)))
 		if lm.has("ground_paint"):
 			_paint.add(DataLoader.load_json(str(lm.ground_paint)), key, pos, rot)
+		if lm.has("rough_trees"):
+			_roughs.append([lm.rough_trees, pos, rot, _paint_shapes(DataLoader.load_json(str(lm.get("ground_paint", ""))), pos, rot,
+				float(lm.rough_trees.keep_off_m))])
 	var road_halves := {}
 	for k: String in DRIVABLE:
 		road_halves[k] = float(ROAD_WIDTHS[k]) * 0.5
@@ -263,6 +267,45 @@ func _load_heights() -> bool:
 
 
 # Map-axis bounds of a local rect [x0, z0, x1, z1] (all four corners, so off-axis rotations like Kenwood's work).
+# A landmark's painted shapes in map coords, each grown by pad (paths: their half width + pad), for keeping
+# rough trees off the playing surfaces. [[PackedVector2Array, Rect2 grown], ...]; paths as 2-point strips.
+func _paint_shapes(paint: Dictionary, pos: Vector2, rot: float, pad: float) -> Array:
+	var out: Array = []
+	for pl: Dictionary in paint.get("polys", []):
+		var poly := PackedVector2Array()
+		var r := Rect2()
+		for q: Array in pl.poly:
+			var m := Vector2(q[0], q[1]).rotated(-rot) + pos
+			poly.append(m)
+			r = Rect2(m, Vector2.ZERO) if poly.size() == 1 else r.expand(m)
+		out.append([poly, r.grow(pad), pad])
+	for pa: Dictionary in paint.get("paths", []):
+		var line: Array = pa.line
+		for i in range(line.size() - 1):
+			var a := Vector2(line[i][0], line[i][1]).rotated(-rot) + pos
+			var b := Vector2(line[i + 1][0], line[i + 1][1]).rotated(-rot) + pos
+			var w := float(pa.get("width", 2.0)) * 0.5 + pad
+			out.append([PackedVector2Array([a, b]), Rect2(a, Vector2.ZERO).expand(b).grow(w), w])
+	return out
+
+
+func _off_paint(p: Vector2, shapes: Array) -> bool:
+	for sh: Array in shapes:
+		if not (sh[1] as Rect2).has_point(p):
+			continue
+		var poly: PackedVector2Array = sh[0]
+		if poly.size() == 2:
+			if p.distance_to(Geometry2D.get_closest_point_to_segment(p, poly[0], poly[1])) < float(sh[2]):
+				return false
+			continue
+		if Geometry2D.is_point_in_polygon(p, poly):
+			return false
+		for j in poly.size():
+			if p.distance_to(Geometry2D.get_closest_point_to_segment(p, poly[j], poly[(j + 1) % poly.size()])) < float(sh[2]):
+				return false
+	return true
+
+
 func _landmark_rect(r: Array, pos: Vector2, rot: float) -> Rect2:
 	var out := Rect2(Vector2(r[0], r[1]).rotated(-rot) + pos, Vector2.ZERO)
 	for c: Vector2 in [Vector2(r[2], r[1]), Vector2(r[2], r[3]), Vector2(r[0], r[3])]:
@@ -975,19 +1018,22 @@ func _plant(kind: String, rng: RandomNumberGenerator, p: Vector2, yaw := NAN, cl
 		cell.clutter.append(entry)
 	else:
 		cell.veg.append(entry)
-		if kind.begins_with("tree_"):
-			_far_tree(cell.far_st, entry[2], kind == "tree_bare", rng.randf_range(0.8, 1.2), rng)
+		var far := _veg.far_style(kind)
+		if far != "":
+			_far_tree(cell.far_st, entry[2], far, float(entry[4]) / 10.0, rng)
 	return true
 
 
-# Low-detail tree for the far shell: a 6-sided double cone crown (~8-9 m tall at scale 1) on the vertex-coloured
-# shell mesh (no extra draws).
-func _far_tree(st: SurfaceTool, base: Vector3, bare: bool, scale: float, rng: RandomNumberGenerator) -> void:
-	var r := (1.6 if bare else 2.8) * scale
-	var mid := base + Vector3.UP * (5.5 if bare else 5.0) * scale
-	var top := mid + Vector3.UP * (2.5 if bare else 3.0) * scale
-	var bottom := base + Vector3.UP * 1.5 * scale
-	var col := (COLOR_FAR_TREE_BARE if bare else COLOR_FAR_TREE) * rng.randf_range(0.85, 1.1)
+# Low-detail tree for the far shell: a 6-sided double cone crown (~8-9 m tall at scale 1; conifers a tall narrow
+# spire, D-098) on the vertex-coloured shell mesh (no extra draws). scale = tree height / 10 m.
+func _far_tree(st: SurfaceTool, base: Vector3, style: String, scale: float, rng: RandomNumberGenerator) -> void:
+	var bare := style == "bare"
+	var cone := style == "cone"
+	var r := (1.6 if bare else (1.5 if cone else 2.8)) * scale
+	var mid := base + Vector3.UP * (5.5 if bare else (2.5 if cone else 5.0)) * scale
+	var top := mid + Vector3.UP * (2.5 if bare else (7.0 if cone else 3.0)) * scale
+	var bottom := base + Vector3.UP * (1.0 if cone else 1.5) * scale
+	var col := (COLOR_FAR_TREE_BARE if bare else (COLOR_FAR_TREE * 0.75 if cone else COLOR_FAR_TREE)) * rng.randf_range(0.85, 1.1)
 	var ring: Array[Vector3] = []
 	for i in 6:
 		var a := TAU * i / 6.0
@@ -1004,8 +1050,20 @@ func _far_tree(st: SurfaceTool, base: Vector3, bare: bool, scale: float, rng: Ra
 				st.add_vertex(v)
 
 
-func _tree_kind(rng: RandomNumberGenerator) -> String:
-	return "tree_bare" if rng.randf() < float(_veg.data.trees.bare_fraction) else "tree_leafy"
+# A tree kind from a vegetation.json tree_mixes entry (weights; "leafy" / "bare" = the generic kinds, D-098).
+func _tree_kind(rng: RandomNumberGenerator, mix := "street") -> String:
+	var weights: Dictionary = _veg.data.get("tree_mixes", {}).get(mix, {})
+	if weights.is_empty():
+		return "tree_bare" if rng.randf() < float(_veg.data.trees.bare_fraction) else "tree_leafy"
+	var total := 0.0
+	for k: String in weights:
+		total += float(weights[k])
+	var pick := rng.randf() * total
+	for k: String in weights:
+		pick -= float(weights[k])
+		if pick <= 0.0:
+			return "tree_" + k
+	return "tree_leafy"
 
 
 func _build_vegetation() -> int:
@@ -1033,7 +1091,7 @@ func _build_vegetation() -> int:
 					var p := a + dir * t + dir.orthogonal() * sgn * off
 					if rng.randf() < float(pl.street_tree_chance) and _in_map(p) \
 							and not _crossing(p, dir, idx, 3.0) and _clear_of_buildings(p, 1.0):
-						_plant(_tree_kind(rng), rng, p)
+						_plant(_tree_kind(rng, "street"), rng, p)
 				t += float(pl.street_tree_spacing_m)
 			carried = t - length
 	# Yard trees and foundation bushes around houses.
@@ -1049,7 +1107,7 @@ func _build_vegetation() -> int:
 				var a := rng.randf() * TAU
 				var p := centre + Vector2(cos(a), sin(a)) * rng.randf_range(float(ring[0]), float(ring[1]))
 				if _in_map(p) and _clear_of_roads(p, 1.0) and _clear_of_buildings(p, 1.5):
-					_plant(_tree_kind(rng), rng, p)
+					_plant(_tree_kind(rng, "yard"), rng, p)
 					break
 		for i in int(pl.foundation_shrubs_per_house):
 			var j := rng.randi_range(0, outline.size() - 1)
@@ -1061,7 +1119,7 @@ func _build_vegetation() -> int:
 				out = -out
 			p += out * float(pl.shrub_offset_m)
 			if _in_map(p) and _clear_of_roads(p, 0.5):
-				_plant(["shrub_a", "shrub_b", "shrub_c"][rng.randi_range(0, 2)], rng, p)
+				_plant(["shrub_a", "shrub_b", "shrub_c", _tree_kind(rng, "bush")][rng.randi_range(0, 3)], rng, p)
 	# Scattered ground cover, stumps and fallen trunks.
 	for c: Vector2i in _cells:
 		var r := _grid.rect_of(c)
@@ -1071,6 +1129,7 @@ func _build_vegetation() -> int:
 				var p := r.position + Vector2(rng.randf(), rng.randf()) * r.size
 				if _clear_of_roads(p, spec[2]) and _clear_of_buildings(p, spec[2]):
 					_plant(spec[0], rng, p)
+	_build_nature(rng, pl)
 	# Landmark plantings (map coords, e.g. data/landmarks/yanney_plants.json from the Yanney builder).
 	for key: String in _landmarks:
 		var file := str(_landmarks[key].get("plants_file", ""))
@@ -1084,6 +1143,53 @@ func _build_vegetation() -> int:
 	for c: Vector2i in _cells:
 		total += _cells[c].veg.size()
 	return total
+
+
+# D-098: patches of tall grass, wildflowers and bushes in open ground; reeds and cottonwoods / willows along the
+# water; tree lines in landmark roughs (the country club: clumps between the holes, kept off greens, tees,
+# fairways, bunkers and cart paths by keep_off_m).
+func _build_nature(rng: RandomNumberGenerator, pl: Dictionary) -> void:
+	if not pl.has("tall_grass_patches_per_cell"):
+		return
+	var size: Array = pl.patch_size
+	var rad := float(pl.patch_radius_m)
+	for c: Vector2i in _cells:
+		var r := _grid.rect_of(c)
+		for spec: Array in [["tall_grass", int(pl.tall_grass_patches_per_cell)], ["wildflowers", int(pl.flower_patches_per_cell)],
+				["bush", int(pl.bush_patches_per_cell)]]:
+			for i in int(spec[1]):
+				var centre := r.position + Vector2(rng.randf(), rng.randf()) * r.size
+				if not (_clear_of_roads(centre, rad) and _clear_of_buildings(centre, rad)):
+					continue
+				var n := rng.randi_range(int(size[0]), int(size[1])) / (3 if spec[0] == "bush" else 1)
+				for k in maxi(n, 1):
+					var p := centre + Vector2.from_angle(rng.randf() * TAU) * rng.randf() * rad
+					_plant(_tree_kind(rng, "bush") if spec[0] == "bush" else str(spec[0]), rng, p)
+	var off: Array = pl.water_tree_offset_m
+	for sp: Array in _water.shore_points():
+		var at: Vector2 = sp[0]
+		var out: Vector2 = sp[1]
+		if not _in_map(at):
+			continue
+		if rng.randf() < float(pl.reed_chance_per_edge):
+			var p: Vector2 = at + out * rng.randf_range(0.6, 2.0) + out.orthogonal() * rng.randf_range(-1.0, 1.0)
+			if _clear_of_roads(p, 0.5) and _clear_of_buildings(p, 0.5):
+				_plant("reeds", rng, p)
+		if rng.randf() < float(pl.water_tree_chance_per_edge):
+			var p: Vector2 = at + out * rng.randf_range(float(off[0]), float(off[1]))
+			if _clear_of_roads(p, 1.5) and _clear_of_buildings(p, 2.0):
+				_plant(_tree_kind(rng, "water"), rng, p)
+	for rough: Array in _roughs:
+		var spec: Dictionary = rough[0]
+		var area := _landmark_rect(spec.rect, rough[1], rough[2])
+		var clumps := roundi(area.size.x * area.size.y / 10000.0 * float(spec.clumps_per_hectare))
+		var per: Array = spec.trees_per_clump
+		for i in clumps:
+			var centre := area.position + Vector2(rng.randf(), rng.randf()) * area.size
+			for k in rng.randi_range(int(per[0]), int(per[1])):
+				var p := centre + Vector2.from_angle(rng.randf() * TAU) * rng.randf() * float(spec.clump_radius_m)
+				if _in_map(p) and _off_paint(p, rough[3]) and _clear_of_roads(p, 1.5) and _clear_of_buildings(p, 2.0):
+					_plant(_tree_kind(rng, str(spec.mix)), rng, p)
 
 
 # --- clutter (D-044) ----------------------------------------------------------------------

@@ -6,7 +6,9 @@
 # goes back to the pool. Deaths: mobs count "kills_<enemy>" (or "kills_<kill_count_as>": every raider type counts as
 # "raider") on the party's quests and return after respawn_seconds; bosses set "boss_<enemy>_dead" (saved with the
 # quest flags, so they never return) and drop their "drops".
-# Host: host_noise() alerts active lair enemies like street zombies.
+# Host: host_noise() alerts active lair enemies like street zombies. Markers inside a safe zone never wake (D-101).
+# host_release(prefix) puts back every body whose marker name starts with `prefix` - random encounters (D-105) use
+# it when a site with a sprung ambush closes, since its markers leave the tree with it.
 # Group "lair_director". Depends on: scenes/zombie.tscn, EnemyDB, QuestRules, QuestDirector (group "quests"),
 # WorldDrops (group "world_drops"), data/tuning/lairs.json, data/tuning/zombies.json (perception_hz, corpse_seconds).
 extends Node3D
@@ -43,11 +45,27 @@ func _ready() -> void:
 
 
 func host_noise(pos: Vector3, radius: float) -> void:
+	var weather := get_tree().get_first_node_in_group("weather")
+	if weather:
+		radius *= weather.hearing_mult()  # rain and storms drown noise out (D-099)
 	if radius <= 0.0:
 		return
 	for z in _pool:
 		if z.net_active and z.global_position.distance_to(pos) <= radius:
 			z.hear(pos)
+
+
+# Host: free the bodies of markers named "<prefix>..." (a closing encounter site, D-105).
+func host_release(prefix: String) -> void:
+	if not multiplayer.is_server():
+		return
+	for key: String in _by_spawn.keys():
+		if key.begins_with(prefix):
+			var body: Node = _by_spawn[key]
+			if is_instance_valid(body) and body.net_active:
+				body.deactivate()
+			_by_spawn.erase(key)
+			_killed.erase(key)
 
 
 func _physics_process(delta: float) -> void:
@@ -62,6 +80,7 @@ func _physics_process(delta: float) -> void:
 		if p.peer_id > 0 and not p.health.is_dead():
 			players.append(p.global_position)
 	var flags: Dictionary = _quests.flags if _quests else {}
+	var safe := get_tree().get_first_node_in_group("safe_zones")
 	var wake := float(_t.activate_m)
 	var sleep := float(_t.deactivate_m)
 	var now := Time.get_ticks_msec()
@@ -82,6 +101,8 @@ func _physics_process(delta: float) -> void:
 				active_count += 1
 			continue
 		if near > wake:
+			continue
+		if safe and safe.contains(m.global_position):
 			continue
 		var enemy := str(m.get_meta("enemy", ""))
 		var def := EnemyDB.get_enemy(enemy)

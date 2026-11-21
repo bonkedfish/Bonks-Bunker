@@ -694,3 +694,85 @@ Release tool: release.json "min_version" (alpha3.0) lifts the auto version for t
 RELEASE alpha3.0 (2026-11-15 ~08:51): https://github.com/bonkedfish/Bonks-Bunker/releases/tag/alpha3.0 - everything
 from D-086..D-096 (gear, golf, country club, pickleball, creator, net / unstick / colour fixes). Windows + Mac, each
 split in 2 parts; page notes from data/release/notes/alpha3.0.md (release_notes exit 0). Next auto version: alpha3.1.
+2026-11-15 17:40: user: keep the raider barricades + RV park gate, keep the relay as it is (closes both open asks).
+alpha3.0 was already live (published 08:50); the later diary + tools/release/push_repo.tscn (commit + push without
+a release, then gh release view) went to main as 02768d7.
+
+2026-11-20 GOLF FIXES + NATURE + SKY + WEATHER (D-097..D-099), in progress:
+- Done + tested: golf_test 0 failures (signs on the ground, cup drawn, tracer, pin marker), weather_test (1 blend
+  fail fixed: levels blend per component), parse_check 139 OK, country club scene rebuilt with course furniture.
+- New files: scripts/golf/ball_trails.gd, scripts/world/weather_director.gd, scripts/rules/weather_rules.gd,
+  scripts/audio/weather_sound.gd, shaders/sky_clouds.gdshader, data/tuning/weather.json,
+  tools/map_import/plant_mesh.gd, tests/weather_test.*. Changed: ground_props, atmosphere (+ .json), tree_mesh
+  (build_species), vegetation_builder (species / plants / far_style), water_builder (shore_points), build_cells
+  (mixes, _build_nature, rough_trees), vegetation.json, landmarks.json (country_club rough_trees),
+  country_club.json (course.bits), pause_menu (weather button), zombie / lair directors (hearing), disc golf (storm
+  wind), main.gd (Weather node).
+- build_cells started 09:13 on 2026-11-20 (~1 h) for the new trees / plants.
+- 2026-11-20 later: first bake finished (all 12 species + 3 plants present in loaded cells; hitch_test: no frame
+  over 25 ms and no slow cell add running at 10 m/s; 6-7 ms frames, 220-300 draw calls in vegetated spots, up from
+  ~190). weather_test 0 failures (storm 6.0 ms / 203 draw calls). Looks (tests/nature_look, tests/tree_lineup):
+  elm read as an acacia (two flat pads on bare limbs) -> rebuilt as a full umbrella crown; club tree lines too
+  sparse -> rough_trees 4 clumps/ha x 3-7 trees (was 1.6 x 2-6); sky streaks -> Hoskins hash + rotated octaves.
+  Creator preview camera no longer calls look_at outside the tree. Second bake started ~16:45 UTC.
+- 2026-11-20 17:46 UTC second bake done; D-097..D-099 COMPLETE. All 0 failures after it: golf_test (6.1 ms / 253 dc),
+  weather_test, disc_golf_test (48 PASS; Centennial 6.8 ms / 724 dc, was 636 - more tree kinds per cell), coop_test,
+  big_update_test (6.4 ms / 499 dc), dropzone_test (6.5 ms / 396 dc), creator_test, hitch_test (no frame over 25 ms
+  walking at 10 m/s), hole_scan (0 holes). Club rough now reads as wooded strips between fairways; sky streak-free.
+  Cross-map teleports still spike for a second while cells + new shaders load (not seen while walking).
+  Look tools: tests/nature_look.tscn (4 spots + kind counts), tests/tree_lineup.tscn (species built live).
+  Not released: next auto version alpha3.1.
+- 2026-11-21 D-100 open-world zombie types DONE: Runner, Bloater, Riot Cop, Spitter (data/enemies/enemies.json),
+  picked by distance from bonk_bunker (data/tuning/zombies.json types_by_distance: Shamblers only inside 400 m,
+  specials from there, most past 2.5 km), cap 4 -> 10 per cell, pool 24 -> 40. Riot Cop: body shots 25%, head and
+  melee full (armor_ping on a blocked shot), helmet + face shield + vest gear (model zombie_riot). Bloater bursts on
+  its swing or on death (50 dmg falling to 35% at 4.5 m, hurts zombies and raiders too). Runner hears 1.6x farther and
+  runs to noises. Spitter = ranged spit (sound alias). Drops: Riot Cop ammo / riot armor, Bloater + Spitter Caustic
+  Bile -> new recipes Pack Shotgun Shells, Load 5.56 Rounds. Fixed: a reused pooled zombie kept its old hitbox for
+  rewound shots (PositionHistory.clear on activate). tests/zombie_types_test 0 failures; 40 active zombies: host
+  physics 1.0 -> 5.3 ms, frame 6.2 ms, 524 draw calls in town. coop_test, khs_quest_test, downtown_test 0 failures.
+  Not verified: Bloater burst / armor ping seen by a real second player; zombie sounds beyond the burst.
+- 2026-11-21 IN PROGRESS D-101..D-104 (all code + data pushed, parse_check 159 OK, both landmark scenes built):
+  safe zones, Collection Day (Act 1 finale), Act 2 ch.1 at the co-op elevator, Suit watcher. build_cells running for
+  the two new landmarks (terrain pads, heights, navmesh); then run tests/act_story_test.tscn + regressions.
+- 2026-11-21 D-101..D-104 DONE (map rebaked with the two new landmarks, 04:54 UTC): tests/act_story_test.tscn
+  0 failures (safe zones, Collection Day end to end, Act 2 ch.1 end to end, Suit watcher); zombie_types_test, golf_test,
+  disc_golf_test, coop_test, khs_quest_test, big_update_test, downtown_test all 0 failures (disc_golf "throw out of
+  turn" failed once then passed - flaky). Perf: collection point 6.9 ms / 329 dc, elevator 9 ms / 285 dc, hatch
+  6 ms. Fixed on the way: a pooled zombie's old corpse timer could despawn it after reuse (zombie.gd _life);
+  Spitter spread 6 -> 3.5 deg; downtown_test now pits the NEAREST raider against a Shambler (it took the farthest
+  raider and any pooled type). The Suit watcher model is now loaded at start (no hitch when he first appears).
+  Throwaway diagnostic left in tests/diag_fight.tscn (raider vs zombie perception log). Not released (alpha3.1 next).
+  Act 2 continues with mq5b_halvorsen (outline only).
+- 2026-11-21 D-105..D-109 DONE (random encounters, world oddities, collectibles, rare secret events, 12 side
+  quests, F6 debug panel). tests/encounter_test.tscn: 131 PASS, 0 failures; act_story_test and coop_test still
+  0 failures after it. What is in: 25 encounter definitions (5 roadside, 10 NPC, 5 rare, + Greg / Safety Inspector /
+  Bargain King / Sheriff of Nothing / Chess Master) with 19 NPCs, 19 dialogue trees and 57 barks; 18 authored
+  comedic oddities placed at real roadside points near landmarks; 15 collectibles on 105 spots with a display rack
+  at the bunker; 10 rare events shown to one player at a time; 12 playable side quests. Perf: a forced site 25 ms /
+  317 dc; all 18 oddities built within 150 m of each other (a stress case - in the world they are a neighbourhood
+  apart) 5.7 ms / 1368 dc / 392 MB.
+  Fixed on the way: host_open now closes the oldest site so max_active always holds (debug_force used to blow past
+  it); debug_force keeps min_apart_m when no road marker is free; the collectible rack kept getting renamed Shelf2
+  because the old one was still queued for deletion; items.json rejects a "note" key; the ticket car's tickets and
+  the sheriff's label were billboard-sized.
+  Open / not verified: the rack sits in the BACK YARD (bunker landmark + [0,0,-3.2]), not inside the bunker - say
+  the word and I will move it in; no encounter has been met by a real second player yet (only the host-side action
+  paths are tested); "hours" conditions run off a derived clock, there is still no day/night lighting (D-109);
+  the 12 side quests are walked on flags in the test, not played through end to end by hand.
+  Next: play a session with F6 open and tune the weights, then either Act 2 chapter 2 or a release (alpha3.1).
+- 2026-11-21 D-110 DONE (day/night cycle, night spawns, sleeping). tests/day_night_test.tscn 0 failures (40
+  checks); zombie_types_test, encounter_test, hitch_test, act_story_test and coop_test all still 0 failures.
+  One day = 48 real minutes (the clock the encounters already used), sunrise 06:30, sunset 19:30. Night is
+  moonlit: the sun light is mirrored across the sky, recoloured blue and dimmed, so it still casts soft shadows;
+  the sky goes deep blue with stars; no flashlight was needed. Per-cell zombie cap doubles after dark (10 -> 20)
+  and the mix shifts to specials (600 rolls at 1.5 km: 306 specials by day, 459 at night); pool 40 -> 48, which
+  is still the ceiling on active zombies - 48 awake = frame 5.8 ms, physics 5.3 ms, 609 draw calls, unchanged.
+  Sleeping in either bunk at night skips the whole server to 07:00 and wakes everyone healed, fed and watered;
+  by day the bunk refuses. hitch_test found no streamer stalls with the sky running, so the cycle costs nothing
+  while walking - but a clock JUMP (sleeping, or a test setting the hour) costs one ~110 ms frame while the sky
+  radiance rebuilds. The collectible rack moved from the back yard into the bunker (north wall) and now fits all
+  15 types on its two shelves.
+  Open / not verified: no second player has seen the clock sync or a sleep skip yet; the dusk band is more pink
+  than orange (dusk_color / dusk strength in day_night.json if you want it warmer); nothing else reacts to night
+  yet (no lights in buildings, no NPC schedules, loot and encounters are unchanged after dark).

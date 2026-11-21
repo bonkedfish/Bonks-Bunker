@@ -1,0 +1,33 @@
+{
+	"note": "Day/night cycle (D-110). day_seconds = real seconds for one full 24 h day (2880 = 48 min, the same clock the encounters already used: 30 in-game minutes a real minute). The sun climbs to max_elevation_deg at midday and sets at sunset_hour; after that the same light is mirrored to the other side of the sky as the moon, so nights are lit and still cast soft shadows. night_* values are what the look blends TO at full night. wake_hour is the hour sleeping skips to.",
+	"day_seconds": 2880.0,
+	"start_hour": 8.0,
+	"sunrise_hour": 6.5,
+	"sunset_hour": 19.5,
+	"sync_seconds": 10.0,
+	"wake_hour": 7.0,
+	"sun_azimuth_deg": 215.0,
+	"sun_max_elevation_deg": 56.0,
+	"moon_max_elevation_deg": 44.0,
+	"moon_color": [0.60, 0.70, 1.0],
+	"moon_energy": 0.22,
+	"night_ambient_energy": 0.17,
+	"night_sky_top": [0.015, 0.03, 0.08],
+	"night_sky_horizon": [0.06, 0.08, 0.16],
+	"night_cloud_color": [0.16, 0.19, 0.28],
+	"night_cloud_shade": [0.05, 0.06, 0.11],
+	"night_fog_color": [0.09, 0.12, 0.20],
+	"night_saturation": 0.62,
+	"night_exposure": 1.15,
+	"star_strength": 0.75,
+	"dusk_color": [1.0, 0.55, 0.28],
+	"dusk_strength": 0.55,
+	"beds": [
+		{"at": [-5.6, -3.45, -3.6], "size": [1.6, 1.3, 2.2]},
+		{"at": [-5.6, -3.45, 3.6], "size": [1.6, 1.3, 2.2]}
+	],
+	"bed_landmark": "bonk_bunker",
+	"bed_label": "Sleep until morning",
+	"bed_day_say": "It is daylight. Nobody is sleeping through a day they could be out in.",
+	"bed_wake_say": "You sleep. The others wake when you do."
+}

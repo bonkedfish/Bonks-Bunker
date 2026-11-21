@@ -1,0 +1,916 @@
+{
+	"note": "Collectibles (D-107). types: the fifteen sets (kit = the PropKits shape each one is built from). spots: hand-spread roadside places across Kearney, map metres (x east, z south); a spot with \"landmark\" is that landmark's local offset instead. shelf: where the bunker rack stands, local to bonk_bunker. Every spot is dropped onto the ground at runtime and can be picked up once per world.",
+	"shelf": {
+		"at": [
+			-1.0,
+			-4.05,
+			-4.75
+		],
+		"yaw": 0.0,
+		"note": "Local to bonk_bunker: against the north wall of the bunker's main room (floor is y = -4.15)."
+	},
+	"types": {
+		"col_traffic_cone": {
+			"name": "Traffic Cone",
+			"kit": "traffic_cone"
+		},
+		"col_golf_ball": {
+			"name": "Golf Ball",
+			"kit": "golf_ball"
+		},
+		"col_golf_tee": {
+			"name": "Golf Tee",
+			"kit": "golf_tee"
+		},
+		"col_playing_card": {
+			"name": "Playing Card",
+			"kit": "playing_card"
+		},
+		"col_plunger": {
+			"name": "Toilet Plunger",
+			"kit": "plunger"
+		},
+		"col_garden_gnome": {
+			"name": "Garden Gnome",
+			"kit": "gnome"
+		},
+		"col_bowling_pin": {
+			"name": "Bowling Pin",
+			"kit": "bowling_pin"
+		},
+		"col_rubber_duck": {
+			"name": "Rubber Duck",
+			"kit": "rubber_duck"
+		},
+		"col_flip_phone": {
+			"name": "Flip Phone",
+			"kit": "flip_phone"
+		},
+		"col_vhs": {
+			"name": "VHS Tape",
+			"kit": "vhs"
+		},
+		"col_trophy": {
+			"name": "Sports Trophy",
+			"kit": "trophy"
+		},
+		"col_model_car": {
+			"name": "Model Car",
+			"kit": "model_car"
+		},
+		"col_license_plate": {
+			"name": "License Plate",
+			"kit": "license_plate"
+		},
+		"col_mannequin_head": {
+			"name": "Mannequin Head",
+			"kit": "mannequin_head"
+		},
+		"col_lunchbox": {
+			"name": "Lunchbox",
+			"kit": "lunchbox"
+		}
+	},
+	"spots": [
+		{
+			"item": "col_traffic_cone",
+			"at": [
+				3071.2,
+				-601.1
+			],
+			"yaw": 90
+		},
+		{
+			"item": "col_golf_ball",
+			"at": [
+				481.8,
+				-133.2
+			],
+			"yaw": 270
+		},
+		{
+			"item": "col_golf_tee",
+			"at": [
+				726.6,
+				-658.5
+			],
+			"yaw": 330
+		},
+		{
+			"item": "col_playing_card",
+			"at": [
+				403.4,
+				-1822.0
+			],
+			"yaw": 150
+		},
+		{
+			"item": "col_plunger",
+			"at": [
+				2024.7,
+				-864.0
+			],
+			"yaw": 90
+		},
+		{
+			"item": "col_garden_gnome",
+			"at": [
+				-1658.8,
+				-1573.6
+			],
+			"yaw": 300
+		},
+		{
+			"item": "col_bowling_pin",
+			"at": [
+				1320.7,
+				-1495.3
+			],
+			"yaw": 225
+		},
+		{
+			"item": "col_rubber_duck",
+			"at": [
+				1799.6,
+				1149.9
+			],
+			"yaw": 180
+		},
+		{
+			"item": "col_flip_phone",
+			"at": [
+				3141.7,
+				-196.2
+			],
+			"yaw": 300
+		},
+		{
+			"item": "col_vhs",
+			"at": [
+				1069.8,
+				-552.1
+			],
+			"yaw": 210
+		},
+		{
+			"item": "col_trophy",
+			"at": [
+				1424.2,
+				1086.4
+			],
+			"yaw": 60
+		},
+		{
+			"item": "col_model_car",
+			"at": [
+				-483.8,
+				591.8
+			],
+			"yaw": 120
+		},
+		{
+			"item": "col_license_plate",
+			"at": [
+				2976.6,
+				1260.4
+			],
+			"yaw": 60
+		},
+		{
+			"item": "col_mannequin_head",
+			"at": [
+				1907.5,
+				-2376.5
+			],
+			"yaw": 105
+		},
+		{
+			"item": "col_lunchbox",
+			"at": [
+				2547.8,
+				-853.8
+			],
+			"yaw": 345
+		},
+		{
+			"item": "col_traffic_cone",
+			"at": [
+				2379.3,
+				-1191.4
+			],
+			"yaw": 255
+		},
+		{
+			"item": "col_golf_ball",
+			"at": [
+				-472.9,
+				-1478.3
+			],
+			"yaw": 255
+		},
+		{
+			"item": "col_golf_tee",
+			"at": [
+				-817.8,
+				-2599.3
+			],
+			"yaw": 120
+		},
+		{
+			"item": "col_playing_card",
+			"at": [
+				1063.0,
+				-2568.5
+			],
+			"yaw": 345
+		},
+		{
+			"item": "col_plunger",
+			"at": [
+				1258.5,
+				-662.9
+			],
+			"yaw": 270
+		},
+		{
+			"item": "col_garden_gnome",
+			"at": [
+				1599.7,
+				-1786.5
+			],
+			"yaw": 195
+		},
+		{
+			"item": "col_bowling_pin",
+			"at": [
+				3555.2,
+				-2408.7
+			],
+			"yaw": 270
+		},
+		{
+			"item": "col_rubber_duck",
+			"at": [
+				-3509.9,
+				-2187.8
+			],
+			"yaw": 180
+		},
+		{
+			"item": "col_flip_phone",
+			"at": [
+				2216.8,
+				-2401.4
+			],
+			"yaw": 165
+		},
+		{
+			"item": "col_vhs",
+			"at": [
+				-1079.3,
+				-1649.1
+			],
+			"yaw": 105
+		},
+		{
+			"item": "col_trophy",
+			"at": [
+				3288.2,
+				811.1
+			],
+			"yaw": 60
+		},
+		{
+			"item": "col_model_car",
+			"at": [
+				1341.6,
+				-2760.0
+			],
+			"yaw": 240
+		},
+		{
+			"item": "col_license_plate",
+			"at": [
+				-191.7,
+				-1234.3
+			],
+			"yaw": 225
+		},
+		{
+			"item": "col_mannequin_head",
+			"at": [
+				3875.6,
+				-2366.4
+			],
+			"yaw": 30
+		},
+		{
+			"item": "col_lunchbox",
+			"at": [
+				2821.4,
+				-2319.6
+			],
+			"yaw": 15
+		},
+		{
+			"item": "col_traffic_cone",
+			"at": [
+				3631.1,
+				1520.6
+			],
+			"yaw": 45
+		},
+		{
+			"item": "col_golf_ball",
+			"at": [
+				1620.2,
+				-2176.7
+			],
+			"yaw": 60
+		},
+		{
+			"item": "col_golf_tee",
+			"at": [
+				2020.3,
+				-2099.9
+			],
+			"yaw": 300
+		},
+		{
+			"item": "col_playing_card",
+			"at": [
+				5772.2,
+				1514.4
+			],
+			"yaw": 75
+		},
+		{
+			"item": "col_plunger",
+			"at": [
+				3142.1,
+				34.3
+			],
+			"yaw": 315
+		},
+		{
+			"item": "col_garden_gnome",
+			"at": [
+				2062.4,
+				-468.9
+			],
+			"yaw": 195
+		},
+		{
+			"item": "col_bowling_pin",
+			"at": [
+				1304.3,
+				814.8
+			],
+			"yaw": 285
+		},
+		{
+			"item": "col_rubber_duck",
+			"at": [
+				-1045.2,
+				-1485.8
+			],
+			"yaw": 30
+		},
+		{
+			"item": "col_flip_phone",
+			"at": [
+				2409.1,
+				-1059.2
+			],
+			"yaw": 180
+		},
+		{
+			"item": "col_vhs",
+			"at": [
+				-845.9,
+				-155.4
+			],
+			"yaw": 180
+		},
+		{
+			"item": "col_trophy",
+			"at": [
+				1097.4,
+				-1346.0
+			],
+			"yaw": 285
+		},
+		{
+			"item": "col_model_car",
+			"at": [
+				-1676.8,
+				-772.1
+			],
+			"yaw": 210
+		},
+		{
+			"item": "col_license_plate",
+			"at": [
+				4539.4,
+				-1861.4
+			],
+			"yaw": 240
+		},
+		{
+			"item": "col_mannequin_head",
+			"at": [
+				1936.8,
+				-581.4
+			],
+			"yaw": 120
+		},
+		{
+			"item": "col_lunchbox",
+			"at": [
+				116.4,
+				-197.1
+			],
+			"yaw": 255
+		},
+		{
+			"item": "col_traffic_cone",
+			"at": [
+				1289.9,
+				-879.4
+			],
+			"yaw": 0
+		},
+		{
+			"item": "col_golf_ball",
+			"at": [
+				217.0,
+				-876.4
+			],
+			"yaw": 315
+		},
+		{
+			"item": "col_golf_tee",
+			"at": [
+				4899.9,
+				-1848.7
+			],
+			"yaw": 345
+		},
+		{
+			"item": "col_playing_card",
+			"at": [
+				2449.5,
+				-2433.1
+			],
+			"yaw": 45
+		},
+		{
+			"item": "col_plunger",
+			"at": [
+				887.9,
+				342.5
+			],
+			"yaw": 315
+		},
+		{
+			"item": "col_garden_gnome",
+			"at": [
+				-1062.7,
+				-1102.3
+			],
+			"yaw": 255
+		},
+		{
+			"item": "col_bowling_pin",
+			"at": [
+				3978.4,
+				-2098.1
+			],
+			"yaw": 120
+		},
+		{
+			"item": "col_rubber_duck",
+			"at": [
+				-1522.9,
+				1292.6
+			],
+			"yaw": 300
+		},
+		{
+			"item": "col_flip_phone",
+			"at": [
+				3153.9,
+				-1044.8
+			],
+			"yaw": 150
+		},
+		{
+			"item": "col_vhs",
+			"at": [
+				763.9,
+				-2596.3
+			],
+			"yaw": 45
+		},
+		{
+			"item": "col_trophy",
+			"at": [
+				947.1,
+				-874.8
+			],
+			"yaw": 135
+		},
+		{
+			"item": "col_model_car",
+			"at": [
+				-3768.9,
+				-2388.0
+			],
+			"yaw": 195
+		},
+		{
+			"item": "col_license_plate",
+			"at": [
+				2114.5,
+				-2306.5
+			],
+			"yaw": 75
+		},
+		{
+			"item": "col_mannequin_head",
+			"at": [
+				1555.5,
+				-959.6
+			],
+			"yaw": 210
+		},
+		{
+			"item": "col_lunchbox",
+			"at": [
+				1330.7,
+				-2213.3
+			],
+			"yaw": 0
+		},
+		{
+			"item": "col_traffic_cone",
+			"at": [
+				-1361.5,
+				1401.0
+			],
+			"yaw": 345
+		},
+		{
+			"item": "col_golf_ball",
+			"at": [
+				4698.5,
+				-1849.5
+			],
+			"yaw": 345
+		},
+		{
+			"item": "col_golf_tee",
+			"at": [
+				1631.8,
+				-1620.3
+			],
+			"yaw": 120
+		},
+		{
+			"item": "col_playing_card",
+			"at": [
+				1953.4,
+				-2201.2
+			],
+			"yaw": 240
+		},
+		{
+			"item": "col_plunger",
+			"at": [
+				-2458.2,
+				-2505.9
+			],
+			"yaw": 75
+		},
+		{
+			"item": "col_garden_gnome",
+			"at": [
+				-2582.0,
+				-245.1
+			],
+			"yaw": 240
+		},
+		{
+			"item": "col_bowling_pin",
+			"at": [
+				-885.0,
+				-2063.2
+			],
+			"yaw": 45
+		},
+		{
+			"item": "col_rubber_duck",
+			"at": [
+				2278.7,
+				-233.2
+			],
+			"yaw": 300
+		},
+		{
+			"item": "col_flip_phone",
+			"at": [
+				1211.2,
+				-2044.4
+			],
+			"yaw": 135
+		},
+		{
+			"item": "col_vhs",
+			"at": [
+				680.5,
+				699.5
+			],
+			"yaw": 300
+		},
+		{
+			"item": "col_trophy",
+			"at": [
+				-2047.3,
+				1296.2
+			],
+			"yaw": 240
+		},
+		{
+			"item": "col_model_car",
+			"at": [
+				1637.7,
+				-2466.8
+			],
+			"yaw": 285
+		},
+		{
+			"item": "col_license_plate",
+			"at": [
+				962.3,
+				-1015.9
+			],
+			"yaw": 90
+		},
+		{
+			"item": "col_mannequin_head",
+			"at": [
+				4799.1,
+				-655.7
+			],
+			"yaw": 60
+		},
+		{
+			"item": "col_lunchbox",
+			"at": [
+				2440.8,
+				-1933.1
+			],
+			"yaw": 165
+		},
+		{
+			"item": "col_traffic_cone",
+			"at": [
+				1684.5,
+				561.5
+			],
+			"yaw": 75
+		},
+		{
+			"item": "col_golf_ball",
+			"at": [
+				-3299.7,
+				-932.9
+			],
+			"yaw": 255
+		},
+		{
+			"item": "col_golf_tee",
+			"at": [
+				-1705.6,
+				1231.4
+			],
+			"yaw": 240
+		},
+		{
+			"item": "col_playing_card",
+			"at": [
+				685.6,
+				-177.4
+			],
+			"yaw": 0
+		},
+		{
+			"item": "col_plunger",
+			"at": [
+				3452.6,
+				1533.8
+			],
+			"yaw": 285
+		},
+		{
+			"item": "col_garden_gnome",
+			"at": [
+				1466.2,
+				554.1
+			],
+			"yaw": 150
+		},
+		{
+			"item": "col_bowling_pin",
+			"at": [
+				3204.0,
+				-2668.1
+			],
+			"yaw": 225
+		},
+		{
+			"item": "col_rubber_duck",
+			"at": [
+				-107.2,
+				-1966.7
+			],
+			"yaw": 0
+		},
+		{
+			"item": "col_flip_phone",
+			"at": [
+				4872.5,
+				-2500.5
+			],
+			"yaw": 45
+		},
+		{
+			"item": "col_vhs",
+			"at": [
+				1664.7,
+				17.2
+			],
+			"yaw": 165
+		},
+		{
+			"item": "col_trophy",
+			"at": [
+				1783.7,
+				1324.3
+			],
+			"yaw": 135
+		},
+		{
+			"item": "col_model_car",
+			"at": [
+				2013.2,
+				-1492.7
+			],
+			"yaw": 105
+		},
+		{
+			"item": "col_license_plate",
+			"at": [
+				1194.3,
+				-1676.7
+			],
+			"yaw": 15
+		},
+		{
+			"item": "col_mannequin_head",
+			"at": [
+				1181.4,
+				471.8
+			],
+			"yaw": 105
+		},
+		{
+			"item": "col_lunchbox",
+			"at": [
+				914.6,
+				-2273.2
+			],
+			"yaw": 270
+		},
+		{
+			"item": "col_traffic_cone",
+			"at": [
+				-10.9,
+				-1350.5
+			],
+			"yaw": 30
+		},
+		{
+			"item": "col_golf_ball",
+			"at": [
+				2691.7,
+				-1007.2
+			],
+			"yaw": 30
+		},
+		{
+			"item": "col_golf_tee",
+			"at": [
+				-360.9,
+				-1760.7
+			],
+			"yaw": 345
+		},
+		{
+			"item": "col_playing_card",
+			"at": [
+				3005.1,
+				-486.9
+			],
+			"yaw": 225
+		},
+		{
+			"item": "col_plunger",
+			"at": [
+				5258.9,
+				1301.4
+			],
+			"yaw": 30
+		},
+		{
+			"item": "col_garden_gnome",
+			"at": [
+				1270.0,
+				1020.4
+			],
+			"yaw": 255
+		},
+		{
+			"item": "col_bowling_pin",
+			"at": [
+				-906.8,
+				-1184.4
+			],
+			"yaw": 60
+		},
+		{
+			"item": "col_rubber_duck",
+			"at": [
+				6030.4,
+				917.6
+			],
+			"yaw": 60
+		},
+		{
+			"item": "col_flip_phone",
+			"at": [
+				108.3,
+				1067.1
+			],
+			"yaw": 315
+		},
+		{
+			"item": "col_vhs",
+			"at": [
+				2227.2,
+				-15.4
+			],
+			"yaw": 225
+		},
+		{
+			"item": "col_trophy",
+			"at": [
+				2222.6,
+				-1092.1
+			],
+			"yaw": 255
+		},
+		{
+			"item": "col_model_car",
+			"at": [
+				2400.7,
+				-1425.9
+			],
+			"yaw": 75
+		},
+		{
+			"item": "col_license_plate",
+			"at": [
+				1622.1,
+				-1118.0
+			],
+			"yaw": 120
+		},
+		{
+			"item": "col_mannequin_head",
+			"at": [
+				-593.0,
+				1965.0
+			],
+			"yaw": 240
+		},
+		{
+			"item": "col_lunchbox",
+			"at": [
+				385.8,
+				-1539.1
+			],
+			"yaw": 285
+		}
+	]
+}

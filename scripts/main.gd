@@ -2,11 +2,14 @@
 # removes player bodies as peers connect and leave; spawns Bonk once per session (NpcSpawner), so clients only ever
 # have the host's Bonk. MultiplayerSpawners replicate them to clients.
 # Hosting opens the world picked in the menu through the Saves node (D-037).
-# Also makes "Bikes" (BikeDirector, D-083: the parked motorcycles) on every peer.
+# Also makes "Bikes" (BikeDirector, D-083: the parked motorcycles), "Weather" (WeatherDirector, D-099) and
+# "SafeZones" (D-101: where hostiles stay away), "SuitWatcher" (D-104: the man in the suit) and the world-event
+# nodes "DayNight", "Bed", "Encounters", "Oddities", "Collectibles" and "RareEvents" (D-105..D-110) on every peer.
 # Any failed, timed-out or ended session reloads Main with a fresh lobby client (Net.leave_to_menu, D-091) and the
 # start screen shows why (Net.menu_message).
 # Depends on: Net autoload, scenes/player.tscn, SaveDirector ("Saves"), WorldPicker, PlayerIdentity, PauseMenu,
-# CharacterCreator, AppearanceRules (a new body starts with a random look, D-096), BikeDirector.
+# CharacterCreator, AppearanceRules (a new body starts with a random look, D-096), BikeDirector, WeatherDirector,
+# SafeZones, SuitWatcher, DayNight, BunkerBed, EncounterDirector, WorldOddities, CollectibleManager, RareEventDirector.
 extends Node3D
 
 const PLAYER_SCENE := preload("res://scenes/player.tscn")
@@ -41,6 +44,21 @@ func _ready() -> void:
 	var bikes := BikeDirector.new()
 	bikes.name = "Bikes"
 	add_child(bikes)
+	var weather := WeatherDirector.new()
+	weather.name = "Weather"
+	add_child(weather)
+	var safe := SafeZones.new()
+	safe.name = "SafeZones"
+	add_child(safe)
+	var watcher := SuitWatcher.new()
+	watcher.name = "SuitWatcher"
+	add_child(watcher)
+	for pair: Array in [[DayNight.new(), "DayNight"], [BunkerBed.new(), "Bed"],
+			[EncounterDirector.new(), "Encounters"], [WorldOddities.new(), "Oddities"],
+			[CollectibleManager.new(), "Collectibles"], [RareEventDirector.new(), "RareEvents"]]:
+		var node: Node = pair[0]
+		node.name = str(pair[1])  # fixed names: their RPCs need the same path on every peer
+		add_child(node)
 	menu.play_offline.connect(_on_singleplayer_pressed)
 	menu.host.connect(_on_host_pressed)
 	menu.join.connect(_on_join_pressed)

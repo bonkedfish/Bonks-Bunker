@@ -1,7 +1,8 @@
 # PauseMenu — Esc in game (D-068): Resume, Settings (the shared SettingsMenu on top), Controls (keybind list),
 # Respawn at Bunker (D-091: back to your spawn if you're stuck; asks the host, closes the menu),
 # Save & Quit (host / singleplayer saves the world first, then everyone in this game goes back to the start screen)
-# and Quit to Desktop (saves first when you're the host). Singleplayer freezes the game while it's open; in co-op the
+# and Quit to Desktop (saves first when you're the host); the host also gets "Weather: ..." (cycles Auto / Clear / Fog
+# / Rain / Storm, D-099). Singleplayer freezes the game while it's open; in co-op the
 # world keeps running. Leaves Esc to any other open window (inventory, loot, map, quest book, dialogue choice).
 # Builds its controls in code; added under $UI by Main. Group "pause_menu". Depends on: Net autoload,
 # SaveDirector (group "save_director"), SettingsMenu (group "settings_menu"), ControlsList.
@@ -12,6 +13,7 @@ const OTHER_UIS := ["inventory_ui", "loot_ui", "crafting_ui", "world_map_ui", "q
 
 var _controls: Control
 var _note: Label
+var _weather: Button
 
 
 func _ready() -> void:
@@ -50,6 +52,10 @@ func _ready() -> void:
 		b.custom_minimum_size = Vector2(0, 34)
 		b.pressed.connect(spec[1])
 		box.add_child(b)
+	_weather = Button.new()  # host only: cycles Auto / Clear / Fog / Rain / Storm (D-099)
+	_weather.custom_minimum_size = Vector2(0, 34)
+	_weather.pressed.connect(_cycle_weather)
+	box.add_child(_weather)
 	_controls = ControlsList.build()
 	_controls.hide()
 	box.add_child(_controls)
@@ -93,6 +99,7 @@ func is_solo() -> bool:
 func open() -> void:
 	_controls.hide()
 	_note.text = "Singleplayer: the game is paused" if is_solo() else "Co-op: the world keeps running"
+	_show_weather()
 	show()
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	if is_solo():
@@ -105,6 +112,26 @@ func close() -> void:
 	hide()
 	get_tree().paused = false
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+
+
+const WEATHER_MODES := ["auto", "clear", "fog", "rain", "storm"]
+
+
+func _show_weather() -> void:
+	var w := get_tree().get_first_node_in_group("weather")
+	_weather.visible = w != null and multiplayer.is_server()
+	if w:
+		_weather.text = "Weather: %s" % ("Auto (%s)" % str(w.state).capitalize() if w.mode == "auto" else str(w.mode).capitalize())
+
+
+# Host: next weather mode (Auto lets the schedule run again).
+func _cycle_weather() -> void:
+	var w := get_tree().get_first_node_in_group("weather")
+	if w == null:
+		return
+	var i := WEATHER_MODES.find(str(w.mode))
+	w.request_mode(WEATHER_MODES[(i + 1) % WEATHER_MODES.size()])
+	_show_weather()
 
 
 func _respawn_bunker() -> void:

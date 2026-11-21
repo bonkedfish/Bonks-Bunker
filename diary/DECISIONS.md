@@ -392,3 +392,87 @@ Locked unless flagged. Each entry: decision — reason.
   as Player.net_look (Sync prop 28); the host sanitizes it (AppearanceRules). The creator replaces the name prompt
   and opens every load-in, filled in. New characters (and pre-3.0 saves) start with a random look. First-person arms
   stay the survivor arms. The boxy utility vest looked wrong on the female body, so it became a bandolier.
+- **D-097** (2026-11-20) Golf fixes from playing (bugs, no design change): tee signs floated because GroundProps'
+  ground ray hit the 50 m tall golf tee E-spot boxes (and tree collider cylinders) - it now only sees world + water
+  bed and passes through vegetation; flags got a drawn cup + rim; a pin marker like the disc golf basket marker
+  (arrow + yards / feet, pinned to the screen edge) on the course HUD; a shot tracer like the disc golf one
+  (BallTrails, the same DiscTracer) on the course and the range.
+- **D-098** (2026-11-20) Nature + course detail (user picked every recommended option): generated Kearney species
+  - American elm, green ash, silver maple, cottonwood, spruce, ponderosa pine, eastern red cedar, plus honey locust
+  and willow in mixes - and bushes (round, juniper, lilac); tall prairie grass, wildflowers, cattails/reeds
+  (PlantMesh). Placement: street / yard mixes, patches per cell, reeds + cottonwoods / willows along every shore,
+  the country club gets tree lines in the rough (kept 7 m off fairways, greens, tees, bunkers, cart paths). No
+  OSM trees exist for Kearney, so species follow where they really grow. Course furniture: blue tee markers, a
+  bench + ball washer at each tee, 150-yard posts, white OB stakes along the OSM course boundary.
+- **D-099** (2026-11-20) Sky + weather (user picks): warm dusty sky with more blue and drifting procedural clouds
+  (sky shader, incremental radiance) that darken with the weather. Weather states clear / fog / rain / storm on a
+  host schedule ("balanced": a storm about once an hour, never the same state twice), host can force any state or
+  Auto from the pause menu. Storms are dangerous: lightning warns a player standing outside (screen warning +
+  ground glow) then strikes where they stood 1.6 s later (70 damage, falling off over 4.5 m); under a roof is
+  safe, trees are not shelter. Rain and storms make zombies hear less; storms blow disc golf wind harder. Rain
+  and thunder sounds are generated in code (no downloads). Not chosen: wind gusts, hail, tornado, day/night.
+- **D-100** (2026-11-20) Open-world zombie types (user picks): Runner (fast, fragile, sprints at gunfire), Bloater
+  (slow; bursts on death or when close, hurting players AND zombies nearby), Riot Cop (helmet + vest shrug off body
+  shots; headshots or melee), Spitter (ranged acid lob, reuses the Lunch Lady's ranged attack). Spawning: harder
+  farther from the bunker - mostly Shamblers near home, more special types the farther out. Cap: user picked "raise to 10"
+  after I wrongly said the cap was 8; corrected (it was 4), user still chose 10 per cell. Pool 24 -> 40 bodies. Themed drops: Riot Cop armor piece or ammo, Bloater crafting chemicals,
+  Runner nothing extra; Spitter not specified (treated like Bloater: chemicals). Not chosen: themed-by-area, night /
+  storm only, specials on top of the cap, rare named items. TURN relay: user skipped for now.
+- **D-101** (2026-11-21) Safe zones (user pick "always safe, 60 m"): Centennial + Cottonmill disc golf, the Country
+  Club course and the Drop Zone range are always free of hostiles: no street spawns or lair wakes within 60 m of
+  them, hostiles don't target or hear players inside a zone (chasers give up at the edge), and any hostile that ends
+  up inside walks back out. The country club's placed shamblers therefore never wake. Not chosen: 150 m, only during
+  a round, despawn inside.
+- **D-102** (2026-11-21) Act 1 finale = "ambush the collection truck" (user pick): after Gus, the printout's next
+  pickup is a real truck-dock lot; the party ambushes the Suits' collection truck and its escort, takes the
+  manifest and route from the truck, and brings it to Gus; that closes Act 1 and opens Act 2. Note: "at night" from
+  the option text is not possible - there is no day/night cycle (D-099 left it out). Not chosen: defend the
+  Chillers camp, epilogue only.
+- **D-103** (2026-11-21) Act 2 starts at a grain elevator by the real tracks (user pick), no map extension. User
+  approved one Overpass lookup (data/map/source/kearney_elevators.osm.json, tools/map_import/fetch_elevators): OSM
+  has NO grain elevator inside our map (only 2 small silos by the RV park), so the elevator is hand-built on the real
+  OSM industrial lot beside the UP spurs east of downtown (way 314364584, map ~(3300,-1280)); Gus's "south of the
+  river" becomes "south of the tracks". Not chosen: extend the map to the Platte, separate zone.
+- **D-104** (2026-11-21) The Suit watcher (user pick "every 10-15 min, one player"): a man in a black suit appears to
+  ONE player at a time, 60-120 m away, watching; only that player sees him (purely local presentation, no gameplay,
+  never attacks, not hittable); he vanishes when that player gets within ~25 m (and repositions out of view now and
+  then while he "follows").
+- **D-105** (2026-11-21) Random encounters are a weighted table picked by the host on a timer, not scripted
+  placements: `data/encounters/encounters.json` holds 25 definitions (rarity common/uncommon/rare/legendary ×
+  weight, own cooldown, `once`, hour window, weather, distance from the bunker, quest `requires`, category), and
+  `data/tuning/encounters.json` holds the global cooldown (240 s), max_active (3), the 70-190 m spawn band, keep
+  (320 m) and min_apart (150 m). Chosen: a site opens on a REAL road marker from the streamer, out of sight of
+  every player, on flat clear ground - never in front of somebody. Every peer builds the same site locally from
+  (slot, id, position, yaw, seed), so nothing dynamic is replicated and dialogue paths match. Not chosen:
+  MultiplayerSpawner replication, hand-placed encounters, spawning in the player's view.
+- **D-106** (2026-11-21) The comedic world oddities are AUTHORED, not random: 18 scenes at real roadside points next
+  to known Kearney landmarks (`data/encounters/oddities.json`), built when their cell loads and skipped if the spot
+  has no ground or no room. One `use` each, fired once per world and saved. The mannequin shop re-rolls its
+  mannequins on every rebuild, so they are never where you left them. Not chosen: random spawning, one-off scripted
+  rooms.
+- **D-107** (2026-11-21) Collectibles are 15 junk items on 105 hand-spread roadside spots (7 each, ≥120 m apart,
+  `data/encounters/collectibles.json`). Picking one up is an E spot; the host adds the item and tells everyone.
+  A rack outside the bunker shows one of each type the party owns and rebuilds itself as the collection grows.
+  Open: the rack sits in the back yard (bunker landmark + [0,0,-3.2]); moving it into the bunker interior needs a
+  local offset from the bunker scene.
+- **D-108** (2026-11-21) Rare secret events are shown to ONE player and nothing else: the host rolls every 150 s
+  (`chance` 0.3), picks an event whose conditions hold (in-game hour, distance from the bunker, weather, quest
+  flags, own cooldown, max_times) and sends it to one peer, which places a figure, prop, sound or light and takes
+  it away when that player gets close, looks away or its time runs out. Nothing fights, blocks or drops anything,
+  so nobody can corroborate it. Deliberately quiet: no jumpscares, no stingers.
+- **D-109** (2026-11-21) The in-game clock for "hours" conditions is derived from `world.play_seconds`
+  (30 in-game minutes per real minute, day starts at 08:00) - it drives encounter and rare-event windows ONLY.
+  There is still no day/night lighting cycle (D-099 left it out), so 3 AM is a number, not a dark sky. Flagged
+  because the 3 AM watcher and the night events read differently without one.
+- **D-110** (2026-11-21) Day/night cycle, night spawns and sleeping (all four user picks). One full day takes
+  **48 real minutes** - the same clock the encounters already ran on (30 in-game minutes a real minute), so
+  nothing had to be re-timed; sunrise 06:30, sunset 19:30, and the world clock (DayNight, saved and host-synced)
+  now owns the hour that the encounters and rare events read. Night is **moonlit, not black**: after sunset the
+  sun light is mirrored to the other side of the sky, recoloured blue and dimmed, so it is still a real light
+  with soft shadows, and the sky goes deep blue with stars. No flashlight was added (not needed at this
+  darkness). Night spawns: the per-cell zombie cap **doubles** (10 -> 20) and the type weights shift toward the
+  specials (Runner x2.2, Riot Cop x2.0, Spitter and Bloater x1.8, plain Shambler x0.65), both faded in through
+  dusk; pool_size 40 -> 48 is still the hard ceiling on how many can be awake at once. Sleeping: the bunks
+  already in the bunker scene became usable; **one player sleeping skips the whole server to 07:00** and everyone
+  wakes at full health, fed and watered. The bed refuses by day. Not chosen: 24 or 72 minute days, a dark night
+  with a flashlight, 1.5x or 3x spawns, sleep that only skips time.

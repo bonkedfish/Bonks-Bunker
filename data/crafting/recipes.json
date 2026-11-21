@@ -3,5 +3,7 @@
 	"handload_9mm": { "name": "Hand-load 9mm Rounds", "needs": { "scrap_metal": 2 }, "gives": { "ammo_9mm": 10 } },
 	"scrap_wrench": { "name": "Break Down Wrench", "needs": { "wrench": 1 }, "gives": { "scrap_metal": 2 } },
 	"scrap_battery": { "name": "Strip Car Battery", "needs": { "car_battery": 1 }, "gives": { "scrap_metal": 3 } },
-	"taped_bat": { "name": "Make a Baseball Bat", "needs": { "scrap_metal": 3, "duct_tape": 1 }, "gives": { "bat_baseball": 1 } }
+	"taped_bat": { "name": "Make a Baseball Bat", "needs": { "scrap_metal": 3, "duct_tape": 1 }, "gives": { "bat_baseball": 1 } },
+	"bile_shells": { "name": "Pack Shotgun Shells", "needs": { "caustic_bile": 2, "scrap_metal": 1 }, "gives": { "ammo_shells": 6 } },
+	"bile_556": { "name": "Load 5.56 Rounds", "needs": { "caustic_bile": 2, "scrap_metal": 2 }, "gives": { "ammo_556": 10 } }
 }

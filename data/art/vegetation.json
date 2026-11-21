@@ -21,6 +21,32 @@
 		"visible_m": 300.0,
 		"collide": true
 	},
+	"species": {
+		"elm": {"shape": "vase", "variants": 2, "height_m": [12.0, 19.0], "trunk_radius_m": [0.3, 0.5], "dense": 0.6, "far": "round", "canopy_colors": [[0.26, 0.35, 0.14], [0.3, 0.37, 0.15]], "bark_color": [0.33, 0.29, 0.25]},
+		"ash": {"shape": "round", "variants": 2, "height_m": [9.0, 15.0], "trunk_radius_m": [0.22, 0.38], "dense": 0.5, "far": "round", "canopy_colors": [[0.3, 0.38, 0.15], [0.34, 0.4, 0.17]], "bark_color": [0.36, 0.33, 0.28]},
+		"maple": {"shape": "round", "variants": 2, "height_m": [10.0, 17.0], "trunk_radius_m": [0.25, 0.42], "dense": 1.0, "far": "round", "canopy_colors": [[0.27, 0.39, 0.16], [0.24, 0.34, 0.13]], "bark_color": [0.42, 0.4, 0.38]},
+		"cottonwood": {"shape": "tall_open", "variants": 2, "height_m": [16.0, 25.0], "trunk_radius_m": [0.45, 0.8], "dense": 0.4, "far": "round", "canopy_colors": [[0.38, 0.45, 0.18], [0.42, 0.47, 0.2]], "bark_color": [0.45, 0.42, 0.38]},
+		"honey_locust": {"shape": "airy", "variants": 1, "height_m": [8.0, 14.0], "trunk_radius_m": [0.2, 0.32], "dense": 0.3, "far": "round", "canopy_colors": [[0.44, 0.49, 0.2], [0.5, 0.52, 0.22]], "bark_color": [0.25, 0.2, 0.17]},
+		"willow": {"shape": "weeping", "variants": 1, "height_m": [7.0, 12.0], "trunk_radius_m": [0.3, 0.45], "dense": 0.7, "far": "round", "canopy_colors": [[0.42, 0.48, 0.2]], "bark_color": [0.32, 0.28, 0.22]},
+		"spruce": {"shape": "cone", "variants": 2, "height_m": [8.0, 16.0], "trunk_radius_m": [0.15, 0.28], "far": "cone", "canopy_colors": [[0.19, 0.29, 0.24], [0.23, 0.32, 0.29]], "bark_color": [0.3, 0.24, 0.2]},
+		"pine": {"shape": "pine", "variants": 2, "height_m": [12.0, 20.0], "trunk_radius_m": [0.25, 0.4], "far": "cone", "canopy_colors": [[0.18, 0.27, 0.13], [0.2, 0.3, 0.15]], "bark_color": [0.45, 0.3, 0.2]},
+		"cedar": {"shape": "column", "variants": 2, "height_m": [4.0, 8.0], "trunk_radius_m": [0.12, 0.22], "far": "cone", "canopy_colors": [[0.17, 0.24, 0.12], [0.2, 0.26, 0.13]], "bark_color": [0.4, 0.28, 0.2]},
+		"bush_round": {"shape": "bush", "variants": 3, "height_m": [1.0, 2.0], "trunk_radius_m": [0.05, 0.05], "bush": true, "canopy_colors": [[0.27, 0.36, 0.15], [0.33, 0.4, 0.18], [0.22, 0.3, 0.13]], "bark_color": [0.3, 0.25, 0.2]},
+		"juniper": {"shape": "bush", "variants": 2, "height_m": [0.6, 1.1], "trunk_radius_m": [0.05, 0.05], "bush": true, "canopy_colors": [[0.18, 0.27, 0.2], [0.21, 0.3, 0.22]], "bark_color": [0.3, 0.25, 0.2]},
+		"lilac": {"shape": "bush", "variants": 2, "height_m": [1.8, 2.8], "trunk_radius_m": [0.05, 0.05], "bush": true, "canopy_colors": [[0.3, 0.38, 0.17], [0.42, 0.33, 0.5]], "bark_color": [0.3, 0.25, 0.2]}
+	},
+	"tree_mixes": {
+		"street": {"elm": 3, "ash": 3, "maple": 2, "honey_locust": 2, "leafy": 1, "bare": 2},
+		"yard": {"maple": 3, "ash": 2, "elm": 1, "spruce": 2, "cedar": 2, "honey_locust": 1, "pine": 1, "leafy": 1, "bare": 2},
+		"golf": {"spruce": 3, "pine": 3, "ash": 2, "maple": 2, "elm": 2, "cottonwood": 1, "cedar": 1, "bare": 1},
+		"water": {"cottonwood": 6, "willow": 3, "ash": 1, "bare": 2},
+		"bush": {"bush_round": 4, "juniper": 3, "lilac": 2}
+	},
+	"plants": {
+		"tall_grass": {"kind": "grass", "variants": 3, "height_m": [0.5, 1.1], "blades": [12, 20], "visible_m": 60.0, "colors": [[0.5, 0.5, 0.26], [0.56, 0.5, 0.28], [0.4, 0.46, 0.2]]},
+		"wildflowers": {"kind": "flowers", "variants": 4, "height_m": [0.3, 0.6], "blades": [6, 10], "visible_m": 50.0, "colors": [[0.3, 0.45, 0.18]], "head_colors": [[0.95, 0.8, 0.15], [0.6, 0.35, 0.75], [0.95, 0.95, 0.9], [0.9, 0.45, 0.15]]},
+		"reeds": {"kind": "reeds", "variants": 2, "height_m": [1.2, 2.0], "blades": [10, 16], "visible_m": 80.0, "colors": [[0.3, 0.42, 0.18], [0.36, 0.44, 0.2]], "head_color": [0.35, 0.22, 0.12]}
+	},
 	"placement": {
 		"street_tree_spacing_m": 14.0,
 		"street_tree_chance": 0.55,
@@ -32,6 +58,15 @@
 		"stumps_per_cell": 4,
 		"dead_trunks_per_cell": 2,
 		"clearance_building_m": 1.2,
-		"clearance_road_m": 0.8
-	}
+		"clearance_road_m": 0.8,
+		"tall_grass_patches_per_cell": 10,
+		"flower_patches_per_cell": 6,
+		"bush_patches_per_cell": 6,
+		"patch_size": [5, 12],
+		"patch_radius_m": 6.0,
+		"reed_chance_per_edge": 0.3,
+		"water_tree_chance_per_edge": 0.03,
+		"water_tree_offset_m": [4.0, 14.0]
+	},
+	"note": "D-098: species are TreeMesh.build_species shapes (kind 'tree_<id>', bushes 'tree_<id>' too but without colliders); tree_mixes weight which species go where ('leafy' = the old generic tree_leafy, 'bare' = dead tree_bare); plants are PlantMesh kinds (no collision). Placement: street / yard trees from those mixes, patches of tall grass, wildflowers and bushes per cell, reeds and cottonwoods / willows along every water edge, landmark 'rough_trees' (the golf course tree lines, data/map/landmarks.json)."
 }

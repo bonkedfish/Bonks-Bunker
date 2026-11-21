@@ -220,15 +220,41 @@ func _course() -> void:
 		cg.request_shot(club, power, yaw, 0.0)
 		strokes += 1
 		await get_tree().create_timer(0.3).timeout
+		if strokes == 1:
+			var tr: Node = cg._trails._lines.get(me)
+			_check(tr != null and tr.visible, "the tee shot leaves a tracer line")
+			await get_tree().create_timer(0.8).timeout
+			await _shot("golf_course_tracer.png")
 		await _until(func() -> bool: return not cg._in_flight.has(me), 25.0)
 		var after: Dictionary = cg.my_card()
 		shots.append("%s %.2f -> %s" % [club, power, str(after.get("lie", "done"))])
 	_say("hole 4: " + ", ".join(shots))
+	await _props_on_ground(cg)
 	var card: Dictionary = cg.cards.get(me, {})
 	_check(int(card.get("hole", -1)) == 4 and int(card.strokes[3]) > 0 and int(card.strokes[3]) <= 6,
 		"hole 4 played out in %d (par 3), card on hole 5" % int(card.get("strokes", [0, 0, 0, 0])[3]))
 	cg.cards.erase(me)
 	cg._sync(cg.cards)
+
+
+# Tee signs, pins and cups stand on the ground (D-097: they used to float on the tee E spots / tree tops).
+func _props_on_ground(cg: CourseGolf) -> void:
+	var props: Node3D = cg.get_parent().get_node("CourseProps")
+	var worst := 0.0
+	var n := 0
+	for l in props.get_children():
+		if not (l is Label3D and (l as Label3D).visible):
+			continue
+		var at := (l as Label3D).global_position
+		var hit := _me.get_world_3d().direct_space_state.intersect_ray(PhysicsRayQueryParameters3D.create(at + Vector3.UP * 0.5, at + Vector3.DOWN * 30.0, 1))
+		if not hit.is_empty():
+			worst = maxf(worst, at.y - (hit.position as Vector3).y)
+			n += 1
+	_check(n > 0 and worst < 1.6, "%d tee signs loaded around here, the highest board is %.2f m above the ground" % [n, worst])
+	var cup := cg.cup_pos(4)
+	var mm: MultiMesh = props._mm.cup
+	var placed := mm.get_instance_transform(4).basis.get_scale().x > 0.5
+	_check(placed and absf((props.to_global(mm.get_instance_transform(4).origin) - cup).y) < 0.3, "hole 5's cup is drawn on the green")
 
 
 func _power_for(club: Dictionary, mult: float, metres: float, t: Dictionary) -> float:

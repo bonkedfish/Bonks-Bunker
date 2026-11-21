@@ -1,75 +1,777 @@
 {
-	"pistol_9mm": { "name": "9mm Pistol", "category": "weapon", "weight": 2.0, "value": 75.0 },
-	"bat_baseball": { "name": "Baseball Bat", "category": "weapon", "weight": 3.0, "value": 20.0 },
-	"ammo_9mm": { "name": "9mm Rounds", "category": "ammo", "weight": 0.0, "value": 1.0 },
-	"revolver_44": { "name": "Prairie .44 Revolver", "category": "weapon", "weight": 2.5, "value": 120.0 },
-	"smg_9mm": { "name": "Scrapper SMG", "category": "weapon", "weight": 3.0, "value": 180.0 },
-	"shotgun_pump": { "name": "Platte Pump Shotgun", "category": "weapon", "weight": 3.8, "value": 160.0 },
-	"rifle_hunting": { "name": "Sandhills Hunting Rifle", "category": "weapon", "weight": 4.0, "value": 200.0 },
-	"rifle_ar": { "name": "Union Pacific AR-15", "category": "weapon", "weight": 3.5, "value": 260.0 },
-	"rifle_sniper": { "name": "Cornhusker Long Rifle", "category": "weapon", "weight": 6.0, "value": 380.0 },
-	"knife_combat": { "name": "Combat Knife", "category": "weapon", "weight": 0.5, "value": 25.0 },
-	"axe_fire": { "name": "Fire Axe", "category": "weapon", "weight": 3.5, "value": 40.0 },
-	"ammo_44": { "name": ".44 Magnum Rounds", "category": "ammo", "weight": 0.0, "value": 2.0 },
-	"ammo_shells": { "name": "12ga Shells", "category": "ammo", "weight": 0.0, "value": 2.0 },
-	"ammo_308": { "name": ".308 Rounds", "category": "ammo", "weight": 0.0, "value": 3.0 },
-	"ammo_556": { "name": "5.56 Rounds", "category": "ammo", "weight": 0.0, "value": 2.0 },
-	"helmet_hockey": { "name": "Hockey Mask", "category": "armor", "weight": 1.0, "value": 15.0 },
-	"helmet_moto": { "name": "Motorcycle Helmet", "category": "armor", "weight": 2.0, "value": 40.0 },
-	"helmet_riot": { "name": "Riot Helmet", "category": "armor", "weight": 2.5, "value": 80.0 },
-	"chest_leather": { "name": "Leather Jacket", "category": "armor", "weight": 3.0, "value": 35.0 },
-	"chest_padded": { "name": "Padded Hunting Vest", "category": "armor", "weight": 4.0, "value": 60.0 },
-	"chest_kevlar": { "name": "Police Kevlar Vest", "category": "armor", "weight": 6.0, "value": 150.0 },
-	"legs_jeans": { "name": "Reinforced Jeans", "category": "armor", "weight": 1.5, "value": 15.0 },
-	"legs_moto": { "name": "Moto Pants", "category": "armor", "weight": 2.5, "value": 40.0 },
-	"legs_riot": { "name": "Riot Leg Guards", "category": "armor", "weight": 4.0, "value": 80.0 },
-	"mod_red_dot": { "name": "Red Dot Sight", "category": "mod", "weight": 0.2, "value": 45.0 },
-	"mod_scope_4x": { "name": "4x Hunting Scope", "category": "mod", "weight": 0.5, "value": 90.0 },
-	"mod_suppressor": { "name": "Suppressor", "category": "mod", "weight": 0.4, "value": 80.0 },
-	"mod_compensator": { "name": "Compensator", "category": "mod", "weight": 0.3, "value": 40.0 },
-	"mod_ext_mag": { "name": "Extended Mag", "category": "mod", "weight": 0.3, "value": 50.0 },
-	"mod_quick_mag": { "name": "Quick-Draw Mag", "category": "mod", "weight": 0.2, "value": 45.0 },
-	"bandage": { "name": "Bandage", "category": "aid", "weight": 0.1, "value": 8.0, "use": { "seconds": 2.0, "heal": 25.0 } },
-	"painkillers": { "name": "Painkillers", "category": "aid", "weight": 0.1, "value": 15.0, "use": { "seconds": 1.0, "heal": 15.0 } },
-	"canned_beans": { "name": "Canned Beans", "category": "food", "weight": 0.5, "value": 5.0, "use": { "seconds": 1.5, "food": 35.0 } },
-	"water_bottle": { "name": "Bottled Water", "category": "food", "weight": 0.5, "value": 5.0, "use": { "seconds": 1.5, "water": 40.0 } },
-	"scrap_metal": { "name": "Scrap Metal", "category": "junk", "weight": 1.0, "value": 3.0 },
-	"duct_tape": { "name": "Duct Tape", "category": "junk", "weight": 0.2, "value": 6.0 },
-	"wrench": { "name": "Wrench", "category": "junk", "weight": 1.5, "value": 4.0 },
-	"car_battery": { "name": "Car Battery", "category": "junk", "weight": 15.0, "value": 12.0 },
-	"gas_can": { "name": "Gas Can (1 gal)", "category": "gear", "weight": 3.5, "value": 14.0 },
-	"cinder_block": { "name": "Cinder Block", "category": "junk", "weight": 12.0, "value": 1.0 },
-	"evans_jerky": { "name": "Jerkin's Mystery Jerky", "category": "food", "weight": 0.2, "value": 10.0, "use": { "seconds": 2.0, "food": 45.0 } },
-	"kush_joint": { "name": "Meekachu's Kush", "category": "chem", "weight": 0.05, "value": 15.0, "use": { "seconds": 3.0, "effect": "baked" } },
-	"magic_mushrooms": { "name": "Magic Mushrooms", "category": "chem", "weight": 0.1, "value": 25.0, "use": { "seconds": 2.0, "effect": "tripping_shrooms" } },
-	"acid_tab": { "name": "Acid Tab", "category": "chem", "weight": 0.01, "value": 30.0, "use": { "seconds": 1.0, "effect": "tripping_acid" } },
-	"molly": { "name": "Molly", "category": "chem", "weight": 0.01, "value": 30.0, "use": { "seconds": 1.0, "effect": "rolling" } },
-	"black_tar": { "name": "Black Tar", "category": "chem", "weight": 0.05, "value": 40.0, "use": { "seconds": 4.0, "effect": "nodding" } },
-	"eagle_keycard": { "name": "Eagle Keycard", "category": "quest", "weight": 0.0, "value": 0.0 },
-	"meekachus_lighter": { "name": "Meekachu's Lighter", "category": "quest", "weight": 0.0, "value": 0.0 },
-	"chem_lab_kit": { "name": "Chem Lab Kit", "category": "quest", "weight": 3.0, "value": 0.0 },
-	"meepo": { "name": "Meepo Electric Longboard", "category": "gear", "weight": 4.0, "value": 120.0 },
-	"disc_driver": { "name": "Wasteland Driver", "category": "gear", "weight": 0.2, "value": 15.0 },
-	"disc_mid": { "name": "Prairie Midrange", "category": "gear", "weight": 0.2, "value": 12.0 },
-	"disc_putter": { "name": "Bunker Putter", "category": "gear", "weight": 0.2, "value": 10.0 },
-	"disc_golden_ace": { "name": "Golden Ace", "category": "weapon", "weight": 0.2, "value": 250.0, "fixed_rarity": "legendary" },
-	"pork_rinds": { "name": "John's Pork Rinds", "category": "food", "weight": 0.2, "value": 4.0, "use": { "seconds": 1.5, "food": 30.0 } },
-	"gas_station_hot_dog": { "name": "Gas Station Hot Dog", "category": "food", "weight": 0.3, "value": 5.0, "use": { "seconds": 2.0, "food": 40.0 } },
-	"corn_dog": { "name": "Corn Dog", "category": "food", "weight": 0.3, "value": 5.0, "use": { "seconds": 2.0, "food": 35.0 } },
-	"beer_platte_light": { "name": "Platte Valley Light", "category": "booze", "weight": 0.4, "value": 4.0, "use": { "seconds": 3.0, "water": 6.0, "effect": "drunk", "doses": 1.0 } },
-	"beer_sandhills_lager": { "name": "Sandhills Lager", "category": "booze", "weight": 0.4, "value": 4.0, "use": { "seconds": 3.0, "water": 6.0, "effect": "drunk", "doses": 1.0 } },
-	"beer_crane_ipa": { "name": "Sandhill Crane IPA", "category": "booze", "weight": 0.4, "value": 6.0, "use": { "seconds": 3.0, "water": 5.0, "effect": "drunk", "doses": 1.3 } },
-	"beer_buffalo_stout": { "name": "Buffalo County Stout", "category": "booze", "weight": 0.5, "value": 6.0, "use": { "seconds": 3.5, "water": 4.0, "food": 8.0, "effect": "drunk", "doses": 1.4 } },
-	"beer_warm_tallboy": { "name": "Warm Tallboy", "category": "booze", "weight": 0.7, "value": 3.0, "use": { "seconds": 4.0, "water": 6.0, "effect": "drunk", "doses": 1.6 } },
-	"seltzer_black_cherry": { "name": "Hard Seltzer (Black Cherry)", "category": "booze", "weight": 0.4, "value": 4.0, "use": { "seconds": 2.5, "water": 15.0, "effect": "drunk", "doses": 0.8 } },
-	"seltzer_lime": { "name": "Hard Seltzer (Lime)", "category": "booze", "weight": 0.4, "value": 4.0, "use": { "seconds": 2.5, "water": 15.0, "effect": "drunk", "doses": 0.8 } },
-	"seltzer_mango": { "name": "Hard Seltzer (Mango)", "category": "booze", "weight": 0.4, "value": 4.0, "use": { "seconds": 2.5, "water": 15.0, "effect": "drunk", "doses": 0.8 } },
-	"shot_whiskey": { "name": "Bottom-Shelf Whiskey Shot", "category": "booze", "weight": 0.1, "value": 5.0, "use": { "seconds": 1.0, "effect": "drunk", "doses": 1.5 } },
-	"shot_vodka": { "name": "Rotgut Vodka Shot", "category": "booze", "weight": 0.1, "value": 5.0, "use": { "seconds": 1.0, "effect": "drunk", "doses": 1.5 } },
-	"shot_tequila": { "name": "Tequila Shot", "category": "booze", "weight": 0.1, "value": 5.0, "use": { "seconds": 1.0, "effect": "drunk", "doses": 1.5 } },
-	"shot_cinnamon": { "name": "Cinnamon Fire Shot", "category": "booze", "weight": 0.1, "value": 5.0, "use": { "seconds": 1.0, "effect": "drunk", "doses": 1.5 } },
-	"drink_jungle_juice": { "name": "Jungle Juice", "category": "booze", "weight": 0.6, "value": 8.0, "use": { "seconds": 4.0, "water": 10.0, "effect": "drunk", "doses": 2.5 } },
-	"drink_long_island": { "name": "Long Island Iced Tea", "category": "booze", "weight": 0.5, "value": 9.0, "use": { "seconds": 3.5, "water": 6.0, "effect": "drunk", "doses": 3.0 } },
-	"wine_box": { "name": "Boxed Wine", "category": "booze", "weight": 1.5, "value": 12.0, "use": { "seconds": 5.0, "water": 8.0, "effect": "drunk", "doses": 4.0 } },
-	"moonshine_jar": { "name": "Prairie Moonshine", "category": "booze", "weight": 1.0, "value": 15.0, "use": { "seconds": 2.0, "effect": "drunk", "doses": 4.0 } }
+	"pistol_9mm": {
+		"name": "9mm Pistol",
+		"category": "weapon",
+		"weight": 2.0,
+		"value": 75.0
+	},
+	"bat_baseball": {
+		"name": "Baseball Bat",
+		"category": "weapon",
+		"weight": 3.0,
+		"value": 20.0
+	},
+	"ammo_9mm": {
+		"name": "9mm Rounds",
+		"category": "ammo",
+		"weight": 0.0,
+		"value": 1.0
+	},
+	"revolver_44": {
+		"name": "Prairie .44 Revolver",
+		"category": "weapon",
+		"weight": 2.5,
+		"value": 120.0
+	},
+	"smg_9mm": {
+		"name": "Scrapper SMG",
+		"category": "weapon",
+		"weight": 3.0,
+		"value": 180.0
+	},
+	"shotgun_pump": {
+		"name": "Platte Pump Shotgun",
+		"category": "weapon",
+		"weight": 3.8,
+		"value": 160.0
+	},
+	"rifle_hunting": {
+		"name": "Sandhills Hunting Rifle",
+		"category": "weapon",
+		"weight": 4.0,
+		"value": 200.0
+	},
+	"rifle_ar": {
+		"name": "Union Pacific AR-15",
+		"category": "weapon",
+		"weight": 3.5,
+		"value": 260.0
+	},
+	"rifle_sniper": {
+		"name": "Cornhusker Long Rifle",
+		"category": "weapon",
+		"weight": 6.0,
+		"value": 380.0
+	},
+	"knife_combat": {
+		"name": "Combat Knife",
+		"category": "weapon",
+		"weight": 0.5,
+		"value": 25.0
+	},
+	"axe_fire": {
+		"name": "Fire Axe",
+		"category": "weapon",
+		"weight": 3.5,
+		"value": 40.0
+	},
+	"ammo_44": {
+		"name": ".44 Magnum Rounds",
+		"category": "ammo",
+		"weight": 0.0,
+		"value": 2.0
+	},
+	"ammo_shells": {
+		"name": "12ga Shells",
+		"category": "ammo",
+		"weight": 0.0,
+		"value": 2.0
+	},
+	"ammo_308": {
+		"name": ".308 Rounds",
+		"category": "ammo",
+		"weight": 0.0,
+		"value": 3.0
+	},
+	"ammo_556": {
+		"name": "5.56 Rounds",
+		"category": "ammo",
+		"weight": 0.0,
+		"value": 2.0
+	},
+	"helmet_hockey": {
+		"name": "Hockey Mask",
+		"category": "armor",
+		"weight": 1.0,
+		"value": 15.0
+	},
+	"helmet_moto": {
+		"name": "Motorcycle Helmet",
+		"category": "armor",
+		"weight": 2.0,
+		"value": 40.0
+	},
+	"helmet_riot": {
+		"name": "Riot Helmet",
+		"category": "armor",
+		"weight": 2.5,
+		"value": 80.0
+	},
+	"chest_leather": {
+		"name": "Leather Jacket",
+		"category": "armor",
+		"weight": 3.0,
+		"value": 35.0
+	},
+	"chest_padded": {
+		"name": "Padded Hunting Vest",
+		"category": "armor",
+		"weight": 4.0,
+		"value": 60.0
+	},
+	"chest_kevlar": {
+		"name": "Police Kevlar Vest",
+		"category": "armor",
+		"weight": 6.0,
+		"value": 150.0
+	},
+	"legs_jeans": {
+		"name": "Reinforced Jeans",
+		"category": "armor",
+		"weight": 1.5,
+		"value": 15.0
+	},
+	"legs_moto": {
+		"name": "Moto Pants",
+		"category": "armor",
+		"weight": 2.5,
+		"value": 40.0
+	},
+	"legs_riot": {
+		"name": "Riot Leg Guards",
+		"category": "armor",
+		"weight": 4.0,
+		"value": 80.0
+	},
+	"mod_red_dot": {
+		"name": "Red Dot Sight",
+		"category": "mod",
+		"weight": 0.2,
+		"value": 45.0
+	},
+	"mod_scope_4x": {
+		"name": "4x Hunting Scope",
+		"category": "mod",
+		"weight": 0.5,
+		"value": 90.0
+	},
+	"mod_suppressor": {
+		"name": "Suppressor",
+		"category": "mod",
+		"weight": 0.4,
+		"value": 80.0
+	},
+	"mod_compensator": {
+		"name": "Compensator",
+		"category": "mod",
+		"weight": 0.3,
+		"value": 40.0
+	},
+	"mod_ext_mag": {
+		"name": "Extended Mag",
+		"category": "mod",
+		"weight": 0.3,
+		"value": 50.0
+	},
+	"mod_quick_mag": {
+		"name": "Quick-Draw Mag",
+		"category": "mod",
+		"weight": 0.2,
+		"value": 45.0
+	},
+	"bandage": {
+		"name": "Bandage",
+		"category": "aid",
+		"weight": 0.1,
+		"value": 8.0,
+		"use": {
+			"seconds": 2.0,
+			"heal": 25.0
+		}
+	},
+	"painkillers": {
+		"name": "Painkillers",
+		"category": "aid",
+		"weight": 0.1,
+		"value": 15.0,
+		"use": {
+			"seconds": 1.0,
+			"heal": 15.0
+		}
+	},
+	"canned_beans": {
+		"name": "Canned Beans",
+		"category": "food",
+		"weight": 0.5,
+		"value": 5.0,
+		"use": {
+			"seconds": 1.5,
+			"food": 35.0
+		}
+	},
+	"water_bottle": {
+		"name": "Bottled Water",
+		"category": "food",
+		"weight": 0.5,
+		"value": 5.0,
+		"use": {
+			"seconds": 1.5,
+			"water": 40.0
+		}
+	},
+	"scrap_metal": {
+		"name": "Scrap Metal",
+		"category": "junk",
+		"weight": 1.0,
+		"value": 3.0
+	},
+	"caustic_bile": {
+		"name": "Caustic Bile",
+		"category": "junk",
+		"weight": 0.5,
+		"value": 10.0
+	},
+	"bottle_cap": {
+		"name": "Bottle Cap",
+		"category": "junk",
+		"weight": 0.01,
+		"value": 1.0
+	},
+	"fake_map": {
+		"name": "Hand-Drawn \"Vault\" Map",
+		"category": "junk",
+		"weight": 0.1,
+		"value": 1.0
+	},
+	"citation": {
+		"name": "Safety Citation (pink copy)",
+		"category": "junk",
+		"weight": 0.01,
+		"value": 0.0
+	},
+	"deputy_star": {
+		"name": "Deputy Star of Nothing",
+		"category": "junk",
+		"weight": 0.05,
+		"value": 2.0
+	},
+	"flight_log": {
+		"name": "Helicopter Flight Log",
+		"category": "quest",
+		"weight": 0.3,
+		"value": 0.0
+	},
+	"toilet_paper": {
+		"name": "Toilet Paper",
+		"category": "junk",
+		"weight": 0.2,
+		"value": 12.0
+	},
+	"last_donut": {
+		"name": "The Last Donut",
+		"category": "quest",
+		"weight": 0.1,
+		"value": 0.0
+	},
+	"lottery_ticket": {
+		"name": "Winning Lottery Ticket",
+		"category": "junk",
+		"weight": 0.01,
+		"value": 0.0
+	},
+	"cap_37": {
+		"name": "The 37th Bottle Cap",
+		"category": "quest",
+		"weight": 0.01,
+		"value": 0.0
+	},
+	"parking_tickets": {
+		"name": "Bundle of Parking Tickets",
+		"category": "quest",
+		"weight": 0.3,
+		"value": 0.0
+	},
+	"seed_corn": {
+		"name": "Bag of Seed Corn",
+		"category": "quest",
+		"weight": 2.0,
+		"value": 10.0
+	},
+	"cart_wheel": {
+		"name": "Shopping Cart Wheel",
+		"category": "quest",
+		"weight": 0.4,
+		"value": 2.0
+	},
+	"gregs_thing": {
+		"name": "Greg's Thing",
+		"category": "quest",
+		"weight": 0.5,
+		"value": 0.0
+	},
+	"col_traffic_cone": {
+		"name": "Traffic Cone",
+		"category": "junk",
+		"weight": 0.8,
+		"value": 6.0
+	},
+	"col_golf_ball": {
+		"name": "Golf Ball",
+		"category": "junk",
+		"weight": 0.05,
+		"value": 6.0
+	},
+	"col_golf_tee": {
+		"name": "Golf Tee",
+		"category": "junk",
+		"weight": 0.02,
+		"value": 6.0
+	},
+	"col_playing_card": {
+		"name": "Playing Card",
+		"category": "junk",
+		"weight": 0.01,
+		"value": 6.0
+	},
+	"col_plunger": {
+		"name": "Toilet Plunger",
+		"category": "junk",
+		"weight": 0.6,
+		"value": 6.0
+	},
+	"col_garden_gnome": {
+		"name": "Garden Gnome",
+		"category": "junk",
+		"weight": 1.2,
+		"value": 6.0
+	},
+	"col_bowling_pin": {
+		"name": "Bowling Pin",
+		"category": "junk",
+		"weight": 0.7,
+		"value": 6.0
+	},
+	"col_rubber_duck": {
+		"name": "Rubber Duck",
+		"category": "junk",
+		"weight": 0.1,
+		"value": 6.0
+	},
+	"col_flip_phone": {
+		"name": "Flip Phone",
+		"category": "junk",
+		"weight": 0.1,
+		"value": 6.0
+	},
+	"col_vhs": {
+		"name": "VHS Tape",
+		"category": "junk",
+		"weight": 0.2,
+		"value": 6.0
+	},
+	"col_trophy": {
+		"name": "Sports Trophy",
+		"category": "junk",
+		"weight": 0.8,
+		"value": 6.0
+	},
+	"col_model_car": {
+		"name": "Model Car",
+		"category": "junk",
+		"weight": 0.1,
+		"value": 6.0
+	},
+	"col_license_plate": {
+		"name": "License Plate",
+		"category": "junk",
+		"weight": 0.3,
+		"value": 6.0
+	},
+	"col_mannequin_head": {
+		"name": "Mannequin Head",
+		"category": "junk",
+		"weight": 0.5,
+		"value": 6.0
+	},
+	"col_lunchbox": {
+		"name": "Lunchbox",
+		"category": "junk",
+		"weight": 0.4,
+		"value": 6.0
+	},
+	"collection_manifest": {
+		"name": "Collection Manifest",
+		"category": "quest",
+		"weight": 0.1,
+		"value": 0.0
+	},
+	"elevator_logbook": {
+		"name": "Scale House Logbook",
+		"category": "quest",
+		"weight": 0.5,
+		"value": 0.0
+	},
+	"duct_tape": {
+		"name": "Duct Tape",
+		"category": "junk",
+		"weight": 0.2,
+		"value": 6.0
+	},
+	"wrench": {
+		"name": "Wrench",
+		"category": "junk",
+		"weight": 1.5,
+		"value": 4.0
+	},
+	"car_battery": {
+		"name": "Car Battery",
+		"category": "junk",
+		"weight": 15.0,
+		"value": 12.0
+	},
+	"gas_can": {
+		"name": "Gas Can (1 gal)",
+		"category": "gear",
+		"weight": 3.5,
+		"value": 14.0
+	},
+	"cinder_block": {
+		"name": "Cinder Block",
+		"category": "junk",
+		"weight": 12.0,
+		"value": 1.0
+	},
+	"evans_jerky": {
+		"name": "Jerkin's Mystery Jerky",
+		"category": "food",
+		"weight": 0.2,
+		"value": 10.0,
+		"use": {
+			"seconds": 2.0,
+			"food": 45.0
+		}
+	},
+	"kush_joint": {
+		"name": "Meekachu's Kush",
+		"category": "chem",
+		"weight": 0.05,
+		"value": 15.0,
+		"use": {
+			"seconds": 3.0,
+			"effect": "baked"
+		}
+	},
+	"magic_mushrooms": {
+		"name": "Magic Mushrooms",
+		"category": "chem",
+		"weight": 0.1,
+		"value": 25.0,
+		"use": {
+			"seconds": 2.0,
+			"effect": "tripping_shrooms"
+		}
+	},
+	"acid_tab": {
+		"name": "Acid Tab",
+		"category": "chem",
+		"weight": 0.01,
+		"value": 30.0,
+		"use": {
+			"seconds": 1.0,
+			"effect": "tripping_acid"
+		}
+	},
+	"molly": {
+		"name": "Molly",
+		"category": "chem",
+		"weight": 0.01,
+		"value": 30.0,
+		"use": {
+			"seconds": 1.0,
+			"effect": "rolling"
+		}
+	},
+	"black_tar": {
+		"name": "Black Tar",
+		"category": "chem",
+		"weight": 0.05,
+		"value": 40.0,
+		"use": {
+			"seconds": 4.0,
+			"effect": "nodding"
+		}
+	},
+	"eagle_keycard": {
+		"name": "Eagle Keycard",
+		"category": "quest",
+		"weight": 0.0,
+		"value": 0.0
+	},
+	"meekachus_lighter": {
+		"name": "Meekachu's Lighter",
+		"category": "quest",
+		"weight": 0.0,
+		"value": 0.0
+	},
+	"chem_lab_kit": {
+		"name": "Chem Lab Kit",
+		"category": "quest",
+		"weight": 3.0,
+		"value": 0.0
+	},
+	"meepo": {
+		"name": "Meepo Electric Longboard",
+		"category": "gear",
+		"weight": 4.0,
+		"value": 120.0
+	},
+	"disc_driver": {
+		"name": "Wasteland Driver",
+		"category": "gear",
+		"weight": 0.2,
+		"value": 15.0
+	},
+	"disc_mid": {
+		"name": "Prairie Midrange",
+		"category": "gear",
+		"weight": 0.2,
+		"value": 12.0
+	},
+	"disc_putter": {
+		"name": "Bunker Putter",
+		"category": "gear",
+		"weight": 0.2,
+		"value": 10.0
+	},
+	"disc_golden_ace": {
+		"name": "Golden Ace",
+		"category": "weapon",
+		"weight": 0.2,
+		"value": 250.0,
+		"fixed_rarity": "legendary"
+	},
+	"pork_rinds": {
+		"name": "John's Pork Rinds",
+		"category": "food",
+		"weight": 0.2,
+		"value": 4.0,
+		"use": {
+			"seconds": 1.5,
+			"food": 30.0
+		}
+	},
+	"gas_station_hot_dog": {
+		"name": "Gas Station Hot Dog",
+		"category": "food",
+		"weight": 0.3,
+		"value": 5.0,
+		"use": {
+			"seconds": 2.0,
+			"food": 40.0
+		}
+	},
+	"corn_dog": {
+		"name": "Corn Dog",
+		"category": "food",
+		"weight": 0.3,
+		"value": 5.0,
+		"use": {
+			"seconds": 2.0,
+			"food": 35.0
+		}
+	},
+	"beer_platte_light": {
+		"name": "Platte Valley Light",
+		"category": "booze",
+		"weight": 0.4,
+		"value": 4.0,
+		"use": {
+			"seconds": 3.0,
+			"water": 6.0,
+			"effect": "drunk",
+			"doses": 1.0
+		}
+	},
+	"beer_sandhills_lager": {
+		"name": "Sandhills Lager",
+		"category": "booze",
+		"weight": 0.4,
+		"value": 4.0,
+		"use": {
+			"seconds": 3.0,
+			"water": 6.0,
+			"effect": "drunk",
+			"doses": 1.0
+		}
+	},
+	"beer_crane_ipa": {
+		"name": "Sandhill Crane IPA",
+		"category": "booze",
+		"weight": 0.4,
+		"value": 6.0,
+		"use": {
+			"seconds": 3.0,
+			"water": 5.0,
+			"effect": "drunk",
+			"doses": 1.3
+		}
+	},
+	"beer_buffalo_stout": {
+		"name": "Buffalo County Stout",
+		"category": "booze",
+		"weight": 0.5,
+		"value": 6.0,
+		"use": {
+			"seconds": 3.5,
+			"water": 4.0,
+			"food": 8.0,
+			"effect": "drunk",
+			"doses": 1.4
+		}
+	},
+	"beer_warm_tallboy": {
+		"name": "Warm Tallboy",
+		"category": "booze",
+		"weight": 0.7,
+		"value": 3.0,
+		"use": {
+			"seconds": 4.0,
+			"water": 6.0,
+			"effect": "drunk",
+			"doses": 1.6
+		}
+	},
+	"seltzer_black_cherry": {
+		"name": "Hard Seltzer (Black Cherry)",
+		"category": "booze",
+		"weight": 0.4,
+		"value": 4.0,
+		"use": {
+			"seconds": 2.5,
+			"water": 15.0,
+			"effect": "drunk",
+			"doses": 0.8
+		}
+	},
+	"seltzer_lime": {
+		"name": "Hard Seltzer (Lime)",
+		"category": "booze",
+		"weight": 0.4,
+		"value": 4.0,
+		"use": {
+			"seconds": 2.5,
+			"water": 15.0,
+			"effect": "drunk",
+			"doses": 0.8
+		}
+	},
+	"seltzer_mango": {
+		"name": "Hard Seltzer (Mango)",
+		"category": "booze",
+		"weight": 0.4,
+		"value": 4.0,
+		"use": {
+			"seconds": 2.5,
+			"water": 15.0,
+			"effect": "drunk",
+			"doses": 0.8
+		}
+	},
+	"shot_whiskey": {
+		"name": "Bottom-Shelf Whiskey Shot",
+		"category": "booze",
+		"weight": 0.1,
+		"value": 5.0,
+		"use": {
+			"seconds": 1.0,
+			"effect": "drunk",
+			"doses": 1.5
+		}
+	},
+	"shot_vodka": {
+		"name": "Rotgut Vodka Shot",
+		"category": "booze",
+		"weight": 0.1,
+		"value": 5.0,
+		"use": {
+			"seconds": 1.0,
+			"effect": "drunk",
+			"doses": 1.5
+		}
+	},
+	"shot_tequila": {
+		"name": "Tequila Shot",
+		"category": "booze",
+		"weight": 0.1,
+		"value": 5.0,
+		"use": {
+			"seconds": 1.0,
+			"effect": "drunk",
+			"doses": 1.5
+		}
+	},
+	"shot_cinnamon": {
+		"name": "Cinnamon Fire Shot",
+		"category": "booze",
+		"weight": 0.1,
+		"value": 5.0,
+		"use": {
+			"seconds": 1.0,
+			"effect": "drunk",
+			"doses": 1.5
+		}
+	},
+	"drink_jungle_juice": {
+		"name": "Jungle Juice",
+		"category": "booze",
+		"weight": 0.6,
+		"value": 8.0,
+		"use": {
+			"seconds": 4.0,
+			"water": 10.0,
+			"effect": "drunk",
+			"doses": 2.5
+		}
+	},
+	"drink_long_island": {
+		"name": "Long Island Iced Tea",
+		"category": "booze",
+		"weight": 0.5,
+		"value": 9.0,
+		"use": {
+			"seconds": 3.5,
+			"water": 6.0,
+			"effect": "drunk",
+			"doses": 3.0
+		}
+	},
+	"wine_box": {
+		"name": "Boxed Wine",
+		"category": "booze",
+		"weight": 1.5,
+		"value": 12.0,
+		"use": {
+			"seconds": 5.0,
+			"water": 8.0,
+			"effect": "drunk",
+			"doses": 4.0
+		}
+	},
+	"moonshine_jar": {
+		"name": "Prairie Moonshine",
+		"category": "booze",
+		"weight": 1.0,
+		"value": 15.0,
+		"use": {
+			"seconds": 2.0,
+			"effect": "drunk",
+			"doses": 4.0
+		}
+	},
+	"strange_key": {
+		"name": "Strange Key",
+		"category": "junk",
+		"weight": 0.05,
+		"value": 4.0
+	}
 }

@@ -1,0 +1,62 @@
+{
+	"note": "Act 1 finale + Act 2 chapter 1 (D-102/D-103): Suit escort barks (retriever_, handler_), Gus at the co-op elevator (gus_elev_ barks, gus_elevator tree). Placeholder text: edit freely.",
+	"barks": {
+		"retriever_aggro": ["Contact. Civilian, armed.", "Not on the list. Doesn't matter.", "Retrieval team, weapons free.", "Hold the truck!"],
+		"retriever_death": ["...tell... Granary...", "Man down... man..."],
+		"handler_aggro": [
+			"You must be what happened to Mr. Conner.",
+			"Kearney was a quiet account. You've made it loud.",
+			"Fourteen days. We were very clear about fourteen days."
+		],
+		"handler_enrage": ["Fine. I'll file you under TAKEN.", "Do you have any idea what a storm costs?"],
+		"handler_death": ["...they'll... send... a clean shirt..."],
+		"gus_elev_idle": ["Forty years of grain went through that shed.", "Don't step on the seam.", "Listen. Hear it hum?"],
+		"gus_elev_greet": ["Told you I'd be on the porch."],
+		"gus_elev_busy": ["Hang on, I'm watching the floor."]
+	},
+	"trees": {
+		"gus_elevator": {
+			"start": "start",
+			"starts": [
+				{ "requires": ["a2_hatch_seen", "!a2_ch1_gus"], "node": "seen" },
+				{ "requires": "a2_ch1_gus", "node": "after" },
+				{ "requires": "a2_gus_elevator", "node": "remind" }
+			],
+			"nodes": {
+				"start": {
+					"speaker": "Gus",
+					"text": "Told you I'd be on the porch. Look at it. Kearney Co-op. Forty years of grain went up that leg and out on the trains. Now the drive shed floor is a door, and the grain goes DOWN. ...They left a yard crew. Five of 'em, walking the yard in shifts.",
+					"flag": "a2_gus_elevator",
+					"choices": [ { "text": "What do you need?", "next": "plan" } ]
+				},
+				"plan": {
+					"speaker": "Gus",
+					"text": "Clear the yard. The scale house keeps a logbook - every truck that ever drove in signed it, even theirs. Get it. Then go look at the floor in the drive shed. Don't step on the seam. Just look.",
+					"choices": [ { "text": "On it.", "next": "bye" } ]
+				},
+				"remind": {
+					"speaker": "Gus",
+					"text": "Yard crew. Logbook. Then the floor. Any order you like, as long as you're breathing at the end.",
+					"choices": [ { "text": "Going.", "next": "bye" } ]
+				},
+				"seen": {
+					"speaker": "Gus",
+					"text": "You saw the lights. ...Now you know why I don't sleep. What's the book say?",
+					"choices": [ { "text": "Every truck, every pickup. And a note: DOOR CYCLES ON STORM.", "next": "seen_2" } ]
+				},
+				"seen_2": {
+					"speaker": "Gus",
+					"text": "On storm. Green sky, floor opens, trucks roll down. ...We need three things, then. A storm, a way to ride it down, and somebody who knows what's at the bottom. Halvorsen walked west along the river with a notebook full of storms. If anybody worked out their schedule, it's her.",
+					"flag": "a2_ch1_gus",
+					"choices": [ { "text": "Then we find Halvorsen.", "next": "bye" } ]
+				},
+				"after": {
+					"speaker": "Gus",
+					"text": "Halvorsen went west along the river. Find her trail. I'll keep an eye on the floor.",
+					"choices": [ { "text": "See you, Gus.", "next": "bye" } ]
+				},
+				"bye": { "speaker": "Gus", "text": "Keep your head down.", "end": true }
+			}
+		}
+	}
+}

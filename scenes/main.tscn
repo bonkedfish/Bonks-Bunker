@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" path="res://scripts/main.gd" id="1_main"]
 [ext_resource type="Script" path="res://scripts/ui/debug_overlay.gd" id="2_debug"]
+[ext_resource type="Script" path="res://scripts/ui/encounter_debug.gd" id="2_encdebug"]
 [ext_resource type="Script" path="res://scripts/net/net_clock.gd" id="3_clock"]
 [ext_resource type="Script" path="res://scripts/combat/combat_world.gd" id="4_combat"]
 [ext_resource type="Script" path="res://scripts/fx/tracer_pool.gd" id="5_tracers"]
@@ -145,6 +146,15 @@ offset_bottom = 140.0
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 4
 script = ExtResource("2_debug")
+
+[node name="EncounterDebug" type="RichTextLabel" parent="UI" groups=["encounter_debug"]]
+offset_left = 18.0
+offset_top = 150.0
+offset_right = 700.0
+offset_bottom = 720.0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+script = ExtResource("2_encdebug")
 
 [node name="HUD" type="Control" parent="UI" groups=["hud"]]
 visible = false

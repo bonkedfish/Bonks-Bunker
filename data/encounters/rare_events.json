@@ -1,0 +1,148 @@
+{
+	"note": "Rare secret events (D-108). The host rolls `chance` every check_seconds and sends ONE event to ONE player, so nobody else can confirm it. kind: figure | prop | sound | light. where: bunker_out | bunker_in | near_player (with distance_m and out_of_sight). Gates: hours [from, to] in game hours, min_bunker_m / max_bunker_m, weather, requires (quest flags), cooldown_s, max_times (99 = forever). Nothing here fights, blocks or takes anything - it is only ever seen. Keep chance low; the point is that these are not reliable.",
+	"tuning": {
+		"chance": 0.3,
+		"check_seconds": 150.0,
+		"first_delay_s": 300.0
+	},
+	"events": {
+		"watcher_3am": {
+			"name": "Someone outside the bunker",
+			"kind": "figure",
+			"model": "suit_watcher",
+			"where": "bunker_out",
+			"at": [0.0, 0.0, 11.0],
+			"player_within_m": 45.0,
+			"hours": [2.5, 3.5],
+			"face_player": true,
+			"show_s": 60.0,
+			"vanish_m": 9.0,
+			"cooldown_s": 5400.0,
+			"max_times": 99
+		},
+		"bunker_mannequin": {
+			"name": "A mannequin in the bunker",
+			"kind": "prop",
+			"where": "bunker_in",
+			"at": [2.6, 0.0, -1.8],
+			"player_within_m": 30.0,
+			"props": [{"kit": "mannequin", "at": [0, 0, 0], "yaw": 25, "collide": false}],
+			"stay": true,
+			"show_s": 240.0,
+			"vanish_m": 2.4,
+			"cooldown_s": 7200.0,
+			"max_times": 99
+		},
+		"rolling_golf_ball": {
+			"name": "A golf ball rolls to your feet",
+			"kind": "prop",
+			"where": "near_player",
+			"distance_m": [14.0, 26.0],
+			"props": [{"kit": "golf_ball", "at": [0, 0, 0], "yaw": 0, "collide": false}],
+			"roll_to_player": true,
+			"show_s": 26.0,
+			"vanish_m": 1.1,
+			"min_bunker_m": 120.0,
+			"cooldown_s": 2400.0,
+			"max_times": 99
+		},
+		"strange_broadcast": {
+			"name": "The radio plays something else",
+			"kind": "sound",
+			"sound": "static",
+			"where": "near_player",
+			"distance_m": [9.0, 18.0],
+			"out_of_sight": true,
+			"hours": [22.0, 4.0],
+			"speaker": "RADIO",
+			"line": "...and that was the eleven o'clock news, for the four hundred and ninth time...",
+			"show_s": 22.0,
+			"vanish_m": 4.0,
+			"cooldown_s": 4800.0,
+			"max_times": 99
+		},
+		"shadow_corner": {
+			"name": "Something goes round the corner",
+			"kind": "figure",
+			"model": "ubc_drifter_m",
+			"where": "near_player",
+			"distance_m": [16.0, 30.0],
+			"out_of_sight": false,
+			"show_s": 4.0,
+			"vanish_m": 13.0,
+			"min_bunker_m": 90.0,
+			"cooldown_s": 1800.0,
+			"max_times": 99
+		},
+		"door_knock": {
+			"name": "A knock at the bunker door",
+			"kind": "sound",
+			"sound": "knock",
+			"where": "bunker_out",
+			"at": [0.0, 0.0, 3.2],
+			"player_within_m": 22.0,
+			"hours": [23.0, 5.0],
+			"show_s": 8.0,
+			"vanish_m": 1.5,
+			"cooldown_s": 5400.0,
+			"max_times": 99
+		},
+		"lights_on": {
+			"name": "A light on in a house you cleared",
+			"kind": "light",
+			"where": "near_player",
+			"distance_m": [40.0, 85.0],
+			"out_of_sight": false,
+			"height_m": 3.4,
+			"hours": [20.0, 5.5],
+			"show_s": 70.0,
+			"vanish_m": 22.0,
+			"min_bunker_m": 150.0,
+			"cooldown_s": 2700.0,
+			"max_times": 99
+		},
+		"idling_car": {
+			"name": "A car idling where no car was",
+			"kind": "prop",
+			"where": "near_player",
+			"distance_m": [30.0, 55.0],
+			"out_of_sight": true,
+			"props": [
+				{"car": [0, 0, 0], "body": "sedan", "mat": "rust", "yaw": 0},
+				{"cyl": [-0.8, 0.3, -2.3, 0.05, 0.4], "mat": "dark", "collide": false}
+			],
+			"stay": true,
+			"show_s": 150.0,
+			"vanish_m": 5.0,
+			"min_bunker_m": 200.0,
+			"cooldown_s": 3600.0,
+			"max_times": 99
+		},
+		"ringing_phone": {
+			"name": "A phone ringing in a house",
+			"kind": "sound",
+			"sound": "ring",
+			"where": "near_player",
+			"distance_m": [10.0, 22.0],
+			"out_of_sight": true,
+			"show_s": 20.0,
+			"vanish_m": 3.5,
+			"min_bunker_m": 100.0,
+			"cooldown_s": 3000.0,
+			"max_times": 99
+		},
+		"sitting_in_your_bunker": {
+			"name": "Somebody sitting in your bunker",
+			"kind": "figure",
+			"model": "ubc_scavenger_m",
+			"where": "bunker_in",
+			"at": [-1.9, 0.0, -2.4],
+			"player_within_m": 26.0,
+			"face_player": true,
+			"show_s": 50.0,
+			"vanish_m": 5.5,
+			"cooldown_s": 10800.0,
+			"max_times": 99
+		}
+	}
+}

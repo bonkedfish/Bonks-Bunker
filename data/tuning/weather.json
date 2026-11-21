@@ -1,0 +1,17 @@
+{
+	"note": "Weather (D-099). The host rolls the next state from weights (never the same one twice) and holds it for a random number of minutes; everyone blends to it over blend_seconds. Balanced: some weather most sessions, a storm about once an hour. The host can force a state from the pause menu (Auto puts the schedule back). Storm lightning every interval_s: near_chance of the time it targets a player standing outside (no roof within roof_check_m above): a warning on their screen and a glow on the ground, warn_s later it strikes offset_m from where they stood - damage within radius_m falls off from the centre, players under a roof are safe. Other strikes hit far_dist_m away (flash + thunder only; thunder arrives at sound_speed_mps). hearing: zombies' noise radius is multiplied by this in rain / storm / fog. storm_wind_add_mps: added to disc golf wind in a storm (capped at storm_wind_max_mps). rain: particles around the camera (none indoors).",
+	"start": "clear",
+	"blend_seconds": 25.0,
+	"states": {
+		"clear": {"weight": 5.0, "minutes": [8.0, 18.0], "rain": 0.0, "storm": 0.0, "fog": 0.0},
+		"fog": {"weight": 1.2, "minutes": [3.0, 6.0], "rain": 0.0, "storm": 0.0, "fog": 1.0},
+		"rain": {"weight": 2.0, "minutes": [4.0, 9.0], "rain": 0.7, "storm": 0.0, "fog": 0.2},
+		"storm": {"weight": 1.5, "minutes": [3.0, 6.0], "rain": 1.0, "storm": 1.0, "fog": 0.1}
+	},
+	"lightning": {"interval_s": [5.0, 14.0], "near_chance": 0.3, "warn_s": 1.6, "radius_m": 4.5, "damage": 70.0,
+		"offset_m": [0.5, 2.5], "far_dist_m": [150.0, 900.0], "roof_check_m": 40.0, "sound_speed_mps": 343.0},
+	"hearing": {"rain": 0.75, "storm": 0.55, "fog": 0.9},
+	"storm_wind_add_mps": 4.0,
+	"storm_wind_max_mps": 9.0,
+	"rain": {"max_particles": 3000, "area_m": 28.0, "height_m": 14.0, "fall_mps": 18.0}
+}

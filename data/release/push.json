@@ -1,4 +1,5 @@
 {
-	"_comment": "tools/release/push_repo.tscn: the release tag it checks is live after pushing.",
+	"_comment": "tools/release/push_repo.tscn: `message` is the commit message (it falls back to a release-tidy message if blank), `check_tag` is a release tag it checks is still live after pushing (\"\" skips the check).",
+	"message": "Day/night cycle, encounters and the weird stuff (D-100..D-110)\n\nOpen-world zombie types, safe courses, Act 1 finale and Act 2 chapter 1, the\nSuit watcher, 25 random encounters with 20 NPCs and 19 dialogue trees, 18\nauthored world oddities, 15 collectibles with a bunker display rack, 10 rare\nsecret events, 12 side quests, an F6 encounter debug panel, and a 48-minute\nday/night cycle with doubled night spawns and sleeping in the bunker bunks.",
 	"check_tag": "alpha3.0"
 }

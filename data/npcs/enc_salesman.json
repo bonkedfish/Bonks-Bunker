@@ -1,0 +1,15 @@
+{
+	"note": "Random encounter NPC (D-105). Lines in data/dialogue/encounters.json (barks prefixed encsales_).",
+	"display_name": "Dub",
+	"dialogue_tree": "enc_salesman_talk",
+	"bark_prefix": "encsales_",
+	"model": "ubc_drifter_m",
+	"talk_range": 3.2,
+	"subtitle_range": 18.0,
+	"greet_range": 10.0,
+	"face_range": 8.0,
+	"turn_speed": 3.0,
+	"bark_cooldown": 8.0,
+	"idle_bark_min": 25.0,
+	"idle_bark_max": 60.0
+}

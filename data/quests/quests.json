@@ -1,5 +1,5 @@
 {
-	"note": "Quests (D-054). File order = story order. Shape documented in scripts/rules/quest_rules.gd. Flags are set by dialogue nodes (\"flag\"), boss deaths (boss_<enemy_id>_dead), kill counters (kills_<enemy_id>), and by the host for reach_m / have objectives. Act 1 is playable; Acts 2-4 are the story outline (locked_note) and are not built yet. All names and numbers are placeholders: edit freely.",
+	"note": "Quests (D-054). File order = story order. Shape documented in scripts/rules/quest_rules.gd. Flags are set by dialogue nodes (\"flag\"), boss deaths (boss_<enemy_id>_dead), kill counters (kills_<enemy_id>), and by the host for reach_m / have objectives. Act 1 is playable (finale: Collection Day, D-102); Act 2 chapter 1 (South of the Tracks, D-103) is playable, the rest of Act 2 and Acts 3-4 are story outline (locked_note). All names and numbers are placeholders: edit freely.",
 	"quests": {
 		"mq1_static": {
 			"name": "Five Years of Static",
@@ -245,20 +245,179 @@
 				"kush_joint": 3
 			}
 		},
-		"mq5_south": {
-			"name": "Act 2: South of the River",
-			"act": 2,
+		"mq4b_collection": {
+			"name": "Collection Day",
+			"act": 1,
 			"main": true,
 			"start": "mq4_acknowledged_done",
-			"summary": "The trucks come up from the south and the tire tracks stop where the road eats them. Gus has stood on that spot. SITE GRANARY is under it. Dr. Halvorsen walked that way with her storm notebook and a crowbar.",
-			"locked_note": "Story outline only, not playable in this build. Planned: cross the Platte with Gus, find the truck hatch, follow Halvorsen's trail, first look inside a Suit facility, learn that the immune are being used to calibrate the storms.",
+			"summary": "COLLECTION, KEARNEY: 14 DAYS. Hunter used to hand people over at the Cash-Wa docks on West 4th Street. Hunter is dead, the fourteen days are up, and the Suits' truck has come up to find out why nobody is waiting. Gus wants whatever paper that truck carries.",
+			"objectives": [
+				{
+					"text": "Get to the pickup point: the Cash-Wa warehouse docks on West 4th Street",
+					"flag": "cd_reach",
+					"at": {
+						"landmark": "collection_point",
+						"offset": [
+							0,
+							0,
+							0
+						]
+					},
+					"reach_m": 45.0
+				},
+				{
+					"text": "Take out the truck's escort (6 Retrievers)",
+					"flag": "kills_suit_retriever",
+					"count": 6,
+					"at": {
+						"landmark": "collection_point",
+						"offset": [
+							10,
+							0,
+							0
+						]
+					}
+				},
+				{
+					"text": "Kill the Handler, the Suit who came up with the truck",
+					"flag": "boss_suit_handler_dead",
+					"at": {
+						"landmark": "collection_point",
+						"offset": [
+							30,
+							0,
+							5
+						]
+					}
+				},
+				{
+					"text": "Take the collection manifest off the Handler",
+					"flag": "cd_have_manifest",
+					"have": {
+						"collection_manifest": 1
+					},
+					"at": {
+						"landmark": "collection_point",
+						"offset": [
+							30,
+							0,
+							5
+						]
+					}
+				},
+				{
+					"text": "Bring the manifest to Gus at the Chillers' fire",
+					"flag": "cd_gus",
+					"at": {
+						"landmark": "chillers_hq",
+						"offset": [
+							15.5,
+							0,
+							33
+						]
+					}
+				}
+			],
+			"reward": {
+				"ammo_9mm": 80,
+				"ammo_shells": 12,
+				"bandage": 4,
+				"painkillers": 2
+			}
+		},
+		"mq5_south": {
+			"name": "Act 2: South of the Tracks",
+			"act": 2,
+			"main": true,
+			"start": "mq4b_collection_done",
+			"summary": "The manifest says DELIVER TO SITE GRANARY, and the route ends at the old Kearney Co-op grain elevator on East 20th Street, by the tracks. Gus has stood on that floor. It opens down.",
+			"objectives": [
+				{
+					"text": "Meet Gus on the scale house porch at the Kearney Co-op elevator (East 20th St, by the tracks)",
+					"flag": "a2_gus_elevator",
+					"at": {
+						"landmark": "coop_elevator",
+						"offset": [
+							24,
+							0,
+							20
+						]
+					}
+				},
+				{
+					"text": "Clear the Retriever yard crew (5)",
+					"flag": "kills_suit_guard",
+					"count": 5,
+					"at": {
+						"landmark": "coop_elevator",
+						"offset": [
+							0,
+							0,
+							30
+						]
+					}
+				},
+				{
+					"text": "Find the logbook in the scale house",
+					"flag": "a2_have_logbook",
+					"have": {
+						"elevator_logbook": 1
+					},
+					"at": {
+						"landmark": "coop_elevator",
+						"offset": [
+							25,
+							0,
+							13
+						]
+					}
+				},
+				{
+					"text": "Look down through the drive shed floor",
+					"flag": "a2_hatch_seen",
+					"at": {
+						"landmark": "coop_elevator",
+						"offset": [
+							0,
+							0,
+							5
+						]
+					},
+					"reach_m": 3.0
+				},
+				{
+					"text": "Tell Gus what you saw",
+					"flag": "a2_ch1_gus",
+					"at": {
+						"landmark": "coop_elevator",
+						"offset": [
+							24,
+							0,
+							20
+						]
+					}
+				}
+			],
+			"reward": {
+				"ammo_556": 40,
+				"bandage": 3,
+				"painkillers": 2
+			}
+		},
+		"mq5b_halvorsen": {
+			"name": "Act 2: Halvorsen's Notebook",
+			"act": 2,
+			"main": true,
+			"start": "mq5_south_done",
+			"summary": "The floor opens on storm. Halvorsen walked west along the river with a notebook full of storms. Find her trail before the sky goes green again.",
+			"locked_note": "Story outline only, not playable in this build. Planned: follow Halvorsen's trail west along the river, her notebook and the storm schedule, a way to ride the floor down, first look inside Site Granary, learn that the immune are being used to calibrate the storms.",
 			"objectives": []
 		},
 		"mq6_soup": {
 			"name": "Act 3: S.O.U.P.",
 			"act": 3,
 			"main": true,
-			"start": "mq5_south_done",
+			"start": "mq5b_halvorsen_done",
 			"summary": "Sustained Operational Something. The storms are a machine, the machine has a schedule, and the schedule has an off switch somewhere under Kearney.",
 			"locked_note": "Story outline only. Planned: Halvorsen's notebook, the storm relay network (the Archway is one of several), turning relays off one by one while the Suits hunt the party, Evan's choice.",
 			"objectives": []
@@ -532,6 +691,286 @@
 				"ammo_9mm": 60,
 				"bandage": 3,
 				"molly": 1
+			}
+		},
+		"sq_cart": {
+			"name": "Where's My Damn Cart?",
+			"act": 1,
+			"main": false,
+			"start": "sq_cart_start",
+			"summary": "The Bargain King has lost the shopping cart that holds his entire inventory. He is taking it about as well as you would expect.",
+			"objectives": [
+				{
+					"text": "Find the Bargain King's cart",
+					"flag": "sq_cart_found",
+					"at": {
+						"map": [
+							755.8,
+							-2306.3
+						]
+					}
+				},
+				{
+					"text": "Take the wheel back to the Bargain King",
+					"flag": "sq_cart_return"
+				}
+			],
+			"reward": {
+				"bottle_cap": 60
+			}
+		},
+		"sq_cones": {
+			"name": "Cone Wars",
+			"act": 1,
+			"main": false,
+			"start": "sq_cones_start",
+			"summary": "An intersection on the east side has a king, a throne and a foreign policy. Six of its cones have been taken by a rival collective.",
+			"objectives": [
+				{
+					"text": "Collect six traffic cones",
+					"flag": "sq_cones_have",
+					"have": {
+						"col_traffic_cone": 6
+					}
+				},
+				{
+					"text": "Pay tribute at the Cone Throne",
+					"flag": "sq_cones_return",
+					"at": {
+						"map": [
+							1181.4,
+							471.8
+						]
+					}
+				}
+			],
+			"reward": {
+				"bottle_cap": 45,
+				"col_traffic_cone": 1
+			}
+		},
+		"sq_tp": {
+			"name": "The Great Toilet Paper Heist",
+			"act": 1,
+			"main": false,
+			"start": "sq_tp_start",
+			"summary": "The Safety Inspector cannot sign off on a settlement with zero rolls of sanitary tissue. The form will not permit it.",
+			"objectives": [
+				{
+					"text": "Find three rolls of toilet paper",
+					"flag": "sq_tp_have",
+					"have": {
+						"toilet_paper": 3
+					}
+				},
+				{
+					"text": "Hand them to the Safety Inspector",
+					"flag": "sq_tp_return"
+				}
+			],
+			"reward": {
+				"bottle_cap": 50
+			}
+		},
+		"sq_greg": {
+			"name": "Greg's Problem",
+			"act": 1,
+			"main": false,
+			"start": "sq_greg_start",
+			"summary": "Greg is looking for something. He cannot describe it, name it, or say what it does, but he will know it when he sees it.",
+			"objectives": [
+				{
+					"text": "Find the thing Greg can't remember",
+					"flag": "sq_greg_have",
+					"have": {
+						"gregs_thing": 1
+					}
+				},
+				{
+					"text": "Give it to Greg",
+					"flag": "sq_greg_return"
+				}
+			],
+			"reward": {
+				"bottle_cap": 35
+			}
+		},
+		"sq_door": {
+			"name": "The Wrong Door",
+			"act": 1,
+			"main": false,
+			"start": "enc_door_opened",
+			"summary": "There was a door standing in a field with nothing attached to it. You opened it. Something was on the ground on the other side.",
+			"objectives": [
+				{
+					"text": "Keep what came through with you",
+					"flag": "sq_door_head",
+					"have": {
+						"col_mannequin_head": 1
+					}
+				},
+				{
+					"text": "Ask the Collector about the door",
+					"flag": "sq_door_asked"
+				}
+			],
+			"reward": {
+				"bottle_cap": 40
+			}
+		},
+		"sq_cap37": {
+			"name": "The 37th Bottle Cap",
+			"act": 1,
+			"main": false,
+			"start": "sq_cap37_start",
+			"summary": "Winifred says the local bottler only ever made thirty-six cap designs. She also says she has seen a thirty-seventh.",
+			"objectives": [
+				{
+					"text": "Find the 37th cap",
+					"flag": "sq_cap37_have",
+					"have": {
+						"cap_37": 1
+					},
+					"at": {
+						"map": [
+							-270.6,
+							-179.8
+						]
+					}
+				},
+				{
+					"text": "Take it back to Winifred",
+					"flag": "sq_cap37_return"
+				}
+			],
+			"reward": {
+				"bottle_cap": 120
+			}
+		},
+		"sq_parking": {
+			"name": "Unpaid Parking",
+			"act": 1,
+			"main": false,
+			"start": "sq_parking_start",
+			"summary": "A sedan downtown is buried under four thousand parking tickets. The most recent one was written last Tuesday.",
+			"objectives": [
+				{
+					"text": "Show the tickets to the Sheriff of Nothing",
+					"flag": "sq_parking_return"
+				}
+			],
+			"reward": {
+				"bottle_cap": 30
+			}
+		},
+		"sq_chair": {
+			"name": "The Lawn Chair Tournament",
+			"act": 1,
+			"main": false,
+			"start": "sq_chair_start",
+			"summary": "Buzz holds the regional title in an endurance event with two rules: there are two chairs, and nobody stands up.",
+			"objectives": [
+				{
+					"text": "Win the sitting contest",
+					"flag": "sq_chair_win"
+				},
+				{
+					"text": "Collect your title from Buzz",
+					"flag": "sq_chair_return"
+				}
+			],
+			"reward": {
+				"bottle_cap": 55
+			}
+		},
+		"sq_donut": {
+			"name": "The Last Donut",
+			"act": 1,
+			"main": false,
+			"start": "sq_donut_taken",
+			"summary": "There is one donut left in Kearney, it is preserved behind glass, and at least three people believe it is theirs.",
+			"objectives": [
+				{
+					"text": "Decide who gets the donut",
+					"flag": "sq_donut_given"
+				}
+			],
+			"reward": {
+				"bottle_cap": 25
+			}
+		},
+		"sq_corn": {
+			"name": "The Corn Debate",
+			"act": 1,
+			"main": false,
+			"start": "sq_corn_start",
+			"ordered": false,
+			"summary": "Two people in this county disagree about what kind of corn is growing in Experimental Plot 4, and the Sheriff of Nothing needs it settled before somebody gets hurt.",
+			"objectives": [
+				{
+					"text": "Ask the campfire stranger about the corn",
+					"flag": "sq_corn_a"
+				},
+				{
+					"text": "Ask the Collector about the corn",
+					"flag": "sq_corn_b"
+				},
+				{
+					"text": "Give the Sheriff of Nothing a ruling",
+					"flag": "sq_corn_return"
+				}
+			],
+			"reward": {
+				"bottle_cap": 40,
+				"seed_corn": 2
+			}
+		},
+		"sq_pool": {
+			"name": "The Unbeatable Pool Player",
+			"act": 1,
+			"main": false,
+			"start": "sq_pool_start",
+			"summary": "Fast Eddie has never lost a game of pool. Not before the bomb, not after. He would like you to know that.",
+			"objectives": [
+				{
+					"text": "Beat Fast Eddie at pool",
+					"flag": "sq_pool_win"
+				},
+				{
+					"text": "Watch him rack and call him on it",
+					"flag": "sq_pool_caught"
+				}
+			],
+			"reward": {
+				"bottle_cap": 75
+			}
+		},
+		"sq_mann": {
+			"name": "The Missing Mannequin",
+			"act": 1,
+			"main": false,
+			"start": "sq_mann_start",
+			"summary": "Winifred keeps a ledger of the mannequins in a shop past the bars. The number in the ledger has gone up.",
+			"objectives": [
+				{
+					"text": "Find the shop out past the bars",
+					"flag": "sq_mann_reach",
+					"at": {
+						"map": [
+							1898.7,
+							-1509.5
+						]
+					},
+					"reach_m": 26.0
+				},
+				{
+					"text": "Tell Winifred what you saw",
+					"flag": "sq_mann_return"
+				}
+			],
+			"reward": {
+				"bottle_cap": 45,
+				"col_mannequin_head": 1
 			}
 		}
 	}

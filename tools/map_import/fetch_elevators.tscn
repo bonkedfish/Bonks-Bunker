@@ -1,0 +1,6 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://tools/map_import/fetch_elevators.gd" id="1_fe"]
+
+[node name="FetchElevators" type="Node"]
+script = ExtResource("1_fe")

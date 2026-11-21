@@ -19,6 +19,11 @@ func _init() -> void:
 	_tick.fill(-1)
 
 
+# Forget every sample (a pooled body reused somewhere else must not keep its old hitbox for rewound shots).
+func clear() -> void:
+	_tick.fill(-1)
+
+
 func record(tick: int, pos: Vector3, height: float) -> void:
 	var i := posmod(tick, SIZE)
 	_tick[i] = tick

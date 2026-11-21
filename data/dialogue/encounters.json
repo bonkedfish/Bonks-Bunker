@@ -1,0 +1,1994 @@
+{
+	"note": "Random encounter dialogue (D-105): the trees the enc_* NPCs use and their barks. A node's \"encounter\" key names an action in that encounter's definition (data/encounters/encounters.json), run by EncounterDirector. Placeholder text: edit freely.",
+	"barks": {
+		"encdriver_idle": [
+			"It's the alternator. I think. I don't know what an alternator is.",
+			"Come on. Come on.",
+			"Five years and it picks today."
+		],
+		"encdriver_greet": [
+			"Hey! Hey - you know engines?"
+		],
+		"encdriver_busy": [
+			"One at a time!"
+		],
+		"encsales_idle": [
+			"Everything you see, honestly priced.",
+			"I walked here. From Grand Island. Ask me about it.",
+			"No refunds, no returns, no questions, no promises."
+		],
+		"encsales_greet": [
+			"Customer! A real one!"
+		],
+		"encsales_busy": [
+			"Be right with you."
+		],
+		"enctoll_idle": [
+			"Road's maintained. By me. Hence the toll.",
+			"Ten caps or a long walk.",
+			"I take caps, bullets, or offence."
+		],
+		"enctoll_greet": [
+			"Stop right there."
+		],
+		"enctoll_busy": [
+			"Wait your turn."
+		],
+		"enccamp_idle": [
+			"Fire's free. Sitting's free.",
+			"I've seen things. Most of them were cows.",
+			"There's a man in a suit walks the county line. Don't wave at him."
+		],
+		"enccamp_greet": [
+			"Pull up a log."
+		],
+		"enccamp_busy": [
+			"Hold that thought."
+		],
+		"encpool_idle": [
+			"Table's level. I levelled it.",
+			"Winner stays. I've stayed four years.",
+			"I'll spot you the break. I won't spot you anything else."
+		],
+		"encpool_greet": [
+			"You play?"
+		],
+		"encpool_busy": [
+			"I'm shooting here."
+		],
+		"encbeg_idle": [
+			"Anything helps. Anything at all.",
+			"I'm not proud. I was. It didn't keep.",
+			"You got food? Water? Time?"
+		],
+		"encbeg_greet": [
+			"Hey. Hey, friend."
+		],
+		"encbeg_busy": [
+			"Hang on."
+		],
+		"encwant_idle": [
+			"Lovely day.",
+			"Not a care in the world.",
+			"Beer's warm. Life's warm."
+		],
+		"encwant_greet": [
+			"Afternoon."
+		],
+		"encwant_busy": [
+			"Mm."
+		],
+		"enctour_idle": [
+			"Does your phone have bars?",
+			"We're booked in Omaha Thursday.",
+			"The kids are being very patient."
+		],
+		"enctour_greet": [
+			"Excuse me! Excuse me?"
+		],
+		"enctour_busy": [
+			"One moment!"
+		],
+		"encdrunk_idle": [
+			"I'm not drunk, I'm POST-APOCALYPTIC.",
+			"Fight me. Lovingly.",
+			"This is my barrel. I found it. It's my barrel."
+		],
+		"encdrunk_greet": [
+			"HEY. HEY, you."
+		],
+		"encdrunk_busy": [
+			"Shhh. Shh. Wait."
+		],
+		"encgamb_idle": [
+			"Cards don't know it's the end of the world.",
+			"House rules: there's no house.",
+			"I'm due. I've been due since March."
+		],
+		"encgamb_greet": [
+			"Take a seat, take a chance."
+		],
+		"encgamb_busy": [
+			"Dealing."
+		],
+		"enccoll_idle": [
+			"Cones, ducks, little cars. I pay.",
+			"It's not hoarding if it's catalogued.",
+			"Somebody has to keep the stuff."
+		],
+		"enccoll_greet": [
+			"What have you got?"
+		],
+		"enccoll_busy": [
+			"Appraising."
+		],
+		"enccon_idle": [
+			"Hand drawn. Hand VERIFIED.",
+			"This map has a vault on it. A VAULT.",
+			"Twenty caps. Changes your life."
+		],
+		"enccon_greet": [
+			"Friend! You look like an explorer."
+		],
+		"enccon_busy": [
+			"With a customer."
+		],
+		"encdig_idle": [
+			"(the shovel keeps going)",
+			"Mm.",
+			"Nope."
+		],
+		"encdig_greet": [
+			"..."
+		],
+		"encdig_busy": [
+			"Digging."
+		],
+		"encwand_idle": [
+			"Walking west. Always west.",
+			"I've been through here before. You weren't here.",
+			"Don't follow. It's not interesting."
+		],
+		"encwand_greet": [
+			"You again."
+		],
+		"encwand_busy": [
+			"Walking."
+		],
+		"encgreg_idle": [
+			"Greg.",
+			"I had a thing. It was shaped like a thing.",
+			"My cart's got a wheel. It's got four. One's a wheel."
+		],
+		"encgreg_greet": [
+			"Oh. Hello."
+		],
+		"encgreg_busy": [
+			"Thinking."
+		],
+		"encinsp_idle": [
+			"Unmarked step. That's a write-up.",
+			"This whole county is out of compliance.",
+			"Where is your hazard signage?"
+		],
+		"encinsp_greet": [
+			"Hold still, please."
+		],
+		"encinsp_busy": [
+			"Inspecting."
+		],
+		"encbarg_idle": [
+			"EVERYTHING MUST GO. SLOWLY. AT THESE PRICES.",
+			"You won't find this deal anywhere. Anywhere.",
+			"I don't haggle. I DECREE."
+		],
+		"encbarg_greet": [
+			"STEP RIGHT UP."
+		],
+		"encbarg_busy": [
+			"A moment, subject."
+		],
+		"encsher_idle": [
+			"Town's quiet. Town's always quiet.",
+			"Population one. Crime rate zero. You do the math.",
+			"I keep the peace. The peace keeps itself, mostly."
+		],
+		"encsher_greet": [
+			"Hold up there, stranger."
+		],
+		"encsher_busy": [
+			"Official business."
+		],
+		"encchess_idle": [
+			"Your clock is running.",
+			"That's a book line. Everything's a book line.",
+			"I've beaten computers. Allegedly."
+		],
+		"encchess_greet": [
+			"Sit. Play."
+		],
+		"encchess_busy": [
+			"Calculating."
+		],
+		"enccone_idle": [
+			"Mind the cone.",
+			"That cone is load bearing.",
+			"Every cone in this town was placed by somebody. Somebody is me."
+		],
+		"enccone_greet": [
+			"Halt. You are in the Kingdom.",
+			"A visitor. Mind the cone."
+		],
+		"enccone_busy": [
+			"The king is reviewing placements."
+		]
+	},
+	"trees": {
+		"enc_driver_talk": {
+			"start": "start",
+			"nodes": {
+				"start": {
+					"speaker": "Marla",
+					"text": "Oh thank God, a person. It died coming up the hill and it won't turn over. I'm two hundred miles from where I'm supposed to be and I don't even know what that place is called any more.",
+					"choices": [
+						{
+							"text": "I can fix that. (2 scrap metal, duct tape)",
+							"next": "fixed",
+							"encounter": "fix"
+						},
+						{
+							"text": "It's out of gas. I've got a can.",
+							"next": "gassed",
+							"encounter": "gas"
+						},
+						{
+							"text": "Nice car. I'll be taking it.",
+							"next": "robbed"
+						},
+						{
+							"text": "Good luck with that.",
+							"next": "bye"
+						}
+					]
+				},
+				"fixed": {
+					"speaker": "Marla",
+					"text": "...That's it? That's IT? Take this. Take all of it. I've been sat here since yesterday arguing with a hose.",
+					"end": true
+				},
+				"gassed": {
+					"speaker": "Marla",
+					"text": "Gas. It was gas. I'm a doctor, you know. Was. Take the glovebox, please, I insist.",
+					"end": true
+				},
+				"robbed": {
+					"speaker": "Marla",
+					"text": "No. No, no - BRANDON! BRANDON, IT'S HAPPENING AGAIN!",
+					"end": true,
+					"encounter": "rob"
+				},
+				"bye": {
+					"speaker": "Marla",
+					"text": "Sure. Yeah. Thanks for stopping.",
+					"end": true
+				}
+			}
+		},
+		"enc_salesman_talk": {
+			"start": "start",
+			"nodes": {
+				"start": {
+					"speaker": "Dub",
+					"text": "Dub's Rolling Emporium. I carry what fits in the cart and the cart fits what sells. What are we looking at today?",
+					"choices": [
+						{
+							"text": "Bandages. (3 caps)",
+							"next": "trade",
+							"cost": {
+								"bottle_cap": 3
+							},
+							"cost_fail": "broke"
+						},
+						{
+							"text": "Something to eat. (2 caps)",
+							"next": "trade_food",
+							"cost": {
+								"bottle_cap": 2
+							},
+							"cost_fail": "broke"
+						},
+						{
+							"text": "Ammunition. (8 caps)",
+							"next": "trade_ammo",
+							"cost": {
+								"bottle_cap": 8
+							},
+							"cost_fail": "broke"
+						},
+						{
+							"text": "Something weird. (12 caps)",
+							"next": "trade_weird",
+							"cost": {
+								"bottle_cap": 12
+							},
+							"cost_fail": "broke"
+						},
+						{
+							"text": "I'll sell you scrap. (3 scrap)",
+							"next": "buy_scrap",
+							"cost": {
+								"scrap_metal": 3
+							},
+							"cost_fail": "broke"
+						},
+						{
+							"text": "Just browsing.",
+							"next": "bye"
+						}
+					]
+				},
+				"trade": {
+					"speaker": "Dub",
+					"text": "Clean as anything. Mostly.",
+					"choices": [
+						{
+							"text": "Thanks.",
+							"next": "start"
+						}
+					],
+					"give": {
+						"bandage": 2
+					},
+					"give_every_time": true
+				},
+				"trade_food": {
+					"speaker": "Dub",
+					"text": "Beans. The good beans. The label's gone but I believe in them.",
+					"choices": [
+						{
+							"text": "Thanks.",
+							"next": "start"
+						}
+					],
+					"give": {
+						"canned_beans": 2
+					},
+					"give_every_time": true
+				},
+				"trade_ammo": {
+					"speaker": "Dub",
+					"text": "Nine mil. Hand loaded by a man I trust about half of.",
+					"choices": [
+						{
+							"text": "Thanks.",
+							"next": "start"
+						}
+					],
+					"give": {
+						"ammo_9mm": 18
+					},
+					"give_every_time": true
+				},
+				"trade_weird": {
+					"speaker": "Dub",
+					"text": "No description. That's the deal. That's why it's twelve.",
+					"choices": [
+						{
+							"text": "Deal.",
+							"next": "start"
+						}
+					],
+					"give": {
+						"col_rubber_duck": 1,
+						"col_vhs": 1
+					},
+					"give_every_time": true
+				},
+				"buy_scrap": {
+					"speaker": "Dub",
+					"text": "Scrap I can always move. Here's your caps.",
+					"choices": [
+						{
+							"text": "Pleasure.",
+							"next": "start"
+						}
+					],
+					"give": {
+						"bottle_cap": 9
+					},
+					"give_every_time": true
+				},
+				"broke": {
+					"speaker": "Dub",
+					"text": "That's a no from the cart, friend.",
+					"choices": [
+						{
+							"text": "Fair enough.",
+							"next": "start"
+						}
+					]
+				},
+				"bye": {
+					"speaker": "Dub",
+					"text": "Browse away. The cart doesn't judge. I do, a little.",
+					"end": true
+				}
+			}
+		},
+		"enc_toll_talk": {
+			"start": "start",
+			"nodes": {
+				"start": {
+					"speaker": "Cheryl",
+					"text": "Road's closed. Well - road's priced. Ten caps and the barrel moves. That's the whole business model.",
+					"choices": [
+						{
+							"text": "Here's ten caps.",
+							"next": "paid",
+							"encounter": "pay"
+						},
+						{
+							"text": "Take ammo instead. (15 rounds)",
+							"next": "paid",
+							"encounter": "pay_ammo"
+						},
+						{
+							"text": "There's twelve of us. The rest are behind me.",
+							"next": "bluff",
+							"encounter": "bluff"
+						},
+						{
+							"text": "Move it yourself.",
+							"next": "fight",
+							"encounter": "fight"
+						},
+						{
+							"text": "I'll go around.",
+							"next": "bye"
+						}
+					]
+				},
+				"paid": {
+					"speaker": "Cheryl",
+					"text": "Pleasure doing business. Mind the ditch, there's a guy living in it.",
+					"end": true
+				},
+				"bluff": {
+					"speaker": "Cheryl",
+					"text": "...Twelve.",
+					"end": true
+				},
+				"fight": {
+					"speaker": "Cheryl",
+					"text": "Wrong answer, sweetheart.",
+					"end": true
+				},
+				"bye": {
+					"speaker": "Cheryl",
+					"text": "It's four miles around. Enjoy.",
+					"end": true
+				}
+			}
+		},
+		"enc_campfire_talk": {
+			"start": "start",
+			"nodes": {
+				"start": {
+					"speaker": "Odell",
+					"text": "Sit if you're sitting. I've got coffee that's mostly chicory and three stories that are mostly true.",
+					"choices": [
+						{
+							"text": "Heard anything worth hearing?",
+							"next": "rumor"
+						},
+						{
+							"text": "Who's the man in the suit?",
+							"next": "suit"
+						},
+						{
+							"text": "Settle something for me: dent corn or flint corn?",
+							"next": "q_corn_a",
+							"requires": [
+								"sq_corn_start",
+								"!sq_corn_a"
+							]
+						},
+						{
+							"text": "Just warming up.",
+							"next": "bye"
+						}
+					]
+				},
+				"rumor": {
+					"speaker": "Odell",
+					"text": "Folks keep finding a lawn chair out on the flats with a fella still in it, cooler beside him, radio on. Chair moves. Fella don't. Make of that what you like.",
+					"choices": [
+						{
+							"text": "Anything else?",
+							"next": "rumor2"
+						},
+						{
+							"text": "That's plenty.",
+							"next": "bye"
+						}
+					]
+				},
+				"rumor2": {
+					"speaker": "Odell",
+					"text": "There's a woman south of the tracks collects junk - cones, ducks, little cars. Pays real goods for it. I'd call her crazy but she's eating better than me.",
+					"choices": [
+						{
+							"text": "Thanks, Odell.",
+							"next": "bye"
+						}
+					],
+					"flag": "enc_heard_collector"
+				},
+				"suit": {
+					"speaker": "Odell",
+					"text": "Stands too far off to shout at. Doesn't move when you wave. Gets closer when you're not counting. ...You've seen him, haven't you. It's all right. We all have.",
+					"choices": [
+						{
+							"text": "Yeah. I have.",
+							"next": "bye"
+						}
+					],
+					"flag": "enc_heard_suit"
+				},
+				"bye": {
+					"speaker": "Odell",
+					"text": "Mind the embers. Everybody says that. Nobody minds the embers.",
+					"end": true
+				},
+				"q_corn_a": {
+					"speaker": "Dale",
+					"text": "Flint. I grew it, I dried it, I ate it for two years. Anybody says dent either never farmed or is lying for sport.",
+					"flag": "sq_corn_a",
+					"end": true
+				}
+			}
+		},
+		"enc_pool_talk": {
+			"start": "start",
+			"nodes": {
+				"start": {
+					"speaker": "Fast Eddie",
+					"text": "Haugen. They called me Fast Eddie before it was funny. Ten caps a game, winner takes twenty-five. Table's right there.",
+					"choices": [
+						{
+							"text": "Ten caps. Rack them.",
+							"next": "game",
+							"encounter": "wager"
+						},
+						{
+							"text": "Can I just shoot a few?",
+							"next": "free"
+						},
+						{
+							"text": "Has anyone ever beaten you?",
+							"next": "q_pool",
+							"requires": "!sq_pool_start"
+						},
+						{
+							"text": "Rack them again. Slowly.",
+							"next": "q_pool_in",
+							"requires": [
+								"sq_pool_win",
+								"!sq_pool_caught"
+							]
+						},
+						{
+							"text": "Maybe later.",
+							"next": "bye"
+						}
+					]
+				},
+				"game": {
+					"speaker": "Fast Eddie",
+					"text": "That's the game. Want another?",
+					"choices": [
+						{
+							"text": "Again.",
+							"next": "game",
+							"encounter": "wager"
+						},
+						{
+							"text": "I'm done.",
+							"next": "bye"
+						}
+					]
+				},
+				"free": {
+					"speaker": "Fast Eddie",
+					"text": "Be my guest. Nobody's stopping you. Nobody ever stops you. That's the sad part.",
+					"end": true
+				},
+				"bye": {
+					"speaker": "Fast Eddie",
+					"text": "Table'll be here. So will I.",
+					"end": true
+				},
+				"q_pool": {
+					"speaker": "Fast Eddie",
+					"text": "Nobody's beaten me. Not once, not before, not after. You can be the first. You won't be.",
+					"flag": "sq_pool_start",
+					"end": true
+				},
+				"q_pool_in": {
+					"speaker": "Fast Eddie",
+					"text": "You watch him rack. The eight sits a half inch left of where he put it. There is a magnet under the felt and his hand keeps finding the rail.",
+					"choices": [
+						{
+							"text": "There's a magnet under your table, Eddie.",
+							"next": "q_pool_caught"
+						},
+						{
+							"text": "Say nothing. Keep playing.",
+							"next": "bye"
+						}
+					]
+				},
+				"q_pool_caught": {
+					"speaker": "Fast Eddie",
+					"text": "A long silence. Then, with enormous dignity: \"It's a weighted table. There's a difference.\" He pays you to go away.",
+					"flag": "sq_pool_caught",
+					"end": true
+				}
+			}
+		},
+		"enc_beggar_talk": {
+			"start": "start",
+			"nodes": {
+				"start": {
+					"speaker": "Pete",
+					"text": "Spare anything? Food, water, a minute. I'm not fussy about which.",
+					"choices": [
+						{
+							"text": "Here, take a can of beans.",
+							"next": "food",
+							"encounter": "give_food"
+						},
+						{
+							"text": "Have some water.",
+							"next": "water",
+							"encounter": "give_water"
+						},
+						{
+							"text": "[Show the donut]",
+							"next": "q_donut",
+							"requires": [
+								"sq_donut_taken",
+								"!sq_donut_given"
+							]
+						},
+						{
+							"text": "Sorry. Not today.",
+							"next": "refuse",
+							"encounter": "refuse"
+						}
+					]
+				},
+				"food": {
+					"speaker": "Pete",
+					"text": "...I'm going to be honest with you, I've got caps. I just wanted somebody to hand me something. Take them. Please.",
+					"end": true
+				},
+				"water": {
+					"speaker": "Pete",
+					"text": "You're the first one in a month. Here. It still turns on. I don't want to hear it ring again.",
+					"end": true
+				},
+				"refuse": {
+					"speaker": "Pete",
+					"text": "That's all right. That's all right.",
+					"end": true
+				},
+				"q_donut": {
+					"speaker": "Pete",
+					"text": "Is that the donut? From the case? Pete's hands come up like he is being arrested. \"People have died over that donut. I'm people.\"",
+					"choices": [
+						{
+							"text": "[Give Pete the donut]",
+							"next": "q_donut_paid",
+							"cost": {
+								"last_donut": 1
+							},
+							"cost_fail": "refuse"
+						},
+						{
+							"text": "It's mine.",
+							"next": "refuse"
+						}
+					]
+				},
+				"q_donut_paid": {
+					"speaker": "Pete",
+					"text": "He eats it in two bites, chews for a long time, and says, with total honesty, \"It was better as an idea.\"",
+					"flag": "sq_donut_given",
+					"end": true
+				}
+			}
+		},
+		"enc_wanted_talk": {
+			"start": "start",
+			"nodes": {
+				"start": {
+					"speaker": "Dale",
+					"text": "Afternoon. Beer? It's terrible. Sit anywhere.",
+					"choices": [
+						{
+							"text": "You're on a poster in four towns.",
+							"next": "poster"
+						},
+						{
+							"text": "Enjoy your afternoon.",
+							"next": "bye"
+						}
+					]
+				},
+				"poster": {
+					"speaker": "Dale",
+					"text": "...Is it the one where I'm squinting? I hate that one. So. What's it going to be.",
+					"choices": [
+						{
+							"text": "I'm claiming the bounty.",
+							"next": "claim",
+							"encounter": "turn_in"
+						},
+						{
+							"text": "Nothing. Never saw you.",
+							"next": "walk",
+							"encounter": "walk"
+						}
+					]
+				},
+				"claim": {
+					"speaker": "Dale",
+					"text": "Yeah. Yeah, all right.",
+					"end": true
+				},
+				"walk": {
+					"speaker": "Dale",
+					"text": "Decent of you. There's a cooler under the chair, help yourself.",
+					"end": true
+				},
+				"bye": {
+					"speaker": "Dale",
+					"text": "You too, friend.",
+					"end": true
+				}
+			}
+		},
+		"enc_tourist_talk": {
+			"start": "start",
+			"nodes": {
+				"start": {
+					"speaker": "Sandy",
+					"text": "Thank goodness. Do you know when they're reopening I-80? We've been in this rest stop a while and the radio's just doing that noise.",
+					"choices": [
+						{
+							"text": "Ma'am. It's been five years.",
+							"next": "truth",
+							"encounter": "tell_truth"
+						},
+						{
+							"text": "Should be any day now.",
+							"next": "play",
+							"encounter": "play_along"
+						},
+						{
+							"text": "I don't know. Sorry.",
+							"next": "bye"
+						}
+					]
+				},
+				"truth": {
+					"speaker": "Sandy",
+					"text": "...Five. ...Right. Okay. Okay. Would you take this? It's Dylan's. He won't need it on the drive back. There isn't a drive back, is there.",
+					"end": true
+				},
+				"play": {
+					"speaker": "Sandy",
+					"text": "Oh, that's a relief. Here, for your trouble - we've got loads, we packed for a week.",
+					"end": true
+				},
+				"bye": {
+					"speaker": "Sandy",
+					"text": "No, no, that's all right. Somebody will come.",
+					"end": true
+				}
+			}
+		},
+		"enc_drunk_talk": {
+			"start": "start",
+			"nodes": {
+				"start": {
+					"speaker": "Buzz",
+					"text": "You! You look like a man who can hold his warm beer. Or a woman. Or whatever's going on there, I'm not judging, I'm SWAYING.",
+					"choices": [
+						{
+							"text": "Drinking contest. (1 warm tallboy)",
+							"next": "drink",
+							"encounter": "drink_off"
+						},
+						{
+							"text": "Arm wrestle, then.",
+							"next": "arm",
+							"encounter": "arm_wrestle"
+						},
+						{
+							"text": "You should sit down.",
+							"next": "sit"
+						},
+						{
+							"text": "What are the chairs for?",
+							"next": "q_chair",
+							"requires": "!sq_chair_start"
+						},
+						{
+							"text": "I believe I'm the champion.",
+							"next": "q_chair_in",
+							"requires": [
+								"sq_chair_win",
+								"!sq_chair_return"
+							]
+						},
+						{
+							"text": "Goodbye, Buzz.",
+							"next": "bye"
+						}
+					]
+				},
+				"drink": {
+					"speaker": "Buzz",
+					"text": "Rematch. Always a rematch.",
+					"choices": [
+						{
+							"text": "Again.",
+							"next": "drink",
+							"encounter": "drink_off"
+						},
+						{
+							"text": "Enough.",
+							"next": "bye"
+						}
+					]
+				},
+				"arm": {
+					"speaker": "Buzz",
+					"text": "Best of infinity.",
+					"choices": [
+						{
+							"text": "Again.",
+							"next": "arm",
+							"encounter": "arm_wrestle"
+						},
+						{
+							"text": "Enough.",
+							"next": "bye"
+						}
+					]
+				},
+				"sit": {
+					"speaker": "Buzz",
+					"text": "I AM sitting. ...Oh. Huh.",
+					"end": true
+				},
+				"bye": {
+					"speaker": "Buzz",
+					"text": "You're my best friend. I'll forget this. Don't take it personal.",
+					"end": true
+				},
+				"q_chair": {
+					"speaker": "Buzz",
+					"text": "Tournament rules: two chairs, one cooler, nobody stands up. I am the reigning champion of this and nine other things. Ten caps to enter.",
+					"choices": [
+						{
+							"text": "[10 caps] Set up the second chair.",
+							"next": "bye",
+							"encounter": "sit_off"
+						},
+						{
+							"text": "I have things to do.",
+							"next": "bye"
+						}
+					],
+					"flag": "sq_chair_start"
+				},
+				"q_chair_in": {
+					"speaker": "Buzz",
+					"text": "He produces a trophy from under the chair. It is a bowling trophy with the name filed off. \"Undisputed. Don't let it change you.\"",
+					"flag": "sq_chair_return",
+					"give": {
+						"col_trophy": 1
+					},
+					"end": true
+				}
+			}
+		},
+		"enc_gambler_talk": {
+			"start": "start",
+			"nodes": {
+				"start": {
+					"speaker": "Lucky",
+					"text": "Five caps a hand, twenty-five if you're feeling brave. I deal, you cut, nobody shoots anybody. That's the whole rulebook.",
+					"choices": [
+						{
+							"text": "Five caps.",
+							"next": "small",
+							"encounter": "small"
+						},
+						{
+							"text": "Twenty-five. Deal.",
+							"next": "big",
+							"encounter": "big"
+						},
+						{
+							"text": "I don't gamble.",
+							"next": "bye"
+						}
+					]
+				},
+				"small": {
+					"speaker": "Lucky",
+					"text": "Another?",
+					"choices": [
+						{
+							"text": "Deal.",
+							"next": "small",
+							"encounter": "small"
+						},
+						{
+							"text": "I'm out.",
+							"next": "bye"
+						}
+					]
+				},
+				"big": {
+					"speaker": "Lucky",
+					"text": "Again?",
+					"choices": [
+						{
+							"text": "Deal.",
+							"next": "big",
+							"encounter": "big"
+						},
+						{
+							"text": "I'm out.",
+							"next": "bye"
+						}
+					]
+				},
+				"bye": {
+					"speaker": "Lucky",
+					"text": "Everybody gambles. Most people just don't get a table.",
+					"end": true
+				}
+			}
+		},
+		"enc_collector_talk": {
+			"start": "start",
+			"nodes": {
+				"start": {
+					"speaker": "Winifred",
+					"text": "Winifred. I buy oddities - cones, ducks, gnomes, pins, plates, tapes, the little cars. The world ended and everyone started collecting bullets. Somebody has to keep the STUFF.",
+					"choices": [
+						{
+							"text": "Here's a traffic cone. (1)",
+							"next": "paid",
+							"cost": {
+								"col_traffic_cone": 1
+							},
+							"cost_fail": "none"
+						},
+						{
+							"text": "Here's a rubber duck. (1)",
+							"next": "paid_good",
+							"cost": {
+								"col_rubber_duck": 1
+							},
+							"cost_fail": "none"
+						},
+						{
+							"text": "Here's a garden gnome. (1)",
+							"next": "paid_good",
+							"cost": {
+								"col_garden_gnome": 1
+							},
+							"cost_fail": "none"
+						},
+						{
+							"text": "Here's a bowling pin. (1)",
+							"next": "paid",
+							"cost": {
+								"col_bowling_pin": 1
+							},
+							"cost_fail": "none"
+						},
+						{
+							"text": "What's a 37th bottle cap?",
+							"next": "cap37",
+							"requires": "!sq_cap37_start"
+						},
+						{
+							"text": "Dent corn or flint corn?",
+							"next": "q_corn_b",
+							"requires": [
+								"sq_corn_start",
+								"!sq_corn_b"
+							]
+						},
+						{
+							"text": "Greg is looking for something.",
+							"next": "q_greg",
+							"requires": [
+								"sq_greg_start",
+								"!sq_greg_item"
+							]
+						},
+						{
+							"text": "Anything strange lately?",
+							"next": "q_mann",
+							"requires": "!sq_mann_start"
+						},
+						{
+							"text": "About that shop.",
+							"next": "q_mann_in",
+							"requires": [
+								"sq_mann_reach",
+								"!sq_mann_return"
+							]
+						},
+						{
+							"text": "I walked through a door in a field.",
+							"next": "q_door",
+							"requires": [
+								"enc_door_opened",
+								"!sq_door_asked"
+							]
+						},
+						{
+							"text": "I found the cap.",
+							"next": "q_cap_in",
+							"requires": [
+								"sq_cap37_start",
+								"!sq_cap37_return"
+							]
+						},
+						{
+							"text": "Nothing today.",
+							"next": "bye"
+						}
+					]
+				},
+				"paid": {
+					"speaker": "Winifred",
+					"text": "Catalogued. Here's your end.",
+					"choices": [
+						{
+							"text": "Anything else?",
+							"next": "start"
+						}
+					],
+					"give": {
+						"bottle_cap": 12,
+						"bandage": 1
+					},
+					"give_every_time": true
+				},
+				"paid_good": {
+					"speaker": "Winifred",
+					"text": "Oh, that's a GOOD one. Don't tell anyone what I paid.",
+					"choices": [
+						{
+							"text": "Anything else?",
+							"next": "start"
+						}
+					],
+					"give": {
+						"bottle_cap": 25,
+						"painkillers": 1
+					},
+					"give_every_time": true
+				},
+				"cap37": {
+					"speaker": "Winifred",
+					"text": "There are thirty-six known bottle cap designs from the Kearney bottling plant. Thirty-six. A man in a bathtub south of here says he has a thirty-seventh. I have offered him everything I own. Bring it to me and name your price.",
+					"choices": [
+						{
+							"text": "I'll find it.",
+							"next": "bye"
+						}
+					],
+					"flag": "sq_cap37_start"
+				},
+				"none": {
+					"speaker": "Winifred",
+					"text": "You don't have one. I'd know.",
+					"choices": [
+						{
+							"text": "Right.",
+							"next": "start"
+						}
+					]
+				},
+				"bye": {
+					"speaker": "Winifred",
+					"text": "Keep your eyes down. The good stuff is always on the ground.",
+					"end": true
+				},
+				"q_corn_b": {
+					"speaker": "Winifred",
+					"text": "Dent. I have a jar of each and the dent is worth four times the flint, which makes it correct. Value is truth.",
+					"flag": "sq_corn_b",
+					"end": true
+				},
+				"q_greg": {
+					"speaker": "Winifred",
+					"text": "Greg. Greg has been looking for the same thing since July. I have it. Twenty-five caps.",
+					"choices": [
+						{
+							"text": "[25 caps] Sold.",
+							"next": "bye",
+							"encounter": "greg_trade"
+						},
+						{
+							"text": "That's robbery.",
+							"next": "bye"
+						}
+					]
+				},
+				"q_mann": {
+					"speaker": "Winifred",
+					"text": "Mannequins. Somebody is moving them. Not stealing - moving. There's a shop out past the bars with five in it and there were four last month. Go look and tell me I'm wrong.",
+					"flag": "sq_mann_start",
+					"end": true
+				},
+				"q_mann_in": {
+					"speaker": "Winifred",
+					"text": "Well?",
+					"choices": [
+						{
+							"text": "They were not where the dust says they were.",
+							"next": "q_mann_done"
+						},
+						{
+							"text": "You're wrong. It's five. It was always five.",
+							"next": "q_mann_done"
+						}
+					]
+				},
+				"q_mann_done": {
+					"speaker": "Winifred",
+					"text": "She writes the number down in a ledger of numbers. \"Then we agree it's a problem.\"",
+					"flag": "sq_mann_return",
+					"end": true
+				},
+				"q_door": {
+					"speaker": "Winifred",
+					"text": "A door standing in a field, and a mannequin head behind it. She turns the head over twice. \"Keep it. And don't go back and look for the door. It won't be there, and you'll keep looking.\"",
+					"flag": "sq_door_asked",
+					"end": true
+				},
+				"q_cap_in": {
+					"speaker": "Winifred",
+					"text": "Show me. Bent, scorched, mint mark on the underside of the crimp. She goes very quiet.",
+					"choices": [
+						{
+							"text": "[Hand over the 37th cap]",
+							"next": "q_cap_paid",
+							"cost": {
+								"cap_37": 1
+							},
+							"cost_fail": "bye"
+						},
+						{
+							"text": "Not for sale.",
+							"next": "bye"
+						}
+					]
+				},
+				"q_cap_paid": {
+					"speaker": "Winifred",
+					"text": "\"Thirty-seven of thirty-six.\" She pays without arguing, which frightens you more than the cap does.",
+					"flag": "sq_cap37_return",
+					"end": true
+				}
+			}
+		},
+		"enc_con_talk": {
+			"start": "start",
+			"nodes": {
+				"start": {
+					"speaker": "Smiling Rick",
+					"text": "Friend. FRIEND. Hand-drawn map, marked vault, two days' walk, twenty caps. I've sold four this week and all four buyers are rich now, probably, I haven't checked.",
+					"choices": [
+						{
+							"text": "Twenty caps. Sold.",
+							"next": "sold",
+							"encounter": "buy_map"
+						},
+						{
+							"text": "This is Hastings. You've drawn Hastings.",
+							"next": "called",
+							"encounter": "call_it"
+						},
+						{
+							"text": "No thanks.",
+							"next": "bye"
+						}
+					]
+				},
+				"sold": {
+					"speaker": "Smiling Rick",
+					"text": "Pleasure! Don't open it till you're well clear of here, the ink's wet, the - yes, bye now.",
+					"end": true
+				},
+				"called": {
+					"speaker": "Smiling Rick",
+					"text": "...Keep your voice down.",
+					"end": true
+				},
+				"bye": {
+					"speaker": "Smiling Rick",
+					"text": "Your loss! Genuinely! Probably!",
+					"end": true
+				}
+			}
+		},
+		"enc_digger_talk": {
+			"start": "start",
+			"nodes": {
+				"start": {
+					"speaker": "Hollis",
+					"text": "(He doesn't look up. The hole is about four feet down and very neat.)",
+					"choices": [
+						{
+							"text": "Who's it for?",
+							"next": "who"
+						},
+						{
+							"text": "Want a hand?",
+							"next": "help",
+							"encounter": "help_dig"
+						},
+						{
+							"text": "I'll leave you to it.",
+							"next": "bye"
+						}
+					]
+				},
+				"who": {
+					"speaker": "Hollis",
+					"text": "Nope.",
+					"choices": [
+						{
+							"text": "That's not an answer.",
+							"next": "who2"
+						},
+						{
+							"text": "Fine.",
+							"next": "bye"
+						}
+					]
+				},
+				"who2": {
+					"speaker": "Hollis",
+					"text": "It isn't, no.",
+					"choices": [
+						{
+							"text": "...",
+							"next": "bye"
+						}
+					],
+					"encounter": "ask_again"
+				},
+				"help": {
+					"speaker": "Hollis",
+					"text": "(You dig. He doesn't talk. After a while he hands you caps and goes back to it.)",
+					"end": true
+				},
+				"bye": {
+					"speaker": "Hollis",
+					"text": "Mm.",
+					"end": true
+				}
+			}
+		},
+		"enc_wanderer_talk": {
+			"start": "start",
+			"nodes": {
+				"start": {
+					"speaker": "The Wanderer",
+					"text": "You again. That's twice now, unless you count the bridge, which I don't.",
+					"choices": [
+						{
+							"text": "Where are you walking?",
+							"next": "where"
+						},
+						{
+							"text": "Have we met?",
+							"next": "met"
+						},
+						{
+							"text": "Safe travels.",
+							"next": "bye"
+						}
+					]
+				},
+				"where": {
+					"speaker": "The Wanderer",
+					"text": "West. There's a woman out west with a notebook full of storms. I'm not going to her. I'm going past her. There's a difference and it matters to me.",
+					"choices": [
+						{
+							"text": "Halvorsen?",
+							"next": "halv"
+						},
+						{
+							"text": "Good luck.",
+							"next": "bye"
+						}
+					],
+					"flag": "wanderer_met"
+				},
+				"halv": {
+					"speaker": "The Wanderer",
+					"text": "...You know that name. Huh. Then I'll see you a third time.",
+					"choices": [
+						{
+							"text": "Count on it.",
+							"next": "bye"
+						}
+					],
+					"flag": "wanderer_halvorsen"
+				},
+				"met": {
+					"speaker": "The Wanderer",
+					"text": "Not formally. You were asleep.",
+					"choices": [
+						{
+							"text": "...",
+							"next": "bye"
+						}
+					],
+					"flag": "wanderer_met"
+				},
+				"bye": {
+					"speaker": "The Wanderer",
+					"text": "West.",
+					"end": true
+				},
+				"third": {
+					"speaker": "The Wanderer",
+					"text": "Third time. Told you. I'll say one useful thing and then I'm walking: when the sky goes green, get UNDER something. Not in. Under.",
+					"choices": [
+						{
+							"text": "Thanks.",
+							"next": "bye"
+						}
+					],
+					"flag": "wanderer_third"
+				}
+			},
+			"starts": [
+				{
+					"requires": "wanderer_halvorsen",
+					"node": "third"
+				}
+			]
+		},
+		"enc_greg_talk": {
+			"start": "start",
+			"nodes": {
+				"start": {
+					"speaker": "Greg",
+					"text": "Greg.",
+					"choices": [
+						{
+							"text": "Hi Greg. How are you?",
+							"next": "how"
+						},
+						{
+							"text": "What are you doing out here?",
+							"next": "doing"
+						},
+						{
+							"text": "Lost something?",
+							"next": "lost"
+						},
+						{
+							"text": "I think I found your thing.",
+							"next": "q_greg_in",
+							"requires": [
+								"sq_greg_start",
+								"!sq_greg_return"
+							]
+						},
+						{
+							"text": "Bye, Greg.",
+							"next": "bye"
+						}
+					]
+				},
+				"how": {
+					"speaker": "Greg",
+					"text": "Can't complain. Well. I can. I do. But the complaining's going well.",
+					"choices": [
+						{
+							"text": "Right.",
+							"next": "start"
+						}
+					]
+				},
+				"doing": {
+					"speaker": "Greg",
+					"text": "Pushing. I was pushing before, too. It's the main thing I've got going.",
+					"choices": [
+						{
+							"text": "Okay.",
+							"next": "start"
+						}
+					]
+				},
+				"lost": {
+					"speaker": "Greg",
+					"text": "YES. Thank you. It's about this big and it does a thing and I need it and I cannot for the life of me remember what it's called or what it looks like or what it does.",
+					"choices": [
+						{
+							"text": "I'll keep an eye out.",
+							"next": "quest",
+							"requires": "!sq_greg_start"
+						},
+						{
+							"text": "That's not much to go on.",
+							"next": "start"
+						}
+					]
+				},
+				"quest": {
+					"speaker": "Greg",
+					"text": "You're a good egg. It's definitely not a hat. I've ruled out hats.",
+					"choices": [
+						{
+							"text": "Noted.",
+							"next": "bye"
+						}
+					],
+					"flag": "sq_greg_start"
+				},
+				"bye": {
+					"speaker": "Greg",
+					"text": "Greg.",
+					"end": true
+				},
+				"q_greg_in": {
+					"speaker": "Greg",
+					"text": "Is that it? That might be it. Hold it up. Yeah. That's it. What is it?",
+					"choices": [
+						{
+							"text": "[Give Greg the thing] No idea.",
+							"next": "q_greg_paid",
+							"cost": {
+								"gregs_thing": 1
+							},
+							"cost_fail": "q_greg_no"
+						},
+						{
+							"text": "Still looking, Greg.",
+							"next": "bye"
+						}
+					]
+				},
+				"q_greg_paid": {
+					"speaker": "Greg",
+					"text": "He turns it over twice, puts it in his pocket, and immediately forgets it is there. \"Thanks. I owe you. I won't remember that either.\"",
+					"flag": "sq_greg_return",
+					"end": true
+				},
+				"q_greg_no": {
+					"speaker": "Greg",
+					"text": "No, that's not it. That's not even close. I think.",
+					"end": true
+				}
+			}
+		},
+		"enc_inspector_talk": {
+			"start": "start",
+			"nodes": {
+				"start": {
+					"speaker": "Safety Inspector",
+					"text": "Don't move. You're standing in an unbarriered zone with no high-visibility garment and - yes - open footwear-adjacent conditions. Buffalo County does not tolerate this.",
+					"choices": [
+						{
+							"text": "Buffalo County doesn't exist any more.",
+							"next": "exist"
+						},
+						{
+							"text": "Write me up, then.",
+							"next": "cite",
+							"encounter": "citation"
+						},
+						{
+							"text": "What are you writing down?",
+							"next": "q_tp",
+							"requires": "!sq_tp_start"
+						},
+						{
+							"text": "About your violation.",
+							"next": "q_tp_in",
+							"requires": [
+								"sq_tp_start",
+								"!sq_tp_return"
+							]
+						},
+						{
+							"text": "I'm leaving.",
+							"next": "bye"
+						}
+					]
+				},
+				"exist": {
+					"speaker": "Safety Inspector",
+					"text": "The county was dissolved. The CODE was not. The code is eternal. The code has outlived three governments and will outlive you.",
+					"choices": [
+						{
+							"text": "Fine. Write me up.",
+							"next": "cite",
+							"encounter": "citation"
+						},
+						{
+							"text": "Goodbye.",
+							"next": "bye"
+						}
+					]
+				},
+				"cite": {
+					"speaker": "Safety Inspector",
+					"text": "Pink copy is yours. Yellow copy is mine. White copy goes to an office that is a crater. Have a compliant day.",
+					"end": true
+				},
+				"bye": {
+					"speaker": "Safety Inspector",
+					"text": "This conversation has been logged as an incident.",
+					"end": true
+				},
+				"q_tp": {
+					"speaker": "Safety Inspector",
+					"text": "Violation seventy-one: a settlement of eleven people with zero rolls of sanitary tissue. I cannot sign this off. Bring me three rolls and I will sign it off.",
+					"flag": "sq_tp_start",
+					"end": true
+				},
+				"q_tp_in": {
+					"speaker": "Safety Inspector",
+					"text": "Let me see them.",
+					"choices": [
+						{
+							"text": "[Hand over three rolls]",
+							"next": "q_tp_paid",
+							"cost": {
+								"toilet_paper": 3
+							},
+							"cost_fail": "q_tp_no"
+						},
+						{
+							"text": "Not yet.",
+							"next": "bye"
+						}
+					]
+				},
+				"q_tp_paid": {
+					"speaker": "Safety Inspector",
+					"text": "Compliant. For the first time since the bomb, Kearney is compliant. He stamps the form eleven times.",
+					"flag": "sq_tp_return",
+					"end": true
+				},
+				"q_tp_no": {
+					"speaker": "Safety Inspector",
+					"text": "Three. The number is three. It is on the form.",
+					"end": true
+				}
+			}
+		},
+		"enc_bargain_talk": {
+			"start": "start",
+			"nodes": {
+				"start": {
+					"speaker": "The Bargain King",
+					"text": "BEHOLD. The Bargain King. Everything here is priced to move and nothing here has moved in two years. COINCIDENCE? Obviously not, it's the prices.",
+					"choices": [
+						{
+							"text": "One bandage, then. (30 caps)",
+							"next": "rip",
+							"cost": {
+								"bottle_cap": 30
+							},
+							"cost_fail": "broke"
+						},
+						{
+							"text": "Thirty caps for a bandage?",
+							"next": "haggle"
+						},
+						{
+							"text": "Your prices are insane.",
+							"next": "insult"
+						},
+						{
+							"text": "You look upset.",
+							"next": "q_cart",
+							"requires": "!sq_cart_start"
+						},
+						{
+							"text": "About your cart.",
+							"next": "q_cart_in",
+							"requires": [
+								"sq_cart_found",
+								"!sq_cart_return"
+							]
+						},
+						{
+							"text": "Goodbye, your majesty.",
+							"next": "bye"
+						}
+					]
+				},
+				"rip": {
+					"speaker": "The Bargain King",
+					"text": "A WISE PURCHASE. Enjoy your bandage. It is a very good bandage.",
+					"choices": [
+						{
+							"text": "...It's a bandage.",
+							"next": "start"
+						}
+					],
+					"give": {
+						"bandage": 1
+					},
+					"give_every_time": true
+				},
+				"haggle": {
+					"speaker": "The Bargain King",
+					"text": "Thirty-five.",
+					"choices": [
+						{
+							"text": "That's going the wrong way.",
+							"next": "haggle2"
+						},
+						{
+							"text": "Forget it.",
+							"next": "bye"
+						}
+					]
+				},
+				"haggle2": {
+					"speaker": "The Bargain King",
+					"text": "FORTY. I will go all day. I have nothing else on.",
+					"choices": [
+						{
+							"text": "Fine, thirty. (30 caps)",
+							"next": "rip",
+							"cost": {
+								"bottle_cap": 30
+							},
+							"cost_fail": "broke"
+						},
+						{
+							"text": "Forget it.",
+							"next": "bye"
+						}
+					]
+				},
+				"insult": {
+					"speaker": "The Bargain King",
+					"text": "My prices are a MONARCHY and you are a PEASANT with OPINIONS.",
+					"choices": [
+						{
+							"text": "Sorry.",
+							"next": "start"
+						}
+					]
+				},
+				"broke": {
+					"speaker": "The Bargain King",
+					"text": "No caps, no crown jewels.",
+					"choices": [
+						{
+							"text": "Right.",
+							"next": "start"
+						}
+					]
+				},
+				"bye": {
+					"speaker": "The Bargain King",
+					"text": "GO. TELL OTHERS. BRING CAPS.",
+					"end": true
+				},
+				"q_cart": {
+					"speaker": "The Bargain King",
+					"text": "Somebody took my cart. My CART. Forty years of inventory in that thing and some sprinter walked off with it. Find it and the wheel and there's caps in it.",
+					"flag": "sq_cart_start",
+					"end": true
+				},
+				"q_cart_in": {
+					"speaker": "The Bargain King",
+					"text": "That's my wheel. That's MY wheel. Where's the rest of it?",
+					"choices": [
+						{
+							"text": "[Give the wheel] In a ditch by the Chillers' place.",
+							"next": "q_cart_paid",
+							"cost": {
+								"cart_wheel": 1
+							},
+							"cost_fail": "q_cart_no"
+						},
+						{
+							"text": "Still looking.",
+							"next": "bye"
+						}
+					]
+				},
+				"q_cart_paid": {
+					"speaker": "The Bargain King",
+					"text": "Ditch. Of course. Take the caps, don't touch the merchandise.",
+					"flag": "sq_cart_return",
+					"end": true
+				},
+				"q_cart_no": {
+					"speaker": "The Bargain King",
+					"text": "Then you don't have my wheel, do you.",
+					"end": true
+				}
+			}
+		},
+		"enc_sheriff_talk": {
+			"start": "start",
+			"nodes": {
+				"start": {
+					"speaker": "Sheriff of Nothing",
+					"text": "Hold up. You're entering the township of - well. It doesn't have the sign any more. I'm the sheriff. Population one. Crime's down ninety years running.",
+					"choices": [
+						{
+							"text": "Sheriff of where, exactly?",
+							"next": "where"
+						},
+						{
+							"text": "Any trouble around here?",
+							"next": "trouble"
+						},
+						{
+							"text": "Deputise me.",
+							"next": "dep",
+							"encounter": "deputise"
+						},
+						{
+							"text": "I pulled a stack of tickets off a car.",
+							"next": "q_park",
+							"requires": [
+								"sq_parking_start",
+								"!sq_parking_return"
+							]
+						},
+						{
+							"text": "About the corn.",
+							"next": "q_corn_in",
+							"requires": [
+								"sq_corn_a",
+								"sq_corn_b",
+								"!sq_corn_return"
+							]
+						},
+						{
+							"text": "Carry on, Sheriff.",
+							"next": "bye"
+						}
+					]
+				},
+				"where": {
+					"speaker": "Sheriff of Nothing",
+					"text": "Here. All of it. That fence to that pole. I was elected by acclamation, which is to say I said it out loud and nobody argued.",
+					"choices": [
+						{
+							"text": "Makes sense.",
+							"next": "start"
+						}
+					]
+				},
+				"trouble": {
+					"speaker": "Sheriff of Nothing",
+					"text": "There's a man digs a hole some days and won't say who it's for. That's the extent of my case load. I think about it a lot.",
+					"choices": [
+						{
+							"text": "I'll ask him.",
+							"next": "bye"
+						}
+					],
+					"flag": "enc_heard_digger"
+				},
+				"dep": {
+					"speaker": "Sheriff of Nothing",
+					"text": "Raise your right hand. Say the thing. ...Close enough. You're a deputy of nothing, which is more than most people are.",
+					"end": true
+				},
+				"bye": {
+					"speaker": "Sheriff of Nothing",
+					"text": "Keep it civil out there. Somebody has to.",
+					"end": true
+				},
+				"q_park": {
+					"speaker": "Sheriff of Nothing",
+					"text": "Four thousand one hundred and eighteen. He spreads them on the hood like evidence. \"Somebody kept writing them. After. That's the part that bothers me.\"",
+					"choices": [
+						{
+							"text": "[Hand over the tickets]",
+							"next": "q_park_paid",
+							"cost": {
+								"parking_tickets": 1
+							},
+							"cost_fail": "bye"
+						},
+						{
+							"text": "Keep them, then.",
+							"next": "bye"
+						}
+					]
+				},
+				"q_park_paid": {
+					"speaker": "Sheriff of Nothing",
+					"text": "\"Case stays open.\" He files them in a cooler. You are, as of now, a deputy of a town with no people in it.",
+					"flag": "sq_parking_return",
+					"end": true
+				},
+				"q_corn_in": {
+					"speaker": "Sheriff of Nothing",
+					"text": "You've asked around? Good. Rule on it. Dent or flint. The county needs a ruling and I need this to be over.",
+					"choices": [
+						{
+							"text": "Dent corn. Obviously.",
+							"next": "q_corn_done"
+						},
+						{
+							"text": "Flint corn. Obviously.",
+							"next": "q_corn_done"
+						},
+						{
+							"text": "It's a weed and you've all lost your minds.",
+							"next": "q_corn_done"
+						}
+					]
+				},
+				"q_corn_done": {
+					"speaker": "Sheriff of Nothing",
+					"text": "He writes it down, reads it back, and nods like a man released from prison. \"Ruled. Filed. Done. God bless you.\"",
+					"flag": "sq_corn_return",
+					"end": true
+				}
+			}
+		},
+		"enc_chess_talk": {
+			"start": "start",
+			"nodes": {
+				"start": {
+					"speaker": "Chess Master",
+					"text": "Sit. Black or white, I don't care, it won't matter. Twenty caps says you don't last twenty moves.",
+					"choices": [
+						{
+							"text": "You're on.",
+							"next": "play",
+							"encounter": "play"
+						},
+						{
+							"text": "Who taught you?",
+							"next": "taught"
+						},
+						{
+							"text": "No thanks.",
+							"next": "bye"
+						}
+					]
+				},
+				"play": {
+					"speaker": "Chess Master",
+					"text": "Again? I'd like the chance to prove that was an aberration.",
+					"choices": [
+						{
+							"text": "Again.",
+							"next": "play",
+							"encounter": "play"
+						},
+						{
+							"text": "I'm done.",
+							"next": "bye"
+						}
+					]
+				},
+				"taught": {
+					"speaker": "Chess Master",
+					"text": "A book. The book is gone now. I remember all of it except the parts I lost, which I have replaced with parts I made up. They work fine.",
+					"choices": [
+						{
+							"text": "Let's play.",
+							"next": "play",
+							"encounter": "play"
+						},
+						{
+							"text": "Goodbye.",
+							"next": "bye"
+						}
+					]
+				},
+				"bye": {
+					"speaker": "Chess Master",
+					"text": "Cowardice is a valid opening.",
+					"end": true
+				}
+			}
+		},
+		"odd_cone_king_talk": {
+			"start": "start",
+			"nodes": {
+				"start": {
+					"speaker": "Cone King Randy",
+					"text": "You are standing in the Kingdom of Cones. I am its king. The intersection is mine by right of placement. Mind the cone.",
+					"choices": [
+						{
+							"text": "Who disputes it?",
+							"next": "war",
+							"requires": "!sq_cones_start"
+						},
+						{
+							"text": "[Bring cones] I have your tribute.",
+							"next": "tribute",
+							"requires": [
+								"sq_cones_have",
+								"!sq_cones_return"
+							]
+						},
+						{
+							"text": "Long live the king.",
+							"next": "bye"
+						}
+					]
+				},
+				"war": {
+					"speaker": "Cone King Randy",
+					"text": "The Second Avenue Cone Collective. Six cones they took. SIX. Bring me six cones and the war ends and you may touch the throne.",
+					"flag": "sq_cones_start",
+					"end": true
+				},
+				"tribute": {
+					"speaker": "Cone King Randy",
+					"text": "He counts them twice, places them in a circle, and weeps openly.",
+					"choices": [
+						{
+							"text": "[Hand over six cones]",
+							"next": "crowned",
+							"cost": {
+								"col_traffic_cone": 6
+							},
+							"cost_fail": "short"
+						},
+						{
+							"text": "On second thought.",
+							"next": "bye"
+						}
+					]
+				},
+				"crowned": {
+					"speaker": "Cone King Randy",
+					"text": "\"The war is over. You are Duke of the Northbound Lane.\" He means it. There is no lane.",
+					"flag": "sq_cones_return",
+					"end": true
+				},
+				"short": {
+					"speaker": "Cone King Randy",
+					"text": "That is not six. I can count cones. It is the one thing I can do.",
+					"end": true
+				},
+				"bye": {
+					"speaker": "Cone King Randy",
+					"text": "Walk around. Not through. Around.",
+					"end": true
+				}
+			}
+		}
+	}
+}

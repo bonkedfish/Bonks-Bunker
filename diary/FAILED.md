@@ -149,3 +149,30 @@ Approach — why it failed — what replaced it.
   found the time gone within 30 frames whatever was switched off: one-off hitches the first time new meshes /
   materials draw (shader pipeline compiles: shotgun, Golden Ace, new drop colours) inside a 120-frame average.
   Steady state 5.7-6.1 ms (perf_probe, golf_test, dropzone_test).
+- 2026-11-20 elm "vase" shape = 3-4 bare limbs each tipped with 2 flat clumps: from any distance it read as an
+  African acacia, not an American elm. An elm needs the crown filled: two-part arching limbs, 3 clumps fanning past
+  each tip, plus a ring of clumps over the middle so the umbrella is one canopy (tests/tree_lineup builds TreeMesh
+  live, so shape edits can be judged without a 1 h bake).
+- 2026-11-20 rough_trees at 1.6 clumps/ha x 2-6 trees (~6 trees/ha before fairway keep-off): the course read as open
+  dirt with a few far clumps, no tree lines. Random clumps only form lines once dense enough that the fairway
+  keep-off carves the gaps.
+- 2026-11-20 sky clouds showed straight diagonal streaks: the cheap fract(p * k) hash bands diagonally and every fbm
+  octave sat on the same grid. Domain warp alone didn't hide it.
+- 2026-11-20 a build_cells run vanished after its first batch with no error (the run tool lost the process); a
+  rerun went through. If a bake goes quiet, check the newest cell file times before assuming a crash in the code.
+- 2026-11-21 Riot Cop shots did 0 damage in the test: pooled zombies keep PositionHistory samples from their last
+  activation, so a body reused within ~1 s answered rewound shots (and melee) at its OLD spot. Fixed by clearing the
+  history on activate. Also: I told the user the open-world cap was 8 when zombies.json said 4 - read the tuning file
+  before quoting a number in an option.
+- 2026-11-21 test spot on the country club rough: hilly, no open direction, and the Spitter's chest-height shots hit
+  the slope (0 damage in 10 s). Tests that need line of sight now pick the first flat open spot (street by Bonk's house).
+- 2026-11-21 Spitter "never hits": a pooled body reused within corpse_seconds of an earlier death was despawned
+  by that earlier life's corpse timer (deactivate bound with no life check), so it fired once and vanished. Fixed
+  with an activation counter (_life) on the timer. Symptom to remember: a zombie whose state freezes mid-fight
+  with net_active false.
+- 2026-11-21 downtown_test "raider and zombie fought" failed after D-100: it picked the FARTHEST raider (the name
+  said nearest) and whatever type the pooled body last was; the zombie was spawned into geometry and thrown ~700 m.
+  Test now uses the nearest raider and sets zombie_shambler.
+- 2026-11-21 grain elevator: OpenStreetMap (Overpass lookup, user-approved) has no grain elevator / silo tags inside
+  our map except two small silos by the RV park, and the import never kept railway lines; web search didn't give a
+  usable location either. The co-op elevator is hand-built on the real OSM industrial lot by the old UP/CB&Q spur.

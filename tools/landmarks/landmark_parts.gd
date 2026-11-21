@@ -18,7 +18,8 @@
 #   sign   {text, pos [x, y, z], yaw_deg, pitch_deg?, size, color [r, g, b], visible_m?}
 #   light  {pos [x, y, z], color, energy, range}
 #   loot   {id, name, table, pos [x, z] | [x, y, z], size [sx, sy, sz], color?, yaw_deg?}  (container_id = prefix_id)
-#   spawn  [name, enemy id, [x, z] | [x, y, z]]   (Marker3D "<prefix>_<name>", group lair_spawns, meta enemy)
+#   spawn  [name, enemy id, [x, z] | [x, y, z], requires?]   (Marker3D "<prefix>_<name>", group lair_spawns, meta enemy;
+#          optional quest-flag list -> meta "requires", so LairDirector only wakes it while the list holds)
 # Every ground-level doorway (outline / mass gap with sill 0) whose inside floor is higher than the ground outside gets
 # a step-free ramp (outer_doors / door_ramps): the player capsule can't step onto a 0.15 m floor edge.
 # Depends on: LandmarkKit, scenes/loot_container.tscn.
@@ -364,6 +365,8 @@ static func spawns(k: LandmarkKit, prefix: String, list: Array, floor_y: float) 
 		mk.name = prefix + "_" + str(s[0])
 		mk.position = Vector3(p[0], float(p[1]) + 0.05, p[2]) if p.size() > 2 else Vector3(p[0], floor_y + 0.05, p[1])
 		mk.set_meta("enemy", str(s[1]))
+		if s.size() > 3:
+			mk.set_meta("requires", s[3])
 		mk.add_to_group("lair_spawns", true)
 		k.root.add_child(mk)
 

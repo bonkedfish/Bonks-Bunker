@@ -1,0 +1,60 @@
+{
+	"note": "Act 1 finale (D-102): the Suits' collection truck at the Cash-Wa Distributing docks, West 4th Street. Local frame = map axes (x east, z south), origin map (1150, 350) in the yard west of the east warehouse (OSM way 492823833, its west wall at local x 55). Built by tools/landmarks/build_collection_point.tscn (collection_point.gd + landmark_parts.gd) -> world/landmarks/collection_point.scn, placed by data/map/landmarks.json 'collection_point'. The escort (6 Retrievers) and the Handler only wake while Collection Day is on (spawn requires). INFERRED: the dock layout (aerial shapes only), the truck and the two black SUVs.",
+	"out_path": "res://world/landmarks/collection_point.scn",
+	"seed": 404,
+	"dims": { "floor_y": 0.05 },
+	"materials": {
+		"asphalt": { "texture": "road_cracked", "tile_m": 4.0, "color": [0.9, 0.9, 0.9], "shadows": false },
+		"concrete": { "texture": "concrete_slab", "tile_m": 2.5, "color": [1.0, 1.0, 0.96], "shadows": false },
+		"barrier": { "texture": "concrete_cracked", "tile_m": 2.0, "color": [1.05, 1.0, 0.95] },
+		"truck_white": { "color": [0.85, 0.86, 0.85], "roughness": 0.5 },
+		"truck_cab": { "color": [0.12, 0.13, 0.15], "roughness": 0.4, "metallic": 0.3 },
+		"suv_black": { "color": [0.03, 0.03, 0.035], "roughness": 0.25, "metallic": 0.5 },
+		"window_dark": { "color": [0.05, 0.06, 0.07], "metallic": 0.3, "roughness": 0.1, "visible_m": 120.0, "shadows": false },
+		"tyre": { "color": [0.05, 0.05, 0.05], "roughness": 0.9, "visible_m": 80.0 },
+		"steel": { "color": [0.4, 0.41, 0.43], "metallic": 0.6, "roughness": 0.5, "visible_m": 90.0 },
+		"cage": { "color": [0.25, 0.26, 0.27], "metallic": 0.7, "roughness": 0.4, "visible_m": 60.0 },
+		"pallet": { "texture": "planks_weathered", "tile_m": 1.0, "color": [0.95, 0.8, 0.6] },
+		"crate": { "texture": "planks_weathered", "tile_m": 1.0, "color": [0.9, 0.75, 0.55], "visible_m": 90.0 },
+		"lamp": { "color": [0.9, 0.95, 1.0], "emission": [0.9, 0.95, 1.0, 2.5], "shadows": false },
+		"stripe": { "color": [0.85, 0.7, 0.1], "roughness": 0.6, "visible_m": 70.0, "shadows": false }
+	},
+	"floors": [
+		{ "rect": [-18, -28, 54.5, 36], "y": 0.03, "mat": "asphalt" },
+		{ "rect": [51.8, -26, 54.5, 30], "y": 0.6, "mat": "concrete" }
+	],
+	"props": [
+		{ "box": [51.75, 0.35, 2.0, 0.12, 0.5, 7.0], "mat": "stripe", "collide": false },
+		{ "box": [20.0, 0.4, -3.0, 1.2, 0.8, 1.2], "mat": "pallet" },
+		{ "box": [20.0, 1.05, -3.0, 1.1, 0.5, 1.1], "mat": "crate" },
+		{ "box": [15.0, 0.4, 8.0, 1.2, 0.8, 1.2], "mat": "pallet" },
+		{ "box": [36.0, 0.55, 16.0, 2.4, 1.1, 1.2], "mat": "crate" },
+		{ "box": [39.0, 0.55, -16.0, 1.2, 1.1, 2.4], "mat": "crate" },
+		{ "box": [8.0, 0.45, -10.0, 3.0, 0.9, 0.6], "mat": "barrier", "yaw": 17 },
+		{ "box": [6.0, 0.45, 12.0, 3.0, 0.9, 0.6], "mat": "barrier", "yaw": -11 },
+		{ "box": [26.0, 0.45, 24.0, 3.0, 0.9, 0.6], "mat": "barrier", "yaw": 80 },
+		{ "cyl": [44.0, 0, -22.0, 0.15, 7.5], "mat": "steel", "sides": 6, "collide": true },
+		{ "box": [44.0, 7.4, -21.4, 0.8, 0.3, 0.5], "mat": "lamp", "collide": false }
+	],
+	"signs": [
+		{ "text": "CASH-WA\nDOCK 3", "pos": [54.6, 4.5, 2.0], "yaw_deg": -90.0, "size": 110, "color": [0.95, 0.9, 0.8], "visible_m": 120.0 }
+	],
+	"lights": [
+		{ "pos": [44.0, 7.0, -20.5], "color": [0.85, 0.9, 1.0], "energy": 2.0, "range": 22.0 }
+	],
+	"loot": [
+		{ "id": "truck_cab", "name": "Collection Truck Cab", "table": "suit_truck", "pos": [42.6, 1.4, 0.0], "size": [0.6, 0.4, 0.8], "color": [0.15, 0.15, 0.17] },
+		{ "id": "suv_back", "name": "Black SUV", "table": "suit_truck", "pos": [32.0, 0.9, -10.5], "size": [1.6, 0.5, 0.6], "color": [0.05, 0.05, 0.06] }
+	],
+	"spawns": [
+		["ret_1", "suit_retriever", [40, -6], ["mq4_acknowledged_done", "!mq4b_collection_done"]],
+		["ret_2", "suit_retriever", [41, 8], ["mq4_acknowledged_done", "!mq4b_collection_done"]],
+		["ret_3", "suit_retriever", [25, -14], ["mq4_acknowledged_done", "!mq4b_collection_done"]],
+		["ret_4", "suit_retriever", [22, 13], ["mq4_acknowledged_done", "!mq4b_collection_done"]],
+		["ret_5", "suit_retriever", [14, -2], ["mq4_acknowledged_done", "!mq4b_collection_done"]],
+		["ret_6", "suit_retriever", [34, 20], ["mq4_acknowledged_done", "!mq4b_collection_done"]],
+		["handler", "suit_handler", [33, 2], ["mq4_acknowledged_done", "!mq4b_collection_done"]]
+	],
+	"truck": { "pos": [47.0, 0.0], "yaw_deg": 90.0 },
+	"suvs": [ [31.0, -10.0, 70.0], [29.0, 11.0, 110.0] ]
+}

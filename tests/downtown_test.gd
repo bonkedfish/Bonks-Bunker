@@ -79,17 +79,23 @@ func _ready() -> void:
 	var zombie: Node3D = null
 	var near_raider: Node3D = null
 	for r: Node3D in raiders:
-		if near_raider == null or r.global_position.distance_to(_player.global_position) > near_raider.global_position.distance_to(_player.global_position):
+		if near_raider == null or r.global_position.distance_to(_player.global_position) < near_raider.global_position.distance_to(_player.global_position):
 			near_raider = r
 	for z in zd.get_children():
 		if not z.net_active:
 			zombie = z
 			break
 	if zombie and near_raider:
+		zombie.net_enemy = "zombie_shambler"  # pooled bodies can be any D-100 type now (a Bloater just bursts)
 		zombie.activate(near_raider.global_position + near_raider.global_basis.z * -4.0 + Vector3(0, 0.3, 0))
 		var zh: float = zombie.health.current
 		var rh: float = near_raider.health.current
 		await get_tree().create_timer(8.0).timeout
+		_say("  fight: zombie %s %s active %s sees %s target %s state %d at %s | raider %s %s sees %s target %s state %d at %s | paused %s" % [zombie.name,
+			zombie.net_enemy, str(zombie.net_active), str(zombie.get("_sees_target")), str(zombie.get("_target").name if zombie.get("_target") else "-"),
+			zombie.brain.state, str(zombie.global_position.round()), near_raider.name, near_raider.net_enemy, str(near_raider.get("_sees_target")),
+			str(near_raider.get("_target").name if near_raider.get("_target") else "-"), near_raider.brain.state, str(near_raider.global_position.round()),
+			str(get_tree().paused)])
 		_check("raider and zombie fought (zombie HP %d -> %d, raider HP %d -> %d)" % [zh, zombie.health.current, rh, near_raider.health.current],
 			zombie.health.current < zh or not zombie.net_active or near_raider.health.current < rh)
 		if zombie.net_active:

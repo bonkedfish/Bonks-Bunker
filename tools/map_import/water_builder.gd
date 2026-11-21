@@ -70,6 +70,20 @@ func is_water(p: Vector2) -> bool:
 	return _surface.has(Vector2i(roundi(p.x / _step), roundi(p.y / _step)))
 
 
+# Shore points (map x, z): every water grid point with dry land next to it, and the outward direction (D-098:
+# reeds and waterside trees). [[Vector2 point, Vector2 out], ...]
+func shore_points() -> Array:
+	var out: Array = []
+	for k: Vector2i in _surface:
+		var dry := Vector2.ZERO
+		for d: Vector2i in [Vector2i(1, 0), Vector2i(-1, 0), Vector2i(0, 1), Vector2i(0, -1)]:
+			if not _surface.has(k + d):
+				dry += Vector2(d)
+		if dry != Vector2.ZERO:
+			out.append([Vector2(k) * _step, dry.normalized()])
+	return out
+
+
 # Water quads for one cell: the surface mesh + swim collider under `root`, flat quads into the far shell.
 func add_cell(rect: Rect2, root: Node3D, far_st: SurfaceTool) -> int:
 	var st := SurfaceTool.new()

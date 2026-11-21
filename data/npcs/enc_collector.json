@@ -1,0 +1,15 @@
+{
+	"note": "Random encounter NPC (D-105). Lines in data/dialogue/encounters.json (barks prefixed enccoll_).",
+	"display_name": "Winifred",
+	"dialogue_tree": "enc_collector_talk",
+	"bark_prefix": "enccoll_",
+	"model": "ubc_punk_f",
+	"talk_range": 3.2,
+	"subtitle_range": 18.0,
+	"greet_range": 10.0,
+	"face_range": 8.0,
+	"turn_speed": 3.0,
+	"bark_cooldown": 8.0,
+	"idle_bark_min": 25.0,
+	"idle_bark_max": 60.0
+}

@@ -8,7 +8,7 @@
 #         moves on to the next tee; water or out of bounds = +1, played again from the last spot. After 18 holes the
 #         card is done (best round: quest flag "kcc_best_round", lowest). Leaving the course area drops the card.
 #   Every peer: `cards` (peer -> {start, played, hole, strokes: Array, ball: Vector3, throws, done, lie}) synced
-#         whole; ball playback with a name marker over each resting ball; answers the local player's GolfView /
+#         whole; ball playback with a tracer line (BallTrails, D-097) and a name marker over each resting ball; answers the local player's GolfView /
 #         SportInput aim_* questions; adds CourseGolfHud under the HUD.
 # Depends on: DataLoader, data/golf/country_club_course.json, GolfBallRules, CourseLies, CourseShot, BallPlayback,
 # PlayerColors, DropZone (sender_player / player_by_peer / toast helpers), SportInput (Player "sport"), QuestDirector (group
@@ -34,6 +34,7 @@ var _cups: Dictionary = {}  # hole -> Vector3 (global, once the ground under the
 var _markers: Dictionary = {}  # peer -> Label3D over the resting ball
 var _check := 0.0
 var _probe_shot: CourseShot = null
+var _trails: BallTrails
 
 
 func _ready() -> void:
@@ -48,6 +49,9 @@ func _ready() -> void:
 	_play.radius = 0.06
 	_play.top_level = true  # paths are global
 	add_child(_play)
+	_trails = BallTrails.new()
+	_trails.name = "Trails"
+	add_child(_trails)
 	for i in course.holes.size():
 		var h: Dictionary = course.holes[i]
 		var body := StaticBody3D.new()
@@ -256,6 +260,7 @@ func _sync(new_cards: Dictionary) -> void:
 			_markers[peer].queue_free()
 			_markers.erase(peer)
 			_play.rest(peer, Vector3.INF)
+			_trails.clear(peer)
 	for peer: int in cards:
 		var c: Dictionary = cards[peer]
 		if c.done:
@@ -297,6 +302,7 @@ func _marker(peer: int) -> Label3D:
 @rpc("authority", "call_local", "reliable")
 func _show(peer: int, path: PackedVector3Array) -> void:
 	_play.play(peer, path, float(_t.ball.sample_hz))
+	_trails.start(peer, path, float(_t.ball.sample_hz))
 
 
 @rpc("authority", "call_local", "reliable")

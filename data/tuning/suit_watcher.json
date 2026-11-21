@@ -1,0 +1,12 @@
+{
+	"note": "D-104: the man in the suit. The host picks one living player every interval_s (random in the range, first after first_delay_s); only that player's game shows him. He stands distance_m away with a clear line of sight, watches for show_s, slips to a new spot every relocate_s while he's out of view, and vanishes (static crackle) when the player comes within near_vanish_m.",
+	"first_delay_s": 300.0,
+	"interval_s": [600.0, 900.0],
+	"show_s": 90.0,
+	"near_vanish_m": 25.0,
+	"distance_m": [60.0, 120.0],
+	"relocate_s": 20.0,
+	"relocate_min_m": 40.0,
+	"retry_s": 45.0,
+	"tries": 3
+}

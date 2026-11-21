@@ -14,6 +14,9 @@ extends Node
 
 const TUNING_PATH := "res://data/tuning/save.json"
 const TUNING_SCHEMA := {"autosave_seconds": TYPE_FLOAT, "toast_seconds": TYPE_FLOAT, "max_worlds_listed": TYPE_FLOAT}
+# World key -> the group of the director that owns it (each has host_save_state / host_load_state).
+const SUB_DIRECTORS := {"encounters": "encounters", "oddities": "oddities", "collectibles": "collectibles",
+	"rare_events": "rare_events", "day_night": "daynight"}
 
 var world: Dictionary = {}  # host: the world being played (the save file's contents)
 var world_slug := ""
@@ -70,6 +73,10 @@ func host_start() -> void:
 	if dg:
 		var rec: Variant = world.get("disc_records", {})
 		dg.host_load_records(rec if typeof(rec) == TYPE_DICTIONARY else {})
+	for key: String in SUB_DIRECTORS:  # D-105..D-110: encounters, oddities, collectibles, rare events, the clock
+		var node := get_tree().get_first_node_in_group(SUB_DIRECTORS[key])
+		if node:
+			node.host_load_state(world.get(key, {}))
 	var bikes := get_tree().get_first_node_in_group("bike_director")
 	if bikes:
 		var saved_bikes: Variant = world.get("bikes", {})
@@ -199,6 +206,10 @@ func _capture() -> void:
 	var dg := get_tree().get_first_node_in_group("disc_golf")
 	if dg:
 		world["disc_records"] = dg.host_save_records()
+	for key: String in SUB_DIRECTORS:
+		var node := get_tree().get_first_node_in_group(SUB_DIRECTORS[key])
+		if node:
+			world[key] = node.host_save_state()
 	var bikes := get_tree().get_first_node_in_group("bike_director")
 	if bikes:
 		world["bikes"] = bikes.host_save()

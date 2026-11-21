@@ -7,6 +7,7 @@
 # finished objectives are announced as HUD toasts on every peer. Saved as world.quests (flags) by SaveDirector.
 # Every peer: `flags` + flags_changed for the quest book, HUD tracker and NPCs; objective_position() for markers.
 # Depends on: QuestRules, Players (group "players": inventory, health), Landmarks node, HUD (group "hud").
+# An objective's "at" is { landmark, offset } or { map: [x, z] }; "reach_m" is measured flat, ignoring height.
 extends Node
 
 signal flags_changed
@@ -105,7 +106,8 @@ func _physics_process(delta: float) -> void:
 				continue
 			if o.has("reach_m"):
 				var at := objective_position(o)
-				if at != Vector3.INF and p.global_position.distance_to(at) <= float(o.reach_m):
+				var flat := Vector2(p.global_position.x - at.x, p.global_position.z - at.z).length()
+				if at != Vector3.INF and flat <= float(o.reach_m):
 					host_set_flag(str(o.flag))
 					break
 			elif o.has("have"):
@@ -124,10 +126,13 @@ func _on_peer_connected(id: int) -> void:
 
 # --- everyone ----------------------------------------------------------------------------------
 
-# World position of an objective's "at" (landmark origin + offset), or Vector3.INF if it has none.
+# World position of an objective's "at" (landmark origin + offset, or a raw map [x, z]), or Vector3.INF if none.
 func objective_position(o: Dictionary) -> Vector3:
 	if not o.has("at"):
 		return Vector3.INF
+	if o.at.has("map"):  # D-105: encounter / oddity objectives sit at map coordinates, not at a landmark
+		var m: Array = o.at.map
+		return Vector3(float(m[0]), 0.0, float(m[1]))
 	if _landmarks == null:
 		_landmarks = get_node_or_null("../Landmarks")
 	var lm: Node3D = _landmarks.get_node_or_null(str(o.at.landmark)) if _landmarks else null

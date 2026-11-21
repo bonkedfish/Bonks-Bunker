@@ -1,10 +1,58 @@
 {
 	"enemy_id": "zombie_shambler",
-	"cell_cap": 4.0,
+	"cell_cap": 10.0,
 	"spawn_interval": 2.0,
 	"min_spawn_distance": 15.0,
 	"far_spawn_distance": 35.0,
 	"perception_hz": 5.0,
 	"corpse_seconds": 1.0,
-	"pool_size": 24.0
+	"pool_size": 48.0,
+	"home_landmark": "bonk_bunker",
+	"types_note": "D-100: [from metres from the bunker, {enemy: weight}] - the last band at or below the distance is used",
+	"types_by_distance": [
+		[
+			0,
+			{
+				"zombie_shambler": 1
+			}
+		],
+		[
+			400,
+			{
+				"zombie_shambler": 70,
+				"zombie_runner": 15,
+				"zombie_spitter": 10,
+				"zombie_bloater": 5
+			}
+		],
+		[
+			1200,
+			{
+				"zombie_shambler": 50,
+				"zombie_runner": 20,
+				"zombie_spitter": 10,
+				"zombie_bloater": 10,
+				"zombie_riot": 10
+			}
+		],
+		[
+			2500,
+			{
+				"zombie_shambler": 35,
+				"zombie_runner": 25,
+				"zombie_spitter": 12,
+				"zombie_bloater": 13,
+				"zombie_riot": 15
+			}
+		]
+	],
+	"night_note": "D-110: at night the per-cell cap is multiplied by night_cell_cap_mult and each type's weight by night_weight_mult, both faded in with how far into night it is. pool_size is still the hard ceiling on how many zombies can be awake at once anywhere.",
+	"night_cell_cap_mult": 2.0,
+	"night_weight_mult": {
+		"zombie_shambler": 0.65,
+		"zombie_runner": 2.2,
+		"zombie_spitter": 1.8,
+		"zombie_bloater": 1.8,
+		"zombie_riot": 2.0
+	}
 }

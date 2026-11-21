@@ -1,0 +1,1955 @@
+{
+	"note": "Random encounters (D-105). The director reads these; see scripts/world/encounter_director.gd for the fields and scripts/world/encounter_site.gd for what props / npc / loot / uses / pool build. Dialogue trees are in data/dialogue/encounters.json, NPC definitions in data/npcs/enc_*.json. Text and numbers are placeholders: edit freely.  category is one of roadside, npc, environmental, combat, trading, minigame, mystery, rare, comedic; it is for filtering and for the debug readout, not for picking.",
+	"stranded_driver": {
+		"name": "Stranded Driver",
+		"category": "roadside",
+		"rarity": "common",
+		"weight": 10.0,
+		"cooldown_s": 1500.0,
+		"life_s": 1500.0,
+		"min_bunker_m": 120.0,
+		"npc": {
+			"id": "enc_driver",
+			"at": [
+				2.2,
+				0,
+				0.6
+			],
+			"yaw": -100
+		},
+		"props": [
+			{
+				"car": [
+					0,
+					0,
+					0
+				],
+				"body": "sedan",
+				"mat": "blue",
+				"yaw": 8
+			},
+			{
+				"box": [
+					0,
+					1.35,
+					2.0,
+					1.7,
+					0.08,
+					1.3
+				],
+				"mat": "blue",
+				"yaw": 8,
+				"collide": false
+			},
+			{
+				"kit": "crate",
+				"at": [
+					-2.4,
+					0,
+					-1.6
+				],
+				"yaw": 20
+			}
+		],
+		"loot": [
+			{
+				"id": "trunk",
+				"name": "Car Trunk",
+				"table": "car_trunk",
+				"at": [
+					0,
+					0.3,
+					-2.6
+				],
+				"size": [
+					1.2,
+					0.5,
+					0.7
+				],
+				"mat": "blue"
+			}
+		],
+		"actions": {
+			"fix": {
+				"needs": {
+					"scrap_metal": 2,
+					"duct_tape": 1
+				},
+				"gives": {
+					"ammo_9mm": 24,
+					"evans_jerky": 2
+				},
+				"say": "The engine catches. Marla cries a little and gives you everything in her glovebox.",
+				"fail_say": "You'd need 2 scrap metal and a roll of duct tape.",
+				"then": "close"
+			},
+			"gas": {
+				"needs": {
+					"gas_can": 1
+				},
+				"gives": {
+					"ammo_9mm": 12,
+					"bandage": 2
+				},
+				"say": "Marla pours it in with shaking hands and pays you out of the glovebox.",
+				"fail_say": "You're not carrying a gas can.",
+				"then": "close"
+			},
+			"rob": {
+				"gives": {
+					"bottle_cap": 14,
+					"canned_beans": 2
+				},
+				"say": "You take what she has. She starts screaming for her brothers.",
+				"then": "hostile"
+			}
+		},
+		"ambush": {
+			"enemy": "raider_gunner",
+			"count": 2,
+			"radius_m": 16.0
+		},
+		"placement": "road"
+	},
+	"traveling_salesman": {
+		"name": "Traveling Salesman",
+		"category": "trading",
+		"rarity": "uncommon",
+		"weight": 8.0,
+		"cooldown_s": 2400.0,
+		"life_s": 1200.0,
+		"npc": {
+			"id": "enc_salesman",
+			"at": [
+				0,
+				0,
+				1.4
+			],
+			"yaw": 180
+		},
+		"props": [
+			{
+				"kit": "shopping_cart",
+				"at": [
+					-1.2,
+					0,
+					0
+				],
+				"yaw": 90
+			},
+			{
+				"kit": "crate",
+				"at": [
+					1.3,
+					0,
+					0
+				],
+				"yaw": -15
+			},
+			{
+				"box": [
+					1.3,
+					0.75,
+					0,
+					1.2,
+					0.3,
+					0.8
+				],
+				"mat": "canvas",
+				"yaw": -15
+			},
+			{
+				"kit": "tarp_canopy",
+				"at": [
+					0,
+					0,
+					0
+				],
+				"yaw": 0
+			},
+			{
+				"sign": "DUB'S ROLLING\nEMPORIUM",
+				"at": [
+					0,
+					2.5,
+					0
+				],
+				"size": 48,
+				"mat": "yellow",
+				"visible_m": 60
+			}
+		],
+		"placement": "road"
+	},
+	"roadblock": {
+		"name": "Roadblock",
+		"category": "combat",
+		"rarity": "uncommon",
+		"weight": 7.0,
+		"cooldown_s": 2100.0,
+		"life_s": 1500.0,
+		"min_bunker_m": 250.0,
+		"npc": {
+			"id": "enc_tollman",
+			"at": [
+				0,
+				0,
+				2.2
+			],
+			"yaw": 180
+		},
+		"props": [
+			{
+				"kit": "sandbag_wall",
+				"at": [
+					-2.0,
+					0,
+					0
+				],
+				"yaw": 0
+			},
+			{
+				"kit": "sandbag_wall",
+				"at": [
+					2.0,
+					0,
+					0
+				],
+				"yaw": 0
+			},
+			{
+				"kit": "barrel",
+				"at": [
+					0,
+					0,
+					0.2
+				],
+				"yaw": 0
+			},
+			{
+				"kit": "traffic_cone",
+				"at": [
+					-3.6,
+					0,
+					1.2
+				],
+				"yaw": 0
+			},
+			{
+				"kit": "traffic_cone",
+				"at": [
+					3.6,
+					0,
+					1.2
+				],
+				"yaw": 0
+			},
+			{
+				"sign": "TOLL ROAD\nPAY OR TURN AROUND",
+				"at": [
+					0,
+					1.6,
+					0.4
+				],
+				"size": 40,
+				"mat": "white",
+				"visible_m": 45
+			}
+		],
+		"actions": {
+			"pay": {
+				"needs": {
+					"bottle_cap": 10
+				},
+				"gives": {},
+				"say": "Cheryl counts the caps twice and waves you through.",
+				"fail_say": "Ten caps. She can count.",
+				"then": "close"
+			},
+			"pay_ammo": {
+				"needs": {
+					"ammo_9mm": 15
+				},
+				"say": "She pockets the rounds and drags a barrel aside.",
+				"fail_say": "You don't have 15 rounds to spare.",
+				"then": "close"
+			},
+			"bluff": {
+				"chance": 0.5,
+				"win": {
+					"say": "Cheryl looks at the empty road behind you, swears, and moves the barrel.",
+					"then": "close"
+				},
+				"lose": {
+					"say": "\"There's nobody behind you, friend.\"",
+					"then": "ambush"
+				}
+			},
+			"fight": {
+				"say": "Cheryl whistles. Two shapes come up out of the ditch.",
+				"then": "ambush"
+			}
+		},
+		"ambush": {
+			"enemy": "raider_gunner",
+			"count": 3,
+			"radius_m": 14.0
+		},
+		"placement": "road"
+	},
+	"abandoned_truck": {
+		"name": "Abandoned Truck",
+		"category": "environmental",
+		"rarity": "common",
+		"weight": 10.0,
+		"cooldown_s": 1200.0,
+		"life_s": 2400.0,
+		"props": [
+			{
+				"box": [
+					0,
+					1.9,
+					1.2,
+					2.5,
+					2.6,
+					6.4
+				],
+				"mat": "white",
+				"yaw": 0
+			},
+			{
+				"box": [
+					0,
+					1.3,
+					-2.6,
+					2.3,
+					1.7,
+					2.0
+				],
+				"mat": "steel"
+			},
+			{
+				"box": [
+					0,
+					1.5,
+					-3.62,
+					2.1,
+					0.8,
+					0.05
+				],
+				"mat": "glass",
+				"collide": false
+			},
+			{
+				"cyl": [
+					-1.05,
+					0,
+					-2.4,
+					0.5,
+					0.35
+				],
+				"mat": "tyre",
+				"yaw": 90
+			},
+			{
+				"cyl": [
+					1.05,
+					0,
+					-2.4,
+					0.5,
+					0.35
+				],
+				"mat": "tyre",
+				"yaw": 90
+			},
+			{
+				"cyl": [
+					-1.05,
+					0,
+					2.6,
+					0.5,
+					0.35
+				],
+				"mat": "tyre",
+				"yaw": 90
+			},
+			{
+				"cyl": [
+					1.05,
+					0,
+					2.6,
+					0.5,
+					0.35
+				],
+				"mat": "tyre",
+				"yaw": 90
+			},
+			{
+				"box": [
+					0,
+					1.4,
+					4.42,
+					2.4,
+					2.4,
+					0.08
+				],
+				"mat": "rust"
+			}
+		],
+		"uses": [
+			{
+				"label": "Force the roller door",
+				"at": [
+					0,
+					1.2,
+					4.9
+				],
+				"size": [
+					2.4,
+					2.0,
+					0.8
+				],
+				"chance": 0.55,
+				"win": {
+					"say": "The door shrieks up. Nothing in there but pallets and whatever's left in the crate.",
+					"flag": "enc_truck_open"
+				},
+				"lose": {
+					"say": "The door shrieks up - and something in the dark shrieks back.",
+					"then": "ambush"
+				}
+			}
+		],
+		"loot": [
+			{
+				"id": "cargo",
+				"name": "Truck Cargo",
+				"table": "ammo_cache",
+				"at": [
+					0,
+					0.45,
+					2.4
+				],
+				"size": [
+					1.4,
+					0.9,
+					1.2
+				],
+				"mat": "wood"
+			}
+		],
+		"ambush": {
+			"enemy": "zombie_shambler",
+			"count": 4,
+			"radius_m": 8.0
+		},
+		"placement": "road"
+	},
+	"campfire_stranger": {
+		"name": "Campfire Stranger",
+		"category": "roadside",
+		"rarity": "common",
+		"weight": 9.0,
+		"cooldown_s": 1800.0,
+		"life_s": 1500.0,
+		"npc": {
+			"id": "enc_campfire",
+			"at": [
+				1.5,
+				0,
+				0.6
+			],
+			"yaw": -120
+		},
+		"props": [
+			{
+				"fire": [
+					0,
+					0,
+					0
+				]
+			},
+			{
+				"kit": "log_seat",
+				"at": [
+					0,
+					0,
+					1.8
+				],
+				"yaw": 0
+			},
+			{
+				"kit": "log_seat",
+				"at": [
+					0,
+					0,
+					-1.8
+				],
+				"yaw": 0
+			},
+			{
+				"kit": "tent",
+				"at": [
+					-3.0,
+					0,
+					0
+				],
+				"yaw": 90
+			}
+		],
+		"loot": [
+			{
+				"id": "pack",
+				"name": "Camp Pack",
+				"table": "porch",
+				"at": [
+					-1.6,
+					0.2,
+					1.2
+				],
+				"size": [
+					0.6,
+					0.5,
+					0.5
+				],
+				"mat": "canvas"
+			}
+		],
+		"placement": "road"
+	},
+	"pool_champion": {
+		"name": "Pool Champion",
+		"category": "minigame",
+		"rarity": "uncommon",
+		"weight": 7.0,
+		"cooldown_s": 2400.0,
+		"life_s": 1800.0,
+		"npc": {
+			"id": "enc_pool",
+			"at": [
+				2.4,
+				0,
+				0
+			],
+			"yaw": -90
+		},
+		"pool": {
+			"at": [
+				0,
+				0,
+				0
+			],
+			"yaw": 0
+		},
+		"props": [
+			{
+				"kit": "tarp_canopy",
+				"at": [
+					0,
+					0,
+					0
+				],
+				"yaw": 0
+			},
+			{
+				"kit": "cooler",
+				"at": [
+					-2.4,
+					0,
+					1.6
+				],
+				"yaw": 0
+			},
+			{
+				"sign": "WINNER STAYS",
+				"at": [
+					0,
+					2.5,
+					0
+				],
+				"size": 40,
+				"mat": "yellow",
+				"visible_m": 50
+			}
+		],
+		"actions": {
+			"wager": {
+				"needs": {
+					"bottle_cap": 10
+				},
+				"chance": 0.45,
+				"win": {
+					"gives": {
+						"bottle_cap": 25
+					},
+					"say": "Eddie racks, misses the break, and pays up without a word.",
+					"flag": "sq_pool_win"
+				},
+				"lose": {
+					"say": "Eddie runs the table in one visit and takes your caps."
+				},
+				"fail_say": "No caps, no game."
+			}
+		},
+		"placement": "road"
+	},
+	"beggar": {
+		"name": "Beggar",
+		"category": "npc",
+		"rarity": "common",
+		"weight": 9.0,
+		"cooldown_s": 1500.0,
+		"life_s": 1200.0,
+		"npc": {
+			"id": "enc_beggar",
+			"at": [
+				0,
+				0,
+				0
+			],
+			"yaw": 0
+		},
+		"props": [
+			{
+				"kit": "crate",
+				"at": [
+					0.9,
+					0,
+					0.6
+				],
+				"yaw": 30
+			},
+			{
+				"box": [
+					0,
+					0.02,
+					0.9,
+					0.5,
+					0.04,
+					0.5
+				],
+				"mat": "canvas",
+				"collide": false
+			}
+		],
+		"actions": {
+			"give_food": {
+				"needs": {
+					"canned_beans": 1
+				},
+				"gives": {
+					"bottle_cap": 6
+				},
+				"say": "Pete eats half and hands you a fistful of caps he had the whole time.",
+				"fail_say": "You have nothing to give."
+			},
+			"give_water": {
+				"needs": {
+					"water_bottle": 1
+				},
+				"gives": {
+					"col_flip_phone": 1
+				},
+				"say": "\"Take this. It still turns on. I don't want it any more.\"",
+				"fail_say": "You have no water to spare."
+			},
+			"refuse": {
+				"say": "Pete nods like he expected it."
+			}
+		},
+		"placement": "road"
+	},
+	"wanted_man": {
+		"name": "Wanted Man",
+		"category": "combat",
+		"rarity": "uncommon",
+		"weight": 6.0,
+		"cooldown_s": 2700.0,
+		"life_s": 1500.0,
+		"min_bunker_m": 200.0,
+		"npc": {
+			"id": "enc_wanted",
+			"at": [
+				0,
+				0,
+				0
+			],
+			"yaw": 0
+		},
+		"props": [
+			{
+				"kit": "lawn_chair",
+				"at": [
+					0,
+					0,
+					-0.6
+				],
+				"yaw": 0
+			},
+			{
+				"kit": "cooler",
+				"at": [
+					1.0,
+					0,
+					-0.4
+				],
+				"yaw": 0
+			},
+			{
+				"box": [
+					-1.2,
+					0.6,
+					0.2,
+					0.4,
+					1.2,
+					0.3
+				],
+				"mat": "canvas",
+				"yaw": 20
+			}
+		],
+		"actions": {
+			"turn_in": {
+				"gives": {
+					"bottle_cap": 40,
+					"ammo_9mm": 20
+				},
+				"flag": "enc_bounty_claimed",
+				"say": "You read the poster out loud. Dale sighs, puts his beer down, and goes for the bag.",
+				"then": "hostile"
+			},
+			"walk": {
+				"say": "\"Smart. Enjoy the rest of your day.\""
+			}
+		},
+		"ambush": {
+			"enemy": "raider_brute",
+			"count": 1,
+			"radius_m": 4.0
+		},
+		"placement": "road"
+	},
+	"lost_tourist": {
+		"name": "Lost Tourist",
+		"category": "npc",
+		"rarity": "common",
+		"weight": 8.0,
+		"cooldown_s": 1800.0,
+		"life_s": 1200.0,
+		"npc": {
+			"id": "enc_tourist",
+			"at": [
+				0,
+				0,
+				0
+			],
+			"yaw": 0
+		},
+		"props": [
+			{
+				"car": [
+					-3.0,
+					0,
+					0
+				],
+				"body": "suv",
+				"mat": "white",
+				"yaw": 95
+			},
+			{
+				"box": [
+					-3.0,
+					1.95,
+					0,
+					1.2,
+					0.5,
+					1.6
+				],
+				"mat": "canvas",
+				"yaw": 95
+			},
+			{
+				"kit": "cooler",
+				"at": [
+					-1.4,
+					0,
+					0.8
+				],
+				"yaw": 0
+			}
+		],
+		"actions": {
+			"tell_truth": {
+				"gives": {
+					"col_lunchbox": 1
+				},
+				"flag": "enc_tourist_told",
+				"say": "Sandy goes quiet, then gives you the kids' lunchbox. \"He won't need it on the drive back.\""
+			},
+			"play_along": {
+				"gives": {
+					"bottle_cap": 8
+				},
+				"say": "\"Thank you! We'll be out of your hair once the roads open.\""
+			}
+		},
+		"placement": "road"
+	},
+	"drunk": {
+		"name": "Drunk",
+		"category": "minigame",
+		"rarity": "common",
+		"weight": 8.0,
+		"cooldown_s": 1500.0,
+		"life_s": 1200.0,
+		"npc": {
+			"id": "enc_drunk",
+			"at": [
+				0,
+				0,
+				0
+			],
+			"yaw": 0
+		},
+		"props": [
+			{
+				"kit": "barrel",
+				"at": [
+					1.2,
+					0,
+					0.4
+				],
+				"yaw": 0
+			},
+			{
+				"box": [
+					1.2,
+					1.0,
+					0.4,
+					0.5,
+					0.2,
+					0.5
+				],
+				"mat": "glass",
+				"collide": false
+			},
+			{
+				"kit": "lawn_chair",
+				"at": [
+					-1.1,
+					0,
+					0.3
+				],
+				"yaw": 150
+			}
+		],
+		"actions": {
+			"drink_off": {
+				"needs": {
+					"beer_warm_tallboy": 1
+				},
+				"chance": 0.5,
+				"win": {
+					"gives": {
+						"bottle_cap": 18,
+						"col_bowling_pin": 1
+					},
+					"say": "Buzz goes down mid-sentence. You win a bowling pin and his caps."
+				},
+				"lose": {
+					"say": "You wake up twenty minutes later. Buzz has arranged your boots neatly beside you."
+				},
+				"fail_say": "You need a warm tallboy to make it a contest."
+			},
+			"arm_wrestle": {
+				"chance": 0.6,
+				"win": {
+					"gives": {
+						"bottle_cap": 10
+					},
+					"say": "Buzz loses, pays, and demands a rematch forever."
+				},
+				"lose": {
+					"say": "Buzz slams your hand down and apologises for ten minutes."
+				}
+			},
+			"sit_off": {
+				"needs": {
+					"bottle_cap": 10
+				},
+				"chance": 0.5,
+				"win": {
+					"gives": {
+						"bottle_cap": 30
+					},
+					"flag": "sq_chair_win",
+					"say": "Four hours. Neither of you moves. Buzz stands up to get another beer and forfeits on the spot."
+				},
+				"lose": {
+					"say": "You stand up to stretch at hour three. Buzz does not even open his eyes. \"Sat down beat,\" he says."
+				},
+				"fail_say": "Ten caps buys a seat in the tournament."
+			}
+		},
+		"placement": "road"
+	},
+	"gambler": {
+		"name": "Gambler",
+		"category": "minigame",
+		"rarity": "common",
+		"weight": 8.0,
+		"cooldown_s": 1800.0,
+		"life_s": 1200.0,
+		"npc": {
+			"id": "enc_gambler",
+			"at": [
+				0,
+				0,
+				0
+			],
+			"yaw": 0
+		},
+		"props": [
+			{
+				"kit": "crate",
+				"at": [
+					0,
+					0,
+					1.0
+				],
+				"yaw": 0
+			},
+			{
+				"box": [
+					0,
+					0.62,
+					1.0,
+					0.9,
+					0.05,
+					0.9
+				],
+				"mat": "green",
+				"collide": false
+			},
+			{
+				"kit": "playing_card",
+				"at": [
+					0.2,
+					0.65,
+					1.1
+				],
+				"yaw": 20
+			},
+			{
+				"kit": "playing_card",
+				"at": [
+					-0.15,
+					0.65,
+					0.95
+				],
+				"yaw": -40
+			},
+			{
+				"kit": "lawn_chair",
+				"at": [
+					0,
+					0,
+					-0.9
+				],
+				"yaw": 180
+			}
+		],
+		"actions": {
+			"small": {
+				"needs": {
+					"bottle_cap": 5
+				},
+				"chance": 0.5,
+				"win": {
+					"gives": {
+						"bottle_cap": 12
+					},
+					"say": "Three of a kind. Lucky pays out and calls you lucky."
+				},
+				"lose": {
+					"say": "Nothing. Lucky sweeps the caps in and reshuffles."
+				},
+				"fail_say": "Five caps minimum, friend."
+			},
+			"big": {
+				"needs": {
+					"bottle_cap": 25
+				},
+				"chance": 0.35,
+				"win": {
+					"gives": {
+						"bottle_cap": 75,
+						"col_playing_card": 1
+					},
+					"say": "Lucky stares at your hand for a long moment, then pays every cap he has."
+				},
+				"lose": {
+					"say": "Lucky wins, and has the decency to look sorry about it."
+				},
+				"fail_say": "That table needs 25 caps."
+			}
+		},
+		"placement": "road"
+	},
+	"collector": {
+		"name": "Collector",
+		"category": "trading",
+		"rarity": "uncommon",
+		"weight": 6.0,
+		"cooldown_s": 2400.0,
+		"life_s": 1500.0,
+		"npc": {
+			"id": "enc_collector",
+			"at": [
+				0,
+				0,
+				1.2
+			],
+			"yaw": 180
+		},
+		"props": [
+			{
+				"kit": "crate",
+				"at": [
+					-1.0,
+					0,
+					0
+				],
+				"yaw": 0
+			},
+			{
+				"kit": "crate",
+				"at": [
+					1.0,
+					0,
+					0
+				],
+				"yaw": 0
+			},
+			{
+				"box": [
+					0,
+					0.65,
+					0,
+					2.6,
+					0.1,
+					0.7
+				],
+				"mat": "wood",
+				"collide": false
+			},
+			{
+				"kit": "gnome",
+				"at": [
+					-0.9,
+					0.7,
+					0
+				],
+				"yaw": 20
+			},
+			{
+				"kit": "rubber_duck",
+				"at": [
+					0,
+					0.7,
+					0
+				],
+				"yaw": -30
+			},
+			{
+				"kit": "trophy",
+				"at": [
+					0.9,
+					0.7,
+					0
+				],
+				"yaw": 0
+			},
+			{
+				"sign": "I BUY ODDITIES",
+				"at": [
+					0,
+					1.6,
+					0
+				],
+				"size": 36,
+				"mat": "white",
+				"visible_m": 40
+			}
+		],
+		"placement": "road",
+		"actions": {
+			"greg_trade": {
+				"needs": {
+					"bottle_cap": 25
+				},
+				"gives": {
+					"gregs_thing": 1
+				},
+				"flag": "sq_greg_item",
+				"say": "She hands over a small heavy object with no obvious purpose. \"That's the one he means. They all mean this one.\"",
+				"fail_say": "Twenty-five caps. She does not haggle, she appraises."
+			}
+		}
+	},
+	"con_artist": {
+		"name": "Con Artist",
+		"category": "trading",
+		"rarity": "common",
+		"weight": 7.0,
+		"cooldown_s": 2100.0,
+		"life_s": 1200.0,
+		"npc": {
+			"id": "enc_con",
+			"at": [
+				0,
+				0,
+				0
+			],
+			"yaw": 0
+		},
+		"props": [
+			{
+				"kit": "crate",
+				"at": [
+					0,
+					0,
+					0.9
+				],
+				"yaw": 0
+			},
+			{
+				"box": [
+					0,
+					0.63,
+					0.9,
+					1.0,
+					0.04,
+					0.7
+				],
+				"mat": "tan",
+				"collide": false
+			},
+			{
+				"sign": "MAPS - REAL ONES",
+				"at": [
+					0,
+					1.5,
+					0.9
+				],
+				"size": 34,
+				"mat": "yellow",
+				"visible_m": 35
+			}
+		],
+		"actions": {
+			"buy_map": {
+				"needs": {
+					"bottle_cap": 20
+				},
+				"gives": {
+					"fake_map": 1
+				},
+				"say": "Rick hands over a map of a town that is not Kearney and leaves in a hurry.",
+				"fail_say": "Twenty caps. \"Cheap at twice the price.\"",
+				"then": "close"
+			},
+			"call_it": {
+				"chance": 0.5,
+				"win": {
+					"gives": {
+						"bottle_cap": 12
+					},
+					"say": "Rick pays you to keep your voice down and packs up."
+				},
+				"lose": {
+					"say": "\"Bold accusation from a stranger.\" He packs up anyway.",
+					"then": "close"
+				}
+			}
+		},
+		"placement": "road"
+	},
+	"grave_digger": {
+		"name": "Grave Digger",
+		"category": "mystery",
+		"rarity": "uncommon",
+		"weight": 5.0,
+		"cooldown_s": 3000.0,
+		"life_s": 1500.0,
+		"npc": {
+			"id": "enc_digger",
+			"at": [
+				1.4,
+				0,
+				0
+			],
+			"yaw": -90
+		},
+		"props": [
+			{
+				"kit": "grave_mound",
+				"at": [
+					0,
+					0,
+					0
+				],
+				"yaw": 0
+			},
+			{
+				"box": [
+					-1.0,
+					0.6,
+					0.6,
+					0.06,
+					1.2,
+					0.06
+				],
+				"mat": "wood",
+				"yaw": 15
+			},
+			{
+				"box": [
+					-1.1,
+					0.06,
+					0.8,
+					0.26,
+					0.04,
+					0.34
+				],
+				"mat": "steel",
+				"yaw": 15
+			}
+		],
+		"actions": {
+			"help_dig": {
+				"flag": "enc_dug",
+				"gives": {
+					"bottle_cap": 15
+				},
+				"say": "You dig for twenty minutes. Hollis says nothing. The hole stays empty."
+			},
+			"ask_again": {
+				"say": "\"It's not for anybody yet.\""
+			}
+		},
+		"placement": "road"
+	},
+	"wanderer": {
+		"name": "The Wanderer",
+		"category": "mystery",
+		"rarity": "uncommon",
+		"weight": 6.0,
+		"cooldown_s": 2700.0,
+		"life_s": 1500.0,
+		"npc": {
+			"id": "enc_wanderer",
+			"at": [
+				0,
+				0,
+				0
+			],
+			"yaw": 0
+		},
+		"props": [
+			{
+				"box": [
+					0.5,
+					0.5,
+					0.3,
+					0.35,
+					1.0,
+					0.3
+				],
+				"mat": "canvas",
+				"yaw": 20
+			}
+		],
+		"actions": {
+			"met": {
+				"flag": "wanderer_met"
+			}
+		},
+		"placement": "road"
+	},
+	"greg": {
+		"name": "Greg",
+		"category": "comedic",
+		"rarity": "common",
+		"weight": 8.0,
+		"cooldown_s": 1800.0,
+		"life_s": 1500.0,
+		"npc": {
+			"id": "enc_greg",
+			"at": [
+				0,
+				0,
+				0
+			],
+			"yaw": 0
+		},
+		"props": [
+			{
+				"kit": "shopping_cart",
+				"at": [
+					1.2,
+					0,
+					0
+				],
+				"yaw": 70
+			}
+		],
+		"placement": "road"
+	},
+	"safety_inspector": {
+		"name": "Safety Inspector",
+		"category": "comedic",
+		"rarity": "uncommon",
+		"weight": 5.0,
+		"cooldown_s": 3000.0,
+		"life_s": 1500.0,
+		"npc": {
+			"id": "enc_inspector",
+			"at": [
+				0,
+				0,
+				0
+			],
+			"yaw": 0
+		},
+		"props": [
+			{
+				"box": [
+					0.6,
+					0.9,
+					0.2,
+					0.3,
+					0.4,
+					0.04
+				],
+				"mat": "white",
+				"yaw": -20,
+				"collide": false
+			},
+			{
+				"kit": "traffic_cone",
+				"at": [
+					-1.2,
+					0,
+					0.6
+				],
+				"yaw": 0
+			}
+		],
+		"actions": {
+			"citation": {
+				"gives": {
+					"citation": 1
+				},
+				"flag": "enc_cited",
+				"say": "He writes you up for \"existing adjacent to an unmarked hazard\" and hands you the pink copy."
+			}
+		},
+		"placement": "road"
+	},
+	"bargain_king": {
+		"name": "The Bargain King",
+		"category": "trading",
+		"rarity": "uncommon",
+		"weight": 5.0,
+		"cooldown_s": 2700.0,
+		"life_s": 1500.0,
+		"npc": {
+			"id": "enc_bargain",
+			"at": [
+				0,
+				0,
+				1.2
+			],
+			"yaw": 180
+		},
+		"props": [
+			{
+				"kit": "crate",
+				"at": [
+					-0.8,
+					0,
+					0
+				],
+				"yaw": 0
+			},
+			{
+				"kit": "crate",
+				"at": [
+					0.8,
+					0,
+					0
+				],
+				"yaw": 0
+			},
+			{
+				"box": [
+					0,
+					0.65,
+					0,
+					2.2,
+					0.1,
+					0.7
+				],
+				"mat": "wood",
+				"collide": false
+			},
+			{
+				"kit": "barrel",
+				"at": [
+					-2.0,
+					0,
+					0.4
+				],
+				"yaw": 0
+			},
+			{
+				"sign": "EVERYTHING MUST GO\n(PRICES FIRM)",
+				"at": [
+					0,
+					1.7,
+					0
+				],
+				"size": 38,
+				"mat": "red",
+				"visible_m": 45
+			}
+		],
+		"placement": "road"
+	},
+	"sheriff_of_nothing": {
+		"name": "Sheriff of Nothing",
+		"category": "comedic",
+		"rarity": "uncommon",
+		"weight": 5.0,
+		"cooldown_s": 3000.0,
+		"life_s": 1500.0,
+		"npc": {
+			"id": "enc_sheriff",
+			"at": [
+				0,
+				0,
+				0
+			],
+			"yaw": 0
+		},
+		"props": [
+			{
+				"kit": "sandbag_wall",
+				"at": [
+					0,
+					0,
+					-2.0
+				],
+				"yaw": 0
+			},
+			{
+				"box": [
+					-2.0,
+					1.1,
+					-2.0,
+					0.1,
+					2.2,
+					0.1
+				],
+				"mat": "wood"
+			},
+			{
+				"sign": "TOWN LIMITS\nPOP. 1",
+				"at": [
+					-2.0,
+					1.9,
+					-1.9
+				],
+				"size": 34,
+				"mat": "white",
+				"visible_m": 45
+			},
+			{
+				"kit": "office_chair",
+				"at": [
+					0.8,
+					0,
+					0.4
+				],
+				"yaw": 200
+			}
+		],
+		"actions": {
+			"deputise": {
+				"gives": {
+					"deputy_star": 1
+				},
+				"flag": "enc_deputised",
+				"say": "He pins a bent star on you and makes you repeat an oath he is clearly inventing."
+			}
+		},
+		"placement": "road"
+	},
+	"chess_master": {
+		"name": "Chess Master",
+		"category": "minigame",
+		"rarity": "uncommon",
+		"weight": 5.0,
+		"cooldown_s": 2700.0,
+		"life_s": 1500.0,
+		"npc": {
+			"id": "enc_chess",
+			"at": [
+				0,
+				0,
+				-0.9
+			],
+			"yaw": 0
+		},
+		"props": [
+			{
+				"kit": "crate",
+				"at": [
+					0,
+					0,
+					0
+				],
+				"yaw": 0
+			},
+			{
+				"box": [
+					0,
+					0.63,
+					0,
+					0.8,
+					0.06,
+					0.8
+				],
+				"mat": "white",
+				"collide": false
+			},
+			{
+				"box": [
+					0,
+					0.67,
+					0,
+					0.74,
+					0.02,
+					0.74
+				],
+				"mat": "dark",
+				"collide": false
+			},
+			{
+				"kit": "lawn_chair",
+				"at": [
+					0,
+					0,
+					1.1
+				],
+				"yaw": 180
+			}
+		],
+		"actions": {
+			"play": {
+				"chance": 0.4,
+				"win": {
+					"gives": {
+						"bottle_cap": 20,
+						"col_trophy": 1
+					},
+					"flag": "enc_beat_chess",
+					"say": "You win in nineteen moves. He accuses you of cheating, then of being a computer, then pays."
+				},
+				"lose": {
+					"say": "He mates you in eleven and accuses you of cheating anyway."
+				}
+			}
+		},
+		"placement": "road"
+	},
+	"giant": {
+		"name": "Something Big",
+		"category": "combat",
+		"rarity": "rare",
+		"weight": 4.0,
+		"cooldown_s": 5400.0,
+		"life_s": 900.0,
+		"min_bunker_m": 400.0,
+		"spring_on_open": true,
+		"props": [
+			{
+				"kit": "skeleton_slumped",
+				"at": [
+					2.0,
+					0,
+					1.5
+				],
+				"yaw": 40
+			},
+			{
+				"box": [
+					-1.5,
+					0.05,
+					-1.0,
+					1.6,
+					0.1,
+					1.1
+				],
+				"mat": "ash",
+				"yaw": 20,
+				"collide": false
+			}
+		],
+		"ambush": {
+			"enemy": "giant_jackrabbit",
+			"count": 1,
+			"radius_m": 18.0
+		},
+		"placement": "road"
+	},
+	"crash": {
+		"name": "Crash Site",
+		"category": "environmental",
+		"rarity": "rare",
+		"weight": 4.0,
+		"cooldown_s": 5400.0,
+		"life_s": 3600.0,
+		"min_bunker_m": 300.0,
+		"props": [
+			{
+				"kit": "chopper_wreck",
+				"at": [
+					0,
+					0,
+					0
+				],
+				"yaw": 0
+			},
+			{
+				"fire": [
+					2.6,
+					0,
+					1.2
+				]
+			},
+			{
+				"box": [
+					-3.2,
+					0.04,
+					-2.0,
+					3.0,
+					0.08,
+					6.0
+				],
+				"mat": "ash",
+				"yaw": 15,
+				"collide": false
+			},
+			{
+				"kit": "skeleton_slumped",
+				"at": [
+					-2.4,
+					0,
+					2.6
+				],
+				"yaw": -40
+			}
+		],
+		"loot": [
+			{
+				"id": "crate",
+				"name": "Spilled Crate",
+				"table": "suit_truck",
+				"at": [
+					-3.0,
+					0.3,
+					1.0
+				],
+				"size": [
+					1.0,
+					0.6,
+					0.8
+				],
+				"mat": "dark"
+			},
+			{
+				"id": "cockpit",
+				"name": "Cockpit",
+				"table": "ammo_cache",
+				"at": [
+					0.8,
+					0.6,
+					1.8
+				],
+				"size": [
+					0.8,
+					0.5,
+					0.6
+				],
+				"mat": "dark"
+			}
+		],
+		"uses": [
+			{
+				"label": "Read the flight log",
+				"at": [
+					0,
+					1.2,
+					2.2
+				],
+				"size": [
+					1.2,
+					1.2,
+					0.8
+				],
+				"flag": "enc_crash_log",
+				"gives": {
+					"flight_log": 1
+				},
+				"say": "KEARNEY SWEEP 3 / NO CONTACT / RETURNING TO GRANARY. The last line is just the word SORRY, written large."
+			}
+		],
+		"placement": "road"
+	},
+	"mysterious_door": {
+		"name": "Mysterious Door",
+		"category": "mystery",
+		"rarity": "rare",
+		"weight": 3.0,
+		"cooldown_s": 6000.0,
+		"life_s": 1800.0,
+		"props": [
+			{
+				"kit": "door_frame",
+				"at": [
+					0,
+					0,
+					0
+				],
+				"yaw": 0
+			},
+			{
+				"box": [
+					0,
+					0.03,
+					0,
+					1.6,
+					0.06,
+					1.0
+				],
+				"mat": "ash",
+				"collide": false
+			}
+		],
+		"uses": [
+			{
+				"label": "Open the door",
+				"at": [
+					0,
+					1.0,
+					0.2
+				],
+				"size": [
+					1.2,
+					2.0,
+					0.5
+				],
+				"flag": "enc_door_opened",
+				"gives": {
+					"col_mannequin_head": 1
+				},
+				"say": "It opens onto the same field you're standing in. There is a mannequin head on the ground behind it.",
+				"then": "close"
+			}
+		],
+		"placement": "road"
+	},
+	"lawn_chair_guy": {
+		"name": "Lawn Chair Guy",
+		"category": "comedic",
+		"rarity": "rare",
+		"weight": 4.0,
+		"cooldown_s": 4800.0,
+		"life_s": 3600.0,
+		"props": [
+			{
+				"kit": "lawn_chair",
+				"at": [
+					0,
+					0,
+					0
+				],
+				"yaw": 0
+			},
+			{
+				"kit": "skeleton_sitting",
+				"at": [
+					0,
+					0.38,
+					0.02
+				],
+				"yaw": 0
+			},
+			{
+				"kit": "cooler",
+				"at": [
+					0.95,
+					0,
+					0.1
+				],
+				"yaw": -10
+			},
+			{
+				"kit": "radio",
+				"at": [
+					-0.9,
+					0,
+					0.1
+				],
+				"yaw": 15
+			},
+			{
+				"box": [
+					0,
+					0.06,
+					1.6,
+					2.6,
+					0.04,
+					2.0
+				],
+				"mat": "canvas",
+				"collide": false
+			}
+		],
+		"loot": [
+			{
+				"id": "cooler",
+				"name": "Cooler",
+				"table": "bar_shelf",
+				"at": [
+					0.95,
+					0.2,
+					0.1
+				],
+				"size": [
+					0.6,
+					0.4,
+					0.4
+				],
+				"mat": "white"
+			}
+		],
+		"uses": [
+			{
+				"label": "Turn the radio over",
+				"at": [
+					-0.9,
+					0.2,
+					0.1
+				],
+				"size": [
+					0.5,
+					0.5,
+					0.5
+				],
+				"flag": "enc_lawn_radio",
+				"gives": {
+					"col_golf_ball": 1
+				},
+				"say": "Still warm. Still on. Someone has taped a golf ball to the back of it."
+			}
+		],
+		"placement": "road"
+	},
+	"signal": {
+		"name": "The Signal",
+		"category": "mystery",
+		"rarity": "rare",
+		"weight": 4.0,
+		"cooldown_s": 4800.0,
+		"life_s": 2400.0,
+		"props": [
+			{
+				"cyl": [
+					0,
+					0,
+					0,
+					0.09,
+					6.0
+				],
+				"mat": "steel",
+				"collide": true
+			},
+			{
+				"box": [
+					0,
+					6.2,
+					0,
+					1.2,
+					0.08,
+					0.08
+				],
+				"mat": "steel",
+				"collide": false
+			},
+			{
+				"box": [
+					0,
+					5.9,
+					0,
+					0.9,
+					0.06,
+					0.06
+				],
+				"mat": "steel",
+				"collide": false
+			},
+			{
+				"box": [
+					0.4,
+					0.5,
+					0.4,
+					0.6,
+					1.0,
+					0.5
+				],
+				"mat": "dark",
+				"yaw": 20
+			},
+			{
+				"kit": "radio",
+				"at": [
+					-0.8,
+					0,
+					0.6
+				],
+				"yaw": -30
+			}
+		],
+		"uses": [
+			{
+				"label": "Listen to the transmitter",
+				"at": [
+					0.4,
+					0.8,
+					0.4
+				],
+				"size": [
+					1.0,
+					1.4,
+					0.9
+				],
+				"flag": "sq_signal_start",
+				"say": "A woman's voice, counting. Between numbers she says: \"...the floor opens on storm. Halvorsen out.\""
+			}
+		],
+		"placement": "road"
+	}
+}

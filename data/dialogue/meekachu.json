@@ -914,6 +914,10 @@
 			"start": "start",
 			"starts": [
 				{
+					"requires": ["cd_have_manifest", "!cd_gus"],
+					"node": "manifest"
+				},
+				{
 					"requires": "mq_gus",
 					"node": "after"
 				},
@@ -977,7 +981,7 @@
 				},
 				"time_2": {
 					"speaker": "Gus",
-					"text": "South of the river there's an old co-op grain elevator. Empty since the nineties. I followed the tire tracks to it, and the tracks went INSIDE. So I went inside. The floor of that elevator is a door. Big as a barn, flat in the ground, and it opens DOWN. Trucks drive in, and the floor takes 'em.",
+					"text": "South of the tracks, out east past Avenue M, there's the old Kearney Co-op grain elevator. Empty since the nineties. I followed the tire tracks to it, and the tracks went INSIDE. So I went inside. The floor of that elevator is a door. Big as a barn, flat in the ground, and it opens DOWN. Trucks drive in, and the floor takes 'em.",
 					"choices": [
 						{
 							"text": "What's under it?",
@@ -1008,10 +1012,57 @@
 				},
 				"after": {
 					"speaker": "Gus",
-					"text": "Still here. Fire's still free. Get some rest. The next part's south of the river.",
+					"text": "Still here. Fire's still free. ...Hunter met their truck at the Cash-Wa docks on West 4th Street, every pickup. I watched from the roof across the road. Fourteen days is about up, and their collector's in a body bag. They'll come there first, looking for him. Get there before they leave, and bring me whatever paper that truck carries.",
 					"choices": [
 						{
-							"text": "See you then.",
+							"text": "We'll hit the truck.",
+							"next": "bye"
+						}
+					]
+				},
+				"manifest": {
+					"speaker": "Gus",
+					"text": "...You're back. And you're all still here. Did you get their paper?",
+					"choices": [
+						{
+							"text": "Hand Gus the manifest.",
+							"cost": { "collection_manifest": 1 },
+							"cost_fail": "manifest_none",
+							"next": "manifest_2"
+						},
+						{
+							"text": "Not yet.",
+							"next": "bye"
+						}
+					]
+				},
+				"manifest_none": {
+					"speaker": "Gus",
+					"text": "Then go get it. It'll be on the one in the nice suit.",
+					"choices": [
+						{
+							"text": "Right.",
+							"next": "bye"
+						}
+					]
+				},
+				"manifest_2": {
+					"speaker": "Gus",
+					"text": "COLLECTION, KEARNEY. ROUTE: WEST 4TH, CENTRAL, EAST 20TH. KEARNEY CO-OP. DELIVER TO SITE GRANARY. ...Granary. Grain. Five years I been calling it a barn. And down here: 'COLLECTOR UNRESPONSIVE. ESCALATE.' ...That's you, kid. You're the escalation.",
+					"choices": [
+						{
+							"text": "What now?",
+							"next": "manifest_3"
+						}
+					]
+				},
+				"manifest_3": {
+					"speaker": "Gus",
+					"text": "Now nobody in this town hides anymore. You made 'em bleed in daylight. ...Meet me at the elevator. East 20th, by the tracks. I'll be on the scale house porch. Bring everybody.",
+					"flag": "cd_gus",
+					"choices": [
+						{
+							"text": "See you at the elevator.",
 							"next": "bye"
 						}
 					]

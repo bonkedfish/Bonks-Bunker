@@ -1,0 +1,10 @@
+{
+	"note": "D-101: places that are always free of hostiles. A zone is a course from data/discgolf/courses.json (its map 'bounds') or a rect [x0, z0, x1, z1] in a landmark's local metres. buffer_m is added on every side.",
+	"buffer_m": 60.0,
+	"zones": [
+		{ "id": "centennial_dgc", "course": "centennial" },
+		{ "id": "cottonmill_dgc", "course": "cottonmill" },
+		{ "id": "country_club", "landmark": "country_club", "rect": [-600, -330, 510, 290] },
+		{ "id": "drop_zone", "landmark": "dropzone", "rect": [-90, -100, 245, 30] }
+	]
+}

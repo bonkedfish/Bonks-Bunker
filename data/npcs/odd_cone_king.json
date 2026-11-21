@@ -1,0 +1,15 @@
+{
+	"note": "Cone King Randy, the traffic cone kingdom's resident (D-106). Lines in data/dialogue/encounters.json (barks prefixed enccone_).",
+	"display_name": "Cone King Randy",
+	"dialogue_tree": "odd_cone_king_talk",
+	"bark_prefix": "enccone_",
+	"model": "ubc_punk_f",
+	"talk_range": 3.2,
+	"subtitle_range": 18.0,
+	"greet_range": 12.0,
+	"face_range": 8.0,
+	"turn_speed": 3.0,
+	"bark_cooldown": 8.0,
+	"idle_bark_min": 20.0,
+	"idle_bark_max": 50.0
+}

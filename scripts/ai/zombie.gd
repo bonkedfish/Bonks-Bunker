@@ -12,8 +12,13 @@
 # "bark_prefix" (aggro / enrage / death lines as subtitles), "boss" (group "bosses" for the HUD bar),
 # "faction" (D-060: `team`; bodies of another faction are targets like players, so raiders and zombies fight),
 # "weapon_slot" (shows that prop, e.g. a raider brute's bat, without the gun animations).
-# Depends on: ZombieBrain, EnemyDB, CombatRules, CombatWorld, DialogueDB, PositionHistory, SnapshotBuffer, NetClock,
-# Health, CharacterAnimator.
+# D-100 open-world types: "armor" (armor_mult(): body shots mostly blocked, head and melee get through - Riot Cop),
+# "burst" (the attack is bursting: on its swing or on death it damages players and other bodies around it, then it's
+# dead - Bloater), "hearing_mult" + "rush_noise" (hears gunfire farther and runs to it - Runner).
+# Safe zones (D-101, SafeZones group "safe_zones"): a body ignores players and noises inside a zone, so a chase ends
+# at the edge, and a body that finds itself inside walks back out.
+# Depends on: ZombieBrain, ZombieTypeRules, EnemyDB, CombatRules, CombatWorld, DialogueDB, PositionHistory,
+# SnapshotBuffer, NetClock, Health, CharacterAnimator, Sfx.
 extends CharacterBody3D
 
 const HEIGHT := 1.8
@@ -21,6 +26,7 @@ const EYE_HEIGHT := 1.6
 const WORLD_MASK := 1
 const RETARGET_DISTANCE := 0.75
 const SWIPE_ARC_DEGREES := 100.0
+const BURST_COLOR := Color(0.55, 0.75, 0.15, 0.55)
 
 static var frozen := false  # host: every zombie holds still (ace replay, D-076; set by AceReplay)
 
@@ -64,9 +70,12 @@ var _shown_active := false
 var _height := HEIGHT
 var _enraged := false
 var _barked_aggro := false
+var _burst_done := false
+var _life := 0  # host: bumped on every activation, so a corpse timer from an earlier life can't despawn a reused body
 var _combat: Node
 var _dialogue: Node
 var _plate: Label3D
+var _safe: Node
 
 @onready var nav: NavigationAgent3D = $Nav
 @onready var health: Health = $Health
@@ -91,7 +100,8 @@ func _ready() -> void:
 func setup(enemy_def: Dictionary, perception_hz: float, corpse_seconds: float) -> void:
 	_perceive_period = 1.0 / maxf(perception_hz, 0.1)
 	_corpse_seconds = corpse_seconds
-	_apply_def(enemy_def)
+	if enemy_def != _def:  # _ready may already have applied it from a preset net_enemy
+		_apply_def(enemy_def)
 
 
 # Every peer: become this enemy definition (stats on the host, look everywhere).
@@ -145,7 +155,10 @@ func activate(pos: Vector3, yaw := 0.0) -> void:
 	brain.reset()
 	_enraged = false
 	_barked_aggro = false
+	_burst_done = false
+	_life += 1
 	_snapshots.clear()
+	_history.clear()  # else rewound shots could still hit where this pooled body stood last time
 	_target = null
 	_sees_target = false
 	_heard = false
@@ -176,8 +189,22 @@ func hear(pos: Vector3) -> void:
 		return
 	if brain.state == ZombieBrain.State.CHASE or brain.state == ZombieBrain.State.ATTACK:
 		return
+	if _safe == null:
+		_safe = get_tree().get_first_node_in_group("safe_zones")  # Main adds it after the pools are built
+	if _safe and _safe.contains(pos):
+		return
 	_noise_pos = pos
 	_heard = true
+
+
+# Share of a hit that gets through this body's armor (1 = no armor). hit_frac: 0 feet .. 1 top of the head.
+func armor_mult(hit_frac: float, melee: bool) -> float:
+	return ZombieTypeRules.armor_mult(_def.get("armor", {}), hit_frac, melee)
+
+
+# Noise radius multiplier for this type (Runners hear gunfire from farther away).
+func hearing_mult() -> float:
+	return float(_def.get("hearing_mult", 1.0))
 
 
 func hit_capsule_at(tick: float) -> Vector4:
@@ -227,6 +254,8 @@ func _host_step(delta: float) -> void:
 			speed = float(_def.chase_speed) * (float(enrage.get("speed_mult", 1.0)) if _enraged else 1.0)
 			_set_destination(_target.global_position if target_ok else _last_seen)
 		ZombieBrain.State.INVESTIGATE:
+			if bool(_def.get("rush_noise", false)):
+				speed = float(_def.chase_speed)
 			if heard_now:
 				_set_destination(_noise_pos)
 		ZombieBrain.State.WANDER:
@@ -239,6 +268,9 @@ func _host_step(delta: float) -> void:
 			speed = 0.0
 
 	if brain.attack_landed:
+		if _def.has("burst"):
+			_burst()
+			return
 		if _def.has("ranged") and target_dist > float(_def.attack_reach):
 			_resolve_shot()
 		else:
@@ -252,6 +284,14 @@ func _host_step(delta: float) -> void:
 
 
 func _perceive() -> void:
+	if _safe == null:
+		_safe = get_tree().get_first_node_in_group("safe_zones")
+	if _safe and _safe.contains(global_position):  # wandered or was carried into a safe zone: walk back out
+		_home = _safe.exit_point(global_position)
+		brain.reset()
+		_sees_target = false
+		_set_destination(_home)
+		return
 	var eye := global_position + Vector3.UP * EYE_HEIGHT
 	var forward := -global_basis.z
 	var half_fov := deg_to_rad(float(_def.sight_fov_degrees)) * 0.5
@@ -265,6 +305,8 @@ func _perceive() -> void:
 				continue
 			if group == &"hittable" and not ("net_enemy" in p and p.team != team):
 				continue  # players were checked above; other enemy bodies only when they're another faction
+			if group == &"players" and _safe and _safe.contains(p.global_position):
+				continue  # nobody gets chased into a safe zone
 			var to: Vector3 = p.global_position - global_position
 			to.y = 0.0
 			var d := to.length()
@@ -343,14 +385,71 @@ func _set_destination(pos: Vector3) -> void:
 func _random_wander_point() -> Vector3:
 	var r := float(_def.wander_radius)
 	var p := _home + Vector3(randf_range(-r, r), 0.0, randf_range(-r, r))
+	if _safe and _safe.contains(p):
+		p = _home
 	return NavigationServer3D.map_get_closest_point(nav.get_navigation_map(), p)
+
+
+# Host: a Bloater bursts - damage falls off with distance for every living player and body around it (zombies and
+# raiders too), then it is dead. Runs once per activation, on its own swing or on its death (deferred, so a chain of
+# bursts doesn't recurse inside Health.died).
+func _burst() -> void:
+	if _burst_done or not net_active:
+		return
+	_burst_done = true
+	var b: Dictionary = _def.burst
+	var centre := global_position + Vector3.UP * 0.9
+	var seen := {}
+	for group: StringName in [&"players", &"hittable"]:
+		for t in get_tree().get_nodes_in_group(group):
+			if t == self or seen.has(t) or t.health.is_dead():
+				continue
+			seen[t] = true
+			var dmg := ZombieTypeRules.burst_damage(b, (t.global_position + Vector3.UP * 0.9).distance_to(centre))
+			if dmg > 0.0:
+				t.health.apply_damage(dmg, peer_id)
+	_fx_burst.rpc(centre, float(b.radius_m))
+	if not health.is_dead():
+		health.apply_damage(health.current, peer_id)
+
+
+@rpc("authority", "call_local", "unreliable")
+func _fx_burst(at: Vector3, radius: float) -> void:
+	Sfx.play_at("zombie_burst", at)
+	var mi := MeshInstance3D.new()
+	var sphere := SphereMesh.new()
+	sphere.radius = 1.0
+	sphere.height = 2.0
+	sphere.radial_segments = 12
+	sphere.rings = 6
+	var mat := StandardMaterial3D.new()
+	mat.albedo_color = BURST_COLOR
+	mat.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+	mat.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+	sphere.material = mat
+	mi.mesh = sphere
+	mi.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	get_parent().add_child(mi)
+	mi.global_position = at
+	mi.scale = Vector3.ONE * 0.3
+	var tw := mi.create_tween().set_parallel()
+	tw.tween_property(mi, "scale", Vector3.ONE * radius * 0.8, 0.35).set_ease(Tween.EASE_OUT)
+	tw.tween_property(mat, "albedo_color:a", 0.0, 0.6)
+	tw.chain().tween_callback(mi.queue_free)
 
 
 func _on_died(_attacker_peer: int) -> void:
 	net_attacking = false
 	if multiplayer.is_server():
+		if _def.has("burst") and not _burst_done:
+			_burst.call_deferred()
 		_bark("death")
-		get_tree().create_timer(_corpse_seconds).timeout.connect(deactivate)
+		get_tree().create_timer(_corpse_seconds).timeout.connect(_corpse_gone.bind(_life))
+
+
+func _corpse_gone(life: int) -> void:
+	if life == _life:
+		deactivate()
 
 
 # --- visuals (all peers) -----------------------------------------------------------

@@ -109,10 +109,10 @@ func _build_preview() -> Control:
 	sun.light_energy = 1.2
 	_viewport.add_child(sun)
 	var cam := Camera3D.new()
-	cam.position = Vector3(0, 1.05, 3.1)
+	var eye := Vector3(0, 1.05, 3.1)
+	cam.transform = Transform3D(Basis.looking_at(Vector3(0, 0.95, 0) - eye), eye)  # look_at needs the tree; this doesn't
 	cam.fov = 38.0
 	_viewport.add_child(cam)
-	cam.look_at(Vector3(0, 0.95, 0))
 	_pivot = Node3D.new()
 	_viewport.add_child(_pivot)
 	_preview = CharacterAnimator.new()

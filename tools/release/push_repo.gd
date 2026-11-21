@@ -1,6 +1,7 @@
 # PushRepo — one-run tool (run this scene directly): commits whatever has changed since the last release (diary,
 # docs, data) and pushes it to GitHub main, then checks a release tag is live (gh release view). No build, no new
-# release. Reads data/release/release.json (repo, commit_trailer) and data/release/push.json (tag to check).
+# release. Reads data/release/release.json (repo, commit_trailer) and data/release/push.json (the commit message
+# to use, and a release tag to check is still live - leave check_tag "" to skip that).
 # Log: tests/_look/push_repo_result.txt. Depends on: git + gh (logged in), the repo set up by release.tscn.
 extends Node
 
@@ -13,7 +14,8 @@ var _log := PackedStringArray()
 func _ready() -> void:
 	var root := ProjectSettings.globalize_path("res://").trim_suffix("/")
 	var cfg := DataLoader.load_json("res://data/release/release.json")
-	var tag := str(DataLoader.load_json("res://data/release/push.json").get("check_tag", ""))
+	var push := DataLoader.load_json("res://data/release/push.json")
+	var tag := str(push.get("check_tag", ""))
 	var git := "git" if OS.execute("git", ["--version"]) == 0 else GIT_FALLBACK
 	var gh := "gh" if OS.execute("gh", ["--version"]) == 0 else GH_FALLBACK
 	_run(git, ["-C", root, "add", "-A"])
@@ -21,7 +23,10 @@ func _ready() -> void:
 	if status.text.strip_edges() == "":
 		_log.append("nothing new to commit")
 	else:
-		var msg := ["-C", root, "commit", "-m", "Diary and docs after the %s release" % tag]
+		var message := str(push.get("message", ""))
+		if message == "":
+			message = "Diary and docs after the %s release" % tag
+		var msg := ["-C", root, "commit", "-m", message]
 		if str(cfg.get("commit_trailer", "")) != "":
 			msg.append_array(["-m", str(cfg.commit_trailer)])
 		_run(git, msg)

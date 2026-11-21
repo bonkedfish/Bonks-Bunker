@@ -7,7 +7,8 @@
 # first time they reach it this session (every time with "give_every_time", for trades); a choice's "cost" {item: n} is taken from the talker, or the choice goes
 # to "cost_fail" if they can't pay. Quests (D-054): a node's "flag" / "flags" are set on the party's QuestDirector
 # when reached; a choice with "requires" (flag / "!flag" list) is only offered when it holds; a tree's "starts"
-# [{requires, node}] picks a different opening node by flags. The conversation ends on an "end" node, if the talker leaves (Esc), walks
+# [{requires, node}] picks a different opening node by flags. A node's "encounter" names an action on the random
+# encounter the NPC belongs to (D-105), run by EncounterDirector (group "encounters"). The conversation ends on an "end" node, if the talker leaves (Esc), walks
 # off, goes down, or the NPC goes down.
 # Group "dialogue". Depends on: DialogueDB, QuestRules, QuestDirector (group "quests"), talkable NPCs, Player inventory (InventoryHolder), SubtitleUI (group "subtitles").
 extends Node
@@ -116,6 +117,10 @@ func _send_node(reply: String) -> void:
 			_quests.host_set_flag(str(node.flag))
 		for f: String in node.get("flags", []):
 			_quests.host_set_flag(f)
+	if node.has("encounter"):
+		var enc := get_tree().get_first_node_in_group("encounters")
+		if enc:
+			enc.host_dialogue_action(_npc, str(node.encounter), _talker)
 	var texts := PackedStringArray()
 	for c: Dictionary in _choices():
 		texts.append(str(c.text))

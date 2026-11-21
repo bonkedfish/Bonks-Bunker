@@ -33,6 +33,7 @@ static func build(k: LandmarkKit, d: Dictionary, _rng: RandomNumberGenerator) ->
 		flags.append(Vector2(f[0], f[1]))
 	props.set("flags", flags)
 	props.set("signs", d.course.tee_signs)  # [x, z, yaw_deg, text] per hole, from the OSM hole lines
+	props.set("bits", d.course.get("bits", []))  # course furniture (D-098)
 	k.root.add_child(props)
 	var golf := Node3D.new()
 	golf.name = "Golf"

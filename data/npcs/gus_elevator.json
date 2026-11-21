@@ -1,0 +1,18 @@
+{
+	"note": "Act 2 (D-103): Gus on the scale house porch at the co-op elevator once Act 1 is done. Lines in data/dialogue/act2.json (barks prefixed gus_elev_).",
+	"display_name": "Gus",
+	"dialogue_tree": "gus_elevator",
+	"bark_prefix": "gus_elev_",
+	"model": "survivor_sam",
+	"talk_range": 3.0,
+	"subtitle_range": 16.0,
+	"greet_range": 9.0,
+	"face_range": 7.0,
+	"turn_speed": 3.0,
+	"bark_cooldown": 8.0,
+	"idle_bark_min": 30.0,
+	"idle_bark_max": 70.0,
+	"show_requires": [
+		"mq4b_collection_done"
+	]
+}

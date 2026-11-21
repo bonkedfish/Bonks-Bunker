@@ -363,6 +363,9 @@ func _group_hole() -> int:
 
 func _host_new_wind(first: bool) -> void:
 	wind = DiscFlightRules.next_wind(Vector2.ZERO if first else wind, _rng, _t)
+	var weather := get_tree().get_first_node_in_group("weather")
+	if weather:
+		wind = weather.storm_wind(wind, _rng)  # storms blow harder (D-099)
 	var shift: Array = _t.wind_shift_s
 	_wind_left = _rng.randf_range(float(shift[0]), float(shift[1]))
 	_set_wind.rpc(wind, not first)

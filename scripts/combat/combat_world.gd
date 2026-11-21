@@ -7,6 +7,8 @@
 # target is summed so one blast gives one hit marker. Thrown (D-088, the Golden Ace): the host flies the disc out
 # along the aim until its range or a wall, then back to the thrower, hitting each target once per throw; every peer
 # animates the same path (out deterministic, back toward the thrower's body).
+# Armor on enemies (D-100, Riot Cop): a target with armor_mult(hit_frac, melee) keeps that share of each pellet or
+# swing, judged by how high up the body the shot landed; a blocked body shot pings (armor_ping) where it hit.
 # Depends on: CombatRules, NetClock (group "net_clock"), TracerPool (group "tracers"), HUD (group "hud"),
 #             ZombieDirector (group "zombie_director", for attack noise), Sfx (shot / melee-hit sounds, D-077).
 extends Node3D
@@ -47,10 +49,12 @@ func host_fire(shooter: Node, weapon: Dictionary, origin: Vector3, dir: Vector3,
 	var targets := get_tree().get_nodes_in_group("hittable")
 	var dmg_by := {}  # target -> summed damage
 	var ends := PackedVector3Array()
+	var ping := Vector3.INF  # where a shot glanced off armor (one ping per shot)
 	for p in pellets:
 		var d_dir := spread_dir(dir, spread, _rng) if spread > 0.0 else dir
 		var best_dist := _world_distance(origin, d_dir, float(weapon.range))
 		var best: Node = null
+		var best_cap := Vector4.ZERO
 		for target in targets:
 			if target == shooter or target.health.is_dead() or (not hits_teammates and target.team == shooter.team):
 				continue
@@ -60,8 +64,15 @@ func host_fire(shooter: Node, weapon: Dictionary, origin: Vector3, dir: Vector3,
 			if d >= 0.0 and d < best_dist:
 				best_dist = d
 				best = target
+				best_cap = cap
 		if best:
-			dmg_by[best] = float(dmg_by.get(best, 0.0)) + float(weapon.damage)
+			var mult := 1.0
+			if best.has_method("armor_mult"):
+				var hit_y := origin.y + d_dir.y * best_dist
+				mult = best.armor_mult((hit_y - best_cap.y) / maxf(best_cap.w, 0.01), false)
+				if mult < 1.0 and ping == Vector3.INF:
+					ping = origin + d_dir * best_dist
+			dmg_by[best] = float(dmg_by.get(best, 0.0)) + float(weapon.damage) * mult
 		ends.append(origin + d_dir * best_dist)
 	var killed := false
 	for t: Node in dmg_by:
@@ -70,6 +81,8 @@ func host_fire(shooter: Node, weapon: Dictionary, origin: Vector3, dir: Vector3,
 		_fx_shot.rpc(origin, ends[0], shooter.peer_id, "%s_fire" % weapon.get("id", "gun"))
 	else:
 		_fx_pellets.rpc(origin, ends, shooter.peer_id, "%s_fire" % weapon.get("id", "gun"))
+	if ping != Vector3.INF:
+		_fx_melee_hit.rpc(ping, "armor_ping")
 	return killed
 
 
@@ -102,7 +115,8 @@ func host_melee(shooter: Node, weapon: Dictionary, origin: Vector3, dir: Vector3
 			continue
 		if _world_blocked(origin, base + Vector3.UP * cap.w * 0.5):
 			continue
-		killed = _damage(target, shooter, float(weapon.damage)) or killed
+		var mult: float = target.armor_mult(0.5, true) if target.has_method("armor_mult") else 1.0
+		killed = _damage(target, shooter, float(weapon.damage) * mult) or killed
 		if not hit_any:
 			hit_any = true
 			hit_at = base + Vector3.UP * cap.w * 0.6

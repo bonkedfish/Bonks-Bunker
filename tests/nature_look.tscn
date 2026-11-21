@@ -1,0 +1,6 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://tests/nature_look.gd" id="1_nl"]
+
+[node name="NatureLook" type="Node"]
+script = ExtResource("1_nl")

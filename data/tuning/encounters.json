@@ -1,0 +1,15 @@
+{
+	"note": "Random encounter director (D-105). The host checks every check_seconds; a site opens only if the global and the encounter's own cooldown are up, a spot is found 'near_m' from a player, out of their sight, outside a safe zone and clear of buildings. rarity_weight multiplies each definition's weight. in_game_minutes_per_real_minute drives the in-game clock used by 'hours' conditions (there is no day / night lighting cycle, D-099).",
+	"check_seconds": 20.0,
+	"global_cooldown_s": 240.0,
+	"max_active": 3,
+	"near_m": [70.0, 190.0],
+	"keep_m": 320.0,
+	"min_apart_m": 150.0,
+	"clear_check_m": 2.5,
+	"flat_tolerance_m": 1.1,
+	"spot_tries": 14,
+	"in_game_minutes_per_real_minute": 30.0,
+	"day_start_hour": 8.0,
+	"rarity_weight": { "common": 1.0, "uncommon": 0.45, "rare": 0.15, "legendary": 0.04 }
+}

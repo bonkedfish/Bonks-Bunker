@@ -8,7 +8,8 @@
 #         Walking away from the bay forfeits.
 #   Every peer: `games` (peer -> {bay, balls, score, last}), synced whole on change; ball playback; puts the local
 #         player's SportInput into "range" mode while they have a game; answers the golf view's aim_* questions.
-# Depends on: DropZone (parent: data, sender_player, toast), GolfBallRules, BallPlayback, SportInput (Player "sport"),
+# Depends on: BallTrails (shot tracer, D-097), DropZone (parent: data, sender_player, toast), GolfBallRules,
+# BallPlayback, SportInput (Player "sport"),
 # QuestDirector (group "quests").
 class_name DzRange
 extends Node3D
@@ -23,6 +24,7 @@ var _t: Dictionary
 var _play: BallPlayback
 var _in_flight: Dictionary = {}  # host: peer -> [seconds left, points, target index]
 var _check := 0.0
+var _trails: BallTrails
 
 
 func _ready() -> void:
@@ -30,6 +32,8 @@ func _ready() -> void:
 	_play = BallPlayback.new()
 	_play.radius = 0.05
 	add_child(_play)
+	_trails = BallTrails.new()
+	add_child(_trails)
 	multiplayer.peer_connected.connect(_on_peer_connected)
 
 
@@ -230,6 +234,11 @@ func _sync(new_games: Dictionary) -> void:
 @rpc("authority", "call_local", "reliable")
 func _show(peer: int, path: PackedVector3Array) -> void:
 	_play.play(peer, path, float(_t.ball.sample_hz))
+	var world := PackedVector3Array()  # the tracer draws in world space
+	world.resize(path.size())
+	for i in path.size():
+		world[i] = _play.global_transform * path[i]
+	_trails.start(peer, world, float(_t.ball.sample_hz))
 
 
 @rpc("authority", "call_local", "reliable")
