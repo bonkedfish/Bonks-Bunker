@@ -2,6 +2,9 @@
 # (alpha2.1 -> alpha2.2 ...; release.json "min_version" lifts it to a bigger jump like alpha3.0), exports Windows + macOS from the same commit, smoke-tests the Windows exe, zips,
 # splits any file over split_mb (GitHub caps release files at 2 GiB), commits + pushes the source, then publishes
 # ONE prerelease with both platforms. Creates the GitHub repo on first run. Nothing is published if any step fails.
+# release.json "force_version" rebuilds THAT version instead of picking the next one: if the release already
+# exists its assets are replaced (gh release upload --clobber) and its notes are left alone, which is how a
+# broken build gets fixed without burning a version number. Clear force_version afterwards.
 # Log: tests/_look/release_result.txt.
 # Depends on: data/release/release.json, export_presets.cfg (a "Windows Desktop" and a "macOS" preset),
 # Godot export templates, Git and GitHub CLI (gh, logged in) on this PC.
@@ -35,14 +38,16 @@ func _run() -> bool:
 		return false
 	if not _ensure_repo(cfg):
 		return false
-	var ver := _next_version(str(cfg.first_version))
+	var forced := str(cfg.get("force_version", ""))
+	var ver := forced if forced != "" else _next_version(str(cfg.first_version))
 	if ver == "":
 		return false
-	var floor_ver := _parse_version(str(cfg.get("min_version", "")))  # a version jump (alpha3.0): never below it
-	var picked := _parse_version(ver)
-	if not floor_ver.is_empty() and (floor_ver[0] > picked[0] or (floor_ver[0] == picked[0] and floor_ver[1] > picked[1])):
-		ver = "alpha%d.%d" % [floor_ver[0], floor_ver[1]]
-	_say("version: " + ver)
+	if forced == "":
+		var floor_ver := _parse_version(str(cfg.get("min_version", "")))  # a version jump (alpha3.0): never below it
+		var picked := _parse_version(ver)
+		if not floor_ver.is_empty() and (floor_ver[0] > picked[0] or (floor_ver[0] == picked[0] and floor_ver[1] > picked[1])):
+			ver = "alpha%d.%d" % [floor_ver[0], floor_ver[1]]
+	_say("version: %s%s" % [ver, "  (force_version: rebuilding it in place)" if forced != "" else ""])
 
 	var out_dir := ProjectSettings.globalize_path(BUILD_DIR) + "/" + ver
 	var win_dir := out_dir + "/windows"
@@ -75,15 +80,21 @@ func _run() -> bool:
 	if not _git_cmd(["push", "-u", "origin", "HEAD:main"], "git push"):
 		return false
 
-	var args := ["release", "create", ver, "--target", "main", "--prerelease",
-		"--title", "%s %s" % [cfg.title, ver], "--notes", _notes(ver, exe, assets)]
+	var exists: bool = int(_exec(_gh, ["release", "view", ver]).code) == 0
+	var args: Array = []
+	if exists:  # the release is already up: swap its files, leave its title and notes as they are
+		args = ["release", "upload", ver, "--clobber"]
+	else:
+		args = ["release", "create", ver, "--target", "main", "--prerelease",
+			"--title", "%s %s" % [cfg.title, ver], "--notes", _notes(ver, exe, assets)]
 	args.append_array(Array(assets))
 	var t0 := Time.get_ticks_msec()
 	var r := _exec(_gh, args)
 	if r.code != 0:
-		_say("gh release create failed:\n" + r.text)
+		_say("gh release %s failed:\n%s" % ["upload" if exists else "create", r.text])
 		return false
-	_say("PUBLISHED %s in %.0f s: %s" % [ver, (Time.get_ticks_msec() - t0) / 1000.0, r.text.strip_edges()])
+	_say("%s %s in %.0f s: %s" % ["REPLACED THE FILES ON" if exists else "PUBLISHED", ver,
+		(Time.get_ticks_msec() - t0) / 1000.0, r.text.strip_edges()])
 	return true
 
 

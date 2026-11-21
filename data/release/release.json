@@ -1,5 +1,5 @@
 {
-	"_comment": "Release settings read by tools/release/release.tscn. The version number comes from GitHub's release tags (alpha2.1, alpha2.2, ...); first_version is only used when the repo has no alpha tags yet; min_version (optional) is the lowest version to publish, for a jump like alpha3.0 (later releases go on from it: alpha3.1 ...).",
+	"_comment": "Release settings read by tools/release/release.tscn. The version number comes from GitHub's release tags (alpha2.1, alpha2.2, ...); first_version is only used when the repo has no alpha tags yet; min_version (optional) is the lowest version to publish, for a jump like alpha3.0 (later releases go on from it: alpha3.1 ...). force_version rebuilds that exact version and replaces its uploaded files instead of picking the next one; clear it ( ) when the rebuild is done.",
 	"repo": "Bonks-Bunker",
 	"visibility": "public",
 	"first_version": "alpha2.1",
@@ -7,5 +7,6 @@
 	"title": "Bonk's Bunker",
 	"exe_name": "BonksBunker",
 	"split_mb": 1900,
-	"commit_trailer": "Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01WrUHowSAXtvbFFQBbXBpkX"
+	"commit_trailer": "Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01WrUHowSAXtvbFFQBbXBpkX",
+	"force_version": "alpha3.1"
 }

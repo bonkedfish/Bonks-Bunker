@@ -1,7 +1,12 @@
-# CarMesh — builds one low-poly abandoned car for the map importer (D-044): body, cabin with dark windows, wheels
-# (some missing: the car sits on its hub), faded paint with rust blotches, or burned out. Vertex coloured; length
-# along +Z, origin on the ground under the middle. Body types: "sedan", "pickup", "suv". Deterministic from the
-# RandomNumberGenerator passed in. Depends on: nothing.
+# CarMesh — builds one low-poly abandoned car (D-044): body, cabin with dark windows, wheels (some missing: the
+# car sits on its hub), faded paint with rust blotches, or burned out. Vertex coloured; length along +Z, origin
+# on the ground under the middle. Body types: "sedan", "pickup", "suv". Deterministic from the
+# RandomNumberGenerator passed in.
+# Lives in scripts/, not tools/, because it is used at RUNTIME as well as by the map importer: EncounterSite
+# builds cars for encounters with it (D-105), and the export leaves tools/ out, so a tools/ class is missing in
+# an exported build even though the editor has it (that shipped broken once, in alpha3.1 - see FAILED.md).
+# Used by: EncounterSite, tools/map_import/build_cells.gd, tools/map_import/vegetation_builder.gd.
+# Depends on: nothing.
 class_name CarMesh
 extends RefCounted
 
