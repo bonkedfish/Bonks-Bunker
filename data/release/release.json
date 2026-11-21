@@ -8,5 +8,5 @@
 	"exe_name": "BonksBunker",
 	"split_mb": 1900,
 	"commit_trailer": "Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01WrUHowSAXtvbFFQBbXBpkX",
-	"force_version": "alpha3.1"
+	"force_version": ""
 }

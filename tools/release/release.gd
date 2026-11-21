@@ -235,10 +235,25 @@ func _godot(extra: Array, what: String) -> bool:
 	return r.code == 0
 
 
+# Runs the built game for 600 frames. Exit code alone is NOT enough: a script that fails to compile still quits
+# 0, which is how alpha3.1 shipped unplayable (EncounterSite used CarMesh, and the export leaves tools/ out).
+# So the output is read too, and any script or load error fails the release.
 func _smoke(exe_path: String) -> bool:
 	var r := _exec(exe_path, ["--quit-after", "600"])
-	_say("smoke test Windows build: exit %d" % r.code)
-	return r.code == 0
+	var bad := PackedStringArray()
+	for needle: String in ["SCRIPT ERROR", "Parse Error", "Compile Error", "Failed to load script",
+			"Failed to instantiate", "Condition \"!script.is_valid()\""]:
+		if r.text.contains(needle) and not bad.has(needle):
+			bad.append(needle)
+	_say("smoke test Windows build: exit %d%s" % [r.code, "" if bad.is_empty() else "  BROKEN: " + ", ".join(bad)])
+	if bad.is_empty():
+		return r.code == 0
+	var shown := 0
+	for line: String in r.text.split("\n"):
+		if (line.contains("ERROR") or line.contains("Error")) and shown < 25:
+			_say("    " + line.strip_edges())
+			shown += 1
+	return false
 
 
 func _zip_dir(dir: String, folder: String, zip_path: String) -> bool:

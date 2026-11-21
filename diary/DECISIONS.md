@@ -476,3 +476,11 @@ Locked unless flagged. Each entry: decision — reason.
   already in the bunker scene became usable; **one player sleeping skips the whole server to 07:00** and everyone
   wakes at full health, fed and watered. The bed refuses by day. Not chosen: 24 or 72 minute days, a dark night
   with a flashlight, 1.5x or 3x spawns, sleep that only skips time.
+- **D-111** (2026-11-21) No building stands in a street. Microsoft's ML building footprints (used wherever OSM
+  has none, D-040) are derived from imagery and some of them land on the carriageway; nothing checked for it,
+  because the road corridors (`_clear_hash`) were only built AFTER the buildings were placed and were only ever
+  used for vegetation. `_build_roads` now runs first, and a footprint is dropped if its centre is on a road
+  surface (carriageway + curb, no extra padding, so buildings may still sit right against the kerb) - and a
+  Microsoft one is also dropped when over half its corners are. The counts are printed in the build summary.
+  Applies to OSM footprints too: a footprint centred on a road is bad data whatever produced it. Needs a full
+  cell re-bake (~1 h) to take effect; the fix is in the importer, not in the already-generated cells.

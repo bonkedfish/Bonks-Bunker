@@ -85,6 +85,8 @@ var _street_hash: Dictionary = {}  # Vector2i (STREET_GRID cell) -> Array of [wa
 var _cells: Dictionary = {}  # Vector2i -> { root, terrain_faces, walls {look: SurfaceTool}, roof_st, pitched_st, b_faces, b_count, streets {surface: SurfaceTool}, spawns, far_st }
 var _osm_polys: Array = []  # [PackedVector2Array poly, Vector2 centre] of every OSM building, for de-duplication
 var _osm_hash: Dictionary = {}  # Vector2i (DEDUPE_GRID cell) -> Array of indices into _osm_polys
+var _on_road_osm := 0  # footprints dropped for standing in the street (D-111)
+var _on_road_ms := 0
 
 
 func _ready() -> void:
@@ -199,9 +201,9 @@ func _ready() -> void:
 		for c: Vector2i in _cells:
 			_build_terrain(c, holes)
 			_build_far_terrain(c)
+		totals.ways = maxi(totals.ways, _build_roads(src))  # before the buildings: they check they are not on one
 		_build_buildings(src, skip_ways, exclusions)
 		_build_ms_buildings(exclusions)
-		totals.ways = maxi(totals.ways, _build_roads(src))
 		_build_spawns(src)
 		_build_vegetation()
 		_build_clutter()
@@ -233,9 +235,9 @@ func _ready() -> void:
 	var f := FileAccess.open(out_dir + "/index.json", FileAccess.WRITE)
 	f.store_string(JSON.stringify(index, "\t"))
 	f.close()
-	_finish("CELLS: %d cells (%d save errors) in %.1f s: %d buildings, %d road ways, %d plants, %d clutter props, %d zombie spawns, %d loot spots, %d navmesh polygons, datum %.1f m, landmark heights %s" % [
-		index.cells.size(), errors, (Time.get_ticks_msec() - t0) / 1000.0, totals.buildings, totals.ways, totals.plants,
-		totals.props, totals.spawns, totals.loot, totals.nav, _field.datum, landmark_y])
+	_finish("CELLS: %d cells (%d save errors) in %.1f s: %d buildings (%d OSM + %d Microsoft footprints dropped for standing in a street), %d road ways, %d plants, %d clutter props, %d zombie spawns, %d loot spots, %d navmesh polygons, datum %.1f m, landmark heights %s" % [
+		index.cells.size(), errors, (Time.get_ticks_msec() - t0) / 1000.0, totals.buildings, _on_road_osm, _on_road_ms,
+		totals.ways, totals.plants, totals.props, totals.spawns, totals.loot, totals.nav, _field.datum, landmark_y])
 
 
 # Per-batch lookups are rebuilt by every batch's passes; clear the previous batch's.
@@ -465,6 +467,9 @@ func _build_buildings(src: Dictionary, skip_ways: Dictionary, exclusions: Array)
 		if skip_ways.has(int(el.id)) or _excluded(centre, exclusions):
 			skipped += 1
 			continue
+		if _on_a_road(centre):  # a footprint centred on the road surface is bad data, wherever it came from
+			_on_road_osm += 1
+			continue
 		_place_building(poly, centre, _building_height(tags), str(tags.building))
 		built += 1
 	return Vector2i(built, skipped)
@@ -495,6 +500,9 @@ func _build_ms_buildings(exclusions: Array) -> Vector3i:
 			continue
 		if _overlaps_osm(poly, centre):
 			dupes += 1
+			continue
+		if _on_a_road(centre) or _mostly_on_a_road(poly):  # ML footprints from imagery sometimes land on streets
+			_on_road_ms += 1
 			continue
 		var h := float(b.get("height", -1.0))
 		_place_building(poly, centre, clampf(h, 2.5, 60.0) if h > 0.0 else _height_from_area(poly), "")
@@ -983,6 +991,27 @@ func _clear_of_roads(p: Vector2, r: float) -> bool:
 		if p.distance_to(Geometry2D.get_closest_point_to_segment(p, e[0], e[1])) < float(e[2]) + pad:
 			return false
 	return true
+
+
+# True if `p` is on a road surface (carriageway + curb), which is where no building belongs. Unlike
+# _clear_of_roads this adds no extra padding: buildings are allowed to sit right up against the kerb, they are
+# just not allowed to stand in the street (D-111).
+func _on_a_road(p: Vector2) -> bool:
+	for e: Array in _clear_hash.get(Vector2i(floori(p.x / STREET_GRID), floori(p.y / STREET_GRID)), []):
+		if p.distance_to(Geometry2D.get_closest_point_to_segment(p, e[0], e[1])) < float(e[2]):
+			return true
+	return false
+
+
+# True if over half of an outline's corners are standing on a road.
+func _mostly_on_a_road(poly: PackedVector2Array) -> bool:
+	if poly.is_empty():
+		return false
+	var on := 0
+	for v: Vector2 in poly:
+		if _on_a_road(v):
+			on += 1
+	return on * 2 > poly.size()
 
 
 func _clear_of_buildings(p: Vector2, r: float) -> bool:

@@ -785,3 +785,18 @@ a release, then gh release view) went to main as 02768d7.
   publishes generic install-only notes first; that is the two-step flow). push_repo.tscn now takes its commit
   message from data/release/push.json "message" (blank = the old release-tidy default); check_tag is alpha3.1.
   Next auto version is alpha3.2.
+- 2026-11-21 alpha3.1 was BROKEN on release and is now FIXED IN PLACE (same tag, same link, assets replaced):
+  CarMesh lived in tools/, which the export drops, so EncounterSite -> EncounterDirector -> main.gd all failed to
+  compile in the packaged game (see FAILED.md). CarMesh now lives in scripts/world/car_mesh.gd. Verified by
+  actually running the packaged exe: tools/debug/smoke_exe.tscn -> "CLEAN: no script or load errors". Guards
+  added so it cannot happen again: tests/export_safety_test.tscn (walks everything shipped, fails on any class
+  or path from tests/ tools/ server/ diary/ data/map/source/ - currently 0 failures against 10 such classes),
+  and the release smoke test now reads the exe's output instead of trusting its exit code. release.json gained
+  "force_version", which rebuilds a version in place and replaces its uploaded files (gh release upload
+  --clobber) rather than burning a number; it is cleared again now. C:/Users/Fishb/BonksAlpha/alpha3.1 has the
+  fixed build. parse_check 177 OK, export_safety 0 failures, encounter_test 129 PASS / 0 failures.
+- 2026-11-21 D-111 written but NOT YET BAKED: buildings standing in the middle of roads (user report). Cause was
+  Microsoft ML footprints placed with no road check, and road corridors being built after the buildings.
+  tools/map_import/build_cells.gd is fixed (roads first, then _on_a_road / _mostly_on_a_road reject footprints
+  on the carriageway, counts printed in the summary). The generated cells still contain the old buildings:
+  this needs a full build_cells run (~1 h, 20 rows in batches of 3) and then another release to reach players.

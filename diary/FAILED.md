@@ -176,3 +176,15 @@ Approach — why it failed — what replaced it.
 - 2026-11-21 grain elevator: OpenStreetMap (Overpass lookup, user-approved) has no grain elevator / silo tags inside
   our map except two small silos by the RV park, and the import never kept railway lines; web search didn't give a
   usable location either. The co-op elevator is hand-built on the real OSM industrial lot by the old UP/CB&Q spur.
+- 2026-11-21 alpha3.1 SHIPPED UNPLAYABLE, and nothing in the project caught it. EncounterSite (D-105) built its
+  crashed cars with CarMesh, which lived in tools/map_import/. export_presets.cfg excludes tools/*, so in the
+  packaged game the class does not exist: encounter_site.gd failed to compile, which took encounter_director.gd
+  and then main.gd down with it, and the log filled with add_child(null) from main.gd's director list. Every
+  editor test passed the whole time, because the editor HAS tools/. The release's smoke test passed too: it ran
+  the exe with --quit-after and only checked the exit code, and a build whose scripts fail to compile still
+  exits 0. Three things changed: CarMesh moved to scripts/world/car_mesh.gd (runtime code does not live in
+  tools/), the smoke test now reads the output and fails on SCRIPT ERROR / Parse Error / Compile Error /
+  Failed to load script, and tests/export_safety_test.tscn walks everything the game ships and fails if it
+  names a class or a path from a folder the export leaves out. Run that test before any release.
+  Rule of thumb: the editor can never prove an export works - only running the packaged exe can
+  (tools/debug/smoke_exe.tscn does exactly that on demand).
