@@ -16,7 +16,12 @@
 # cone | sphere, size [x,y,z] (cylinder/cone: [radius, height, -]), color [r,g,b], metal, bone, pos, rot_deg}.
 # Disc throws (D-082): throw_disc() plays the "throw" (backhand swing) or "putt" (one-hand push) clip and shows a
 # disc on the "disc_hand" bone until it lets go, hands otherwise empty; every peer runs it for remote players.
-# Never affects gameplay. Depends on: DataLoader, shaders/outfit.gdshader.
+# Mixamo models (D-112): "anim_set" names an entry in the top-level "anim_sets" (a folder of Mixamo animation FBXs,
+# one clip per file) and "anim_override" swaps single clips for this model; MixamoRetarget puts them all on the
+# model's own skeleton and names each clip by its key, so "clips" is filled in automatically. "fallback" names
+# another model to use when this one's file isn't there - Mixamo files are kept out of the public repo, so a fresh
+# clone falls back to the CC0 models instead of failing to load.
+# Never affects gameplay. Depends on: DataLoader, MixamoRetarget, shaders/outfit.gdshader.
 class_name CharacterAnimator
 extends Node3D
 
@@ -31,6 +36,7 @@ static var _gear_mats: Dictionary = {}  # "r,g,b,metal" -> shared StandardMateri
 static var _gear_meshes: Dictionary = {}  # shape + size -> shared PrimitiveMesh
 
 var _def: Dictionary = {}
+var _model_id := ""
 var _player: AnimationPlayer
 var _skeleton: Skeleton3D
 var _hidden_bones: PackedInt32Array = []
@@ -62,6 +68,12 @@ func set_model(id: String, first_person := false, extra := {}) -> bool:
 	if not models.has(id):
 		push_error("CharacterAnimator: unknown model '%s'" % id)
 		return false
+	var hops := 0
+	while models[id].has("fallback") and models[id].has("path") and not ResourceLoader.exists(str(models[id].path)) \
+			and models.has(str(models[id].fallback)) and hops < 4:
+		id = str(models[id].fallback)  # the file isn't on this machine (Mixamo is kept out of the repo)
+		hops += 1
+	_model_id = id
 	_def = models[id]
 	if not extra.is_empty():
 		_def = _def.duplicate()
@@ -126,6 +138,22 @@ static func model_def(id: String) -> Dictionary:
 func _dress(model: Node3D) -> void:
 	var skels := model.find_children("*", "Skeleton3D", true, false)
 	var skel: Skeleton3D = skels[0] if skels.size() > 0 else null
+	if _def.has("anim_set") and skel:
+		for old: Node in model.find_children("*", "AnimationPlayer", true, false):
+			old.get_parent().remove_child(old)  # the FBX's own (T-pose) player: ours replaces it
+			old.free()
+		var anim_set: Dictionary = _data.get("anim_sets", {}).get(str(_def.anim_set), {})
+		var lib := MixamoRetarget.library(_model_id, model, skel, anim_set, _def.get("anim_override", {}))
+		var mx := AnimationPlayer.new()
+		mx.name = "AnimationPlayer"
+		model.add_child(mx)
+		mx.root_node = NodePath("..")
+		mx.add_animation_library("", lib)
+		var clips := {}
+		for k: StringName in lib.get_animation_list():
+			clips[str(k)] = str(k)
+		_def = _def.duplicate()
+		_def.clips = clips
 	if _def.has("anim_source"):
 		var src := str(_def.anim_source)
 		if not _anim_libs.has(src):

@@ -484,3 +484,15 @@ Locked unless flagged. Each entry: decision — reason.
   Microsoft one is also dropped when over half its corners are. The counts are printed in the build summary.
   Applies to OSM footprints too: a footprint centred on a road is bad data whatever produced it. Needs a full
   cell re-bake (~1 h) to take effect; the fix is in the importer, not in the already-generated cells.
+- **D-112** (2026-11-21) Realistic zombies come from MIXAMO (user's pick over reusing the raider bodies, a paid
+  pack, or free CC-BY models - the CC0/CC-BY realistic zombies that exist are low-poly mobile models or unrigged
+  sculpts). Licence: free for any game, but "the only thing you can't do is distribute the raw character and
+  animation files" (Adobe's Mixamo FAQ) - and the repo is public, so assets/characters/mixamo/ is GITIGNORED and
+  only ever ships baked into the exported game. Every Mixamo model has a "fallback" to the old CC0 model, so a
+  fresh clone of the repo still runs (with cartoon zombies) instead of failing to load. Animation: Mixamo saves one
+  clip per FBX, keyed to whichever character was selected at download; MixamoRetarget copies rotations by bone name
+  with the mixamorig/mixamorig5 prefix stripped, keeps only the hips' position (scaled by hip height, so a 2.2 m
+  body doesn't sink on a 1.8 m body's walk) and pins locomotion clips in place. Mapping: Warzombie + Zombiegirl =
+  shambler, Parasite = runner, Copzombie = riot cop, Zombiegirl = spitter, Warrok = bloater (provisional - it reads
+  as a fantasy beast; user to decide). Cartoon tints dropped on these five (a coloured film over a real skin reads
+  as paint). Kearney High bosses and the giant jackrabbit still use the CC0 models.

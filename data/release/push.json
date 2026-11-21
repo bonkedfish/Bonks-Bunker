@@ -1,5 +1,5 @@
 {
 	"_comment": "tools/release/push_repo.tscn: `message` is the commit message (it falls back to a release-tidy message if blank), `check_tag` is a release tag it checks is still live after pushing (\"\" skips the check).",
-	"message": "",
+	"message": "Realistic Mixamo zombies (D-112) and buildings out of the streets (D-111)\n\nThe five open-world zombie types now use realistic Mixamo characters with retargeted\nMixamo animations (scream, grab, crawl, stand-up, twitch and stumble loaded for the scare\nwork). The Mixamo files are gitignored - their licence forbids sharing the raw files - and\nevery Mixamo model falls back to the CC0 one when they are missing. The map importer now\nbuilds roads first and drops building footprints that stand in a street; cells re-baked.",
 	"check_tag": "alpha3.1"
 }

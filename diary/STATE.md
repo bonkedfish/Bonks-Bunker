@@ -800,3 +800,17 @@ a release, then gh release view) went to main as 02768d7.
   tools/map_import/build_cells.gd is fixed (roads first, then _on_a_road / _mostly_on_a_road reject footprints
   on the carriageway, counts printed in the summary). The generated cells still contain the old buildings:
   this needs a full build_cells run (~1 h, 20 rows in batches of 3) and then another release to reach players.
+- 2026-11-21 D-111 BAKED: full build_cells run (800 cells, 7931 buildings, ~80 min - slower than the 1 h estimate)
+  with roads built before buildings and footprints standing in a street dropped. The drop counts were printed to
+  the console only and lost when the process closed; next bake, read them before it exits.
+- 2026-11-21 D-112 IN: realistic Mixamo zombies on the five open-world types. tests/mixamo_lineup.tscn: all six
+  models load and all 12 clips (idle walk run attack hit death scream grab crawl stand_up twitch stumble) retarget
+  onto every skeleton, crawl included, nobody sinks or floats. 7.4k-15k triangles, 2K textures (Ch10_nonPBR is
+  49.6k triangles with 4K textures and is NOT assigned yet). 48 walking alone: 5.5 ms, 539 draw calls, 585 MB VRAM.
+  zombie_types_test in the real world: 27 PASS / 0 failures, 48 chasing = frame 5.7 ms, physics 3.9 ms, 681 draw
+  calls - the same as the cartoon models. Mixamo files live in assets/characters/mixamo/ (gitignored - keep a
+  local backup; the user downloaded 6 characters and 17 animations, "Walking.fbx" looks like a duplicate of
+  "Zombie Walk.fbx" and is unused). Open: whether Warrok stays the Bloater; whether Ch10 joins the shamblers; the
+  four scare levers (horror animation, sound, behaviour, screen effects) are approved but not built yet - the
+  scream / grab / crawl / stand_up / twitch / stumble clips are already loaded for them. Sound needs CC0
+  recordings (screams, breathing, heartbeat) that aren't in the project yet.
