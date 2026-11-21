@@ -35,6 +35,11 @@ var world_picker: VBoxContainer:
 
 
 func _ready() -> void:
+	if OS.get_cmdline_user_args().has("--check-models"):  # release.gd: are the real models in this build? (D-112)
+		var problems := ModelCheck.check(self)
+		print("MODELS: " + ("OK" if problems.is_empty() else "MISSING\n" + "\n".join(problems)))
+		get_tree().quit(0 if problems.is_empty() else 3)
+		return
 	var pause := PauseMenu.new()
 	pause.name = "Pause"
 	$UI.add_child(pause)

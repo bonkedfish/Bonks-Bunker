@@ -496,3 +496,12 @@ Locked unless flagged. Each entry: decision — reason.
   shambler, Parasite = runner, Copzombie = riot cop, Zombiegirl = spitter, Warrok = bloater (provisional - it reads
   as a fantasy beast; user to decide). Cartoon tints dropped on these five (a coloured film over a real skin reads
   as paint). Kearney High bosses and the giant jackrabbit still use the CC0 models.
+- **D-113** (2026-11-21) Every release ships the real zombies (user: "make the Mixamo files in the newest updates
+  every time"). They always went into the export (all_resources; the folder isn't excluded) but nothing
+  guaranteed it - a build made without them would fall back to cartoon zombies in silence. Now ModelCheck gates the
+  release twice: in the editor before exporting, and inside the packaged Windows exe after (`-- --check-models`,
+  answered by main.gd). Any missing model or clip stops the release before anything is published. The raw files
+  still never go into the public repo (Mixamo licence). Also: Warrok STAYS the Bloater (user); Ch10 joins the
+  shamblers; all Mixamo textures are VRAM-compressed (S3TC for Windows, ETC2 for Mac) and capped at 2048 - they had
+  been imported lossless, which is what headless imports do (the editor's "used in 3D -> compress" switch never
+  fires), and the 48-zombie crowd fell from 585 to 272 MB of video memory.

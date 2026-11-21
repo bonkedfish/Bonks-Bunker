@@ -146,7 +146,7 @@ func _crowd() -> void:
 		var b := CharacterAnimator.new()
 		add_child(b)
 		b.position = Vector3((i % 8 - 3.5) * 1.6, 0.0, float(i / 8) * 2.2 + 2.0)
-		b.set_model(IDS[i % 5])  # the five that are in use
+		b.set_model(IDS[i % IDS.size()])  # every model in use, Ch10 (the heaviest) included
 		b.one_shot("walk", 999.0)
 		crowd.append(b)
 	_cam.position = Vector3(0, 2.2, -9.0)

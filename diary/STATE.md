@@ -814,3 +814,12 @@ a release, then gh release view) went to main as 02768d7.
   four scare levers (horror animation, sound, behaviour, screen effects) are approved but not built yet - the
   scream / grab / crawl / stand_up / twitch / stumble clips are already loaded for them. Sound needs CC0
   recordings (screams, breathing, heartbeat) that aren't in the project yet.
+- 2026-11-21 D-113 DONE: release.gd runs ModelCheck before exporting and inside the packaged exe after; a missing
+  Mixamo model or clip stops the release. tests/model_check_test.tscn 4 PASS (real models pass; a missing model file
+  and a missing clip are both caught). NOT YET EXERCISED inside a real export - the next release is the first run of
+  the in-exe check; if it fails for a reason other than missing files, look at main.gd's --check-models hook and
+  release.gd _models_in_build (it greps the output for "MODELS: OK"). Ch10 added to the shamblers at 2K textures.
+  Mixamo textures VRAM-compressed: 48 walking (Ch10 included) = 5.6 ms, 495 draw calls, 272 MB VRAM (was 585 MB).
+  Note: these .import settings live inside the gitignored Mixamo folder - if the files are ever re-downloaded,
+  re-apply compress/mode=2 + process/size_limit=2048 to the extracted PNGs. Pre-existing and NOT fixed: the raider
+  (UBC) textures are also imported lossless (compress/mode=0) - same easy win, not asked for yet.

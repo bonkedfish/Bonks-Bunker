@@ -2,6 +2,9 @@
 # (alpha2.1 -> alpha2.2 ...; release.json "min_version" lifts it to a bigger jump like alpha3.0), exports Windows + macOS from the same commit, smoke-tests the Windows exe, zips,
 # splits any file over split_mb (GitHub caps release files at 2 GiB), commits + pushes the source, then publishes
 # ONE prerelease with both platforms. Creates the GitHub repo on first run. Nothing is published if any step fails.
+# The real models (D-112): the Mixamo zombies are gitignored and fall back to CC0 cartoon ones when missing, so a
+# release could quietly ship the wrong zombies. ModelCheck runs twice - in the editor before exporting, and inside
+# the packaged Windows exe after (`-- --check-models`) - and any missing model or clip stops the release.
 # release.json "force_version" rebuilds THAT version instead of picking the next one: if the release already
 # exists its assets are replaced (gh release upload --clobber) and its notes are left alone, which is how a
 # broken build gets fixed without burning a version number. Clear force_version afterwards.
@@ -36,6 +39,12 @@ func _run() -> bool:
 		return false
 	if not _preflight():
 		return false
+	var missing := ModelCheck.check(self)
+	if not missing.is_empty():
+		_say("STOPPED: the real models are not all here, so this build would ship fallback zombies:\n    "
+			+ "\n    ".join(missing))
+		return false
+	_say("models: every Mixamo model and clip is present")
 	if not _ensure_repo(cfg):
 		return false
 	var forced := str(cfg.get("force_version", ""))
@@ -61,6 +70,8 @@ func _run() -> bool:
 	if not _export("macOS", mac_zip):
 		return false
 	if not _smoke(win_dir + "/" + exe + ".exe"):
+		return false
+	if not _models_in_build(win_dir + "/" + exe + ".exe"):
 		return false
 	var win_zip := "%s/%s-%s-windows.zip" % [out_dir, exe, ver]
 	if not _zip_dir(win_dir, exe, win_zip):
@@ -254,6 +265,18 @@ func _smoke(exe_path: String) -> bool:
 			_say("    " + line.strip_edges())
 			shown += 1
 	return false
+
+
+# The packaged game checks its own models (D-112): proves the Mixamo zombies really went into the .pck.
+func _models_in_build(exe_path: String) -> bool:
+	var r := _exec(exe_path, ["--headless", "--", "--check-models"])
+	var ok := r.text.contains("MODELS: OK")
+	_say("models inside the build: %s" % ("OK" if ok else "NOT OK (exit %d)" % r.code))
+	if not ok:
+		for line: String in r.text.split("\n"):
+			if line.contains("MODELS") or line.contains("missing") or line.contains("clips") or line.contains("ERROR"):
+				_say("    " + line.strip_edges())
+	return ok
 
 
 func _zip_dir(dir: String, folder: String, zip_path: String) -> bool:

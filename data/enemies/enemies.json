@@ -18,7 +18,8 @@
 		"wander_pause": 3.0,
 		"models": [
 			"mx_warzombie",
-			"mx_zombiegirl"
+			"mx_zombiegirl",
+			"mx_ch10"
 		]
 	},
 	"hall_monitor": {
