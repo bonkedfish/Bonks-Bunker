@@ -21,6 +21,9 @@
 # model's own skeleton and names each clip by its key, so "clips" is filled in automatically. "fallback" names
 # another model to use when this one's file isn't there - Mixamo files are kept out of the public repo, so a fresh
 # clone falls back to the CC0 models instead of failing to load.
+# Scare looks (D-114): clip_remap swaps one clip key for another on this instance (a stumbler's walk is "stumble",
+# a crawler crawls for everything), hide_bones() shrinks bones to nothing (a crawler's legs), `advanced` says the
+# pose was re-sampled this frame (so Twitch can jerk bones on top of it), skeleton() / clip_length() for callers.
 # Never affects gameplay. Depends on: DataLoader, MixamoRetarget, shaders/outfit.gdshader.
 class_name CharacterAnimator
 extends Node3D
@@ -57,6 +60,8 @@ var _disc_mat: StandardMaterial3D
 var _disc_left := 0.0
 var _far_m := 35.0
 var _far_period := 0.1
+var clip_remap: Dictionary = {}  # clip key -> clip key played instead (D-114)
+var advanced := false  # the animation was advanced during the last update()
 
 
 # Loads model `id` (replacing any previous one). Returns false if the ID or file is missing.
@@ -386,16 +391,46 @@ func update(delta: float, attacking: bool, dead: bool, health: float, armed := f
 		_play("idle", 1.0, armed)
 
 	_accum += delta
+	advanced = false
 	var cam := get_viewport().get_camera_3d()
 	var far := cam != null and cam.global_position.distance_to(pos) > _far_m
 	if not far or _accum >= _far_period:
 		_player.advance(_accum)
 		_accum = 0.0
+		advanced = true
 		for i in _hidden_bones:
 			_skeleton.set_bone_pose_scale(i, Vector3.ONE * 0.001)
 
 
+# Shrinks these bones (names without the "mixamorig_" prefix, e.g. "LeftUpLeg") to nothing every frame.
+func hide_bones(names: Array) -> void:
+	if _skeleton == null:
+		return
+	for i in _skeleton.get_bone_count():
+		if MixamoRetarget.strip(_skeleton.get_bone_name(i)) in names and not _hidden_bones.has(i):
+			_hidden_bones.append(i)
+
+
+# Undoes hide_bones() (a pooled body that's no longer a crawler).
+func unhide_bones() -> void:
+	for i in _hidden_bones:
+		_skeleton.set_bone_pose_scale(i, Vector3.ONE)
+	_hidden_bones.clear()
+
+
+func skeleton() -> Skeleton3D:
+	return _skeleton
+
+
+# Length in seconds of clip `key` on this model (0 when it has none).
+func clip_length(key: String) -> float:
+	var clip := str(_def.get("clips", {}).get(clip_remap.get(key, key), ""))
+	return _player.get_animation(clip).length if _player and _player.has_animation(clip) else 0.0
+
+
 func _play(key: String, speed: float, armed: bool) -> void:
+	if clip_remap.has(key) and _def.clips.has(clip_remap[key]):
+		key = str(clip_remap[key])
 	var k := key + "_gun" if armed and _def.clips.has(key + "_gun") else key
 	var clip := str(_def.clips.get(k, ""))
 	if not _player.has_animation(clip):

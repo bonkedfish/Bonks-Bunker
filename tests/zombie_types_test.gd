@@ -19,6 +19,7 @@ var _combat: Node
 
 func _ready() -> void:
 	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(OUT_DIR))
+	ZombieScare.roles_off = true  # D-114 traits are random per activation; this test wants plain zombies
 	_pure()
 	var main: Node = load("res://scenes/main.tscn").instantiate()
 	add_child(main)

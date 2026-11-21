@@ -14,5 +14,8 @@
   "Grunts of male death and pain", "80 CC0 RPG SFX" (chains), "Wind" (IgnasD), "wind whoosh loop" (SketchMan3),
   "Crow caw", "Crows singing", "Tree Creaking", "Metal clang sounds" (bart), "Zombies Sound Pack" (artisticdude),
   "Different steps on wood, stone, leaves, gravel and mud" (disc landing / leaves)
+- Zombie scare sounds (D-114), made by tools/audio/build_scare_sounds.py: heartbeat and breathing synthesized for this
+  game; groans, screams and snarls derived from the "Zombies Sound Pack" moans above (artisticdude, CC0 1.0) —
+  assets/audio/zombie_groan, zombie_breath, zombie_scream, zombie_attack, heartbeat
 - Characters + animations: Quaternius Universal Base Characters [Standard] and Universal Animation Library [Standard], CC0 1.0 (https://quaternius.itch.io) — assets/characters/ubc/, assets/characters/ual/ (D-058)
 - Kenwood Elementary and Centennial pool layouts traced from Esri World Imagery as a reference only (no imagery is shipped)

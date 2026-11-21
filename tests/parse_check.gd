@@ -1,7 +1,9 @@
 # ParseCheck — loads the given scripts and prints whether each compiled (parse errors print above). Dev helper.
 extends Node
 
-const PATHS := ["res://scripts/visual/model_check.gd", "res://tests/model_check_test.gd", "res://scripts/main.gd",
+const PATHS := ["res://tools/release/release.gd", "res://scripts/rules/scare_rules.gd", "res://scripts/ai/zombie_scare.gd", "res://scripts/visual/twitch.gd",
+	"res://scripts/visual/eye_shine.gd", "res://scripts/fx/dread.gd", "res://scripts/audio/zombie_voices.gd",
+	"res://tests/scare_test.gd", "res://scripts/combat/health.gd", "res://scripts/visual/model_check.gd", "res://tests/model_check_test.gd", "res://scripts/main.gd",
 	"res://scripts/visual/mixamo_retarget.gd", "res://scripts/visual/character_animator.gd",
 	"res://tests/mixamo_lineup.gd", "res://tests/export_safety_test.gd", "res://scripts/world/car_mesh.gd",
 	"res://scripts/rules/day_night_rules.gd", "res://scripts/world/day_night.gd",

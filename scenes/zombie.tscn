@@ -27,6 +27,12 @@ properties/4/replication_mode = 2
 properties/5/path = NodePath(".:net_enemy")
 properties/5/spawn = true
 properties/5/replication_mode = 2
+properties/6/path = NodePath(".:net_style")
+properties/6/spawn = true
+properties/6/replication_mode = 2
+properties/7/path = NodePath(".:net_pose")
+properties/7/spawn = true
+properties/7/replication_mode = 2
 
 [node name="Zombie" type="CharacterBody3D"]
 collision_layer = 2

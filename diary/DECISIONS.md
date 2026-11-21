@@ -505,3 +505,17 @@ Locked unless flagged. Each entry: decision — reason.
   shamblers; all Mixamo textures are VRAM-compressed (S3TC for Windows, ETC2 for Mac) and capped at 2048 - they had
   been imported lossless, which is what headless imports do (the editor's "used in 3D -> compress" switch never
   fires), and the 48-zombie crowd fell from 585 to 272 MB of video memory.
+- **D-114** (2026-11-21) Zombie scare features, all four levers the user picked, for the five open-world zombie
+  types only (data/tuning/scare.json `roles`; raiders, bosses and the jackrabbit untouched). Each activation rolls
+  traits from one replicated int (`net_style`), so every peer agrees with no extra traffic: screamer, stumbler,
+  crawler, feigner, lurker, stalker, flanker, twitchy, plus +/-18% speed. Host-only behaviour lives in ZombieScare
+  (returns a speed multiplier to Zombie._host_step); `net_pose` (NORMAL / DOWN / RISE) replicates the feign.
+  Feigning is in Health (`down_once`: first lethal hit leaves 1 HP and emits `downed`, not `died`), so kill credit,
+  loot and corpses only ever happen on the real death. ADAPTATION: "wait inside buildings" - the generated town
+  buildings are solid shells, not enterable, so lurkers wait pressed against the nearest wall or doorway within
+  10 m (and inside the hand-built interiors, where walls are real) until you're within 7 m. Sounds made with no
+  downloads (tools/audio/build_scare_sounds.py): heartbeat + breathing synthesized, groan / scream / snarl derived
+  from the in-repo CC0 moans; each event is a folder, so better CC0 recordings can replace them by dropping files
+  in. Heartbeat is on the Master bus so the muffling low-pass (SFX + Ambience) doesn't swallow it. Only the nearest
+  4 zombies get voices, so a horde can't steal the 24 voices gunfire needs. Old tests that need plain zombies set
+  `ZombieScare.roles_off`.

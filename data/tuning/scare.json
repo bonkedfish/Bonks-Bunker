@@ -1,0 +1,21 @@
+{
+	"note": "Zombie scare tuning (D-114). roles = per enemy ID, the chance each pooled body gets a trait when it activates (rolled from its replicated style seed, so every peer agrees): screamer (shrieks + sprints when it first spots you and calls others in call_radius_m), stumbler (lurching stumble walk), crawler (legless, low, slow - never a feigner), feigner (drops on the first lethal hit and gets back up), lurker (waits still against a wall or doorway until you're within wake_m), stalker (at night freezes while you look at it and creeps closer while you don't, charges inside charge_m), flanker (circles to your side when 2+ chase you). Enemy IDs not listed get none of this. Distances in metres, times in seconds.",
+	"roles": {
+		"zombie_shambler": {"screamer": 0.6, "stumbler": 0.45, "crawler": 0.15, "feigner": 0.25, "lurker": 0.15, "stalker": 0.35, "flanker": 0.5},
+		"zombie_runner": {"screamer": 1.0, "stumbler": 0.0, "crawler": 0.0, "feigner": 0.15, "lurker": 0.25, "stalker": 0.5, "flanker": 0.7},
+		"zombie_bloater": {"screamer": 0.4, "stumbler": 0.6, "crawler": 0.0, "feigner": 0.0, "lurker": 0.1, "stalker": 0.2, "flanker": 0.2},
+		"zombie_riot": {"screamer": 0.6, "stumbler": 0.3, "crawler": 0.0, "feigner": 0.3, "lurker": 0.2, "stalker": 0.3, "flanker": 0.5},
+		"zombie_spitter": {"screamer": 0.6, "stumbler": 0.3, "crawler": 0.1, "feigner": 0.2, "lurker": 0.2, "stalker": 0.25, "flanker": 0.3}
+	},
+	"gait": {"speed_jitter": 0.18},
+	"scream": {"seconds": 1.2, "sprint_seconds": 2.5, "sprint_mult": 1.6, "call_radius_m": 45.0, "cooldown_s": 25.0, "min_distance_m": 3.0, "shake": 0.45, "shake_radius_m": 30.0},
+	"crawler": {"speed_mult": 0.45, "height_m": 0.7, "hide_bones": ["LeftUpLeg", "RightUpLeg"]},
+	"feign": {"down_min_s": 2.5, "down_max_s": 5.0, "rise_s": 2.6, "revive_fraction": 0.35, "height_m": 0.45},
+	"lurk": {"search_m": 10.0, "wall_gap_m": 0.7, "wake_m": 7.0},
+	"stalk": {"charge_m": 7.0, "creep_mult": 0.75, "look_cone_degrees": 40.0, "give_up_s": 45.0},
+	"flank": {"offset_m": 5.0, "min_chasers": 2, "until_m": 5.0},
+	"twitch": {"chance": 0.7, "gap_min_s": 0.8, "gap_max_s": 3.5, "jerk_s": 0.14, "max_degrees": 28.0, "bones": ["Head", "Neck", "LeftArm", "RightArm", "LeftForeArm", "RightForeArm"], "range_m": 30.0},
+	"voices": {"budget": 4, "scan_s": 0.3, "groan_m": 25.0, "groan_gap_min_s": 3.5, "groan_gap_max_s": 9.0, "breath_m": 6.0, "breath_gap_s": 2.2},
+	"dread": {"heartbeat_far_m": 12.0, "heartbeat_near_m": 2.0, "bpm_far": 70.0, "bpm_near": 150.0, "muffle_m": 3.0, "muffle_hz_near": 900.0, "muffle_hz_off": 20000.0, "grab_m": 1.8, "grab_fade_s": 0.6, "hit_shake": 0.35, "shake_decay": 1.6, "shake_max_offset_m": 0.06, "shake_max_roll_degrees": 3.0, "vignette": 0.85, "desaturate": 0.8},
+	"eyes": {"range_m": 45.0, "size_m": 0.045, "night_above": 0.25, "color": [1.0, 0.85, 0.45], "head_offset_m": [0.034, 0.09, 0.14]}
+}

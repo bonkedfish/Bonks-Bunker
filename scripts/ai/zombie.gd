@@ -17,7 +17,12 @@
 # dead - Bloater), "hearing_mult" + "rush_noise" (hears gunfire farther and runs to it - Runner).
 # Safe zones (D-101, SafeZones group "safe_zones"): a body ignores players and noises inside a zone, so a chase ends
 # at the edge, and a body that finds itself inside walks back out.
-# Depends on: ZombieBrain, ZombieTypeRules, EnemyDB, CombatRules, CombatWorld, DialogueDB, PositionHistory,
+# Scare features (D-114, ZombieScare - only for the enemy IDs in data/tuning/scare.json): `net_style` (replicated
+# seed) gives each activation its traits on every peer (stumbler, crawler, screamer, feigner, lurker, stalker,
+# flanker, twitchy); `net_pose` (replicated) is NORMAL / DOWN (a feigner lying there) / RISE (getting back up).
+# The spotting scream is an RPC (clip + sound + camera shake near it) and calls other zombies nearby through hear().
+# Presentation on every peer: Twitch (bone jerks), EyeShine (eyes catching the light at night), a snarl on swings.
+# Depends on: ZombieBrain, ZombieScare, Twitch, EyeShine, ZombieTypeRules, EnemyDB, CombatRules, CombatWorld, DialogueDB, PositionHistory,
 # SnapshotBuffer, NetClock, Health, CharacterAnimator, Sfx.
 extends CharacterBody3D
 
@@ -49,6 +54,19 @@ var net_active := false
 var net_position := Vector3.ZERO
 var net_yaw := 0.0
 var net_attacking := false
+var net_style := 0:  # scare trait seed for this activation (D-114)
+	set(value):
+		if value != net_style:
+			net_style = value
+			if is_node_ready() and _scare:
+				_scare.set_style(value)
+				_apply_scare_look()
+var net_pose := 0:  # ZombieScare.Pose
+	set(value):
+		if value != net_pose:
+			net_pose = value
+			if is_node_ready() and value == ZombieScare.Pose.RISE:
+				body.one_shot("stand_up", float(ZombieScare.tuning.feign.rise_s))
 
 var brain: ZombieBrain
 var _def: Dictionary
@@ -76,6 +94,12 @@ var _combat: Node
 var _dialogue: Node
 var _plate: Label3D
 var _safe: Node
+var _scare: ZombieScare  # null for enemy IDs without scare traits
+var _twitch: Twitch
+var _eyes: Node3D
+var _eyes_skel: Skeleton3D
+var _was_attacking := false
+var _face_dir := Vector3.ZERO  # host: face this way this step (scare holds), ZERO = by movement
 
 @onready var nav: NavigationAgent3D = $Nav
 @onready var health: Health = $Health
@@ -91,6 +115,7 @@ func _ready() -> void:
 	_gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 	sync.synchronized.connect(_on_snapshot)
 	health.died.connect(_on_died)
+	health.downed.connect(_on_downed)
 	_apply_active(false)
 	if net_enemy != "" and _def.is_empty():
 		_apply_def(EnemyDB.get_enemy(net_enemy))
@@ -113,6 +138,9 @@ func _apply_def(enemy_def: Dictionary) -> void:
 	health.max_health = enemy_def.max_health
 	display_name = str(enemy_def.name)
 	team = StringName(str(enemy_def.get("faction", "zombies")))
+	_scare = ZombieScare.make(net_enemy)
+	if _scare:
+		_scare.set_style(net_style)
 	var s := float(enemy_def.get("scale", 1.0))
 	_height = HEIGHT * s
 	hit_radius = 0.35 * s
@@ -129,6 +157,7 @@ func _apply_def(enemy_def: Dictionary) -> void:
 			overlay.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
 			for mi: MeshInstance3D in body.find_children("*", "MeshInstance3D", true, false):
 				mi.material_overlay = overlay
+		_apply_scare_look()
 	var boss := bool(enemy_def.get("boss", false))
 	if boss and _plate == null:
 		_plate = Label3D.new()
@@ -157,6 +186,9 @@ func activate(pos: Vector3, yaw := 0.0) -> void:
 	_barked_aggro = false
 	_burst_done = false
 	_life += 1
+	health.down_once = false
+	net_pose = ZombieScare.Pose.NORMAL
+	net_style = randi() & 0x7fffffff
 	_snapshots.clear()
 	_history.clear()  # else rewound shots could still hit where this pooled body stood last time
 	_target = null
@@ -173,6 +205,8 @@ func activate(pos: Vector3, yaw := 0.0) -> void:
 	if bool(_def.get("boss", false)):
 		add_to_group("bosses")
 	_apply_active(true)
+	if _scare:
+		_scare.host_activate(self)
 
 
 func deactivate() -> void:
@@ -210,8 +244,17 @@ func hearing_mult() -> float:
 func hit_capsule_at(tick: float) -> Vector4:
 	var s := _history.sample(tick)
 	if s.w < 0.0:
-		return Vector4(global_position.x, global_position.y, global_position.z, _height)
+		return Vector4(global_position.x, global_position.y, global_position.z, _hit_height())
 	return s
+
+
+# Standing height, or lower for a crawler / a body lying down.
+func _hit_height() -> float:
+	return _scare.height(_height, net_pose) if _scare else _height
+
+
+func has_scare() -> bool:
+	return _scare != null
 
 
 # --- per tick --------------------------------------------------------------------
@@ -248,18 +291,31 @@ func _host_step(delta: float) -> void:
 		_barked_aggro = true
 		_bark("aggro")
 
-	var speed := float(_def.walk_speed)
+	var mult := _scare.host_step(self, delta, target_ok, target_dist) if _scare else 1.0
+	var busy := _scare != null and _scare.busy(net_pose)
+	_face_dir = Vector3.ZERO
+	if mult == 0.0 and net_pose == ZombieScare.Pose.NORMAL:
+		if target_ok:
+			_face_dir = _target.global_position - global_position  # screaming, stalking, lurking: watch you
+		elif _scare and _scare.lurking:
+			_face_dir = _scare.lurk_face
+	var speed := float(_def.walk_speed) * mult
 	match brain.state:
 		ZombieBrain.State.CHASE:
-			speed = float(_def.chase_speed) * (float(enrage.get("speed_mult", 1.0)) if _enraged else 1.0)
-			_set_destination(_target.global_position if target_ok else _last_seen)
+			speed = float(_def.chase_speed) * (float(enrage.get("speed_mult", 1.0)) if _enraged else 1.0) * mult
+			if target_ok and _scare:
+				_set_destination(_scare.chase_point(self, _target, target_dist))
+			else:
+				_set_destination(_target.global_position if target_ok else _last_seen)
 		ZombieBrain.State.INVESTIGATE:
 			if bool(_def.get("rush_noise", false)):
-				speed = float(_def.chase_speed)
+				speed = float(_def.chase_speed) * mult
 			if heard_now:
 				_set_destination(_noise_pos)
 		ZombieBrain.State.WANDER:
-			if nav.is_navigation_finished():
+			if _scare and _scare.lurking:
+				pass  # waiting at its wall
+			elif nav.is_navigation_finished():
 				_wander_wait -= delta
 				if _wander_wait <= 0.0:
 					_wander_wait = float(_def.wander_pause)
@@ -267,7 +323,7 @@ func _host_step(delta: float) -> void:
 		ZombieBrain.State.ATTACK:
 			speed = 0.0
 
-	if brain.attack_landed:
+	if brain.attack_landed and not busy:
 		if _def.has("burst"):
 			_burst()
 			return
@@ -277,7 +333,7 @@ func _host_step(delta: float) -> void:
 			_resolve_swipe()
 	_move(delta, speed)
 
-	_history.record(_clock.tick, global_position, _height)
+	_history.record(_clock.tick, global_position, _hit_height())
 	net_position = global_position
 	net_yaw = rotation.y
 	net_attacking = brain.state == ZombieBrain.State.ATTACK
@@ -369,6 +425,8 @@ func _move(delta: float, speed: float) -> void:
 	if brain.state == ZombieBrain.State.ATTACK and is_instance_valid(_target):
 		face = _target.global_position - global_position
 		face.y = 0.0
+	elif _face_dir != Vector3.ZERO:
+		face = Vector3(_face_dir.x, 0.0, _face_dir.z)
 	velocity.x = horizontal.x
 	velocity.z = horizontal.z
 	velocity.y = 0.0 if is_on_floor() else velocity.y - _gravity * delta
@@ -438,6 +496,32 @@ func _fx_burst(at: Vector3, radius: float) -> void:
 	tw.chain().tween_callback(mi.queue_free)
 
 
+# Host: the spotting scream - everyone near sees and hears it, and zombies within call_radius_m come running.
+func host_scream() -> void:
+	_fx_scream.rpc(global_position + Vector3.UP * _hit_height() * 0.85)
+	var to: Vector3 = _target.global_position if is_instance_valid(_target) else global_position
+	var r := float(ZombieScare.tuning.scream.call_radius_m)
+	for n in get_tree().get_nodes_in_group("hittable"):
+		if n != self and "net_enemy" in n and n.team == team and n.net_active \
+				and n.global_position.distance_squared_to(global_position) < r * r:
+			n.hear(to)
+
+
+@rpc("authority", "call_local", "unreliable")
+func _fx_scream(at: Vector3) -> void:
+	body.one_shot("scream", float(ZombieScare.tuning.scream.seconds))
+	Sfx.play_at("zombie_scream", at)
+	var dread := get_tree().get_first_node_in_group("dread")
+	if dread:
+		dread.heard_scream(at)
+
+
+func _on_downed() -> void:
+	net_attacking = false
+	if multiplayer.is_server() and _scare:
+		_scare.host_downed(self)
+
+
 func _on_died(_attacker_peer: int) -> void:
 	net_attacking = false
 	if multiplayer.is_server():
@@ -467,7 +551,39 @@ func _update_visuals(delta: float) -> void:
 			rotation.y = net_yaw
 		_apply_active(net_active)
 	if net_active:
-		body.update(delta, net_attacking, health.is_dead(), health.current, bool(_def.get("armed", false)))
+		var down := health.is_dead() or net_pose == ZombieScare.Pose.DOWN
+		body.update(delta, net_attacking, down, health.current, bool(_def.get("armed", false)))
+		if _scare:
+			_scare_visuals(delta, down)
+
+
+# All peers: the stumble / crawl look, twitchy bones and night eyes for this activation's traits.
+func _apply_scare_look() -> void:
+	if _scare == null:
+		body.clip_remap.clear()
+		body.unhide_bones()
+		_twitch = null
+		_eyes = null
+		_eyes_skel = null
+		return
+	_scare.apply_look(body)
+	var skel := body.skeleton()
+	_twitch = Twitch.make(skel, ZombieScare.tuning.twitch) if skel and bool(_scare.roles.get("twitchy", false)) else null
+	if skel != _eyes_skel:  # a new model: its eyes go on the new head (the old ones were freed with the old model)
+		_eyes_skel = skel
+		_eyes = EyeShine.attach(skel, ZombieScare.tuning.eyes) if skel else null
+
+
+func _scare_visuals(delta: float, down: bool) -> void:
+	if net_attacking and not _was_attacking:
+		Sfx.play_at("zombie_attack", global_position + Vector3.UP * _hit_height() * 0.8)
+	_was_attacking = net_attacking
+	if _eyes:
+		_eyes.visible = not down
+	if _twitch and body.advanced and not down and not net_attacking:
+		var cam := get_viewport().get_camera_3d()
+		if cam and cam.global_position.distance_squared_to(global_position) < _twitch.range_sq:
+			_twitch.apply(body.skeleton(), delta)
 
 
 func _apply_active(on: bool) -> void:

@@ -270,7 +270,7 @@ func _smoke(exe_path: String) -> bool:
 # The packaged game checks its own models (D-112): proves the Mixamo zombies really went into the .pck.
 func _models_in_build(exe_path: String) -> bool:
 	var r := _exec(exe_path, ["--headless", "--", "--check-models"])
-	var ok := r.text.contains("MODELS: OK")
+	var ok: bool = r.text.contains("MODELS: OK")
 	_say("models inside the build: %s" % ("OK" if ok else "NOT OK (exit %d)" % r.code))
 	if not ok:
 		for line: String in r.text.split("\n"):

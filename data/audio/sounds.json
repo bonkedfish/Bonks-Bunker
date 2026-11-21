@@ -1,10 +1,15 @@
 {
-	"note": "Sound events (D-077), played by the Sfx autoload. An event's sounds are every .ogg / .wav / .mp3 in res://assets/audio/<event id>/ (one picked at random per play; add variants freely; CC0 only, log the source in CREDITS.md). volume_db = loudness, pitch_jitter = +/- random pitch so repeats differ, max_distance = metres a 3D sound carries (also the cut-off for playing it at all), bus = SFX or Ambience. Weapon events are <weapon id>_fire / _reload / _dry / _swing / _hit; gun_fire = shots from weapons with no id (raiders). item_use = the event that plays while using an item (by item id, else by item category); it stops if the use is cancelled. land_min_speed = falling speed (m/s) that makes a landing thud. ambience = wind loop + one distant sound every min_gap_s..max_gap_s, min_dist_m..max_dist_m away. voices_3d / voices_2d = pooled players (world sounds / your own sounds). default_volume = bus volume until the Settings sliders are touched.",
+	"note": "Sound events (D-077), played by the Sfx autoload. An event's sounds are every .ogg / .wav / .mp3 in res://assets/audio/<event id>/ (one picked at random per play; add variants freely; CC0 only, log the source in CREDITS.md). volume_db = loudness, pitch_jitter = +/- random pitch so repeats differ, max_distance = metres a 3D sound carries (also the cut-off for playing it at all), bus = SFX or Ambience. Weapon events are <weapon id>_fire / _reload / _dry / _swing / _hit; gun_fire = shots from weapons with no id (raiders). item_use = the event that plays while using an item (by item id, else by item category); it stops if the use is cancelled. land_min_speed = falling speed (m/s) that makes a landing thud. ambience = wind loop + one distant sound every min_gap_s..max_gap_s, min_dist_m..max_dist_m away. voices_3d / voices_2d = pooled players (world sounds / your own sounds). default_volume = bus volume until the Settings sliders are touched. Scare events (D-114, tools/audio/build_scare_sounds.py): zombie_groan / zombie_breath (ZombieVoices: the nearest few zombies), zombie_scream (spotting), zombie_attack (swing snarl), heartbeat (Dread; Master bus so the muffling doesn't swallow it).",
 	"voices_3d": 24.0,
 	"voices_2d": 6.0,
 	"land_min_speed": 4.0,
 	"default_volume": {"SFX": 0.8, "Ambience": 0.7},
 	"events": {
+		"zombie_groan": {"volume_db": -4.0, "pitch_jitter": 0.1, "max_distance": 28.0, "bus": "SFX"},
+		"zombie_breath": {"volume_db": -8.0, "pitch_jitter": 0.08, "max_distance": 8.0, "bus": "SFX"},
+		"zombie_scream": {"volume_db": 3.0, "pitch_jitter": 0.08, "max_distance": 70.0, "bus": "SFX"},
+		"zombie_attack": {"volume_db": -2.0, "pitch_jitter": 0.1, "max_distance": 20.0, "bus": "SFX"},
+		"heartbeat": {"volume_db": -6.0, "pitch_jitter": 0.02, "max_distance": 1.0, "bus": "Master"},
 		"pistol_9mm_fire": {"volume_db": 0.0, "pitch_jitter": 0.04, "max_distance": 150.0, "bus": "SFX"},
 		"pistol_9mm_reload": {"volume_db": -6.0, "pitch_jitter": 0.02, "max_distance": 15.0, "bus": "SFX"},
 		"pistol_9mm_dry": {"volume_db": -8.0, "pitch_jitter": 0.05, "max_distance": 10.0, "bus": "SFX"},

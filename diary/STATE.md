@@ -823,3 +823,12 @@ a release, then gh release view) went to main as 02768d7.
   Note: these .import settings live inside the gitignored Mixamo folder - if the files are ever re-downloaded,
   re-apply compress/mode=2 + process/size_limit=2048 to the extracted PNGs. Pre-existing and NOT fixed: the raider
   (UBC) textures are also imported lossless (compress/mode=0) - same easy win, not asked for yet.
+- 2026-11-21 D-114 DONE: zombie scare features (screams + sprint + horde call, crawlers, feigners, lurkers, night
+  stalkers, flankers, stumble gait, bone twitches, night eye shine, groans/breathing/heartbeat/muffle, camera shake,
+  grab vignette + desaturation). tests/scare_test.tscn 38 PASS / 0 failures (eyes and grab overlay checked by
+  screenshot). Regressions: zombie_types 0 failures (with roles_off), coop PASS, export_safety 0 failures,
+  parse_check OK. PERF WATCH: 48 zombies all chasing at night with traits = frame 6.0 ms, physics 7.5 ms, 759 draw
+  calls; the same 48 without traits = physics 5.6 ms (it was 3.9 ms at D-112 - measured at a different spot/time,
+  but physics is creeping toward the 8 ms test line). If it climbs, look at flankers' path requests and stalker
+  look checks first. Sounds are generated, not recorded - fine as placeholders, swap in CC0 recordings if the user
+  wants better ones. Not tested by hand yet: how it feels in a real night with 2+ players.
