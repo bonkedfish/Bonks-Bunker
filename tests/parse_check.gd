@@ -1,7 +1,8 @@
 # ParseCheck — loads the given scripts and prints whether each compiled (parse errors print above). Dev helper.
 extends Node
 
-const PATHS := ["res://scripts/world/grass_field.gd", "res://tools/map_import/build_grass_masks.gd",
+const PATHS := ["res://tests/car_lineup.gd", "res://tools/map_import/vegetation_builder.gd", "res://tools/map_import/build_cells.gd",
+	"res://scripts/world/grass_field.gd", "res://tools/map_import/build_grass_masks.gd",
 	"res://tools/map_import/refresh_street_materials.gd", "res://tools/map_import/street_looks.gd", "res://tests/ground_look.gd",
 	"res://tools/release/release.gd", "res://scripts/rules/scare_rules.gd", "res://scripts/ai/zombie_scare.gd", "res://scripts/visual/twitch.gd",
 	"res://scripts/visual/eye_shine.gd", "res://scripts/fx/dread.gd", "res://scripts/audio/zombie_voices.gd",

@@ -1,0 +1,11 @@
+Model Information:
+* title:	Abandoned Wrecked Bus
+* source:	https://sketchfab.com/3d-models/abandoned-wrecked-bus-0cbd1d8122f442d0a3a4b8a6df4f0e2e
+* author:	BytesCrafter (https://sketchfab.com/BytesCrafter)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Abandoned Wrecked Bus" (https://sketchfab.com/3d-models/abandoned-wrecked-bus-0cbd1d8122f442d0a3a4b8a6df4f0e2e) by BytesCrafter (https://sketchfab.com/BytesCrafter) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

@@ -19,3 +19,10 @@
   assets/audio/zombie_groan, zombie_breath, zombie_scream, zombie_attack, heartbeat
 - Characters + animations: Quaternius Universal Base Characters [Standard] and Universal Animation Library [Standard], CC0 1.0 (https://quaternius.itch.io) — assets/characters/ubc/, assets/characters/ual/ (D-058)
 - Kenwood Elementary and Centennial pool layouts traced from Esri World Imagery as a reference only (no imagery is shipped)
+- Vehicles (D-116), CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/), from Sketchfab, textures reduced to 2K and
+  re-oriented / scaled for the game — assets/models/vehicles/:
+  "Abandoned Generic Sedan 1 - Game Ready", "Abandoned Generic Sedan 2 - Game Ready", "Crashed Abandoned Car - Game Ready",
+  "Rusty Abandoned Truck with Interior - Game Ready" and "Crashed Abandoned Truck - Game Ready" by Rashad Ibrahimli
+  (https://sketchfab.com/rashad-ibrahimli); "destroyed pickup blue" by Skeleton_games (https://sketchfab.com/Skeleton_games);
+  "Dirty Car - Cadillac 75 Sedan 1953" by ROH3D (https://sketchfab.com/roh3d); "Abandoned Wrecked Bus" by BytesCrafter
+  (https://sketchfab.com/BytesCrafter)

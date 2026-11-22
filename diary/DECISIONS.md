@@ -532,3 +532,15 @@ Locked unless flagged. Each entry: decision — reason.
   build_cells: roads 4% = weeds, road edges 43%, sidewalks 10%, buildings/water/greens 0) plus a ray onto the
   Terrain body. Tiers: low none, medium 0.8/m2 to 32 m, high 1.6/m2 to 45 m; blades shrink to nothing in the last
   30% so chunks never pop.
+- **D-116** (2026-11-21) Realistic cars: 8 Sketchfab CC-BY 4.0 models picked by me, downloaded by the user (Sketchfab
+  needs an account): two generic sedans, a crashed car, a rusty truck, a crashed truck (Rashad Ibrahimli), a blue
+  pickup (Skeleton_games), a 1953 Cadillac (ROH3D) and a wrecked bus lying on its side (BytesCrafter). CC-BY allows
+  redistribution, so the unpacked models ARE in the public repo (assets/models/vehicles/, textures cut to 2K) and
+  credited in CREDITS.md; the original zips in assets/vehicles/ are gitignored. They are ordinary clutter props
+  (VegetationBuilder merges each into one mesh, the new "fit" turns it along +Z / scales to a real length / stands it
+  on the ground, and regenerates LODs), so they are baked into the cells: placement is a pipeline step, not hand
+  work. Placement (user picks): abandoned traffic on motorway/trunk/primary/secondary (jams of 3-9 in one or both
+  lanes, the front one often a crashed model, sometimes the bus), parking lots (stalls along the 189 OSM parking
+  aisles, ~35% full) and driveways (35% of houses, some sunk on flat tyres). The curb cars and the lone street cars
+  are OFF - the user did not tick "keep curbside", so the loot "Car Trunk" spots moved onto the new cars. Box
+  colliders. Needs a full build_cells re-bake + build_grass_masks.

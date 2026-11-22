@@ -841,3 +841,12 @@ a release, then gh release view) went to main as 02768d7.
   the base dry-grass texture still shows a ~3 m tile pattern from a distance (pre-existing; more grass2/dirt share
   or a larger tile would hide it), the Voronoi cracks read as alligator cracking, the base road_damaged texture is
   brown (the second asphalt brings grey back in patches).
+- 2026-11-21 D-116 DONE: realistic cars baked into the map (full build_cells re-bake ~62 min, then build_grass_masks).
+  tests/car_lineup.tscn: every model fitted along +Z at a real length (sedans 4.8-4.9 m, trucks 5.4-5.6, Cadillac
+  5.8, bus 11) with fresh LODs; pickup_blue needed flip. tests/car_look.tscn 9 PASS / 0 failures: 6,095 cars in
+  the map (sedans 3,423, pickups 954, rusty trucks 961, Cadillacs 459, crashed 153, covered 120, buses 25).
+  Screenshots show jams on Long Island Rd, crashed cars, flat-tyre driveway cars. Near a jam: ~6 ms, 120-180 draw
+  calls, ~0.5 M primitives; two readings of 72-84 ms were taken right after a teleport while cells loaded (blocking
+  loads of 86 ms logged) - streaming, not the cars. The wrecked bus lies on its side (that is the model) and blocks a
+  lane; widths include open doors / hoods, so box colliders are a bit wide. Not in a release yet. The original zips
+  are still in assets/vehicles/ (gitignored); the user can delete them.

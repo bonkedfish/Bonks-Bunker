@@ -777,6 +777,7 @@ func _build_roads(src: Dictionary) -> int:
 		var rank := DRIVABLE.size() - DRIVABLE.find(kind) if drivable else 0
 		ways.append({"kind": kind, "drivable": drivable, "half": half, "pts": pts,
 			"surface": _streets.surface_for(kind, tags, drivable), "centre": _streets.centre_line(kind),
+			"service": str(tags.get("service", "")),
 			"lanes": lanes, "lift": ROAD_LIFT + rank * 0.004 if drivable else float(_streets.data.sidewalk.lift_m)})
 	_ways = ways
 	var sw: Dictionary = _streets.data.sidewalk
@@ -1032,7 +1033,7 @@ func _in_map(p: Vector2) -> bool:
 
 # Adds one plant to its cell's list if the spot is on the map (and clear, when checked by the caller).
 # yaw NAN = random; clutter = true puts it in the clutter list (data/art/clutter.json kinds).
-func _plant(kind: String, rng: RandomNumberGenerator, p: Vector2, yaw := NAN, clutter := false) -> bool:
+func _plant(kind: String, rng: RandomNumberGenerator, p: Vector2, yaw := NAN, clutter := false, lift := -0.05) -> bool:
 	if _water.is_water(p) or not _in_map(p):
 		return false
 	for r in _no_plant:
@@ -1042,7 +1043,7 @@ func _plant(kind: String, rng: RandomNumberGenerator, p: Vector2, yaw := NAN, cl
 	var b: VegetationBuilder = _clutter if clutter else _veg
 	var variant := rng.randi_range(0, int(b.kinds[kind].meshes.size()) - 1)
 	var sr := b.scale_range(kind)
-	var entry := [kind, variant, _on_ground(p, -0.05), rng.randf() * TAU if is_nan(yaw) else yaw, rng.randf_range(sr.x, sr.y)]
+	var entry := [kind, variant, _on_ground(p, lift), rng.randf() * TAU if is_nan(yaw) else yaw, rng.randf_range(sr.x, sr.y)]
 	if clutter:
 		cell.clutter.append(entry)
 	else:
@@ -1325,14 +1326,53 @@ func _build_clutter() -> int:
 			_plant_clutter_free(rng, "road_barrier", p + side * off + dir * rng.randf_range(-0.6, 0.6), _yaw_x(side) + rng.randf_range(-0.3, 0.3))
 			count[0] += 1
 	_along_ways(pl.barrier_kinds, float(pl.barrier_spacing_m), rng, f4)
-	# Abandoned cars left in the street, some skewed.
+	# Abandoned traffic (D-116): jams on the main roads - a line of cars in one or both lanes, skewed, the front one
+	# often crashed; sometimes a bus.
 	var f5 := func(p: Vector2, dir: Vector2, idx: int, w: Dictionary) -> void:
-		if w.kind == "service" or rng.randf() > float(pl.street_car_chance) or _crossing(p, dir, idx, 6.0):
+		if rng.randf() > float(pl.jam_chance):
 			return
-		var lane := dir.orthogonal() * (float(w.half) * 0.45) * (1.0 if rng.randf() < 0.5 else -1.0)
-		_car(rng, p + lane, _yaw_z(dir) + rng.randf_range(-0.6, 0.6))
-		count[0] += 1
-	_along_ways(DRIVABLE, float(pl.street_car_spacing_m), rng, f5)
+		for lane_side: float in ([1.0, -1.0] if rng.randf() < float(pl.jam_both_lanes_chance) else [1.0 if rng.randf() < 0.5 else -1.0]):
+			var facing := dir * lane_side
+			var lane := dir.orthogonal() * (float(w.half) * 0.45) * lane_side
+			var at := p + lane
+			var n := rng.randi_range(int(pl.jam_cars[0]), int(pl.jam_cars[1]))
+			for i in n:
+				var context := "crashed" if i == 0 and rng.randf() < float(pl.jam_crash_chance) else "traffic"
+				var kind := _car_kind(rng, context)
+				var half_len := _car_length(kind) * 0.5
+				at += facing * half_len
+				if not _on_a_road(at) or not _on_map_clear(at, 1.0):
+					break
+				var skew := rng.randf_range(-0.6, 0.6) if context == "crashed" else rng.randf_range(-float(pl.jam_skew), float(pl.jam_skew))
+				if _car(rng, at, _yaw_z(facing) + skew, kind) and rng.randf() < float(pl.loot_traffic_chance):
+					_loot_spot(at, _yaw_z(facing) + skew, "car_trunk", "Car Trunk", Vector3(2.3, 1.7, 4.9))
+				count[0] += 1
+				at += facing * (half_len + rng.randf_range(float(pl.jam_gap_m[0]), float(pl.jam_gap_m[1])) - 4.6)
+	_along_ways(pl.jam_kinds, float(pl.jam_spacing_m), rng, f5)
+	# Parking lots (D-116): stalls either side of every OSM parking aisle, part full.
+	for w: Dictionary in _ways:
+		if w.get("service", "") != "parking_aisle":
+			continue
+		for j in range(w.pts.size() - 1):
+			var a: Vector2 = w.pts[j]
+			var b: Vector2 = w.pts[j + 1]
+			var length := a.distance_to(b)
+			if length < 1.0:
+				continue
+			var dir := (b - a) / length
+			var t := float(pl.parking_stall_m) * 0.5
+			while t < length:
+				for side: float in [1.0, -1.0]:
+					if rng.randf() > float(pl.parking_fill):
+						continue
+					var out := dir.orthogonal() * side
+					var sp := a + dir * t + out * (float(w.half) + float(pl.parking_depth_m))
+					if _on_map_clear(sp, 1.0) and _clear_of_roads(sp, 0.3):
+						var yaw := _yaw_z(out * (1.0 if rng.randf() < 0.7 else -1.0)) + rng.randf_range(-0.08, 0.08)
+						if _car(rng, sp, yaw, _car_kind(rng, "parking")) and rng.randf() < float(pl.loot_parking_chance):
+							_loot_spot(sp, yaw, "car_trunk", "Car Trunk", Vector3(2.3, 1.7, 4.9))
+						count[0] += 1
+				t += float(pl.parking_stall_m)
 	# Alley debris.
 	var f6 := func(p: Vector2, dir: Vector2, idx: int, w: Dictionary) -> void:
 		if rng.randf() > float(pl.alley_debris_chance):
@@ -1378,12 +1418,16 @@ func _build_clutter() -> int:
 			var dir: Vector2 = front[1]
 			var half: float = front[2]
 			var to_house := (centre - q).normalized()
-			if rng.randf() < float(pl.curb_car_chance_per_house) and not _crossing(q, dir, int(front[3]), 6.0):
-				var cp := q + to_house * (half - 1.15)
-				var cy := _yaw_z(dir) + rng.randf_range(-0.06, 0.06) + (PI if rng.randf() < 0.5 else 0.0)
-				if _car(rng, cp, cy) and rng.randf() < float(pl.loot_car_chance):
-					_loot_spot(cp, cy, "car_trunk", "Car Trunk", Vector3(2.3, 1.7, 4.9))
-				count[0] += 1
+			if rng.randf() < float(pl.driveway_car_chance_per_house):  # D-116: in the driveway, not at the curb
+				var edge := _house_edge(h[0], q)
+				var toward := (q - edge).normalized()
+				var cp := edge + toward * float(pl.driveway_offset_m) + toward.orthogonal() * rng.randf_range(-2.5, 2.5)
+				var cy := _yaw_z(toward) + rng.randf_range(-0.08, 0.08) + (PI if rng.randf() < 0.5 else 0.0)
+				if _on_map_clear(cp, 1.2) and _clear_of_roads(cp, 2.6):
+					var sink := float(pl.driveway_flat_sink_m) if rng.randf() < float(pl.driveway_flat_chance) else 0.0
+					if _car(rng, cp, cy, _car_kind(rng, "driveway"), sink) and rng.randf() < float(pl.loot_car_chance):
+						_loot_spot(cp, cy, "car_trunk", "Car Trunk", Vector3(2.3, 1.7, 4.9))
+					count[0] += 1
 			if rng.randf() < float(pl.porch_loot_chance):
 				var door := _house_edge(h[0], q)
 				var pp := door + (q - door).normalized() * 0.9
@@ -1456,12 +1500,30 @@ func _plant_clutter_free(rng: RandomNumberGenerator, kind: String, p: Vector2, y
 		_plant(kind, rng, p, yaw, true)
 
 
-func _car(rng: RandomNumberGenerator, p: Vector2, yaw: float) -> bool:
+# A car of clutter kind `kind` (D-116: the Sketchfab vehicles + the covered car), sunk `sink` m (flat tyres).
+func _car(rng: RandomNumberGenerator, p: Vector2, yaw: float, kind: String, sink := 0.0) -> bool:
 	if not _in_map(p):
 		return false
-	if rng.randf() < float(_clutter.data.placement.covered_car_fraction):
-		return _plant("covered_car", rng, p, yaw, true)
-	return _plant("car", rng, p, yaw, true)
+	return _plant(kind, rng, p, yaw, true, -0.05 - sink)
+
+
+# A weighted pick from placement.car_kinds[context] ("driveway", "parking", "traffic", "crashed").
+func _car_kind(rng: RandomNumberGenerator, context: String) -> String:
+	var weights: Dictionary = _clutter.data.placement.car_kinds[context]
+	var total := 0.0
+	for k: String in weights:
+		total += float(weights[k])
+	var r := rng.randf() * total
+	for k: String in weights:
+		r -= float(weights[k])
+		if r <= 0.0:
+			return k
+	return str(weights.keys()[0])
+
+
+# Length of a car kind in metres (its fit.length_m; 4.8 for anything without one).
+func _car_length(kind: String) -> float:
+	return float(_clutter.data.props.get(kind, {}).get("fit", {}).get("length_m", 4.8))
 
 
 # [closest point, direction, half width, way index] on the nearest drivable non-alley street within max_d, or [].

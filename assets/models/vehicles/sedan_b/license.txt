@@ -1,0 +1,11 @@
+Model Information:
+* title:	Abandoned Generic Sedan 2 - Game Ready
+* source:	https://sketchfab.com/3d-models/abandoned-generic-sedan-2-game-ready-db2df46c49f9441286c84c66208ef7ac
+* author:	Rashad Ibrahimli (https://sketchfab.com/rashad-ibrahimli)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Abandoned Generic Sedan 2 - Game Ready" (https://sketchfab.com/3d-models/abandoned-generic-sedan-2-game-ready-db2df46c49f9441286c84c66208ef7ac) by Rashad Ibrahimli (https://sketchfab.com/rashad-ibrahimli) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

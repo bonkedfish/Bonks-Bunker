@@ -10,6 +10,9 @@
 # (it used to be 3 m for everything - stumps had an invisible column that stopped players and discs).
 # Species and plants (D-098): "species" become kinds tree_<id> (TreeMesh.build_species, trunk colliders unless a
 # bush), "plants" become kinds by id (PlantMesh: tall grass, wildflowers, reeds; no collision, no shadows).
+# Vehicles (D-116): a prop with "fit" {length_m, flip} is turned so its long side runs along +Z (flip = turn it
+# round so the front faces +Z), scaled to that length, centred and stood on y = 0 - downloaded models come in
+# every unit and orientation. Its LODs are regenerated after (the other props keep the one reduced lod_ratio mesh).
 # Depends on: DataLoader, TreeMesh, PlantMesh, CarMesh, imported glTFs under models_dir.
 class_name VegetationBuilder
 extends RefCounted
@@ -70,6 +73,8 @@ func make_assets() -> void:
 			for i in mini(int(p.get("variants", 1)), found.size()):
 				meshes.append(_merged([found[i]], root, float(p.lod_ratio)))
 		for i in meshes.size():
+			if p.has("fit"):
+				meshes[i] = _fit(meshes[i], p.fit)
 			ResourceSaver.save(meshes[i], "%s/%s_%d.res" % [dir, id, i], ResourceSaver.FLAG_CHANGE_PATH)
 		root.free()
 		kinds[id] = {"meshes": meshes, "visible_m": float(p.visible_m), "shadows": bool(p.shadows),
@@ -347,9 +352,34 @@ func _merged(parts: Array, root: Node, ratio: float) -> ArrayMesh:
 	return out
 
 
+# A copy of `mesh` turned long side along +Z (+ 180 degrees if fit.flip), scaled to fit.length_m long, centred
+# on x/z and with its lowest point at y = 0. Normals and tangents turn with it.
+func _fit(mesh: ArrayMesh, fit: Dictionary) -> ArrayMesh:
+	var box := mesh.get_aabb()
+	var basis := Basis.IDENTITY
+	if box.size.x > box.size.z:
+		basis = Basis(Vector3.UP, PI * 0.5)
+	if bool(fit.get("flip", false)):
+		basis = Basis(Vector3.UP, PI) * basis
+	var length := maxf(box.size.x, box.size.z)
+	var s := float(fit.length_m) / maxf(length, 0.001)
+	var c := box.get_center()
+	var xf := Transform3D(basis.scaled(Vector3.ONE * s), Vector3.ZERO) * Transform3D(Basis.IDENTITY, Vector3(-c.x, -box.position.y, -c.z))
+	var im := ImporterMesh.new()  # fresh LODs, so far cars cost a fraction of near ones
+	for i in mesh.get_surface_count():
+		var st := SurfaceTool.new()
+		st.begin(Mesh.PRIMITIVE_TRIANGLES)
+		st.append_from(mesh, i, xf)
+		im.add_surface(Mesh.PRIMITIVE_TRIANGLES, st.commit_to_arrays(), [], {}, mesh.surface_get_material(i))
+	im.generate_lods(60.0, 25.0, [])
+	return im.get_mesh()
+
+
 # The surface's arrays with the imported LOD index buffer closest to ratio x the full index count.
 func _lod_arrays(src: Mesh, s: int, ratio: float) -> Array:
 	var arrays := src.surface_get_arrays(s)
+	for extra in [Mesh.ARRAY_CUSTOM0, Mesh.ARRAY_CUSTOM1, Mesh.ARRAY_CUSTOM2, Mesh.ARRAY_CUSTOM3, Mesh.ARRAY_BONES, Mesh.ARRAY_WEIGHTS]:
+		arrays[extra] = null  # D-116: some downloaded models carry these; a static prop never needs them
 	var idx: PackedInt32Array = arrays[Mesh.ARRAY_INDEX]
 	var target := idx.size() * ratio
 	var best := idx

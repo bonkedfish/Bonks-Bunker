@@ -1,0 +1,11 @@
+Model Information:
+* title:	Dirty Car - Cadillac 75 Sedan 1953
+* source:	https://sketchfab.com/3d-models/dirty-car-cadillac-75-sedan-1953-e08f2486cc0c49a7a2102561fb9b3377
+* author:	ROH3D (https://sketchfab.com/roh3d)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Dirty Car - Cadillac 75 Sedan 1953" (https://sketchfab.com/3d-models/dirty-car-cadillac-75-sedan-1953-e08f2486cc0c49a7a2102561fb9b3377) by ROH3D (https://sketchfab.com/roh3d) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

@@ -199,3 +199,9 @@ Approach — why it failed — what replaced it.
   build_cells saved the shared ones first. Found with a red-tint test. Fixed at load time (WorldStreamer swaps in
   the shared materials), not by re-baking. Also: the first grass perf numbers (93-176 ms frames) were streaming /
   shader-compile noise right after teleporting the camera - measure only after the world has settled (~8 s).
+- 2026-11-21 D-116: (1) VegetationBuilder props without "nodes" merge only the FIRST mesh of a glTF - multi-part
+  Sketchfab cars came out as a single door or roof panel; car props use "nodes": ["."] to merge every part.
+  (2) _merged failed on models carrying CUSTOM/bone arrays (add_surface_from_arrays expects byte arrays without
+  format flags) - those arrays are now dropped for static props. (3) A test that instantiated all 800 baked cells in
+  one _ready ran the GPU out of memory (d3d12 0x8007000e, 150 MB of log) - freed resources only go away between
+  frames, so await a frame per cell.

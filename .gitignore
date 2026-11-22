@@ -19,3 +19,5 @@
 # Mixamo characters and animations (D-112): their licence allows shipping them inside the built game
 # but NOT distributing the raw files, and this repo is public. Keep a local backup of this folder.
 /assets/characters/mixamo/
+# D-116: the Sketchfab downloads (unpacked into assets/models/vehicles/)
+/assets/vehicles/
