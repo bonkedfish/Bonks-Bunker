@@ -1,5 +1,6 @@
 {
 	"index_path": "res://world/generated/cells/index.json",
+	"materials_dir": "res://world/generated/cells/materials",
 	"near_radius": 1.0,
 	"unload_margin": 1.0,
 	"update_seconds": 0.25,

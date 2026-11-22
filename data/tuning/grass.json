@@ -1,0 +1,25 @@
+{
+	"note": "3D grass near the camera (D-115). Placement: tools/map_import/build_grass_masks.tscn writes one density mask per cell (mask_m metres per pixel, 0..255) from the baked cells - roads get a little (weeds through cracks), their edges more, sidewalks a little, buildings / water / greens / bunkers / tees / cart paths none, fairways some; run it after every build_cells. Runtime (GrassField): chunks of chunk_m around the camera out to the tier's radius_m, density = clumps per square metre at full mask, each clump dropped onto the Terrain collider with a ray (anything else under it - a building, a landmark floor, a car - means no grass). The last fade_share of the radius shrinks the blades to nothing, so there is no pop. Low tier draws none.",
+	"mask_dir": "res://world/generated/grass",
+	"mask_m": 1.0,
+	"mask_values": {"open": 255, "road": 10, "road_edge": 110, "sidewalk": 25, "fairway": 70, "none": 0},
+	"chunk_m": 16.0,
+	"builds_per_frame": 1,
+	"update_s": 0.25,
+	"tiers": {
+		"low": {"density": 0.0, "radius_m": 0.0},
+		"medium": {"density": 0.8, "radius_m": 32.0},
+		"high": {"density": 1.6, "radius_m": 45.0}
+	},
+	"fade_share": 0.3,
+	"blades": 10,
+	"height_m": [0.22, 0.55],
+	"blade_width_m": 0.035,
+	"spread_m": 0.16,
+	"clump_scale": [0.7, 1.25],
+	"base_color": [0.22, 0.2, 0.1],
+	"tip_color": [0.74, 0.65, 0.4],
+	"green_tip_color": [0.42, 0.47, 0.2],
+	"green_share": 0.3,
+	"wind_m": 0.06
+}

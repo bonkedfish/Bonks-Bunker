@@ -2,6 +2,27 @@
 	"license": "CC0 1.0",
 	"source": "Poly Haven (polyhaven.com), CC0",
 	"textures": {
+		"asphalt_b": {
+			"maps": {
+				"albedo": {
+					"bytes": 3075676,
+					"file": "albedo.jpg",
+					"url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/asphalt_02/asphalt_02_diff_2k.jpg"
+				},
+				"arm": {
+					"bytes": 1299186,
+					"file": "arm.jpg",
+					"url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/asphalt_02/asphalt_02_arm_2k.jpg"
+				},
+				"normal": {
+					"bytes": 4943950,
+					"file": "normal.jpg",
+					"url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/asphalt_02/asphalt_02_nor_gl_2k.jpg"
+				}
+			},
+			"page": "https://polyhaven.com/a/asphalt_02",
+			"polyhaven_id": "asphalt_02"
+		},
 		"brick_red": {
 			"maps": {
 				"albedo": {
@@ -47,17 +68,17 @@
 		"concrete_slab": {
 			"maps": {
 				"albedo": {
-					"bytes": 2536908,
+					"bytes": 2536908.0,
 					"file": "albedo.jpg",
 					"url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/concrete_floor_damaged_01/concrete_floor_damaged_01_diff_2k.jpg"
 				},
 				"arm": {
-					"bytes": 3139973,
+					"bytes": 3139973.0,
 					"file": "arm.jpg",
 					"url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/concrete_floor_damaged_01/concrete_floor_damaged_01_arm_2k.jpg"
 				},
 				"normal": {
-					"bytes": 2836211,
+					"bytes": 2836211.0,
 					"file": "normal.jpg",
 					"url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/concrete_floor_damaged_01/concrete_floor_damaged_01_nor_gl_2k.jpg"
 				}
@@ -65,20 +86,62 @@
 			"page": "https://polyhaven.com/a/concrete_floor_damaged_01",
 			"polyhaven_id": "concrete_floor_damaged_01"
 		},
+		"dirt": {
+			"maps": {
+				"albedo": {
+					"bytes": 3944426,
+					"file": "albedo.jpg",
+					"url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/dirt_floor/dirt_floor_diff_2k.jpg"
+				},
+				"arm": {
+					"bytes": 2716388,
+					"file": "arm.jpg",
+					"url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/dirt_floor/dirt_floor_arm_2k.jpg"
+				},
+				"normal": {
+					"bytes": 4977831,
+					"file": "normal.jpg",
+					"url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/dirt_floor/dirt_floor_nor_gl_2k.jpg"
+				}
+			},
+			"page": "https://polyhaven.com/a/dirt_floor",
+			"polyhaven_id": "dirt_floor"
+		},
+		"grass_dirt": {
+			"maps": {
+				"albedo": {
+					"bytes": 3787330,
+					"file": "albedo.jpg",
+					"url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/grass_ground/grass_ground_diff_2k.jpg"
+				},
+				"arm": {
+					"bytes": 3850286,
+					"file": "arm.jpg",
+					"url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/grass_ground/grass_ground_arm_2k.jpg"
+				},
+				"normal": {
+					"bytes": 5968024,
+					"file": "normal.jpg",
+					"url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/grass_ground/grass_ground_nor_gl_2k.jpg"
+				}
+			},
+			"page": "https://polyhaven.com/a/grass_ground",
+			"polyhaven_id": "grass_ground"
+		},
 		"grass_dry": {
 			"maps": {
 				"albedo": {
-					"bytes": 4632786,
+					"bytes": 4632786.0,
 					"file": "albedo.jpg",
 					"url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/withered_grass/withered_grass_diff_2k.jpg"
 				},
 				"arm": {
-					"bytes": 4802892,
+					"bytes": 4802892.0,
 					"file": "arm.jpg",
 					"url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/withered_grass/withered_grass_arm_2k.jpg"
 				},
 				"normal": {
-					"bytes": 6194953,
+					"bytes": 6194953.0,
 					"file": "normal.jpg",
 					"url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/withered_grass/withered_grass_nor_gl_2k.jpg"
 				}
@@ -89,23 +152,44 @@
 		"gravel": {
 			"maps": {
 				"albedo": {
-					"bytes": 2871851,
+					"bytes": 2871851.0,
 					"file": "albedo.jpg",
 					"url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/gravel_road/gravel_road_diff_2k.jpg"
 				},
 				"arm": {
-					"bytes": 1184014,
+					"bytes": 1184014.0,
 					"file": "arm.jpg",
 					"url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/gravel_road/gravel_road_arm_2k.jpg"
 				},
 				"normal": {
-					"bytes": 3613956,
+					"bytes": 3613956.0,
 					"file": "normal.jpg",
 					"url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/gravel_road/gravel_road_nor_gl_2k.jpg"
 				}
 			},
 			"page": "https://polyhaven.com/a/gravel_road",
 			"polyhaven_id": "gravel_road"
+		},
+		"gravel_shoulder": {
+			"maps": {
+				"albedo": {
+					"bytes": 3823037,
+					"file": "albedo.jpg",
+					"url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/gravel_ground_01/gravel_ground_01_diff_2k.jpg"
+				},
+				"arm": {
+					"bytes": 704196,
+					"file": "arm.jpg",
+					"url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/gravel_ground_01/gravel_ground_01_arm_2k.jpg"
+				},
+				"normal": {
+					"bytes": 5481185,
+					"file": "normal.jpg",
+					"url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/gravel_ground_01/gravel_ground_01_nor_gl_2k.jpg"
+				}
+			},
+			"page": "https://polyhaven.com/a/gravel_ground_01",
+			"polyhaven_id": "gravel_ground_01"
 		},
 		"pavement": {
 			"maps": {
@@ -152,17 +236,17 @@
 		"road_cracked": {
 			"maps": {
 				"albedo": {
-					"bytes": 3590993,
+					"bytes": 3590993.0,
 					"file": "albedo.jpg",
 					"url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/road_damaged/road_damaged_diff_2k.jpg"
 				},
 				"arm": {
-					"bytes": 3299640,
+					"bytes": 3299640.0,
 					"file": "arm.jpg",
 					"url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/road_damaged/road_damaged_arm_2k.jpg"
 				},
 				"normal": {
-					"bytes": 3867036,
+					"bytes": 3867036.0,
 					"file": "normal.jpg",
 					"url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/road_damaged/road_damaged_nor_gl_2k.jpg"
 				}
@@ -173,17 +257,17 @@
 		"roof_shingles": {
 			"maps": {
 				"albedo": {
-					"bytes": 1388588,
+					"bytes": 1388588.0,
 					"file": "albedo.jpg",
 					"url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/grey_roof_01/grey_roof_01_diff_2k.jpg"
 				},
 				"arm": {
-					"bytes": 807658,
+					"bytes": 807658.0,
 					"file": "arm.jpg",
 					"url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/grey_roof_01/grey_roof_01_arm_2k.jpg"
 				},
 				"normal": {
-					"bytes": 1750511,
+					"bytes": 1750511.0,
 					"file": "normal.jpg",
 					"url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/grey_roof_01/grey_roof_01_nor_gl_2k.jpg"
 				}

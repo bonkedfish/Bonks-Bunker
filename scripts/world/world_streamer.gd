@@ -8,6 +8,9 @@
 # Cells beyond near_radius + unload_margin are freed. Low-detail shells cover every other cell out to the
 # graphics tier's view distance (hidden where the full cell is loaded).
 # Generated cells contain no networked nodes, so each peer streams on its own. Landmarks stay resident.
+# Shared looks (D-115): the baked cells carry their own copies of the ground and street materials, so each near
+# cell's Terrain/Mesh and Street_<surface> meshes are pointed at the shared materials in materials_dir as it is
+# added - a change to data/art/streets.json (refresh_street_materials) then reaches every cell without a re-bake.
 # Perf: a cell add (or blocking load) slower than slow_ms is printed and kept in slow_events for tests.
 # Depends on: CellGrid, DataLoader, Graphics autoload, data/map/streaming.json, the cell index.
 extends Node3D
@@ -34,6 +37,7 @@ var _far_root: Node3D
 var _timer := 0.0
 var _positions := PackedVector3Array()
 var slow_events := PackedStringArray()
+var _shared_mats: Dictionary = {}  # mesh node name -> Material (D-115)
 
 
 func _ready() -> void:
@@ -191,8 +195,30 @@ func _add_cell(c: Vector2i, far: bool, scene: PackedScene) -> void:
 	else:
 		if _far_loaded.has(c):
 			_far_loaded[c].visible = false
+		_use_shared_materials(node)
 		cell_loaded.emit(c)
 	_note_slow("add", c, far, t0)
+
+
+func _use_shared_materials(cell: Node) -> void:
+	var dir := str(_cfg.get("materials_dir", ""))
+	if dir == "":
+		return
+	var terrain := cell.get_node_or_null("Terrain/Mesh") as MeshInstance3D
+	if terrain:
+		terrain.material_override = _shared("ground", dir)
+	for n in cell.get_children():
+		if n is MeshInstance3D and str(n.name).begins_with("Street_"):
+			var m := _shared(str(n.name).trim_prefix("Street_").to_lower().insert(0, "street_"), dir)
+			if m:
+				(n as MeshInstance3D).material_override = m
+
+
+func _shared(mat_name: String, dir: String) -> Material:
+	if not _shared_mats.has(mat_name):
+		var path := "%s/%s.tres" % [dir, mat_name]
+		_shared_mats[mat_name] = load(path) if ResourceLoader.exists(path) else null
+	return _shared_mats[mat_name]
 
 
 func _note_slow(what: String, c: Vector2i, far: bool, t0: int) -> void:

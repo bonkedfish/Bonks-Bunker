@@ -1,6 +1,9 @@
 # StreetLooks — how generated streets and ground look (D-043), from data/art/streets.json: which surface a road
 # gets (OSM surface tag, else by kind), its centre-line style, which kinds get curbs + sidewalks, and the shared
 # materials for ground, each street surface and textured pitched roofs. Used only by the offline map importer.
+# D-115: the ground material also gets its extra layers ("ground.layers") and each street surface its abandonment
+# ("decay" per surface + the shared "decay" edge texture). The materials are saved as shared .tres files, so
+# shader changes reach existing cells without a re-bake.
 # Depends on: DataLoader, shaders/street_surface.gdshader, shaders/ground.gdshader, imported textures.
 class_name StreetLooks
 extends RefCounted
@@ -29,6 +32,14 @@ func _check() -> String:
 	var textures: Array = [data.ground.texture, data.pitched_roof.texture]
 	for s: Dictionary in data.surfaces.values():
 		textures.append(s.texture)
+		if s.get("decay", {}).has("alt"):
+			textures.append(s.decay.alt)
+	var layers: Dictionary = data.ground.get("layers", {})
+	for k in ["grass2", "dirt"]:
+		if layers.has(k):
+			textures.append(layers[k])
+	if data.has("decay"):
+		textures.append(data.decay.edge_texture)
 	for t in textures:
 		var path := "%s/%s/albedo.jpg" % [data.textures_dir, t]
 		if not ResourceLoader.exists(path):
@@ -68,6 +79,19 @@ func make_surface_material(id: String) -> ShaderMaterial:
 	m.set_shader_parameter("joint_spacing_m", float(s.joint_spacing_m))
 	m.set_shader_parameter("centre_joint", bool(s.centre_joint))
 	m.set_shader_parameter("line_wear", float(data.line_wear))
+	var d: Dictionary = s.get("decay", {})
+	if not d.is_empty():
+		var shared: Dictionary = data.decay
+		_set_maps(m, "edge", str(shared.edge_texture))
+		m.set_shader_parameter("edge_tile_m", float(shared.edge_tile_m))
+		var wc: Array = shared.weed_color
+		m.set_shader_parameter("weed_color", Color(wc[0], wc[1], wc[2]))
+		if d.has("alt"):
+			_set_maps(m, "alt", str(d.alt))
+		for k: String in ["alt_tile_m", "alt_mix", "edge_dirt_m", "drift_amount", "crack_amount", "weed_amount",
+				"pothole_amount", "patch_amount"]:
+			if d.has(k):
+				m.set_shader_parameter(k, float(d[k]))
 	return m
 
 
@@ -75,7 +99,23 @@ func make_ground_material() -> ShaderMaterial:
 	var g: Dictionary = data.ground
 	var m := _shader_material(GROUND_SHADER, g.texture, float(g.tile_m), g.tint)
 	m.set_shader_parameter("variation", float(g.variation))
+	var l: Dictionary = g.get("layers", {})
+	if not l.is_empty():
+		_set_maps(m, "grass2", str(l.grass2))
+		_set_maps(m, "dirt", str(l.dirt))
+		for k: String in ["grass2_tile_m", "grass2_amount", "dirt_tile_m", "dirt_amount", "patch_m", "slope_dirt"]:
+			m.set_shader_parameter(k, float(l[k]))
+		var t: Array = l.layer_tint
+		m.set_shader_parameter("layer_tint", Color(t[0], t[1], t[2]))
 	return m
+
+
+# Sets <prefix>_albedo / _normal / _arm from a texture folder.
+func _set_maps(m: ShaderMaterial, prefix: String, texture: String) -> void:
+	var dir := "%s/%s" % [data.textures_dir, texture]
+	m.set_shader_parameter(prefix + "_albedo", load(dir + "/albedo.jpg"))
+	m.set_shader_parameter(prefix + "_normal", load(dir + "/normal.jpg"))
+	m.set_shader_parameter(prefix + "_arm", load(dir + "/arm.jpg"))
 
 
 # Pitched roofs: photo shingles multiplied by each roof's vertex colour; mesh UV is in metres.

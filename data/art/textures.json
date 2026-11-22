@@ -16,6 +16,10 @@
 		"concrete_slab": {"polyhaven_id": "concrete_floor_damaged_01", "use": "sidewalks, driveways"},
 		"grass_dry": {"polyhaven_id": "withered_grass", "use": "lawns, open ground"},
 		"gravel": {"polyhaven_id": "gravel_road", "use": "alleys"},
-		"roof_shingles": {"polyhaven_id": "grey_roof_01", "use": "pitched roofs"}
+		"roof_shingles": {"polyhaven_id": "grey_roof_01", "use": "pitched roofs"},
+		"grass_dirt": {"polyhaven_id": "grass_ground", "use": "second ground layer: dry grass with dirt (D-115)"},
+		"dirt": {"polyhaven_id": "dirt_floor", "use": "bare dirt patches, worn ground (D-115)"},
+		"gravel_shoulder": {"polyhaven_id": "gravel_ground_01", "use": "dirt and gravel drifted onto road edges (D-115)"},
+		"asphalt_b": {"polyhaven_id": "asphalt_02", "use": "second asphalt blended with road_cracked so roads don't repeat (D-115)"}
 	}
 }

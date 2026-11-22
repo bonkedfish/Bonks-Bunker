@@ -832,3 +832,12 @@ a release, then gh release view) went to main as 02768d7.
   but physics is creeping toward the 8 ms test line). If it climbs, look at flankers' path requests and stalker
   look checks first. Sounds are generated, not recorded - fine as placeholders, swap in CC0 recordings if the user
   wants better ones. Not tested by hand yet: how it feels in a real night with 2+ players.
+- 2026-11-21 D-115 DONE: realistic ground + abandoned roads + 3D grass. tests/ground_look.tscn 0 failures
+  (materials carry the layers, mask exists and reads 0.04 on a road, 42 grass chunks / 11k clumps on high).
+  Perf at the test spot, settled: grass high 6.0 ms / 440 draw calls / 621k prims; grass off 6.1 ms / 422 / 461k;
+  medium 6.1 ms / 430 / 501k - grass costs ~18 draw calls and ~160k primitives, no measurable frame time. Chunk
+  build ~2 ms (one a frame, only when the camera reaches new ground). VRAM ~1.6 GB in the open world. Pipeline
+  order is now build_cells -> build_grass_masks (47 s for 800 cells). Not yet in a release. Looks to judge by eye:
+  the base dry-grass texture still shows a ~3 m tile pattern from a distance (pre-existing; more grass2/dirt share
+  or a larger tile would hide it), the Voronoi cracks read as alligator cracking, the base road_damaged texture is
+  brown (the second asphalt brings grey back in patches).

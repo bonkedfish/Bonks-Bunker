@@ -194,3 +194,8 @@ Approach — why it failed — what replaced it.
   GitHub upload (the run was left unwatched for ~9 min; the MCP stopped reporting it), leaving alpha3.2 as a DRAFT
   with partial files. Fixed by re-running with force_version and a new step: re-uploading to an existing release
   now also runs `gh release edit <tag> --draft=false`. Keep polling get_debug_output every ~4 min during a release.
+- 2026-11-21 D-115: refreshing world/generated/cells/materials/*.tres changed NOTHING in game - the baked cell
+  scenes embed their own copy of each ground/street material (cell_X_Z.scn::ShaderMaterial_...), even though
+  build_cells saved the shared ones first. Found with a red-tint test. Fixed at load time (WorldStreamer swaps in
+  the shared materials), not by re-baking. Also: the first grass perf numbers (93-176 ms frames) were streaming /
+  shader-compile noise right after teleporting the camera - measure only after the world has settled (~8 s).

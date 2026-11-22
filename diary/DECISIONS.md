@@ -519,3 +519,16 @@ Locked unless flagged. Each entry: decision — reason.
   in. Heartbeat is on the Master bus so the muffling low-pass (SFX + Ambience) doesn't swallow it. Only the nearest
   4 zombies get voices, so a horde can't steal the 24 voices gunfire needs. Old tests that need plain zombies set
   `ZombieScare.roles_off`.
+- **D-115** (2026-11-21) Realistic ground and roads (user picks: layered ground, roads five years abandoned, 3D grass
+  near the player). Four CC0 Poly Haven sets added (grass_ground, dirt_floor, gravel_ground_01, asphalt_02; 2K,
+  VRAM-compressed). Everything is SHADER + DATA, no re-bake: ground.gdshader blends a dirtier grass and bare dirt in
+  noise patches and on steep slopes; street_surface.gdshader adds a second asphalt, dirt drifted in from the edges,
+  a crack network with weeds, potholes and repaired patches (per surface in data/art/streets.json "decay").
+  The baked cells turned out to carry their OWN copies of the ground/street materials (not the shared .tres), so
+  WorldStreamer now points each near cell's Terrain/Mesh and Street_* meshes at the shared materials
+  (streaming.json materials_dir) - any future look change is refresh_street_materials + restart, never a re-bake.
+  3D grass: GrassField builds MultiMesh clumps (code-made tapered blades, no texture, no shadows) in 16 m chunks
+  around the camera, placed from per-cell density masks (new pipeline step build_grass_masks, run after
+  build_cells: roads 4% = weeds, road edges 43%, sidewalks 10%, buildings/water/greens 0) plus a ray onto the
+  Terrain body. Tiers: low none, medium 0.8/m2 to 32 m, high 1.6/m2 to 45 m; blades shrink to nothing in the last
+  30% so chunks never pop.
