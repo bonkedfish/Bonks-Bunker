@@ -1,5 +1,3 @@
 {
-	"_comment": "tools/release/push_repo.tscn: `message` is the commit message (it falls back to a release-tidy message if blank), `check_tag` is a release tag it checks is still live after pushing (\"\" skips the check).",
-	"message": "Every release must ship the real zombies (D-113)\n\nModelCheck stops a release when a Mixamo model or clip is missing - checked in the editor\nbefore exporting and inside the packaged exe after. Warrok stays the Bloater, Ch10 joins the\nshamblers, and the Mixamo textures are VRAM-compressed (48-zombie crowd: 585 -> 272 MB VRAM).",
-	"check_tag": "alpha3.1"
+	"message": "alpha3.2 follow-up: clear force_version, log the interrupted upload (D-114)"
 }

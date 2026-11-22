@@ -188,3 +188,9 @@ Approach — why it failed — what replaced it.
   names a class or a path from a folder the export leaves out. Run that test before any release.
   Rule of thumb: the editor can never prove an export works - only running the packaged exe can
   (tools/debug/smoke_exe.tscn does exactly that on demand).
+- 2026-11-21 alpha3.2 first release run: (1) release.gd did not compile ("ok := r.text.contains(...)" on a
+  Dictionary value can't infer a type) - the D-113 edit had never been parsed; release.gd is now in parse_check's
+  PATHS. (2) The second run built, committed and pushed, then the Godot process was ended partway through the
+  GitHub upload (the run was left unwatched for ~9 min; the MCP stopped reporting it), leaving alpha3.2 as a DRAFT
+  with partial files. Fixed by re-running with force_version and a new step: re-uploading to an existing release
+  now also runs `gh release edit <tag> --draft=false`. Keep polling get_debug_output every ~4 min during a release.
