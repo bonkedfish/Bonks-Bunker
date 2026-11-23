@@ -1,6 +1,7 @@
 # Viewmodel — local player's first-person view (D-045): the player's survivor model in first-person mode ("Arms",
 # a CharacterAnimator showing only arms + the selected weapon), recoil kick on shots, slash clip on melee.
 # Visual only. The old box Pistol/Bat stay hidden: Pistol/Muzzle still marks where tracers start.
+# With a golf disc out (D-117) the weapon is put away and DiscThrower drives the arms' throw pose (hide_weapon).
 # Depends on: children Arms (CharacterAnimator), Pistol (with Muzzle) and Bat.
 extends Node3D
 
@@ -14,6 +15,7 @@ var _bat_rest: Vector3
 var _tween: Tween
 var _armed := true
 var _mesh := "Pistol"
+var _disc_out := false
 
 
 func _ready() -> void:
@@ -29,13 +31,21 @@ func set_arms_model(id: String) -> void:
 func show_weapon(mesh: String, armed: bool) -> void:
 	_mesh = mesh
 	_armed = armed
-	arms.set_weapon_mesh(mesh)
+	arms.set_weapon_mesh("" if _disc_out else mesh)
+
+
+# A golf disc is out (D-117): no weapon in the hand, empty-hand clips; put away: the weapon comes back.
+func hide_weapon(on: bool) -> void:
+	_disc_out = on
+	if not on:
+		arms.stop_throw()
+	arms.set_weapon_mesh("" if on else _mesh)
 
 
 func _process(delta: float) -> void:
 	if visible:
 		arms.riding = owner != null and "riding" in owner and owner.riding  # on the Meepo: no walk/run bob (D-065)
-		arms.update(delta, false, false, 100.0, _armed, false)
+		arms.update(delta, false, false, 100.0, _armed and not _disc_out, false)
 
 
 func kick() -> void:

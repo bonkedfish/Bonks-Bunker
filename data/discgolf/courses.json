@@ -3,6 +3,7 @@
  "centennial": {
   "name": "Centennial Park DGC",
   "landmark": "centennial_dgc",
+  "look": {"basket": "mach2", "tee": "asphalt", "sign": "post", "ring": "mulch", "wear": 0.55},
   "box": [
    985.5,
    -309.5
@@ -137,6 +138,7 @@
  "cottonmill": {
   "name": "Cottonmill DGC",
   "landmark": "cottonmill_dgc",
+  "look": {"basket": "modern", "tee": "concrete", "sign": "frame", "ring": "", "wear": 0.5},
   "box": [
    -3264.0,
    -2554.7

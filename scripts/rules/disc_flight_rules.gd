@@ -1,5 +1,7 @@
 # DiscFlightRules — pure disc flight (D-069): launch a disc from speed / glide / turn / fade numbers, power (0..1),
-# aim (yaw, pitch), tilt (+ = left edge down, curves left) and backhand / forehand, then step it on a fixed dt.
+# aim (yaw, pitch), tilt (+ = left edge down, curves left) and a throw style (D-117, data/discgolf/throw_styles.json:
+# backhand, forehand, putt, tomahawk, roller - each scales power / lift / turn / fade, adds pitch and tilt, and may
+# keep turning the disc over (flip) or roll it along the ground on landing: roll_step()), then step it on a fixed dt.
 # Lift scales with the disc's own launch speed (so distance grows smoothly with power) and with glide; drag slows it;
 # above turn_start of its full speed it rolls right (turn < 0), below fade_start (and once it has slowed to
 # fade_after_slow of its launch speed) it rolls left (fade) — mirrored for
@@ -7,14 +9,21 @@
 # Wind (D-076): Flight.wind (m/s) — drag works on the speed through the air, so the disc drifts with it; next_wind()
 # rolls the next shift, wind_from() names where it comes from. Ground, trunks and the basket are the caller's job (DiscGolfDirector with physics rays, DiscGolfRules for baskets).
 # One Flight object per throw; step() allocates nothing. Depends on: DataLoader, data/discgolf/discs.json,
-# data/tuning/disc_golf.json.
+# data/discgolf/throw_styles.json, data/tuning/disc_golf.json.
 class_name DiscFlightRules
 extends RefCounted
 
 const DISCS_PATH := "res://data/discgolf/discs.json"
 const TUNING_PATH := "res://data/tuning/disc_golf.json"
+const STYLES_PATH := "res://data/discgolf/throw_styles.json"
 const DISC_SCHEMA := {"speed": TYPE_FLOAT, "glide": TYPE_FLOAT, "turn": TYPE_FLOAT, "fade": TYPE_FLOAT,
 	"full_speed_mps": TYPE_FLOAT, "color": TYPE_ARRAY}
+const DISC_OPTIONAL := ["shape", "plastic", "stamp"]  # looks only (DiscMesh, D-117)
+const STYLE_SCHEMA := {"name": TYPE_STRING, "hand": TYPE_FLOAT, "power_mult": TYPE_FLOAT, "pitch_add_deg": TYPE_FLOAT,
+	"roll_add_deg": TYPE_FLOAT, "lift_mult": TYPE_FLOAT, "turn_mult": TYPE_FLOAT, "fade_mult": TYPE_FLOAT,
+	"flip_rate_deg": TYPE_FLOAT, "max_roll_deg": TYPE_FLOAT, "ground_roll": TYPE_BOOL, "spin": TYPE_FLOAT, "anim": TYPE_DICTIONARY}
+const ROLLER_SCHEMA := {"roll_min_deg": TYPE_FLOAT, "roll_keep": TYPE_FLOAT, "roll_friction": TYPE_FLOAT,
+	"roll_curve_deg": TYPE_FLOAT, "fall_mps": TYPE_FLOAT}
 const TUNING_SCHEMA := {"note": TYPE_STRING, "lift_base": TYPE_FLOAT, "lift_glide": TYPE_FLOAT,
 	"lift_power": TYPE_FLOAT, "drag": TYPE_FLOAT, "drag_speed": TYPE_FLOAT, "turn_start": TYPE_FLOAT,
 	"turn_rate_deg": TYPE_FLOAT, "fade_start": TYPE_FLOAT, "fade_rate_deg": TYPE_FLOAT, "fade_after_slow": TYPE_FLOAT, "max_roll_deg": TYPE_FLOAT,
@@ -34,6 +43,9 @@ const COMPASS := ["N", "NE", "E", "SE", "S", "SW", "W", "NW"]
 
 static var _discs: Dictionary = {}
 static var _tuning: Dictionary = {}
+static var _styles: Dictionary = {}
+static var _style_order: PackedStringArray = []
+static var _styles_fp: Dictionary = {}
 
 
 class Flight:
@@ -41,7 +53,7 @@ class Flight:
 	var pos := Vector3.ZERO
 	var vel := Vector3.ZERO
 	var roll := 0.0        # radians, + = left edge down (curves left)
-	var hand := 1.0        # 1 backhand, -1 forehand (mirrors turn and fade)
+	var hand := 1.0        # 1 backhand-side spin, -1 forehand-side (mirrors turn and fade)
 	var v0 := 1.0          # launch speed
 	var v_full := 1.0      # this disc's full-power speed
 	var lift_max := 0.0
@@ -50,15 +62,75 @@ class Flight:
 	var fade := 0.0
 	var time := 0.0
 	var wind := Vector3.ZERO  # m/s, horizontal, the way the air moves
+	var flip := 0.0        # rad/s the style keeps turning it over (tomahawk)
+	var max_roll := 1.4    # rad
+	var ground_roll := false  # rolls on its edge after landing (roller)
+	var rolling := false
+	var roll_min := 0.4    # rad: steeper than this on landing = it rolls
+	var roll_keep := 0.75
+	var roll_friction := 1.6
+	var roll_curve := 0.5  # rad/s
+	var fall_mps := 1.8
+	var roll_v0 := 1.0     # speed when it started rolling
 
 
 static func discs() -> Dictionary:
 	if _discs.is_empty():
 		var raw := DataLoader.load_json(DISCS_PATH)
 		for id: String in raw:
-			if typeof(raw[id]) == TYPE_DICTIONARY and DataLoader.validate(raw[id], DISC_SCHEMA, "%s:%s" % [DISCS_PATH, id]):
+			if typeof(raw[id]) != TYPE_DICTIONARY:
+				continue
+			var required: Dictionary = raw[id].duplicate()
+			for opt: String in DISC_OPTIONAL:
+				required.erase(opt)
+			if DataLoader.validate(required, DISC_SCHEMA, "%s:%s" % [DISCS_PATH, id]):
 				_discs[id] = raw[id]
 	return _discs
+
+
+# Throw styles by id (D-117), validated; roller-only keys are checked when ground_roll is on.
+static func styles() -> Dictionary:
+	if _styles.is_empty():
+		var raw := DataLoader.load_json(STYLES_PATH)
+		for id: String in raw.get("styles", {}):
+			var st: Variant = raw.styles[id]
+			if typeof(st) != TYPE_DICTIONARY:
+				continue
+			var required: Dictionary = st.duplicate()
+			for k: String in ROLLER_SCHEMA:
+				required.erase(k)
+			var ok := DataLoader.validate(required, STYLE_SCHEMA, "%s:%s" % [STYLES_PATH, id])
+			if ok and bool(st.ground_roll):
+				var roller := {}
+				for k: String in ROLLER_SCHEMA:
+					if st.has(k):
+						roller[k] = st[k]
+				ok = DataLoader.validate(roller, ROLLER_SCHEMA, "%s:%s" % [STYLES_PATH, id])
+			if ok:
+				_styles[id] = st
+		for id: Variant in raw.get("order", []):
+			if _styles.has(str(id)):
+				_style_order.append(str(id))
+		_styles_fp = raw.get("fp", {})
+	return _styles
+
+
+# First-person scaling of the swing's torso twist / lean (presentation, D-117).
+static func styles_fp() -> Dictionary:
+	styles()
+	return _styles_fp
+
+
+# Style ids in the order F cycles through them.
+static func style_order() -> PackedStringArray:
+	styles()
+	return _style_order
+
+
+# A style by id; unknown ids (an old client, a typo) get the backhand.
+static func style(id: String) -> Dictionary:
+	var all := styles()
+	return all.get(id, all.get("backhand", {}))
 
 
 static func tuning() -> Dictionary:
@@ -77,21 +149,34 @@ static func launch_pitch(camera_pitch: float, t: Dictionary) -> float:
 
 
 # A new flight from `from` toward yaw (radians, 0 = -Z like the player) at launch pitch (radians).
+# `throw_style` = one of styles() (D-117); an empty one throws a plain backhand.
 static func launch(disc: Dictionary, power: float, from: Vector3, yaw: float, pitch: float, tilt_deg: float,
-		forehand: bool, t: Dictionary) -> Flight:
+		throw_style: Dictionary, t: Dictionary) -> Flight:
 	var f := Flight.new()
 	power = clampf(power, 0.03, 1.0)
 	f.v_full = float(disc.full_speed_mps)
-	f.v0 = f.v_full * power
+	f.v0 = f.v_full * power * float(throw_style.get("power_mult", 1.0))
 	f.pos = from
+	pitch += deg_to_rad(float(throw_style.get("pitch_add_deg", 0.0)))
 	var dir := Vector3(-sin(yaw) * cos(pitch), sin(pitch), -cos(yaw) * cos(pitch))
 	f.vel = dir * f.v0
-	f.roll = deg_to_rad(clampf(tilt_deg, -float(t.tilt_max_deg), float(t.tilt_max_deg)))
-	f.hand = -1.0 if forehand else 1.0
-	f.lift_max = G * (float(t.lift_base) + float(t.lift_glide) * float(disc.glide)) * (1.0 - float(t.lift_power) + float(t.lift_power) * power)
+	var roll_add := float(throw_style.get("roll_add_deg", 0.0))
+	f.roll = deg_to_rad(clampf(tilt_deg, -float(t.tilt_max_deg), float(t.tilt_max_deg)) + roll_add)
+	f.hand = float(throw_style.get("hand", 1.0))
+	f.lift_max = G * (float(t.lift_base) + float(t.lift_glide) * float(disc.glide)) * (1.0 - float(t.lift_power) + float(t.lift_power) * power) \
+		* float(throw_style.get("lift_mult", 1.0))
 	f.k_drag = float(t.drag) / (1.0 + float(t.drag_speed) * float(disc.speed))
-	f.turn = float(disc.turn)
-	f.fade = float(disc.fade)
+	f.turn = float(disc.turn) * float(throw_style.get("turn_mult", 1.0))
+	f.fade = float(disc.fade) * float(throw_style.get("fade_mult", 1.0))
+	f.flip = deg_to_rad(float(throw_style.get("flip_rate_deg", 0.0))) * signf(roll_add)
+	f.max_roll = deg_to_rad(float(throw_style.get("max_roll_deg", t.max_roll_deg)))
+	f.ground_roll = bool(throw_style.get("ground_roll", false))
+	if f.ground_roll:
+		f.roll_min = deg_to_rad(float(throw_style.roll_min_deg))
+		f.roll_keep = float(throw_style.roll_keep)
+		f.roll_friction = float(throw_style.roll_friction)
+		f.roll_curve = deg_to_rad(float(throw_style.roll_curve_deg))
+		f.fall_mps = float(throw_style.fall_mps)
 	return f
 
 
@@ -108,8 +193,8 @@ static func step(f: Flight, dt: float, t: Dictionary) -> void:
 		f.roll += deg_to_rad(float(t.turn_rate_deg)) * f.turn * (sr - turn_start) / (1.0 - turn_start) * dt * f.hand
 	if sr < fade_start and v < f.v0 * float(t.fade_after_slow):  # fades once slow AND it has lost speed (putts fly straight)
 		f.roll += deg_to_rad(float(t.fade_rate_deg)) * f.fade * (fade_start - sr) / fade_start * dt * f.hand
-	var max_roll := deg_to_rad(float(t.max_roll_deg))
-	f.roll = clampf(f.roll, -max_roll, max_roll)
+	f.roll += f.flip * dt
+	f.roll = clampf(f.roll, -f.max_roll, f.max_roll)
 	var ratio := minf(v / f.v0, 1.2)
 	var lift := f.lift_max * ratio * ratio
 	var side := lift * sin(f.roll)
@@ -118,6 +203,42 @@ static func step(f: Flight, dt: float, t: Dictionary) -> void:
 	f.vel += acc * dt
 	f.pos += f.vel * dt
 	f.time += dt
+
+
+# Landing on its edge (roller, D-117): true if this flight starts rolling now; it then keeps roll_keep of its
+# horizontal speed and stands up on its edge.
+static func start_rolling(f: Flight) -> bool:
+	var vh := Vector2(f.vel.x, f.vel.z)
+	if not f.ground_roll or f.rolling or absf(f.roll) < f.roll_min or vh.length() * f.roll_keep < f.fall_mps * 2.0:
+		return false
+	f.rolling = true
+	vh *= f.roll_keep
+	f.vel = Vector3(vh.x, 0.0, vh.y)
+	f.roll_v0 = vh.length()
+	f.roll = signf(f.roll) * deg_to_rad(80.0)
+	return true
+
+
+# One step rolling on its edge over ground with this normal (D-117): rolling friction and the slope change its speed,
+# it curves the way it leans (more as it slows) and leans further over. Returns false once it falls flat (it lies
+# where it is; the caller moves it, follows the ground and stops it on obstacles).
+static func roll_step(f: Flight, normal: Vector3, dt: float) -> bool:
+	var vh := Vector2(f.vel.x, f.vel.z)
+	var speed := vh.length()
+	if speed < f.fall_mps:
+		return false
+	var dir := vh / speed
+	var g_along := Vector3(0.0, -G, 0.0) - normal * (-G * normal.y)  # gravity along the slope
+	speed += Vector2(g_along.x, g_along.z).dot(dir) * dt - f.roll_friction * dt
+	if speed < f.fall_mps:
+		f.roll = 0.0
+		return false
+	var slow := clampf(1.0 - speed / maxf(f.roll_v0, 0.01), 0.0, 1.0)
+	dir = dir.rotated(-f.roll_curve * (0.25 + slow) * signf(f.roll) * dt)  # + roll (left edge down) curves left
+	f.vel = Vector3(dir.x * speed, 0.0, dir.y * speed)
+	f.roll = signf(f.roll) * deg_to_rad(lerpf(80.0, 88.0, slow))
+	f.time += dt
+	return true
 
 
 enum Canopy { NONE, LEAVES, WOOD }
@@ -168,8 +289,8 @@ static func canopy_hit_chance(metres: float, bare: bool, t: Dictionary) -> float
 
 # Carry over flat open ground (metres from the launch point to where it comes down to `to_height` above the ground)
 # at a power. The HUD's "power to reach the basket" mark uses to_height = aim_height_m (the chains).
-static func flat_distance(disc: Dictionary, power: float, t: Dictionary, to_height := 0.0) -> float:
-	var f := launch(disc, power, Vector3(0.0, float(t.launch_height_m), 0.0), 0.0, launch_pitch(0.0, t), 0.0, false, t)
+static func flat_distance(disc: Dictionary, power: float, t: Dictionary, to_height := 0.0, throw_style := {}) -> float:
+	var f := launch(disc, power, Vector3(0.0, float(t.launch_height_m), 0.0), 0.0, launch_pitch(0.0, t), 0.0, throw_style, t)
 	var dt := 1.0 / float(t.step_hz)
 	while (f.pos.y > to_height or f.vel.y > 0.0) and f.time < float(t.max_flight_s):
 		step(f, dt, t)
@@ -177,10 +298,10 @@ static func flat_distance(disc: Dictionary, power: float, t: Dictionary, to_heig
 
 
 # Table of flat_distance down to the chains at power 0, 0.05 .. 1 (21 entries).
-static func reach_table(disc: Dictionary, t: Dictionary) -> PackedFloat32Array:
+static func reach_table(disc: Dictionary, t: Dictionary, throw_style := {}) -> PackedFloat32Array:
 	var out := PackedFloat32Array()
 	for i in 21:
-		out.append(0.0 if i == 0 else flat_distance(disc, i / 20.0, t, float(t.aim_height_m)))
+		out.append(0.0 if i == 0 else flat_distance(disc, i / 20.0, t, float(t.aim_height_m), throw_style))
 	return out
 
 

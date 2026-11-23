@@ -205,3 +205,8 @@ Approach — why it failed — what replaced it.
   format flags) - those arrays are now dropped for static props. (3) A test that instantiated all 800 baked cells in
   one _ready ran the GPU out of memory (d3d12 0x8007000e, 150 MB of log) - freed resources only go away between
   frames, so await a frame per cell.
+- 2026-11-22 D-118: (1) the first caved roof was invisible in screenshots - the hole was on the slope facing away
+  and an empty hole reads as shadow; fixed with broken rafters across it and a top-down test shot. (2) A second
+  build_cells run silently vanished ~10 min in with no error and no files written (another chat was using Godot at
+  the same time); a plain re-run finished. Poll every few minutes and check index.json's time before trusting a bake.
+  (3) D-117 was already taken by another chat's disc golf work - read the end of DECISIONS.md right before writing.

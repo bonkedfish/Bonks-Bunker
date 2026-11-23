@@ -7,6 +7,8 @@
 # D-076: throwing order and wind (pure), your turn / wind in the round, a throw out of turn refused, the tracer
 # shown in flight and gone once you walk up to the disc, the ace on hole 5 plays the replay (everyone locked,
 # zombies frozen, HUD hidden; dg_ace.png) and lets go after.
+# D-117: the five throw styles load in order with their swings; a putt carries short and straight, a tomahawk turns
+# over and comes down upside down, a roller lands on its edge and rolls on (curving right off an anhyzer).
 # Results: tests/_look/disc_golf_result.txt. Depends on: scenes/main.tscn, DiscFlightRules, DiscGolfRules,
 # DiscGolfDirector, DiscCourse, DiscThrower.
 extends Node
@@ -67,7 +69,7 @@ func _ready() -> void:
 	_check("your throw at the start, wind %.1f mph from %s" % [mph, DiscFlightRules.wind_from(dg.wind)], dg.turn == me and mph <= 15.01)
 	dg.turn = 999  # someone else's throw: yours is refused
 	_stand(player, course.tee_position(0), course.basket_position(0))
-	dg.request_throw("disc_driver", 0.5, player.yaw, 0.0, 0.0, false)
+	dg.request_throw("disc_driver", 0.5, player.yaw, 0.0, 0.0, "backhand")
 	await get_tree().create_timer(0.2).timeout
 	_check("throw out of turn refused", not dg.is_flying(me) and int(dg.card[me].throws) == 0 and dg.waiting_turn())
 	dg._host_next_turn()
@@ -97,10 +99,10 @@ func _ready() -> void:
 		var disc := "disc_putter" if dist < 40.0 else "disc_mid"
 		var power := DiscFlightRules.power_for(DiscFlightRules.reach_table(DiscFlightRules.discs()[disc], DiscFlightRules.tuning()), dist)
 		var t0 := Time.get_ticks_usec()
-		dg.request_throw(disc, power, player.yaw, 0.0, 0.0, false)
+		dg.request_throw(disc, power, player.yaw, 0.0, 0.0, "backhand")
 		_say("  host flight simulation: %.1f ms, %d course trees" % [(Time.get_ticks_usec() - t0) / 1000.0, dg._trees.size()])
 		if throws == 0:
-			var again := DiscFlightRules.launch(DiscFlightRules.discs()[disc], power, lie + Vector3.UP * 1.4, player.yaw, 0.1, 0.0, false, DiscFlightRules.tuning())
+			var again := DiscFlightRules.launch(DiscFlightRules.discs()[disc], power, lie + Vector3.UP * 1.4, player.yaw, 0.1, 0.0, DiscFlightRules.style("backhand"), DiscFlightRules.tuning())
 			t0 = Time.get_ticks_usec()
 			dg._simulate(again, basket, course)
 			_say("  same flight again with trees cached: %.1f ms" % ((Time.get_ticks_usec() - t0) / 1000.0))
@@ -128,7 +130,7 @@ func _ready() -> void:
 	# A throw from far away is refused.
 	player.global_position = course.tee_position(1) + Vector3(20, 1, 0)
 	await get_tree().create_timer(0.3).timeout
-	dg.request_throw("disc_driver", 1.0, 0.0, 0.0, 0.0, false)
+	dg.request_throw("disc_driver", 1.0, 0.0, 0.0, 0.0, "backhand")
 	await get_tree().create_timer(0.2).timeout
 	_check("throw away from your lie is refused", not dg.is_flying(me) and int(dg.card[me].throws) == 0)
 	# Basket close-up.
@@ -273,7 +275,7 @@ func _pure() -> void:
 		top = maxf(top, w.length() / DiscFlightRules.MPH)
 	_check("wind stays at or under 15 mph (max seen %.1f)" % top, top <= 15.01 and top > 8.0)
 	var putt_power := DiscFlightRules.power_for(DiscFlightRules.reach_table(discs.disc_putter, t), 4.0)
-	var putt := DiscFlightRules.launch(discs.disc_putter, putt_power, Vector3(0, 1.4, 0), 0.0, DiscFlightRules.launch_pitch(0.0, t), 0.0, false, t)
+	var putt := DiscFlightRules.launch(discs.disc_putter, putt_power, Vector3(0, 1.4, 0), 0.0, DiscFlightRules.launch_pitch(0.0, t), 0.0, DiscFlightRules.style("backhand"), t)
 	while putt.pos.z > -4.0 and putt.time < 5.0:
 		DiscFlightRules.step(putt, 1.0 / 60.0, t)
 	_check("4 m putt arrives at the chains: height %.2f, %.2f m off line" % [putt.pos.y, putt.pos.x], absf(putt.pos.x) < 0.15 and putt.pos.y > 0.75 and putt.pos.y < 1.3)
@@ -283,12 +285,56 @@ func _pure() -> void:
 	for h: Dictionary in c.holes:
 		ft += int(h.length_ft)
 	_check("Centennial: 9 holes, par %d, %d ft (UDisc 1,845)" % [DiscGolfRules.par_total(c), ft], c.holes.size() == 9 and DiscGolfRules.par_total(c) == 27 and ft == 1845)
+	_styles(t, discs)
+
+
+# D-117: throw styles.
+func _styles(t: Dictionary, discs: Dictionary) -> void:
+	var order := DiscFlightRules.style_order()
+	_check("throw styles load in order %s" % [order], order == PackedStringArray(["backhand", "forehand", "putt", "tomahawk", "roller"]))
+	var clips_ok := true
+	for id: String in order:
+		var c := ThrowPose.clip(id)
+		clips_ok = clips_ok and c.times.size() >= 4 and c.reach > 0.0 and c.reach < c.release and c.release < 1.0
+	_check("every style has a swing (reach-back before release)", clips_ok)
+	var drive := DiscFlightRules.flat_distance(discs.disc_putter, 1.0, t)
+	var putt := DiscFlightRules.flat_distance(discs.disc_putter, 1.0, t, 0.0, DiscFlightRules.style("putt"))
+	var putt_side := _lateral("disc_putter", 0.0, false, Vector2.ZERO, "putt")
+	_check("full putt carries %.1f m (drive %.1f m), %.2f m off line" % [putt, drive, putt_side], putt > 6.0 and putt < 25.0 and absf(putt_side) < 0.6)
+	var tom := _fly("disc_driver", "tomahawk")
+	_check("tomahawk turns over: lands at %.0f deg roll, %.0f m out, %.1f m %s" % [rad_to_deg(tom.roll), tom.dist, absf(tom.side), "left" if tom.side < 0.0 else "right"],
+		absf(rad_to_deg(tom.roll)) > 110.0 and tom.dist > 15.0 and tom.dist < 90.0)
+	var roller := _fly("disc_mid", "roller")
+	_check("roller rolls on after landing: %.0f m in the air + %.0f m rolling, ends %.1f m right" % [roller.dist, roller.rolled, roller.end_x],
+		roller.rolled > 10.0 and roller.end_x > 1.0)
+	var flat := _fly("disc_mid", "backhand")
+	_check("a backhand doesn't roll (%.1f m)" % flat.rolled, flat.rolled == 0.0)
+
+
+# A full-power throw of `style_id` over flat ground at y 0: where it came down, its roll then, and (rollers) how far
+# it rolled on and where it ended up.
+func _fly(id: String, style_id: String) -> Dictionary:
+	var t := DiscFlightRules.tuning()
+	var f := DiscFlightRules.launch(DiscFlightRules.discs()[id], 1.0, Vector3(0, 1.4, 0), 0.0, DiscFlightRules.launch_pitch(0.0, t), 0.0, DiscFlightRules.style(style_id), t)
+	while f.pos.y > 0.0 and f.time < 15.0:
+		DiscFlightRules.step(f, 1.0 / 60.0, t)
+	var out := {"roll": f.roll, "dist": Vector2(f.pos.x, f.pos.z).length(), "side": f.pos.x, "rolled": 0.0, "end_x": f.pos.x}
+	f.pos.y = 0.0
+	if DiscFlightRules.start_rolling(f):
+		var from := f.pos
+		while f.time < 30.0 and DiscFlightRules.roll_step(f, Vector3.UP, 1.0 / 60.0):
+			f.pos += f.vel / 60.0
+		out.rolled = from.distance_to(f.pos)
+		out.end_x = f.pos.x
+	return out
 
 
 # Sideways landing offset (+X = right of a throw toward -Z) for a full-power throw.
-func _lateral(id: String, tilt: float, forehand: bool, wind := Vector2.ZERO) -> float:
+func _lateral(id: String, tilt: float, forehand: bool, wind := Vector2.ZERO, style_id := "") -> float:
 	var t := DiscFlightRules.tuning()
-	var f := DiscFlightRules.launch(DiscFlightRules.discs()[id], 1.0, Vector3(0, 1.4, 0), 0.0, DiscFlightRules.launch_pitch(0.0, t), tilt, forehand, t)
+	if style_id == "":
+		style_id = "forehand" if forehand else "backhand"
+	var f := DiscFlightRules.launch(DiscFlightRules.discs()[id], 1.0, Vector3(0, 1.4, 0), 0.0, DiscFlightRules.launch_pitch(0.0, t), tilt, DiscFlightRules.style(style_id), t)
 	f.wind = Vector3(wind.x, 0.0, wind.y)
 	while f.pos.y > 0.0 and f.time < 15.0:
 		DiscFlightRules.step(f, 1.0 / 60.0, t)

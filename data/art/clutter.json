@@ -68,7 +68,7 @@
 			"parking": {"car_sedan_a": 4, "car_sedan_b": 4, "car_cadillac": 1, "car_pickup_blue": 2, "car_rusty_truck": 2},
 			"traffic": {"car_sedan_a": 4, "car_sedan_b": 4, "car_cadillac": 1, "car_pickup_blue": 3, "car_rusty_truck": 3, "car_crashed_car": 1, "car_crashed_truck": 1, "car_bus": 0.4},
 			"crashed": {"car_crashed_car": 1, "car_crashed_truck": 1}},
-		"driveway_car_chance_per_house": 0.35, "driveway_offset_m": 3.6, "driveway_flat_chance": 0.3, "driveway_flat_sink_m": 0.12,
+		"driveway_car_chance_per_house": 0.35, "driveway_offset_m": 5.4, "driveway_flat_chance": 0.3, "driveway_flat_sink_m": 0.12,
 		"parking_stall_m": 2.8, "parking_depth_m": 2.7, "parking_fill": 0.35, "loot_parking_chance": 0.12,
 		"jam_kinds": ["motorway", "trunk", "primary", "secondary"], "jam_spacing_m": 380.0, "jam_chance": 0.55, "jam_cars": [3, 9],
 		"jam_gap_m": [5.4, 8.0], "jam_both_lanes_chance": 0.4, "jam_crash_chance": 0.3, "jam_skew": 0.14, "loot_traffic_chance": 0.25, "loot_car_chance": 0.5, "loot_trash_chance": 0.5, "porch_loot_chance": 0.2, "loot_debris_chance": 0.35

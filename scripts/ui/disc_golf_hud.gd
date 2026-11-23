@@ -1,5 +1,5 @@
 # DiscGolfHud — disc golf on the HUD (D-069), added under the HUD by DiscGolfDirector. Draws, for the local player:
-#   * with a disc out: the bag (carried discs, the one in hand highlighted), backhand / forehand, tilt, and the power
+#   * with a disc out: the bag (carried discs, the one in hand highlighted), the throw style (D-117), tilt, and the power
 #     bar while charging, with a mark at the power that carries to the basket on flat ground; drunk or high (D-082)
 #     the bar shakes and its fill jumps around by how impaired you are (the host adds that much error to the throw);
 #   * during a round: hole, par, length, throw number, feet to the basket and score so far (above the bag), and a
@@ -36,9 +36,7 @@ func _ready() -> void:
 	_bg.bg_color = Color(0, 0, 0, 0.55)
 	_bg.set_corner_radius_all(6)
 	_bg.set_content_margin_all(8)
-	var t := DiscFlightRules.tuning()
-	for id: String in DiscFlightRules.discs():
-		_reach[id] = DiscFlightRules.reach_table(DiscFlightRules.discs()[id], t)
+	# reach tables are built per disc and throw style the first time each is in hand (D-117)
 
 
 func _process(delta: float) -> void:
@@ -203,7 +201,7 @@ func _bag(to_basket: float) -> void:
 		x += 40.0 + _font.get_string_size(label, HORIZONTAL_ALIGNMENT_LEFT, -1, 16).x
 	var tilt: float = th.tilt_deg
 	var tilt_text := "flat" if is_zero_approx(tilt) else "%d° %s" % [absi(roundi(tilt)), "left" if tilt > 0.0 else "right"]
-	var grip := "%s   tilt %s" % ["Forehand" if th.forehand else "Backhand", tilt_text]
+	var grip := "%s   tilt %s" % [str(DiscFlightRules.style(th.style_id).get("name", "Backhand")), tilt_text]
 	_text(Vector2(r.end.x - 12.0 - _font.get_string_size(grip, HORIZONTAL_ALIGNMENT_LEFT, -1, 15).x, r.position.y + 24.0), grip, 15, Color(0.9, 0.85, 0.7))
 	var bar := Rect2(r.position.x + 12.0, r.position.y + 42.0, w - 24.0, 16.0)
 	draw_rect(bar, Color(0.1, 0.1, 0.1, 0.9))
@@ -215,12 +213,16 @@ func _bag(to_basket: float) -> void:
 		charge = clampf(charge * (1.0 + 0.3 * imp * sin(t * 9.0) * sin(t * 3.7 + 1.0)), 0.0, 1.0)
 		draw_rect(bar, Color(0.1, 0.1, 0.1, 0.9))
 	draw_rect(Rect2(bar.position, Vector2(bar.size.x * charge, bar.size.y)), Color(0.3, 0.85, 0.35).lerp(Color(1.0, 0.45, 0.2), charge))
-	if to_basket > 0.0 and _reach.has(th.disc_id):
-		var need := DiscFlightRules.power_for(_reach[th.disc_id], to_basket)
+	var reach_key: String = th.disc_id + "|" + th.style_id  # a putt or a roller carries less than a drive (D-117)
+	if not _reach.has(reach_key) and DiscFlightRules.discs().has(th.disc_id):
+		_reach[reach_key] = DiscFlightRules.reach_table(DiscFlightRules.discs()[th.disc_id], DiscFlightRules.tuning(),
+			DiscFlightRules.style(th.style_id))
+	if to_basket > 0.0 and _reach.has(reach_key):
+		var need := DiscFlightRules.power_for(_reach[reach_key], to_basket)
 		var mx := bar.position.x + bar.size.x * need
 		draw_line(Vector2(mx, bar.position.y - 4.0), Vector2(mx, bar.end.y + 4.0), Color(1.0, 0.85, 0.2), 2.0)
 	draw_rect(bar, Color(1, 1, 1, 0.5), false, 1.0)
-	_text(Vector2(bar.position.x, bar.end.y + 18.0), "Hold left click: power   Z / X or wheel: tilt   F: grip   3: next disc   right click: cancel", 12, Color(0.7, 0.7, 0.65))
+	_text(Vector2(bar.position.x, bar.end.y + 18.0), "Hold left click: power   Z / X or wheel: tilt   F: throw style   3: next disc   right click: cancel", 12, Color(0.7, 0.7, 0.65))
 
 
 func _scorecard(c: DiscCourse) -> void:

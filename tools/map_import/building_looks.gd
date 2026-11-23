@@ -19,7 +19,7 @@ func _init() -> void:
 
 
 func _check() -> String:
-	for key in ["looks", "classes", "window", "roof_colors", "flat_roof_color", "textures_dir"]:
+	for key in ["looks", "classes", "window", "roof_colors", "flat_roof_color", "textures_dir", "details"]:
 		if not data.has(key):
 			return "%s: missing '%s'" % [DATA_PATH, key]
 	for id: String in data.classes:
@@ -110,4 +110,10 @@ func make_wall_material(look_id: String) -> ShaderMaterial:
 	m.set_shader_parameter("sill", float(w.sill_m))
 	m.set_shader_parameter("boarded_fraction", float(w.boarded_fraction))
 	m.set_shader_parameter("broken_fraction", float(w.broken_fraction))
+	var g: Dictionary = data.details.grime  # D-118 weathering
+	for k: String in ["damp_m", "damp", "streaks", "eave_dark", "moss_chance", "moss_m"]:
+		m.set_shader_parameter(k, float(g[k]))
+	for k: String in ["moss_color", "soot_color"]:
+		var c: Array = g[k]
+		m.set_shader_parameter(k, Color(c[0], c[1], c[2]))
 	return m

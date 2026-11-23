@@ -1,0 +1,216 @@
+{
+	"note": "Disc golf course looks (D-117), presentation only - DiscCourse builds every basket, tee pad, tee sign and basket ring from these; a course picks its pieces in data/discgolf/courses.json \"look\" {basket, tee, sign, ring, wear 0..1}. Matched to the real Kearney courses (PDGA / UDisc / DGCourseReview): Centennial Park = Mach II-style baskets with a small landscaped mulch circle, big asphalt tee pads, one sign per hole; Cottonmill = newer two-tier chain baskets (the course was refitted with them), concrete tee pads, framed hole signs. wear = rust on the steel, faded sign paint, tilted posts (the world is post-apocalyptic). Baskets, metres above the base: pole_r / pole_top, the wire tray from tray_bottom to tray_top (radius tray_r, tray_bars uprights, hoops = heights of extra rings), the chain band (band_r, band_bottom..band_top, glows - D-076), spokes from the pole to the band, chain tiers {count, top_r at the band, bottom_r near the pole at bottom_y, sag outward, twist_deg round the pole}; near_m = drawn link by link (link: pitch, length, width, wire thickness) up to here, the simple version from there to far_m. Keep tray / chain heights in step with the catch zone in data/tuning/disc_golf.json (tray_low_m, chains_low_m, chains_high_m, catch_radius_m). Tees: pad size [width, length], texture from assets/textures, top_m above the ground. Signs: board [width, height] standing height_m up on 1 or 2 posts, colours; the face shows the hole number, par, length and a drawn map of the hole.",
+	"baskets": {
+		"mach2": {
+			"pole_r": 0.024,
+			"pole_top": 1.5,
+			"tray_r": 0.33,
+			"tray_bottom": 0.5,
+			"tray_top": 0.72,
+			"tray_bars": 20,
+			"hoops": [
+				0.62
+			],
+			"band_r": 0.3,
+			"band_bottom": 1.32,
+			"band_top": 1.42,
+			"spokes": 6,
+			"tiers": [
+				{
+					"count": 12,
+					"top_r": 0.28,
+					"bottom_r": 0.085,
+					"bottom_y": 0.76,
+					"sag": 0.05,
+					"twist_deg": 18.0
+				},
+				{
+					"count": 12,
+					"top_r": 0.16,
+					"bottom_r": 0.05,
+					"bottom_y": 0.79,
+					"sag": 0.025,
+					"twist_deg": -10.0
+				}
+			],
+			"near_m": 28.0,
+			"far_m": 220.0
+		},
+		"modern": {
+			"pole_r": 0.026,
+			"pole_top": 1.52,
+			"tray_r": 0.33,
+			"tray_bottom": 0.5,
+			"tray_top": 0.73,
+			"tray_bars": 24,
+			"hoops": [
+				0.58,
+				0.66
+			],
+			"band_r": 0.31,
+			"band_bottom": 1.3,
+			"band_top": 1.45,
+			"spokes": 8,
+			"tiers": [
+				{
+					"count": 16,
+					"top_r": 0.29,
+					"bottom_r": 0.09,
+					"bottom_y": 0.75,
+					"sag": 0.055,
+					"twist_deg": 22.0
+				},
+				{
+					"count": 12,
+					"top_r": 0.2,
+					"bottom_r": 0.07,
+					"bottom_y": 0.77,
+					"sag": 0.035,
+					"twist_deg": -14.0
+				},
+				{
+					"count": 8,
+					"top_r": 0.11,
+					"bottom_r": 0.045,
+					"bottom_y": 0.79,
+					"sag": 0.015,
+					"twist_deg": 8.0
+				}
+			],
+			"near_m": 28.0,
+			"far_m": 220.0
+		}
+	},
+	"link": {
+		"pitch_m": 0.026,
+		"length_m": 0.03,
+		"width_m": 0.013,
+		"wire_m": 0.0028
+	},
+	"metal": {
+		"color": [
+			0.62,
+			0.64,
+			0.66
+		],
+		"chain": [
+			0.58,
+			0.59,
+			0.6
+		],
+		"rust": [
+			0.42,
+			0.24,
+			0.12
+		],
+		"band": [
+			0.95,
+			0.78,
+			0.15
+		]
+	},
+	"tees": {
+		"asphalt": {
+			"size": [
+				1.8,
+				4.5
+			],
+			"texture": "road_cracked",
+			"tile_m": 2.5,
+			"color": [
+				0.7,
+				0.7,
+				0.72
+			],
+			"top_m": 0.05
+		},
+		"concrete": {
+			"size": [
+				1.5,
+				3.6
+			],
+			"texture": "concrete_slab",
+			"tile_m": 2.0,
+			"color": [
+				1.0,
+				0.98,
+				0.94
+			],
+			"top_m": 0.07
+		}
+	},
+	"signs": {
+		"post": {
+			"board": [
+				0.5,
+				0.62
+			],
+			"height_m": 1.2,
+			"posts": 1,
+			"post_color": [
+				0.36,
+				0.27,
+				0.18
+			],
+			"board_color": [
+				0.1,
+				0.3,
+				0.17
+			],
+			"fairway_color": [
+				0.5,
+				0.68,
+				0.38
+			],
+			"text_color": [
+				0.95,
+				0.92,
+				0.8
+			]
+		},
+		"frame": {
+			"board": [
+				0.85,
+				0.6
+			],
+			"height_m": 1.15,
+			"posts": 2,
+			"post_color": [
+				0.3,
+				0.31,
+				0.32
+			],
+			"board_color": [
+				0.12,
+				0.22,
+				0.36
+			],
+			"fairway_color": [
+				0.45,
+				0.66,
+				0.4
+			],
+			"text_color": [
+				0.96,
+				0.95,
+				0.9
+			]
+		}
+	},
+	"rings": {
+		"mulch": {
+			"radius_m": 1.5,
+			"texture": "gravel",
+			"color": [
+				0.48,
+				0.32,
+				0.2
+			],
+			"edge_color": [
+				0.33,
+				0.31,
+				0.29
+			]
+		}
+	}
+}

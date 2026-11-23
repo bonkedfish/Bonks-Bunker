@@ -61,7 +61,7 @@ func _ready() -> void:
 	set_process(false)
 
 
-func play(path: PackedVector3Array, rolls: PackedFloat32Array, disc_mesh: Mesh, forehand: bool, basket: Vector3,
+func play(path: PackedVector3Array, rolls: PackedFloat32Array, disc_mesh: Mesh, hand: float, basket: Vector3,
 		title: String, sub: String) -> void:
 	if path.size() < 2:
 		return
@@ -71,7 +71,7 @@ func play(path: PackedVector3Array, rolls: PackedFloat32Array, disc_mesh: Mesh, 
 	_slowmo_s = float(t.ace_slowmo_s)
 	_path = path
 	_rolls = rolls
-	_hand = -1.0 if forehand else 1.0
+	_hand = hand  # 1 backhand-side spin, -1 forehand-side (D-117)
 	_basket = basket
 	_title = title
 	_sub = sub

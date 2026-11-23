@@ -152,7 +152,7 @@ func _ready() -> void:
 	from.y = _ground_y(from) + 1.4
 	var aim := Vector3(-inland.x, 0, -inland.y)
 	var f := DiscFlightRules.launch(DiscFlightRules.discs()["disc_mid"], 0.6, from, atan2(-aim.x, -aim.z),
-		DiscFlightRules.launch_pitch(0.0, DiscFlightRules.tuning()), 0.0, false, DiscFlightRules.tuning())
+		DiscFlightRules.launch_pitch(0.0, DiscFlightRules.tuning()), 0.0, DiscFlightRules.style("backhand"), DiscFlightRules.tuning())
 	var out: Array = dg._simulate(f, cm.basket_position(0), cm)
 	var drop: Vector3 = dg._shore_drop(out[0], cm) if out[5] else Vector3.INF
 	var shore3 := Vector3(shore.x, from.y, shore.y)
@@ -167,8 +167,8 @@ func _ready() -> void:
 	body.global_position = from + aim * 3.0 - Vector3(0, 1.4, 0)
 	body.global_position.y = _ground_y(body.global_position)
 	body.rotation.y = atan2(aim.x, aim.z)
-	var lead := body.throw_disc(Color(0.95, 0.3, 0.15), false)
-	_check("throw swing plays (release after %.2f s), disc in hand" % lead, lead > 0.05 and body._disc_hold != null and body._disc_hold.visible)
+	var lead := body.start_throw("backhand", "disc_mid")  # D-117 hand-made swing
+	_check("throw swing plays (release after %.2f s), disc in hand" % lead, lead > 0.05 and body._disc_node != null and body._disc_node.visible)
 	_stand(player, body.global_position + Vector3(aim.z, 0, -aim.x) * 3.5 + Vector3(0, 0.8, 0), body.global_position + Vector3(0, 1.1, 0))
 	for i in 6:
 		body.update(0.05, false, false, 100.0, false, false)
@@ -176,7 +176,7 @@ func _ready() -> void:
 	await _shot("bu_throw.png")
 	for i in 30:
 		body.update(0.05, false, false, 100.0, false, false)
-	_check("disc let go after the release", not body._disc_hold.visible)
+	_check("disc let go after the release", not body._disc_node.visible)
 	SaveStore.delete(slug)
 	_say("%d failure(s)" % _fails)
 	var file := FileAccess.open(OUT_DIR + "/big_update_result.txt", FileAccess.WRITE)

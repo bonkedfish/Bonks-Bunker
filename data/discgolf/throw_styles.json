@@ -1,0 +1,711 @@
+{
+	"note": "Disc golf throw styles (D-117). Picked with F while a disc is out (order). Flight (DiscFlightRules.launch / step): hand 1 = backhand-side spin, -1 = forehand-side (mirrors turn and fade); power_mult scales the launch speed; pitch_add_deg is added to the launch pitch; roll_add_deg to the starting tilt (+ = left edge down); lift_mult / turn_mult / fade_mult scale the disc's own numbers; flip_rate_deg keeps rolling the disc the way roll_add_deg leans it (the tomahawk turns over); max_roll_deg caps the roll (past 90 the disc is upside down and its lift pushes it down). ground_roll: on landing on its edge (|roll| > roll_min_deg) faster than 2 x fall_mps it rolls along the ground instead of sliding (keeps roll_keep of its speed, slows by roll_friction m/s2 plus the slope, curves into its lean by roll_curve_deg/s - more as it slows - and falls over below fall_mps). spin: how fast the disc is shown spinning (1 = drive). anim (presentation only, ThrowPose / ArmIK): seconds for the whole throw, reach = the reach-back point (charging holds the pose between 0 and reach), release = when the disc leaves the hand; keys [t, hand [x, y, z], elbow pole [x, y, z], torso twist deg (+ = turn left), forward lean deg, disc rotation deg [pitch, yaw, roll]] - hand = offset from the throwing (right) shoulder in arm lengths, body frame: x right, y up, z back (forward is -z). disc_lead 1 = the disc sits ahead of the hand along its path (push putt), -1 = it trails the hand (every swing). fp scales the torso twist / lean in first person so the swing stays in view.",
+	"order": [
+		"backhand",
+		"forehand",
+		"putt",
+		"tomahawk",
+		"roller"
+	],
+	"fp": {
+		"twist_scale": 0.35,
+		"lean_scale": 0.3
+	},
+	"styles": {
+		"backhand": {
+			"name": "Backhand",
+			"hand": 1.0,
+			"power_mult": 1.0,
+			"pitch_add_deg": 0.0,
+			"roll_add_deg": 0.0,
+			"lift_mult": 1.0,
+			"turn_mult": 1.0,
+			"fade_mult": 1.0,
+			"flip_rate_deg": 0.0,
+			"max_roll_deg": 80.0,
+			"ground_roll": false,
+			"spin": 1.0,
+			"anim": {
+				"seconds": 1.0,
+				"reach": 0.3,
+				"release": 0.55,
+				"disc_lead": -1.0,
+				"keys": [
+					[
+						0.0,
+						[
+							-0.3,
+							-0.45,
+							-0.55
+						],
+						[
+							0.6,
+							-0.5,
+							0.3
+						],
+						0,
+						4,
+						[
+							-5,
+							0,
+							5
+						]
+					],
+					[
+						0.3,
+						[
+							-0.15,
+							-0.2,
+							0.95
+						],
+						[
+							0.3,
+							0.7,
+							0.0
+						],
+						60,
+						6,
+						[
+							-5,
+							0,
+							8
+						]
+					],
+					[
+						0.47,
+						[
+							-0.55,
+							-0.2,
+							-0.15
+						],
+						[
+							1.0,
+							0.2,
+							-0.6
+						],
+						25,
+						6,
+						[
+							-3,
+							0,
+							10
+						]
+					],
+					[
+						0.55,
+						[
+							0.05,
+							-0.15,
+							-0.95
+						],
+						[
+							0.6,
+							0.3,
+							-0.3
+						],
+						-10,
+						5,
+						[
+							-3,
+							0,
+							10
+						]
+					],
+					[
+						0.75,
+						[
+							0.85,
+							-0.15,
+							-0.35
+						],
+						[
+							0.4,
+							0.6,
+							0.4
+						],
+						-50,
+						10,
+						[
+							0,
+							0,
+							0
+						]
+					],
+					[
+						1.0,
+						[
+							0.45,
+							-0.6,
+							-0.35
+						],
+						[
+							0.5,
+							-0.4,
+							0.3
+						],
+						-20,
+						5,
+						[
+							0,
+							0,
+							0
+						]
+					]
+				]
+			}
+		},
+		"forehand": {
+			"name": "Forehand",
+			"hand": -1.0,
+			"power_mult": 1.0,
+			"pitch_add_deg": 0.0,
+			"roll_add_deg": 0.0,
+			"lift_mult": 1.0,
+			"turn_mult": 1.0,
+			"fade_mult": 1.0,
+			"flip_rate_deg": 0.0,
+			"max_roll_deg": 80.0,
+			"ground_roll": false,
+			"spin": 1.0,
+			"anim": {
+				"seconds": 0.9,
+				"reach": 0.3,
+				"release": 0.55,
+				"disc_lead": -1.0,
+				"keys": [
+					[
+						0.0,
+						[
+							0.1,
+							-0.55,
+							-0.45
+						],
+						[
+							0.5,
+							-0.8,
+							0.2
+						],
+						0,
+						4,
+						[
+							0,
+							0,
+							-5
+						]
+					],
+					[
+						0.3,
+						[
+							0.6,
+							-0.5,
+							0.4
+						],
+						[
+							0.4,
+							-0.9,
+							0.4
+						],
+						-40,
+						8,
+						[
+							0,
+							0,
+							-5
+						]
+					],
+					[
+						0.48,
+						[
+							0.45,
+							-0.45,
+							-0.25
+						],
+						[
+							0.5,
+							-0.9,
+							-0.2
+						],
+						-15,
+						8,
+						[
+							0,
+							0,
+							-5
+						]
+					],
+					[
+						0.55,
+						[
+							0.25,
+							-0.4,
+							-0.95
+						],
+						[
+							0.6,
+							-0.6,
+							-0.2
+						],
+						10,
+						6,
+						[
+							0,
+							0,
+							-5
+						]
+					],
+					[
+						0.75,
+						[
+							-0.4,
+							-0.35,
+							-0.75
+						],
+						[
+							0.4,
+							-0.6,
+							-0.3
+						],
+						35,
+						8,
+						[
+							0,
+							0,
+							0
+						]
+					],
+					[
+						1.0,
+						[
+							-0.1,
+							-0.65,
+							-0.4
+						],
+						[
+							0.5,
+							-0.6,
+							0.2
+						],
+						10,
+						4,
+						[
+							0,
+							0,
+							0
+						]
+					]
+				]
+			}
+		},
+		"putt": {
+			"name": "Putt",
+			"hand": 1.0,
+			"power_mult": 0.5,
+			"pitch_add_deg": -2.0,
+			"roll_add_deg": 0.0,
+			"lift_mult": 1.0,
+			"turn_mult": 0.2,
+			"fade_mult": 0.4,
+			"flip_rate_deg": 0.0,
+			"max_roll_deg": 40.0,
+			"ground_roll": false,
+			"spin": 0.45,
+			"anim": {
+				"seconds": 0.9,
+				"reach": 0.35,
+				"release": 0.55,
+				"disc_lead": 1.0,
+				"keys": [
+					[
+						0.0,
+						[
+							-0.35,
+							-0.65,
+							-0.35
+						],
+						[
+							0.8,
+							-0.6,
+							0.2
+						],
+						0,
+						18,
+						[
+							8,
+							0,
+							0
+						]
+					],
+					[
+						0.35,
+						[
+							-0.3,
+							-0.75,
+							-0.15
+						],
+						[
+							0.8,
+							-0.7,
+							0.3
+						],
+						0,
+						24,
+						[
+							10,
+							0,
+							0
+						]
+					],
+					[
+						0.55,
+						[
+							-0.15,
+							-0.3,
+							-0.98
+						],
+						[
+							0.8,
+							-0.3,
+							0.0
+						],
+						0,
+						12,
+						[
+							6,
+							0,
+							0
+						]
+					],
+					[
+						0.8,
+						[
+							-0.1,
+							-0.2,
+							-1.0
+						],
+						[
+							0.8,
+							-0.2,
+							0.0
+						],
+						0,
+						8,
+						[
+							4,
+							0,
+							0
+						]
+					],
+					[
+						1.0,
+						[
+							-0.1,
+							-0.55,
+							-0.6
+						],
+						[
+							0.8,
+							-0.6,
+							0.2
+						],
+						0,
+						6,
+						[
+							0,
+							0,
+							0
+						]
+					]
+				]
+			}
+		},
+		"tomahawk": {
+			"name": "Tomahawk",
+			"hand": 1.0,
+			"power_mult": 0.75,
+			"pitch_add_deg": 14.0,
+			"roll_add_deg": 75.0,
+			"lift_mult": 0.4,
+			"turn_mult": 0.0,
+			"fade_mult": 0.0,
+			"flip_rate_deg": 55.0,
+			"max_roll_deg": 175.0,
+			"ground_roll": false,
+			"spin": 1.0,
+			"anim": {
+				"seconds": 1.0,
+				"reach": 0.3,
+				"release": 0.55,
+				"disc_lead": -1.0,
+				"keys": [
+					[
+						0.0,
+						[
+							0.1,
+							-0.45,
+							-0.45
+						],
+						[
+							0.6,
+							-0.6,
+							0.2
+						],
+						0,
+						4,
+						[
+							0,
+							0,
+							60
+						]
+					],
+					[
+						0.3,
+						[
+							0.25,
+							0.7,
+							0.45
+						],
+						[
+							0.9,
+							0.4,
+							0.4
+						],
+						-25,
+						-12,
+						[
+							0,
+							0,
+							75
+						]
+					],
+					[
+						0.48,
+						[
+							0.15,
+							0.85,
+							-0.25
+						],
+						[
+							0.9,
+							0.5,
+							0.0
+						],
+						-5,
+						0,
+						[
+							0,
+							0,
+							75
+						]
+					],
+					[
+						0.55,
+						[
+							0.1,
+							0.45,
+							-0.85
+						],
+						[
+							0.8,
+							0.3,
+							-0.2
+						],
+						5,
+						18,
+						[
+							0,
+							0,
+							75
+						]
+					],
+					[
+						0.78,
+						[
+							-0.35,
+							-0.5,
+							-0.55
+						],
+						[
+							0.6,
+							-0.3,
+							0.0
+						],
+						25,
+						28,
+						[
+							0,
+							0,
+							30
+						]
+					],
+					[
+						1.0,
+						[
+							-0.1,
+							-0.6,
+							-0.4
+						],
+						[
+							0.5,
+							-0.6,
+							0.2
+						],
+						10,
+						8,
+						[
+							0,
+							0,
+							0
+						]
+					]
+				]
+			}
+		},
+		"roller": {
+			"name": "Roller",
+			"hand": 1.0,
+			"power_mult": 0.85,
+			"pitch_add_deg": -9.0,
+			"roll_add_deg": -55.0,
+			"lift_mult": 0.6,
+			"turn_mult": 1.0,
+			"fade_mult": 0.3,
+			"flip_rate_deg": 0.0,
+			"max_roll_deg": 85.0,
+			"ground_roll": true,
+			"spin": 1.0,
+			"roll_min_deg": 25.0,
+			"roll_keep": 0.75,
+			"roll_friction": 1.6,
+			"roll_curve_deg": 28.0,
+			"fall_mps": 1.8,
+			"anim": {
+				"seconds": 1.0,
+				"reach": 0.3,
+				"release": 0.55,
+				"disc_lead": -1.0,
+				"keys": [
+					[
+						0.0,
+						[
+							-0.3,
+							-0.5,
+							-0.55
+						],
+						[
+							0.6,
+							-0.5,
+							0.3
+						],
+						0,
+						8,
+						[
+							-5,
+							0,
+							-20
+						]
+					],
+					[
+						0.3,
+						[
+							-0.1,
+							-0.55,
+							0.85
+						],
+						[
+							0.3,
+							0.6,
+							0.0
+						],
+						55,
+						25,
+						[
+							-5,
+							0,
+							-45
+						]
+					],
+					[
+						0.47,
+						[
+							-0.5,
+							-0.6,
+							-0.15
+						],
+						[
+							1.0,
+							0.1,
+							-0.6
+						],
+						20,
+						32,
+						[
+							0,
+							0,
+							-55
+						]
+					],
+					[
+						0.55,
+						[
+							0.05,
+							-0.8,
+							-0.8
+						],
+						[
+							0.7,
+							0.2,
+							-0.3
+						],
+						-10,
+						35,
+						[
+							0,
+							0,
+							-60
+						]
+					],
+					[
+						0.75,
+						[
+							0.8,
+							-0.4,
+							-0.35
+						],
+						[
+							0.4,
+							0.6,
+							0.4
+						],
+						-45,
+						25,
+						[
+							0,
+							0,
+							0
+						]
+					],
+					[
+						1.0,
+						[
+							0.45,
+							-0.6,
+							-0.35
+						],
+						[
+							0.5,
+							-0.4,
+							0.3
+						],
+						-20,
+						8,
+						[
+							0,
+							0,
+							0
+						]
+					]
+				]
+			}
+		}
+	}
+}

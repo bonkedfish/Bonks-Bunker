@@ -850,3 +850,19 @@ a release, then gh release view) went to main as 02768d7.
   loads of 86 ms logged) - streaming, not the cars. The wrecked bus lies on its side (that is the model) and blocks a
   lane; widths include open doors / hoods, so box colliders are a bit wide. Not in a release yet. The original zips
   are still in assets/vehicles/ (gitignored); the user can delete them.
+- 2026-11-22 D-117 IN PROGRESS: realistic disc golf (built in code). Committed, NOT yet run (a map rebuild by another
+  chat had Godot busy): data/discgolf/throw_styles.json (backhand / forehand / putt / tomahawk / roller: power, pitch,
+  roll, lift/turn/fade, flip, roller ground roll, hand-made swing keys), course_looks.json (Mach II vs modern baskets,
+  asphalt vs concrete tees, post vs frame signs, mulch ring), discs.json shape/plastic/stamp, courses.json "look",
+  character_models.json "throw_rigs". New: scripts/visual/throw_pose.gd (ThrowPose), arm_ik.gd (ArmIK; both added
+  by hand to .godot/global_script_class_cache.cfg), scripts/discgolf/disc_mesh.gd + shaders/disc_plastic.gdshader,
+  basket_mesh.gd (link chains near / strips far), tee_box.gd. F now cycles throw style. To do: parse_check,
+  disc_golf_test, tests/disc_look.tscn (screenshots + IK error + perf), tune keys by eye, coop_test, then report.
+- 2026-11-22 D-118 DONE: realistic houses baked into the map (build_cells re-bake ~62 min + build_grass_masks 65 s).
+  tests/house_look.tscn 7 PASS / 0 failures: house, porch, garage, boarded-up, burned, caved-in roof and large
+  building all built (index.json "house_examples" holds one of each for the test). Detail cost, measured by hiding
+  the new Trim/Boards meshes: +6..12 draw calls and +25k (edge of town) to +410k (downtown / from the air) primitives;
+  frames 5.7-7.9 ms where settled - readings of 21-113 ms were right after teleports (streaming). VRAM 1.65-2.1 GB.
+  Looks to judge by eye: burned windows read dark brown rather than black under sun; garage doors are plain panels
+  with seams; no interiors (doors are not openable - a caved roof shows the empty inside). Not in a release yet.
+  Possible saving if primitives matter: drop the never-seen bottom face of trim boxes (~20%).

@@ -3,7 +3,10 @@
 // Mesh contract (written by tools/map_import/build_cells.gd):
 //   UV   = (metres along the building outline, metres above the wall base)
 //   UV2  = (length of this wall edge in metres, metres along this edge); UV2.x = 0 means "no windows here"
-//   COLOR.r = wall height / 64 m, COLOR.g = per-building random 0..1 (tint and window variation)
+//   COLOR.r = wall height / 64 m, COLOR.g = per-building random 0..1 (tint and window variation),
+//   COLOR.b = 1 on burned buildings (soot rising from the windows and base, D-118)
+// Weathering (D-118): rising damp at the base, rain streaks under each window, darker under the eaves, moss low
+// on some buildings (by COLOR.g), all from UV in metres so no extra textures.
 shader_type spatial;
 render_mode cull_disabled;
 
@@ -25,9 +28,24 @@ uniform float win_h = 1.3;
 uniform float sill = 1.2;
 uniform float boarded_fraction = 0.25;
 uniform float broken_fraction = 0.2;
+uniform float damp_m = 0.9;
+uniform float damp = 0.45;
+uniform float streaks = 0.35;
+uniform float eave_dark = 0.3;
+uniform float moss_chance = 0.35;
+uniform float moss_m = 0.6;
+uniform vec3 moss_color : source_color = vec3(0.2, 0.26, 0.12);
+uniform vec3 soot_color : source_color = vec3(0.03, 0.028, 0.025);
 
 float hash(vec2 p) {
 	return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453);
+}
+
+float vnoise(vec2 p) {
+	vec2 i = floor(p);
+	vec2 f = fract(p);
+	f = f * f * (3.0 - 2.0 * f);
+	return mix(mix(hash(i), hash(i + vec2(1.0, 0.0)), f.x), mix(hash(i + vec2(0.0, 1.0)), hash(i + vec2(1.0, 1.0)), f.x), f.y);
 }
 
 void fragment() {
@@ -36,6 +54,9 @@ void fragment() {
 	vec3 arm = texture(arm_tex, uv).rgb;
 	vec3 nrm = texture(normal_tex, uv).rgb;
 	float rnd = COLOR.g;
+	float rough = arm.g;
+	float ao = arm.r;
+	float metal = 0.0;
 	if (recolor > 0.0) {
 		float lum = dot(alb, vec3(0.299, 0.587, 0.114));
 		alb = mix(alb, mix(paint_a, paint_b, rnd) * (0.55 + lum * 1.1), recolor);
@@ -45,11 +66,24 @@ void fragment() {
 		float f = fract(UV.y / lap_spacing_m);
 		alb *= mix(0.5, 1.0, smoothstep(0.0, 0.3, f));  // shadow under each board's lip
 	}
-	float rough = arm.g;
-	float ao = arm.r;
-	float metal = 0.0;
-
 	float wall_h = COLOR.r * 64.0;
+	// weathering, before the windows so glass stays clean-dark
+	float nz = vnoise(UV * vec2(1.3, 0.8)) * 0.6 + vnoise(UV * 4.0) * 0.4;
+	float base_d = 1.0 - smoothstep(0.0, damp_m * (0.6 + nz * 0.8), UV.y - 0.3);
+	float streak = vnoise(vec2(UV.x * 6.0, UV.y * 0.15)) * smoothstep(0.0, 2.0, UV.y);
+	float top_d = smoothstep(wall_h - 1.2, wall_h, UV.y) * (UV2.x > 0.0 ? 1.0 : 0.0);
+	alb *= 1.0 - damp * base_d - streaks * streak * streak - eave_dark * top_d;
+	if (rnd < moss_chance) {
+		float moss = (1.0 - smoothstep(0.0, moss_m * (0.4 + nz), UV.y - 0.3)) * smoothstep(0.45, 0.7, nz);
+		alb = mix(alb, moss_color * (0.7 + nz * 0.5), moss * 0.85);
+		rough = mix(rough, 1.0, moss);
+	}
+	float burned = COLOR.b;
+	if (burned > 0.5) {
+		float soot = clamp(0.55 + nz * 0.6 - smoothstep(wall_h * 0.4, wall_h * 1.3, UV.y) * 0.2, 0.0, 1.0);
+		alb = mix(alb, soot_color, soot);
+		rough = 1.0;
+	}
 	if (windows && UV2.x > 0.0) {
 		float n = floor(UV2.x / win_spacing);
 		float lu = UV2.y - (UV2.x - n * win_spacing) * 0.5;
@@ -63,7 +97,7 @@ void fragment() {
 				float edge = min(win_w * 0.5 - abs(cu), min(cv, win_h - cv));
 				float kind = hash(vec2(col + rnd * 97.0, fl + UV2.x * 0.37));
 				if (edge < 0.07) {
-					alb = vec3(0.75, 0.73, 0.68);  // frame
+					alb = burned > 0.5 ? vec3(0.06, 0.055, 0.05) : vec3(0.75, 0.73, 0.68);  // frame
 					rough = 0.7;
 				} else if (kind < boarded_fraction) {
 					float board = fract(cv / 0.18);

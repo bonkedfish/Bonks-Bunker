@@ -11,7 +11,7 @@ const COURSES_PATH := "res://data/discgolf/courses.json"
 const COURSE_SCHEMA := {"name": TYPE_STRING, "landmark": TYPE_STRING, "box": TYPE_ARRAY, "bounds": TYPE_ARRAY, "holes": TYPE_ARRAY}
 const HOLE_SCHEMA := {"par": TYPE_FLOAT, "length_ft": TYPE_FLOAT, "tee": TYPE_ARRAY, "basket": TYPE_ARRAY}
 const HOLE_OPTIONAL := ["label", "via"]  # shown name ("9½"), dogleg points
-const COURSE_OPTIONAL := ["camp"]  # John Pork's tent {at, face} (D-082)
+const COURSE_OPTIONAL := ["camp", "look"]  # John Pork's tent {at, face} (D-082); pieces from course_looks.json (D-117)
 
 static var _courses: Dictionary = {}
 

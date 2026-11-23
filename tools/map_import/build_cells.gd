@@ -66,6 +66,7 @@ var _field: HeightField
 var _grid: CellGrid
 var _mats: Dictionary = {}
 var _looks: BuildingLooks
+var _details: HouseDetails  # D-118 frames, doors, porches, chimneys, abandonment
 var _streets: StreetLooks
 var _veg: VegetationBuilder
 var _clutter: VegetationBuilder
@@ -107,6 +108,7 @@ func _ready() -> void:
 	if _looks.error != "":
 		_finish("CELLS: " + _looks.error)
 		return
+	_details = HouseDetails.new(_looks.data)
 	_streets = StreetLooks.new()
 	if _streets.error != "":
 		_finish("CELLS: " + _streets.error)
@@ -232,9 +234,11 @@ func _ready() -> void:
 	if not spawn_lm.is_empty():
 		var p := _proj.to_local(float(spawn_lm.lat), float(spawn_lm.lon))
 		index.spawn_hint = [p.x, landmark_y.get("bonk_bunker", 0.0), p.y]
+	index.house_examples = _details.examples  # D-118, for tests/house_look
 	var f := FileAccess.open(out_dir + "/index.json", FileAccess.WRITE)
 	f.store_string(JSON.stringify(index, "\t"))
 	f.close()
+	print("CELLS: house details (context rows counted again) %s" % _details.counts)
 	_finish("CELLS: %d cells (%d save errors) in %.1f s: %d buildings (%d OSM + %d Microsoft footprints dropped for standing in a street), %d road ways, %d plants, %d clutter props, %d zombie spawns, %d loot spots, %d navmesh polygons, datum %.1f m, landmark heights %s" % [
 		index.cells.size(), errors, (Time.get_ticks_msec() - t0) / 1000.0, totals.buildings, _on_road_osm, _on_road_ms,
 		totals.ways, totals.plants, totals.props, totals.spawns, totals.loot, totals.nav, _field.datum, landmark_y])
@@ -332,6 +336,23 @@ func _make_materials() -> void:
 		var w := _looks.make_wall_material(look)
 		ResourceSaver.save(w, "%s/wall_%s.tres" % [dir, look], ResourceSaver.FLAG_CHANGE_PATH)
 		_mats["wall_" + look] = w
+	var trim := StandardMaterial3D.new()  # D-118 window frames, doors, porches, gutters (vertex colour)
+	trim.vertex_color_use_as_albedo = true
+	trim.roughness = 0.85
+	trim.cull_mode = BaseMaterial3D.CULL_DISABLED
+	ResourceSaver.save(trim, dir + "/trim.tres", ResourceSaver.FLAG_CHANGE_PATH)
+	_mats.trim = trim
+	var boards := StandardMaterial3D.new()  # boards nailed over windows, UV in metres
+	var btex := "%s/planks_weathered" % _looks.data.textures_dir
+	boards.albedo_texture = load(btex + "/albedo.jpg")
+	boards.normal_enabled = true
+	boards.normal_texture = load(btex + "/normal.jpg")
+	boards.albedo_color = Color(0.8, 0.75, 0.7)
+	boards.roughness = 0.95
+	boards.uv1_scale = Vector3(1.0 / 1.8, 1.0 / 1.8, 1.0)
+	boards.cull_mode = BaseMaterial3D.CULL_DISABLED
+	ResourceSaver.save(boards, dir + "/boards.tres", ResourceSaver.FLAG_CHANGE_PATH)
+	_mats.boards = boards
 	var extra := {"ground": _streets.make_ground_material(), "pitched_roof": _streets.make_pitched_roof_material()}
 	for id: String in _streets.surface_ids():
 		extra["street_" + id] = _streets.make_surface_material(id)
@@ -348,8 +369,9 @@ func _new_cell(c: Vector2i) -> Dictionary:
 	var cell := {"root": root, "far_root": far_root, "terrain_faces": PackedVector3Array(),
 		"walls": {}, "roof_st": SurfaceTool.new(), "pitched_st": SurfaceTool.new(), "pitched_used": false, "b_faces": PackedVector3Array(),
 		"b_count": 0, "streets": {}, "veg": [], "clutter": [], "loot": [], "signs": [], "spawns": Node3D.new(), "spawn_count": 0,
-		"far_st": SurfaceTool.new(), "terrain_st": SurfaceTool.new(), "bed_faces": PackedVector3Array()}
-	for k in ["roof_st", "pitched_st", "far_st", "terrain_st"]:
+		"far_st": SurfaceTool.new(), "terrain_st": SurfaceTool.new(), "bed_faces": PackedVector3Array(),
+		"trim_st": SurfaceTool.new(), "boards_st": SurfaceTool.new()}
+	for k in ["roof_st", "pitched_st", "far_st", "terrain_st", "trim_st", "boards_st"]:
 		cell[k].begin(Mesh.PRIMITIVE_TRIANGLES)
 	cell.spawns.name = "ZombieSpawns"
 	return cell
@@ -539,25 +561,44 @@ func _place_building(poly: PackedVector2Array, centre: Vector2, height: float, o
 		top = maxf(top, h)
 	var min_wall := float(_looks.data.min_wall_height_m)
 	_remember_building(outline, centre, cls)
+	var cond := _details.condition(centre, cls)  # D-118
+	var burn := 1.0 if cond.burned else 0.0
+	var windows := bool(_looks.data.looks[look].windows)
+	var front := _nearest_street(centre, 40.0)
+	var dt: Dictionary = _looks.data.details
 	if rect.is_empty():
-		_walls(wall_st, cell.b_faces, outline, base - 0.3, top + height, rnd)
+		_walls(wall_st, cell.b_faces, outline, base - 0.3, top + height, rnd, burn)
 		_flat_roof(cell.roof_st, cell.b_faces, outline, top + height, _looks.roof_color(centre, false))
+		_walls(wall_st, cell.b_faces, outline, top + height, top + height + float(dt.parapet_h_m), rnd, burn, false)
 		_extrude(cell.far_st, null, outline, base - 0.3, top + height, COLOR_BUILDING)
+		_details.add(cell, outline, base - 0.3, top + height, top, centre, cls, windows, cond, front)
 	else:
 		var rise := minf(float(rect.width) * 0.5 * tan(deg_to_rad(float(def.pitch_deg))), maxf(height - min_wall, 1.0))
 		var eave := top + maxf(min_wall, height - rise)
-		_walls(wall_st, cell.b_faces, outline, base - 0.3, eave, rnd)
+		_walls(wall_st, cell.b_faces, outline, base - 0.3, eave, rnd, burn)
 		cell.pitched_used = true
-		_gable_roof(wall_st, cell.pitched_st, cell.b_faces, rect, base - 0.3, eave, rise, _looks.roof_color(centre, true), rnd)
+		var roof_c := _looks.roof_color(centre, true)
+		if cond.burned:
+			var bc: Array = dt.burned_roof_color
+			roof_c = Color(bc[0], bc[1], bc[2])
+		_gable_roof(wall_st, cell.pitched_st, cell.b_faces, rect, base - 0.3, eave, rise, roof_c, rnd, burn, cond.caved)
 		_extrude(cell.far_st, null, outline, base - 0.3, eave + rise * 0.5, COLOR_BUILDING)
+		_details.add(cell, outline, base - 0.3, eave, top, centre, cls, windows, cond, front)
+		if cls != "shed":
+			_details.gutters(cell, rect, eave, rise, float(_looks.data.gable_overhang_m), centre, cond.burned)
+			_details.chimney(cell, rect, eave, rise, centre, rnd)
+			if cond.caved:
+				_details.rafters(cell, rect, eave, rise, float(_looks.data.gable_overhang_m))
 	cell.b_count += 1
 
 
 # Near-detail walls with the BuildingWall shader's UV/UV2/COLOR contract (see shaders/building_wall.gdshader).
-func _walls(st: SurfaceTool, faces: PackedVector3Array, poly: PackedVector2Array, y0: float, y1: float, rnd: float) -> void:
+# burn = 1 marks a burned building for the shader's soot; windows = false writes UV2 = 0 (parapets).
+func _walls(st: SurfaceTool, faces: PackedVector3Array, poly: PackedVector2Array, y0: float, y1: float, rnd: float,
+		burn := 0.0, windows := true) -> void:
 	if _signed_area(poly) < 0.0:
 		poly.reverse()
-	var col := Color((y1 - y0) / 64.0, rnd, 0.0)
+	var col := Color((y1 - y0) / 64.0, rnd, burn)
 	var along := 0.0
 	for i in poly.size():
 		var a := poly[i]
@@ -575,7 +616,7 @@ func _walls(st: SurfaceTool, faces: PackedVector3Array, poly: PackedVector2Array
 			st.set_color(col)
 			st.set_normal(n)
 			st.set_uv(Vector2(along + t, y - y0))
-			st.set_uv2(Vector2(edge_len, t))
+			st.set_uv2(Vector2(edge_len, t) if windows else Vector2.ZERO)
 			var v := Vector3(p.x, y, p.y)
 			st.add_vertex(v)
 			faces.append(v)
@@ -593,8 +634,9 @@ func _flat_roof(st: SurfaceTool, faces: PackedVector3Array, poly: PackedVector2A
 
 # Two roof slopes along the rectangle's long axis (overhanging the walls), plus the two gable-end triangles
 # in the wall material (no windows there). Slope UV = (metres along the ridge, metres down from the ridge).
+# caved (D-118): the middle third of one slope has fallen in, leaving a hole.
 func _gable_roof(wall_st: SurfaceTool, roof_st: SurfaceTool, faces: PackedVector3Array, rect: Dictionary,
-		y0: float, eave: float, rise: float, color: Color, rnd: float) -> void:
+		y0: float, eave: float, rise: float, color: Color, rnd: float, burn := 0.0, caved := false) -> void:
 	var ov := float(_looks.data.gable_overhang_m)
 	var c: Vector2 = rect.centre
 	var u: Vector2 = rect.axis
@@ -605,24 +647,14 @@ func _gable_roof(wall_st: SurfaceTool, roof_st: SurfaceTool, faces: PackedVector
 	var ridge := eave + rise
 	var r0 := c - u * (hl + ov)
 	var r1 := c + u * (hl + ov)
+	var slope := Vector2(hw + ov, rise + drop).length()
 	for side: float in [-1.0, 1.0]:
-		var e0: Vector2 = r0 + v * (hw + ov) * side
-		var e1: Vector2 = r1 + v * (hw + ov) * side
-		var quad := [Vector3(r0.x, ridge, r0.y), Vector3(r1.x, ridge, r1.y), Vector3(e1.x, eave - drop, e1.y),
-			Vector3(r0.x, ridge, r0.y), Vector3(e1.x, eave - drop, e1.y), Vector3(e0.x, eave - drop, e0.y)]
-		var q0: Vector3 = quad[0]
-		var n: Vector3 = (quad[1] - q0).cross(quad[2] - q0).normalized()
-		if n.y < 0.0:
-			n = -n
-		var slope := Vector2(hw + ov, rise + drop).length()
-		for p: Vector3 in quad:
-			var flat := Vector2(p.x, p.z)
-			roof_st.set_color(color)
-			roof_st.set_normal(n)
-			roof_st.set_uv(Vector2((flat - r0).dot(u), slope if absf(p.y - ridge) > 0.001 else 0.0))
-			roof_st.add_vertex(p)
-			faces.append(p)
-	var col := Color(0.0, rnd, 0.0)
+		var spans: Array = [[r0, r1]]
+		if caved and side > 0.0:
+			spans = [[r0, r0.lerp(r1, 0.36)], [r0.lerp(r1, 0.68), r1]]
+		for sp: Array in spans:
+			_slope(roof_st, faces, sp[0], sp[1], v * (hw + ov) * side, ridge, eave - drop, r0, u, slope, color)
+	var col := Color(0.0, rnd, burn)
 	for end: float in [-1.0, 1.0]:
 		var m := c + u * hl * end
 		var a := m - v * hw
@@ -640,6 +672,26 @@ func _gable_roof(wall_st: SurfaceTool, roof_st: SurfaceTool, faces: PackedVector
 			var q := Vector3(p.x, y, p.y)
 			wall_st.add_vertex(q)
 			faces.append(q)
+
+
+# One roof slope quad from ridge points a..b out to the eave (`out` = offset from the ridge line to the eave).
+func _slope(roof_st: SurfaceTool, faces: PackedVector3Array, a: Vector2, b: Vector2, out: Vector2, ridge: float,
+		eave_y: float, r0: Vector2, u: Vector2, slope: float, color: Color) -> void:
+	var e0: Vector2 = a + out
+	var e1: Vector2 = b + out
+	var quad := [Vector3(a.x, ridge, a.y), Vector3(b.x, ridge, b.y), Vector3(e1.x, eave_y, e1.y),
+		Vector3(a.x, ridge, a.y), Vector3(e1.x, eave_y, e1.y), Vector3(e0.x, eave_y, e0.y)]
+	var q0: Vector3 = quad[0]
+	var n: Vector3 = (quad[1] - q0).cross(quad[2] - q0).normalized()
+	if n.y < 0.0:
+		n = -n
+	for p: Vector3 in quad:
+		var flat := Vector2(p.x, p.z)
+		roof_st.set_color(color)
+		roof_st.set_normal(n)
+		roof_st.set_uv(Vector2((flat - r0).dot(u), slope if absf(p.y - ridge) > 0.001 else 0.0))
+		roof_st.add_vertex(p)
+		faces.append(p)
 
 
 func _signed_area(poly: PackedVector2Array) -> float:
@@ -1430,7 +1482,7 @@ func _build_clutter() -> int:
 					count[0] += 1
 			if rng.randf() < float(pl.porch_loot_chance):
 				var door := _house_edge(h[0], q)
-				var pp := door + (q - door).normalized() * 0.9
+				var pp := door + (q - door).normalized() * 2.9  # D-118: past the steps / porch
 				if _clear_of_roads(pp, 0.5) and _plant("cardboard_box", rng, pp, rng.randf() * TAU, true):
 					_loot_spot(pp, 0.0, "porch", "Porch Package", Vector3(0.9, 0.8, 0.9))
 			var tp := q + to_house * (half + 0.7) + dir * rng.randf_range(-3.0, 3.0)
@@ -1607,6 +1659,9 @@ func _finish_cell(c: Vector2i, world: Node3D) -> void:
 		if cell.pitched_used:
 			cell.pitched_st.generate_tangents()
 			_add_mesh(buildings, "PitchedRoofs", cell.pitched_st, _mats.pitched_roof)
+		var vis := float(_looks.data.details.detail_visible_m)
+		_add_mesh(buildings, "Trim", cell.trim_st, _mats.trim, true, vis)
+		_add_mesh(buildings, "Boards", cell.boards_st, _mats.boards, false, vis)
 		_add_trimesh(buildings, cell.b_faces)
 	var surfaces: Array = cell.streets.keys()
 	surfaces.sort()
@@ -1705,7 +1760,7 @@ func _save_scene(root: Node, path: String) -> int:
 
 # --- helpers ----------------------------------------------------------------------------
 
-func _add_mesh(parent: Node, node_name: String, st: SurfaceTool, mat: Material, shadows := true) -> void:
+func _add_mesh(parent: Node, node_name: String, st: SurfaceTool, mat: Material, shadows := true, visible_m := 0.0) -> void:
 	var mesh := st.commit()
 	if mesh.get_surface_count() == 0:
 		return
@@ -1715,6 +1770,9 @@ func _add_mesh(parent: Node, node_name: String, st: SurfaceTool, mat: Material, 
 	mi.material_override = mat
 	if not shadows:
 		mi.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	if visible_m > 0.0:
+		mi.visibility_range_end = visible_m
+		mi.visibility_range_end_margin = 20.0
 	parent.add_child(mi)
 
 

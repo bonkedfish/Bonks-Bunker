@@ -544,3 +544,21 @@ Locked unless flagged. Each entry: decision — reason.
   aisles, ~35% full) and driveways (35% of houses, some sunk on flat tyres). The curb cars and the lone street cars
   are OFF - the user did not tick "keep curbside", so the loot "Car Trunk" spots moved onto the new cars. Box
   colliders. Needs a full build_cells re-bake + build_grass_masks.
+- **D-117** (2026-11-22) Realistic disc golf: new discs, baskets, tee boxes, throws and animations. User picks:
+  (1) models BUILT IN CODE (real rim profiles, chain baskets with link chains, real tee pads; data-driven, no
+  downloads) over downloaded CC0 / mix; (2) throw animations HAND-MADE IN CODE (reach-back, pull-through,
+  follow-through per style, on every survivor model + first-person hand and disc) over Mixamo clips / first-person
+  only; (3) ALL THROW STYLES - backhand, forehand (sidearm), putt, tomahawk (overhand) and roller - each flying
+  differently, over backhand+forehand+putt / backhand+putt; (4) REAL COURSES, WEATHERED (Centennial + Cottonmill
+  baskets, tee pads and signs matched to photos, then aged: rust, cracked pads, faded signs) over clean / generic.
+  No real brand names or logos on discs/baskets (made-up stamps). Perf: Centennial was already 724 draw calls -
+  new pieces must stay instanced / one mesh per material.
+- **D-118** (2026-11-22) Realistic houses (numbered after D-117 disc golf from another chat). User picks: REAL 3D
+  DETAIL (window frames + sills, front doors with steps, porches, garage doors, fascia + gutters, chimneys, parapets,
+  weathering in the wall shader) over shader-only / imported house models; ABANDONED, MIXED (most grimy, some broken
+  windows, some boarded up, a few caved-in roofs or burned) over lived-in / uniformly wrecked. Built by the importer
+  (tools/map_import/house_details.gd, numbers in data/art/building_looks.json "details"), so a re-import regenerates
+  it; condition is deterministic per footprint. Frames are placed with the same layout maths as the wall shader's
+  windows so they line up; boarded windows are now 3D boards (the shader's painted boards are off). Detail draws to
+  220 m (visibility range), the far shells are unchanged. Sheds get none. Driveway cars moved out to 5.4 m and porch
+  packages to 2.9 m so they clear porches and steps. Needs a full build_cells re-bake + build_grass_masks.

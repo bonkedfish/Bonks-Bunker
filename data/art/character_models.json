@@ -4244,6 +4244,10 @@
 		"Foot.L",
 		"Foot.R"
 	],
+	"throw_rigs": [
+		{"spine": ["Abdomen", "Torso"], "upper": "UpperArm.R", "lower": "LowerArm.R", "end": "LowerArm.R", "tip": [0, 0.3, 0]},
+		{"spine": ["spine_01", "spine_02", "spine_03"], "upper": "upperarm_r", "lower": "lowerarm_r", "end": "hand_r", "tip": [0, 0.09, 0.02]}
+	],
 	"player_models": [
 		"survivor_lis",
 		"survivor_sam",

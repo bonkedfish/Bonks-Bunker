@@ -1,19 +1,23 @@
 # DiscCourse — one disc golf course in the world (D-069), the landmark scene scenes/disc_course.tscn placed by
 # LandmarkLoader (data/map/landmarks.json "centennial_dgc"). Builds from data/discgolf/courses.json at load:
-# a Mach II-style basket per hole (pole, tray, chains, glowing yellow band (D-076), hole number; one shared vertex-coloured mesh),
-# an asphalt tee pad with a sign (hole, par, length) and the course box at hole 1 (E: start / join a round), and
+# a realistic basket per hole (D-117, BasketMesh: link-by-link chains up close, glowing band (D-076), hole number,
+# a mulch ring where the course has one), the tee pad and hole sign (TeeBox: hole map, par, length) in the course's
+# "look" from data/discgolf/course_looks.json, and the course box at hole 1 (E: start / join a round), and
 # John Pork's VendorCamp (tent, vendor, records board, Meepo dock) where the course has a "camp" (D-082).
 # Course data is in map coordinates; each piece drops onto the ground with a ray when its cell has loaded.
 # Group "disc_courses". Course box body: group "course_boxes" (display_name, course_id) on the interactable layer.
 # Every node it makes gets a fixed name (Anchor<n>, Camp) so paths match on every peer: the vendor and the dock
 # are used over the network (D-091; before, a client's E on John Pork reached nobody on the host).
 # Visual + colliders only; rounds live in DiscGolfDirector. Depends on: DiscGolfRules, VendorCamp, WorldStreamer
-# (group "world_streamer": cell_loaded).
+# (group "world_streamer": cell_loaded), BasketMesh, TeeBox, data/discgolf/course_looks.json.
 class_name DiscCourse
 extends Node3D
 
 const GROUND_MASK := 1
 const BOX_LAYER := 9  # world + interactables
+const LOOKS_PATH := "res://data/discgolf/course_looks.json"
+const BasketMesh := preload("res://scripts/discgolf/basket_mesh.gd")
+const TeeBox := preload("res://scripts/discgolf/tee_box.gd")
 
 @export var course_id := "centennial"  # replaced by the course whose "landmark" is this node's name
 
@@ -27,10 +31,11 @@ var _anchor_count := 0
 var _unsnapped: Array[Node3D] = []
 var _rids: Array[RID] = []
 
-static var _basket_mesh: ArrayMesh
-static var _pad_mesh: BoxMesh
-static var _sign_mesh: ArrayMesh
 static var _box_mesh: ArrayMesh
+static var _looks: Dictionary = {}
+
+var _look: Dictionary = {}  # this course's pieces (D-117)
+var _wear := 0.5
 
 
 func _ready() -> void:
@@ -43,6 +48,10 @@ func _ready() -> void:
 		push_error("DiscCourse: unknown course '%s'" % course_id)
 		return
 	_make_meshes()
+	if _looks.is_empty():
+		_looks = DataLoader.load_json(LOOKS_PATH)
+	_look = course.get("look", {})
+	_wear = float(_look.get("wear", 0.5))
 	var holes: Array = course.holes
 	for i in holes.size():
 		var h: Dictionary = holes[i]
@@ -122,10 +131,29 @@ func _anchor(local: Vector3) -> Node3D:
 
 func _add_basket(local: Vector3, number: String) -> Node3D:
 	var a := _anchor(local)
-	var mi := MeshInstance3D.new()
-	mi.mesh = _basket_mesh
-	mi.visibility_range_end = 220.0
-	a.add_child(mi)
+	var style: Dictionary = _looks.get("baskets", {}).get(str(_look.get("basket", "mach2")), {})
+	var metal: Dictionary = _looks.get("metal", {})
+	var near := float(style.get("near_m", 28.0))
+	var near_mi := MeshInstance3D.new()  # every chain link up close, simple strips from further away (D-117)
+	near_mi.mesh = BasketMesh.mesh(style, metal, _looks.get("link", {}), _wear, true)
+	near_mi.visibility_range_end = near
+	a.add_child(near_mi)
+	var far_mi := MeshInstance3D.new()
+	far_mi.mesh = BasketMesh.mesh(style, metal, _looks.get("link", {}), _wear, false)
+	far_mi.visibility_range_begin = near
+	far_mi.visibility_range_end = float(style.get("far_m", 220.0))
+	far_mi.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	a.add_child(far_mi)
+	var ring: Dictionary = _looks.get("rings", {}).get(str(_look.get("ring", "")), {})
+	if not ring.is_empty():  # the landscaped circle round the pole (Centennial)
+		var meshes := TeeBox.ring_meshes(ring)
+		for m: Mesh in meshes:
+			var mi := MeshInstance3D.new()
+			mi.mesh = m
+			mi.position.y = -0.04 if m is CylinderMesh else 0.0
+			mi.visibility_range_end = 90.0
+			mi.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+			a.add_child(mi)
 	var body := StaticBody3D.new()
 	var shape := CollisionShape3D.new()
 	var cyl := CylinderShape3D.new()
@@ -137,33 +165,52 @@ func _add_basket(local: Vector3, number: String) -> Node3D:
 	a.add_child(body)
 	_rids.append(body.get_rid())
 	var label := _label(number, 64, Color(0.1, 0.1, 0.1))
-	label.position = Vector3(0, 1.39, 0.0)
+	label.position = Vector3(0, float(style.get("band_bottom", 1.32)) + 0.06, 0.0)
 	label.billboard = BaseMaterial3D.BILLBOARD_ENABLED
 	label.visibility_range_end = 60.0
 	a.add_child(label)
 	return a
 
 
+# Tee pad down the fairway from the tee spot, and the hole sign behind it beside the pad, its face toward players
+# coming up to the tee (D-117).
 func _add_tee(local: Vector3, dir: Vector3, number: String, h: Dictionary) -> Node3D:
 	var a := _anchor(local)
 	var yaw := atan2(-dir.x, -dir.z)  # pad's -Z down the fairway
+	var tee_style: Dictionary = _looks.get("tees", {}).get(str(_look.get("tee", "asphalt")), {})
+	var size: Array = tee_style.get("size", [1.5, 3.6])
+	var length := float(size[1])
 	var pad := MeshInstance3D.new()
-	pad.mesh = _pad_mesh
+	pad.mesh = TeeBox.pad_mesh(tee_style)
 	pad.rotation.y = yaw
-	pad.position = Vector3(0, 0.02, 0) + dir * -0.6
+	pad.position = Vector3(0, float(tee_style.get("top_m", 0.05)) - 0.15, 0) - dir * (length * 0.5 - 1.2)
 	pad.visibility_range_end = 220.0
 	a.add_child(pad)
+	var sign_style: Dictionary = _looks.get("signs", {}).get(str(_look.get("sign", "post")), {})
+	var pts := PackedVector2Array([Vector2(float(h.tee[0]), float(h.tee[1]))])
+	for v: Variant in h.get("via", []):
+		pts.append(Vector2(float(v[0]), float(v[1])))
+	pts.append(Vector2(float(h.basket[0]), float(h.basket[1])))
+	var built: Array = TeeBox.sign_mesh(sign_style, pts, _wear, hash(str(course_id) + number))
 	var board := MeshInstance3D.new()
-	board.mesh = _sign_mesh
-	board.rotation.y = yaw
-	board.position = dir * -2.6 + dir.cross(Vector3.UP) * 1.4
+	board.mesh = built[0]
+	var right := dir.cross(Vector3.UP).normalized()
+	board.position = -dir * (length - 1.2 + 0.7) + right * (float(size[0]) * 0.5 + 0.7)
+	var rng := RandomNumberGenerator.new()
+	rng.seed = hash(str(course_id) + number)
+	board.rotation = Vector3(deg_to_rad(rng.randf_range(-3.0, 1.0) * _wear), yaw, deg_to_rad(rng.randf_range(-5.0, 5.0) * _wear))
 	board.visibility_range_end = 120.0
 	a.add_child(board)
-	var label := _label("HOLE %s\nPar %d  ·  %d ft" % [number, int(h.par), int(h.length_ft)], 36, Color(0.95, 0.92, 0.8))
-	label.billboard = BaseMaterial3D.BILLBOARD_ENABLED
-	label.position = board.position + Vector3(0, 1.25, 0) - dir * 0.03
-	label.visibility_range_end = 40.0
-	a.add_child(label)
+	var tc: Array = sign_style.get("text_color", [0.95, 0.92, 0.8])
+	var label := _label("HOLE %s\nPAR %d\n%d FT" % [number, int(h.par), int(h.length_ft)], 34,
+		Color(tc[0], tc[1], tc[2]).lerp(Color(0.7, 0.7, 0.68), _wear * 0.3))
+	label.pixel_size = 0.0022
+	label.outline_size = 4
+	label.width = float(built[2]) / label.pixel_size
+	label.autowrap_mode = TextServer.AUTOWRAP_OFF
+	label.position = built[1] + Vector3(0, 0, 0.003)
+	label.visibility_range_end = 30.0
+	board.add_child(label)
 	return a
 
 
@@ -220,55 +267,9 @@ func _label(text: String, font_size: int, col: Color) -> Label3D:
 # --- shared meshes (built once) --------------------------------------------------------------
 
 func _make_meshes() -> void:
-	if _basket_mesh != null:
+	if _box_mesh != null:
 		return
-	var metal := Color(0.62, 0.64, 0.66)
-	var dark := Color(0.38, 0.4, 0.42)
-	var yellow := Color(0.95, 0.78, 0.15)
 	var st := SurfaceTool.new()
-	st.begin(Mesh.PRIMITIVE_TRIANGLES)
-	_tube(st, Vector3.ZERO, 1.45, 0.03, 0.03, 8, dark)                     # pole
-	_tube(st, Vector3(0, 0.5, 0), 0.22, 0.33, 0.33, 20, metal)            # tray wall
-	_cap(st, Vector3(0, 0.5, 0), 0.33, 20, dark)                           # tray floor
-	_cap(st, Vector3(0, 1.4, 0), 0.12, 10, metal)                          # cap plate
-	_tube(st, Vector3(0, 1.33, 0), 0.07, 0.03, 0.12, 10, metal)           # cap cone
-	for i in 16:  # outer chains: band down to the tray, pinched toward the pole
-		var a := TAU * i / 16.0
-		var top := Vector3(cos(a) * 0.28, 1.25, sin(a) * 0.28)
-		var bottom := Vector3(cos(a + 0.35) * 0.1, 0.74, sin(a + 0.35) * 0.1)
-		_strip(st, top, bottom, 0.012, metal)
-	for i in 8:  # inner chains
-		var a := TAU * (i + 0.5) / 8.0
-		_strip(st, Vector3(cos(a) * 0.14, 1.25, sin(a) * 0.14), Vector3(cos(a) * 0.05, 0.76, sin(a) * 0.05), 0.012, metal)
-	st.generate_normals()
-	_basket_mesh = st.commit()
-	_basket_mesh.surface_set_material(0, _vc_material())
-	var band := SurfaceTool.new()  # top band: its own glowing surface so the basket stands out (D-076)
-	band.begin(Mesh.PRIMITIVE_TRIANGLES)
-	_tube(band, Vector3(0, 1.25, 0), 0.08, 0.3, 0.3, 20, yellow)
-	band.generate_normals()
-	band.commit(_basket_mesh)
-	var glow := StandardMaterial3D.new()
-	glow.albedo_color = yellow
-	glow.emission_enabled = true
-	glow.emission = yellow
-	glow.emission_energy_multiplier = 2.0
-	glow.cull_mode = BaseMaterial3D.CULL_DISABLED
-	_basket_mesh.surface_set_material(1, glow)
-	_pad_mesh = BoxMesh.new()
-	_pad_mesh.size = Vector3(1.5, 0.06, 3.6)
-	var asphalt := StandardMaterial3D.new()
-	asphalt.albedo_color = Color(0.17, 0.17, 0.18)
-	asphalt.roughness = 0.95
-	_pad_mesh.material = asphalt
-	st = SurfaceTool.new()
-	st.begin(Mesh.PRIMITIVE_TRIANGLES)
-	_cuboid(st, Vector3(0, 0.55, 0), Vector3(0.08, 1.1, 0.08), Color(0.3, 0.24, 0.18))
-	_cuboid(st, Vector3(0, 1.25, 0), Vector3(0.9, 0.55, 0.04), Color(0.12, 0.3, 0.16))
-	st.generate_normals()
-	_sign_mesh = st.commit()
-	_sign_mesh.surface_set_material(0, _vc_material())
-	st = SurfaceTool.new()
 	st.begin(Mesh.PRIMITIVE_TRIANGLES)
 	_cuboid(st, Vector3(0, 0.45, 0), Vector3(1.2, 0.9, 0.8), Color(0.16, 0.34, 0.2))
 	_cuboid(st, Vector3(0, 0.93, 0), Vector3(1.26, 0.06, 0.86), Color(0.3, 0.24, 0.18))
@@ -287,35 +288,6 @@ func _vc_material() -> StandardMaterial3D:
 	m.metallic = 0.2
 	m.cull_mode = BaseMaterial3D.CULL_DISABLED  # thin chains + hand-wound faces: lit from both sides
 	return m
-
-
-func _tube(st: SurfaceTool, base: Vector3, h: float, r0: float, r1: float, sides: int, col: Color) -> void:
-	st.set_color(col)
-	for i in sides:
-		var a0 := TAU * i / sides
-		var a1 := TAU * (i + 1) / sides
-		var p0 := base + Vector3(cos(a0) * r0, 0, sin(a0) * r0)
-		var p1 := base + Vector3(cos(a1) * r0, 0, sin(a1) * r0)
-		var q0 := base + Vector3(cos(a0) * r1, h, sin(a0) * r1)
-		var q1 := base + Vector3(cos(a1) * r1, h, sin(a1) * r1)
-		for v: Vector3 in [p0, q0, q1, p0, q1, p1]:
-			st.add_vertex(v)
-
-
-func _cap(st: SurfaceTool, centre: Vector3, r: float, sides: int, col: Color) -> void:
-	st.set_color(col)
-	for i in sides:
-		var a0 := TAU * i / sides
-		var a1 := TAU * (i + 1) / sides
-		for v: Vector3 in [centre, centre + Vector3(cos(a1) * r, 0, sin(a1) * r), centre + Vector3(cos(a0) * r, 0, sin(a0) * r)]:
-			st.add_vertex(v)
-
-
-func _strip(st: SurfaceTool, a: Vector3, b: Vector3, w: float, col: Color) -> void:
-	st.set_color(col)
-	var side := (b - a).cross(Vector3(a.x, 0, a.z).normalized() if Vector3(a.x, 0, a.z).length() > 0.01 else Vector3.RIGHT).normalized() * w
-	for v: Vector3 in [a - side, b - side, b + side, a - side, b + side, a + side]:
-		st.add_vertex(v)
 
 
 func _cuboid(st: SurfaceTool, c: Vector3, s: Vector3, col: Color) -> void:

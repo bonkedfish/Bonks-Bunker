@@ -8,7 +8,7 @@ const CONTROLS := [
 	["weapon_1", "Gun slot 1"], ["weapon_2", "Gun slot 2"], ["weapon_3", "Melee / thrown slot"], ["aim", "Aim / scope (zooming guns)"], ["interact", "Use / talk / loot / revive"], ["inventory", "Inventory"],
 	["quick_heal", "Quick heal (bandage)"], ["quick_eat", "Quick eat"], ["ride", "Hop on / off the Meepo (Shift = boost)"],
 	["disc_mode", "Next disc (disc golf) / next club (Drop Zone)"], ["disc_tilt_left", "Disc: tilt left (curve left)"],
-	["disc_tilt_right", "Disc: tilt right (curve right)"], ["disc_grip", "Disc: backhand / forehand"], ["scorecard", "Disc golf scorecard"],
+	["disc_tilt_right", "Disc: tilt right (curve right)"], ["disc_grip", "Disc: throw style (backhand, forehand, putt, tomahawk, roller)"], ["scorecard", "Disc golf scorecard"],
 	["bike_shift_up", "Bike: shift up (hold Shift = clutch)"], ["bike_shift_down", "Bike: shift down (hold Shift)"],
 	["bike_dismount", "Bike: get off (when slow)"], ["bike_camera", "Bike: chase / first-person camera"],
 	["quest_book", "Quest book"], ["world_map", "Map"], ["quicksave", "Quicksave (host)"], ["toggle_debug", "Performance stats (also in Settings)"],
