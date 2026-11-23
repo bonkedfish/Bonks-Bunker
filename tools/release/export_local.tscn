@@ -1,0 +1,6 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://tools/release/export_local.gd" id="1_el"]
+
+[node name="ExportLocal" type="Node"]
+script = ExtResource("1_el")
