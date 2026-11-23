@@ -882,3 +882,9 @@ a release, then gh release view) went to main as 02768d7.
   23. HUD: a dot per carried disc above the panel, the one in hand named with its plastic, flight numbers and
   "beaten in N%". Wear only shows during a round (it rides on the synced card). Base vs premium look: matte + scuffed
   vs glossy + gold foil (the per-player wear is not drawn on the disc). Not in a release yet.
+- RELEASE alpha3.3 (2026-11-22): houses (D-118), ground + roads (D-115), cars (D-116), disc golf realism (D-117),
+  disc catalog (D-119). Windows export 57 s, Mac 305 s, smoke test + models-in-build OK, both zips split in 2,
+  upload ~10.5 min (polled every 4 min - no draft left behind). Notes from data/release/notes/alpha3.3.md applied.
+  Windows copy in C:/Users/Fishb/BonksAlpha/alpha3.3 (exe 104 MB + pck 3.1 GB). New tool: tools/release/
+  export_local.tscn exports a Windows build of the current project to BonksAlpha/dev-<date> without publishing
+  (not run yet - the release did the job this time).
