@@ -37,7 +37,7 @@ const FLAG_JUMP := 1
 const FLAG_SPRINT := 2
 const FLAG_CROUCH := 4
 const FLAG_INTERACT := 64             # held: revive a downed teammate in range
-const ALL_FLAGS := 255                # movement + WeaponHolder FIRE/RELOAD/SLOT2/SLOT3 + INTERACT
+const ALL_FLAGS := 511                # movement + WeaponHolder FIRE/RELOAD/SLOT2/SLOT3/AIM + INTERACT
 const DOWNED_EYE_HEIGHT := 0.45
 const INTERACT_MASK := 9              # world + interactables (layer 4); containers are on both
 const LOOK_INTERVAL := 0.1
@@ -57,6 +57,8 @@ var net_position := Vector3.ZERO
 var net_yaw := 0.0
 var net_pitch := 0.0
 var net_crouched := false
+var _body_reloading := false  # D-123: last seen Weapons.net_reloading / net_swings (body animations)
+var _body_swings := 0
 var net_ack_seq := 0
 var net_color := 0  # D-092: index into PlayerColors, set by the host when this body spawns
 var net_name := "":  # D-081, "" until named
@@ -86,6 +88,9 @@ var _hit_history := PositionHistory.new()
 var _spawn_point := Vector3.ZERO
 var _base_fov := 75.0
 var _scoped := false
+var _recoil := Vector2.ZERO  # local: view kick (deg pitch up, yaw right) still to recover (D-122)
+var _recoil_rate := 8.0
+var _recoil_hold := 0.0      # the view starts coming back this long after the last shot
 var _safe_pos := Vector3.ZERO   # host: where this player last stood on solid ground (fall rescue, D-091)
 var _safe_timer := 0.0
 var _fall_time := 0.0
@@ -314,8 +319,16 @@ func _physics_process(delta: float) -> void:
 	if is_local:
 		_update_look(delta)
 		_update_aim(delta)
+		weapons.local_feel_step(delta)
 	else:
-		body.set_weapon_mesh("" if bike.mounted else weapons.net_mesh)
+		body.set_weapon("" if bike.mounted else weapons.net_mesh, weapons.net_weapon)
+		if weapons.net_reloading != _body_reloading:  # D-123: other players' reload / swing animations
+			_body_reloading = weapons.net_reloading
+			if _body_reloading and WeaponDB.has_weapon(weapons.net_weapon):
+				body.gun_action("reload", float(WeaponDB.get_weapon(weapons.net_weapon).get("reload_time", 2.0)))
+		if weapons.net_swings != _body_swings:
+			_body_swings = weapons.net_swings
+			body.gun_action("swing")
 		body.riding = meepo.net_riding
 		body.update(delta, false, life.net_state != LifeState.ALIVE, health.current, weapons.net_armed, crouched)
 	_update_life_visuals()
@@ -343,7 +356,7 @@ func eye_position() -> Vector3:
 
 
 func muzzle_position() -> Vector3:
-	return viewmodel.muzzle.global_position
+	return viewmodel.muzzle_point()
 
 
 func _current_height() -> float:
@@ -640,6 +653,8 @@ func _read_local_flags() -> int:
 			flags |= WeaponHolder.FLAG_FIRE
 		if Input.is_action_pressed("reload"):
 			flags |= WeaponHolder.FLAG_RELOAD
+		if Input.is_action_pressed("aim") and str(weapons.weapon_in_slot(selected_slot).get("kind", "")) == "gun":
+			flags |= WeaponHolder.FLAG_AIM  # aiming down sights tightens the spread on the host (D-122)
 		if Input.is_action_pressed("interact"):
 			flags |= FLAG_INTERACT
 	flags |= WeaponHolder.slot_flags(selected_slot)
@@ -656,15 +671,26 @@ func _select_slot(slot: int) -> void:
 # The first-person view shows the weapon in the selected slot (D-087).
 func show_held_weapon() -> void:
 	var w: Dictionary = weapons.weapon_in_slot(selected_slot)
-	viewmodel.show_weapon(str(w.get("mesh", "")), str(w.get("kind", "")) == "gun")
+	viewmodel.show_weapon(str(w.get("mesh", "")), str(w.get("kind", "")) == "gun", str(w.get("id", "")))
 
 
-# Right mouse with a zooming gun (iron sights / scopes, D-087): narrower view, slower mouse.
+# Right mouse with a gun (aim down sights, D-122; scopes D-087): narrower view, slower mouse, the gun moves to the
+# middle of the view. Also brings the view back from recoil kicks.
 func _update_aim(delta: float) -> void:
 	var w: Dictionary = weapons.weapon_in_slot(selected_slot)
-	var zoom := float(w.get("zoom", 1.0))
+	var zoom := GunFeelRules.ads_zoom(w) if str(w.get("kind", "")) == "gun" else 1.0
 	var aiming := zoom > 1.0 and not bike.mounted and Input.mouse_mode == Input.MOUSE_MODE_CAPTURED \
 		and Input.is_action_pressed("aim") and not health.is_dead()
+	viewmodel.set_aim(aiming)
+	_recoil_hold -= delta
+	if _recoil != Vector2.ZERO and _recoil_hold <= 0.0:
+		var left := GunFeelRules.recover(_recoil, _recoil_rate, delta)
+		var back := _recoil - left
+		_recoil = left
+		pitch = clampf(pitch - deg_to_rad(back.x), -PITCH_LIMIT, PITCH_LIMIT)
+		yaw = wrapf(yaw + deg_to_rad(back.y), -PI, PI)
+		rotation.y = yaw
+		head.rotation.x = pitch
 	var want := _base_fov / zoom if aiming else _base_fov
 	if absf(camera.fov - want) > 0.01:
 		camera.fov = lerpf(camera.fov, want, minf(delta * 14.0, 1.0))
@@ -675,6 +701,18 @@ func _update_aim(delta: float) -> void:
 			viewmodel.visible = false
 		else:
 			viewmodel.visible = life.net_state == LifeState.ALIVE and not bike.mounted and not disc.active and sport.mode == ""
+
+
+# Local: one shot's view kick (D-122) - degrees up and right; _update_aim brings it back at rate deg/s once no shot
+# has come for burst_reset_s (so a held burst climbs, a pause settles it).
+func add_recoil(kick: Vector2, rate: float) -> void:
+	pitch = clampf(pitch + deg_to_rad(kick.x), -PITCH_LIMIT, PITCH_LIMIT)
+	yaw = wrapf(yaw - deg_to_rad(kick.y), -PI, PI)
+	rotation.y = yaw
+	head.rotation.x = pitch
+	_recoil += kick
+	_recoil_rate = rate
+	_recoil_hold = float(GunFeelRules.tuning().burst_reset_s)
 
 
 # Armor (D-087): resistance from the equipped pieces; blocking damage wears them (host).

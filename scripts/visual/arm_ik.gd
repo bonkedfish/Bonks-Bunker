@@ -5,6 +5,7 @@
 # data/art/character_models.json (the first whose bones all exist): {spine [bones], upper, lower, end (the bone the
 # hand tip hangs off), tip [x, y, z] in that bone's space}. Work in skeleton space; `node_to_skel` maps the
 # character node's frame (x right, y up, -z forward) into it. Call right after the AnimationPlayer has advanced.
+# find(..., "left") reads the rig's "left" entry {upper, lower, end, tip} instead (D-123: the support hand on a gun).
 # Depends on: Skeleton3D only.
 class_name ArmIK
 extends RefCounted
@@ -17,7 +18,7 @@ var tip := Vector3.ZERO
 var valid := false
 
 
-static func find(skel: Skeleton3D, rigs: Array) -> ArmIK:
+static func find(skel: Skeleton3D, rigs: Array, side := "") -> ArmIK:
 	var ik := ArmIK.new()
 	if skel == null:
 		return ik
@@ -28,15 +29,16 @@ static func find(skel: Skeleton3D, rigs: Array) -> ArmIK:
 			var i := skel.find_bone(str(b))
 			ok = ok and i >= 0
 			ids.append(i)
-		var u := skel.find_bone(str(r.get("upper", "")))
-		var l := skel.find_bone(str(r.get("lower", "")))
-		var e := skel.find_bone(str(r.get("end", "")))
+		var a: Dictionary = r.get(side, {}) if side != "" else r
+		var u := skel.find_bone(str(a.get("upper", "")))
+		var l := skel.find_bone(str(a.get("lower", "")))
+		var e := skel.find_bone(str(a.get("end", "")))
 		if ok and u >= 0 and l >= 0 and e >= 0:
 			ik.spine = ids
 			ik.upper = u
 			ik.lower = l
 			ik.end = e
-			var t: Array = r.get("tip", [0, 0, 0])
+			var t: Array = a.get("tip", [0, 0, 0])
 			ik.tip = Vector3(t[0], t[1], t[2])
 			ik.valid = true
 			return ik

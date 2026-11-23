@@ -1,4 +1,4 @@
-# HUD — crosshair, health + food/water (D-046) + active effects with seconds left (D-052), weapon/ammo, hit marker, and a status line (downed / bleed-out /
+# HUD — reload progress bar under the ammo line (D-122); crosshair, health + food/water (D-046) + active effects with seconds left (D-052), weapon/ammo, hit marker, and a status line (downed / bleed-out /
 # revive / respawning, "Hold E to revive" near a downed teammate, or "Using Bandage 40%") for the local player.
 # Polls the local player's replicated state each frame but only rebuilds text when a value changes.
 # Also shows short notes from the host ("Game saved", quest news) via show_toast() (queued, one at a time), the
@@ -36,6 +36,8 @@ var _boss: Label
 var _quests: Node
 var _book: Node
 var status: Control
+var _reload_bg: ColorRect    # reload progress under the ammo line (D-122)
+var _reload_fill: ColorRect
 
 
 func _ready() -> void:
@@ -51,6 +53,15 @@ func _ready() -> void:
 	status.offset_bottom = -14.0
 	add_child(status)
 	add_child(Minimap.new())
+	_reload_bg = ColorRect.new()
+	_reload_bg.color = Color(0, 0, 0, 0.55)
+	_reload_bg.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_reload_bg.visible = false
+	ammo_label.add_child(_reload_bg)
+	_reload_fill = ColorRect.new()
+	_reload_fill.color = Color(1.0, 0.82, 0.35)
+	_reload_fill.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_reload_bg.add_child(_reload_fill)
 	_toast = Label.new()
 	_toast.set_anchors_and_offsets_preset(Control.PRESET_CENTER_TOP)
 	_toast.offset_top = 24.0
@@ -166,6 +177,12 @@ func _process(delta: float) -> void:
 			if w.net_reloading:
 				text += "   RELOADING"
 		ammo_label.text = text
+	var rp: float = w.reload_progress() if w.net_slot == slot else -1.0
+	_reload_bg.visible = rp >= 0.0
+	if rp >= 0.0:
+		_reload_bg.position = Vector2(0.0, ammo_label.size.y + 2.0)
+		_reload_bg.size = Vector2(ammo_label.size.x, 5.0)
+		_reload_fill.size = Vector2(ammo_label.size.x * rp, 5.0)
 
 
 # Status line (the "Death" label): downed / bleed-out / being revived, dead, or reviving a teammate.

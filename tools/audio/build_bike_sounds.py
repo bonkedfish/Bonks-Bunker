@@ -4,6 +4,7 @@
 # ringing through a few exhaust resonances, plus intake noise; every loop is a whole number of engine cycles so it
 # loops without a click. Writes assets/audio/bike_engine/<engine>_<band>.ogg, the rpm each loop was made at to
 # data/audio/bike_engines.json (BikeSound pitches each loop by rpm / that rpm), and assets/audio/bike_<event>/*.ogg.
+# D-124: plus a seamless tyre-screech loop, assets/audio/bike_skid/skid_loop.ogg (--skid-only writes just that).
 # Needs Python 3 + numpy + ffmpeg (libvorbis). Usage: python3 build_bike_sounds.py <project root>
 import json, os, subprocess, sys
 import numpy as np
@@ -127,7 +128,29 @@ def events():
     return out
 
 
+def skid_loop():
+    # Tyre screech: band-passed noise around a wobbling squeal tone; crossfaded end-to-start so it loops cleanly.
+    n = int(1.5 * SR)
+    fade = int(0.15 * SR)
+    t = np.arange(n + fade) / SR
+    f = 1650 + 120 * np.sin(2 * np.pi * 3.1 * t) + 60 * np.sin(2 * np.pi * 7.3 * t)
+    squeal = np.sin(2 * np.pi * np.cumsum(f) / SR) * (0.6 + 0.4 * np.sin(2 * np.pi * 5.0 * t) ** 2)
+    noise = rng.normal(0, 1, n + fade)
+    spec = np.fft.rfft(noise)
+    freqs = np.fft.rfftfreq(len(noise), 1 / SR)
+    spec *= np.exp(-((freqs - 2400) / 1200) ** 2)
+    hiss = np.fft.irfft(spec, len(noise))
+    x = 0.55 * squeal + 0.45 * hiss / np.abs(hiss).max()
+    ramp = np.linspace(0, 1, fade)
+    x[:fade] = x[:fade] * ramp + x[n:n + fade] * (1 - ramp)
+    return norm(x[:n], -4)
+
+
 def main():
+    if "--skid-only" in sys.argv:
+        encode(skid_loop(), os.path.join(ROOT, "assets/audio/bike_skid", "skid_loop.ogg"))
+        print("skid loop written")
+        return
     sound_rpm = {}
     for name, e in ENGINES.items():
         sound_rpm[name] = {}
@@ -142,6 +165,7 @@ def main():
     with open(os.path.join(ROOT, "data/audio/bike_engines.json"), "w") as f:
         json.dump(meta, f, indent="\t")
         f.write("\n")
+    encode(skid_loop(), os.path.join(ROOT, "assets/audio/bike_skid", "skid_loop.ogg"))
     for ev, takes in events().items():
         for i, x in enumerate(takes):
             encode(x, os.path.join(ROOT, "assets/audio", ev, "%s_%d.ogg" % (ev, i + 1)))

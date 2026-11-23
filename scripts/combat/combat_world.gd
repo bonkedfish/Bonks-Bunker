@@ -9,7 +9,10 @@
 # animates the same path (out deterministic, back toward the thrower's body).
 # Armor on enemies (D-100, Riot Cop): a target with armor_mult(hit_frac, melee) keeps that share of each pellet or
 # swing, judged by how high up the body the shot landed; a blocked body shot pings (armor_ping) where it hit.
+# Gun feel (D-122): host_fire takes the shot's real cone (spread + bloom, tighter aiming, from WeaponHolder); every
+# drawn shot also gets a pooled muzzle flash and casing from GunFx.
 # Depends on: CombatRules, NetClock (group "net_clock"), TracerPool (group "tracers"), HUD (group "hud"),
+#             GunFx (group "gun_fx"),
 #             ZombieDirector (group "zombie_director", for attack noise), Sfx (shot / melee-hit sounds, D-077).
 extends Node3D
 
@@ -19,6 +22,7 @@ const VISUAL_MASK := 3  # world + bodies, for local tracer endpoints only
 var _tuning: Dictionary
 var _clock: NetClock
 var _tracers: Node
+var _gun_fx: Node
 var _hud: Node
 var _director: Node
 var _rng := RandomNumberGenerator.new()
@@ -32,6 +36,7 @@ func _ready() -> void:
 	_tuning = CombatRules.load_tuning()
 	_clock = get_tree().get_first_node_in_group("net_clock")
 	_tracers = get_tree().get_first_node_in_group("tracers")
+	_gun_fx = get_tree().get_first_node_in_group("gun_fx")
 	_hud = get_tree().get_first_node_in_group("hud")
 	_director = get_tree().get_first_node_in_group("zombie_director")
 	_rng.randomize()
@@ -40,12 +45,13 @@ func _ready() -> void:
 # --- host ----------------------------------------------------------------------
 
 # hits_teammates = false: the shot passes through the shooter's own team (Bonk). Returns true on a kill/down.
+# spread_deg >= 0 replaces the weapon's spread_deg (a player's bloom / aim, D-122).
 func host_fire(shooter: Node, weapon: Dictionary, origin: Vector3, dir: Vector3, view_tick: float,
-		hits_teammates: bool = true) -> bool:
+		hits_teammates: bool = true, spread_deg := -1.0) -> bool:
 	var tick := _clock.rewind_tick(view_tick, _tuning.max_rewind_seconds)
 	_make_noise(origin, weapon)
 	var pellets := maxi(int(weapon.get("pellets", 1.0)), 1)
-	var spread := deg_to_rad(float(weapon.get("spread_deg", 0.0)))
+	var spread := deg_to_rad(spread_deg if spread_deg >= 0.0 else float(weapon.get("spread_deg", 0.0)))
 	var targets := get_tree().get_nodes_in_group("hittable")
 	var dmg_by := {}  # target -> summed damage
 	var ends := PackedVector3Array()
@@ -157,10 +163,11 @@ func _world_blocked(from: Vector3, to: Vector3) -> bool:
 # --- feedback --------------------------------------------------------------------
 
 # Owning client draws its own tracer(s) instantly from the gun muzzle (not authoritative, visual only).
-func local_tracer(player: Node, weapon: Dictionary) -> void:
+func local_tracer(player: Node, weapon: Dictionary, spread_deg := -1.0) -> void:
 	var origin: Vector3 = player.eye_position()
 	var aim: Vector3 = -player.camera.global_basis.z
-	var spread := deg_to_rad(float(weapon.get("spread_deg", 0.0)))
+	var spread := deg_to_rad(spread_deg if spread_deg >= 0.0 else float(weapon.get("spread_deg", 0.0)))
+	_gun_shot_fx(str(weapon.get("id", "")), player.muzzle_position(), player.global_basis.x, player.global_position.y)
 	for p in maxi(int(weapon.get("pellets", 1.0)), 1):
 		var dir := spread_dir(aim, spread, _rng) if spread > 0.0 else aim
 		var end := origin + dir * float(weapon.range)
@@ -179,9 +186,12 @@ func _fx_shot(from: Vector3, to: Vector3, shooter_peer: int, sound: String) -> v
 		var me := get_tree().get_first_node_in_group("local_player")
 		if me:
 			from = me.muzzle_position()
+			_gun_shot_fx(sound.trim_suffix("_fire"), from, me.global_basis.x, me.global_position.y)
 		Sfx.play_local(sound)
 	else:
 		Sfx.play_at(sound, from)
+		_gun_shot_fx(sound.trim_suffix("_fire"), from, (to - from).cross(Vector3.UP), from.y - 1.45)
+		_body_kick(shooter_peer)
 	_tracers.show_tracer(from, to)
 
 
@@ -193,11 +203,32 @@ func _fx_pellets(from: Vector3, ends: PackedVector3Array, shooter_peer: int, sou
 		var me := get_tree().get_first_node_in_group("local_player")
 		if me:
 			from = me.muzzle_position()
+			_gun_shot_fx(sound.trim_suffix("_fire"), from, me.global_basis.x, me.global_position.y)
 		Sfx.play_local(sound)
 	else:
 		Sfx.play_at(sound, from)
+		_body_kick(shooter_peer)
+		if not ends.is_empty():
+			_gun_shot_fx(sound.trim_suffix("_fire"), from, (ends[0] - from).cross(Vector3.UP), from.y - 1.45)
 	for e in ends:
 		_tracers.show_tracer(from, e)
+
+
+# Another player's shot (D-123): their body's gun kicks.
+func _body_kick(peer: int) -> void:
+	for p: Node in get_tree().get_nodes_in_group("players"):
+		if "is_local" in p and p.peer_id == peer and not p.is_local:  # Bonk is in "players" too
+			p.body.gun_kick()
+			return
+
+
+# Muzzle flash + casing for a drawn player gun shot (D-122); other shooters (raiders, Bonk) just get the flash.
+func _gun_shot_fx(weapon_id: String, muzzle: Vector3, right: Vector3, floor_y: float) -> void:
+	if _gun_fx == null:
+		_gun_fx = get_tree().get_first_node_in_group("gun_fx")
+		if _gun_fx == null:
+			return
+	_gun_fx.shot(weapon_id, muzzle, right, floor_y)
 
 
 @rpc("authority", "call_local", "unreliable")

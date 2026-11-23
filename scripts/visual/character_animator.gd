@@ -27,7 +27,15 @@
 # Scare looks (D-114): clip_remap swaps one clip key for another on this instance (a stumbler's walk is "stumble",
 # a crawler crawls for everything), hide_bones() shrinks bones to nothing (a crawler's legs), `advanced` says the
 # pose was re-sampled this frame (so Twitch can jerk bones on top of it), skeleton() / clip_length() for callers.
-# Never affects gameplay. Depends on: DataLoader, MixamoRetarget, shaders/outfit.gdshader, ThrowPose, ArmIK, DiscMesh.
+# Weapon animations (D-123): set_weapon(mesh, weapon_id) holds that weapon with its GunPose animations - the kit
+# mesh is drawn as a copy placed from the model's own gun-holding clip plus the playing action (draw, holster,
+# reload, swing - gun_action) and kick (gun_kick) clips, then ArmIK puts the right hand on the grip and the left hand
+# on the support point (or lets it hang free where the clip says). Switching weapons holsters the old one first.
+# Works the same in first person and on other players' bodies, on both rigs ("left" entries in throw_rigs).
+# Riding (D-124): set_ride_pose() puts the hands on the bar grips and the feet on the pegs (ArmIK, "leg_l" / "leg_r"
+# rig entries) with the torso tucked forward, on top of the "ride" clip, while on_bike.
+# Never affects gameplay. Depends on: DataLoader, MixamoRetarget, shaders/outfit.gdshader, ThrowPose, ArmIK, DiscMesh,
+# GunPose.
 class_name CharacterAnimator
 extends Node3D
 
@@ -77,6 +85,47 @@ var _far_m := 35.0
 var _far_period := 0.1
 var clip_remap: Dictionary = {}  # clip key -> clip key played instead (D-114)
 var advanced := false  # the animation was advanced during the last update()
+# Weapon animations (D-123).
+var _gun_id := ""
+var _gun_def: Dictionary = {}
+var _gun_mesh := ""
+var _held: MeshInstance3D        # the drawn copy of the weapon in hand
+var _held_src: MeshInstance3D    # the kit prop it copies (hidden; its clip pose is the base hold)
+var _held_bone := -1
+var _held_att: BoneAttachment3D  # what the kit prop hangs off (refreshed right after the clip is sampled)
+var _held_left := false          # the model's clip holds it in the left hand (the kit survivors do)
+var _fp_base := Vector3.ZERO
+var _axes_ready := false
+var _barrel_ax := Vector3.FORWARD  # weapon-local unit axes (from the clip's hold)
+var _up_ax := Vector3.UP
+var _side_ax := Vector3.RIGHT
+var _grip_local := Vector3.ZERO
+var _ik_l: ArmIK
+var _act := ""                   # draw / holster / reload / swing, "" = none
+var _act_clip: GunPose.Clip
+var _act_t := 1.0
+var _act_s := 1.0
+var _next_mesh := ""             # switching: shown when the holster ends
+var _next_id := ""
+var _switching := false
+var _kick_clip: GunPose.Clip
+var _kick_t := 1.0
+var _kick_s := 0.2
+var _gs := GunPose.Sample.new()
+var _ks := GunPose.Sample.new()
+var _ride_on := false             # D-124 riding pose targets (this node's frame)
+var _ride_grip_l := Vector3.ZERO
+var _ride_grip_r := Vector3.ZERO
+var _ride_peg_l := Vector3.ZERO
+var _ride_peg_r := Vector3.ZERO
+var _ride_tuck := 0.0
+var _ik_leg_l: ArmIK
+var _ik_leg_r: ArmIK
+var ride_error := 0.0  # m: the farthest hand / foot from its grip / peg last pose (tests)
+var grip_error_r := 0.0  # m: right hand tip to the grip last pose (tests)
+var gun_debug_on := false  # tests: fill gun_debug each pose
+var gun_debug := ""
+var grip_error_l := 0.0  # m: left hand tip to the support point while it holds the gun (0 when free)
 
 
 # Loads model `id` (replacing any previous one). Returns false if the ID or file is missing.
@@ -105,6 +154,14 @@ func set_model(id: String, first_person := false, extra := {}) -> bool:
 		c.queue_free()
 	_disc_node = null
 	_ik = null
+	_ik_l = null
+	_ik_leg_l = null
+	_ik_leg_r = null
+	_held = null
+	_held_src = null
+	_gun_mesh = ""
+	_gun_id = ""
+	_act = ""
 	_throw_style = ""
 	_first_person = first_person
 	var scene := load(str(_def.path) if _def.has("path") else "%s/%s" % [_data.kit_dir, _def.gltf]) as PackedScene
@@ -135,6 +192,7 @@ func set_model(id: String, first_person := false, extra := {}) -> bool:
 	if first_person:
 		var off: Array = _data.get("fp_offset", [0.0, -1.6, 0.1])
 		model.position = Vector3(off[0], off[1], off[2])
+		_fp_base = model.position
 		if _skeleton:
 			for bone_name: String in _data.get("fp_hide_bones", []):
 				var i := _skeleton.find_bone(bone_name)
@@ -305,6 +363,7 @@ func set_weapon_slot(slot: int) -> void:
 		slot = -1  # throwing a disc: no gun in the hand
 	var names: Array = _def.get("weapons_by_slot", [])
 	var want := str(names[slot]) if slot >= 0 and slot < names.size() else ""
+	_drop_gun()
 	for mi in _props:
 		mi.visible = str(mi.name) == want
 
@@ -314,8 +373,122 @@ func set_weapon_slot(slot: int) -> void:
 func set_weapon_mesh(want: String) -> void:
 	if on_bike or _throw_style != "":
 		want = ""
+	_drop_gun()
 	for mi in _props:
 		mi.visible = str(mi.name) == want
+
+
+# Weapon `id` (its kit mesh `mesh`) in hand with its animations (D-123); weapons without any (fists, thrown, NPC
+# guns) are just shown as set_weapon_mesh does. A change holsters the old weapon, then draws the new one.
+# Cheap to call every frame with the same arguments.
+func set_weapon(mesh: String, id: String) -> void:
+	if on_bike or _throw_style != "":
+		mesh = ""
+		id = ""
+	if _switching:
+		_next_mesh = mesh
+		_next_id = id
+		return
+	if mesh == _gun_mesh and id == _gun_id:
+		return
+	if _held and _held.visible and _gun_def.has("holster") and mesh != _gun_mesh:
+		_next_mesh = mesh
+		_next_id = id
+		_switching = true
+		gun_action("holster")
+		return
+	_show_gun(mesh, id)
+
+
+# Plays the held weapon's `kind` clip (draw / holster / reload / swing) over `seconds` (-1: its data seconds).
+func gun_action(kind: String, seconds := -1.0) -> void:
+	if not _gun_def.has(kind):
+		return
+	_act = kind
+	_act_clip = GunPose.clip(str(_gun_def[kind]))
+	_act_s = maxf(seconds if seconds > 0.0 else float(_gun_def.get(kind + "_s", 0.3)), 0.05)
+	_act_t = 0.0
+
+
+func has_gun_action(kind: String) -> bool:
+	return _gun_def.has(kind) and _held != null and _held.visible
+
+
+# One shot's kick of the held gun (D-123).
+func gun_kick() -> void:
+	if not _gun_def.has("kick"):
+		return
+	_kick_clip = GunPose.clip(str(_gun_def.kick))
+	_kick_s = maxf(float(_gun_def.get("kick_s", 0.2)), 0.05)
+	_kick_t = 0.0
+
+
+func gun_action_playing() -> String:
+	return _act
+
+
+func _drop_gun() -> void:
+	_gun_mesh = ""
+	_gun_id = ""
+	_gun_def = {}
+	_act = ""
+	_switching = false
+	if _held:
+		_held.visible = false
+
+
+func _show_gun(mesh: String, id: String) -> void:
+	_drop_gun()
+	_gun_mesh = mesh
+	_gun_id = id
+	_held_src = null
+	for mi in _props:
+		mi.visible = false
+		if str(mi.name) == mesh:
+			_held_src = mi
+	if mesh == "" or _held_src == null:
+		return
+	var def := GunPose.weapon(id)
+	if def.is_empty() or not _ready_ik() or not _ready_left():
+		_held_src.visible = true  # no animations: the clip's own hold
+		return
+	_gun_def = def
+	if _held == null:
+		_held = MeshInstance3D.new()
+		_held.name = "HeldWeapon"
+		if _first_person:
+			_held.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+		add_child(_held)
+	_held.mesh = _held_src.mesh
+	_held.material_override = _held_src.material_override
+	for i in _held_src.get_surface_override_material_count():
+		_held.set_surface_override_material(i, _held_src.get_surface_override_material(i))
+	_held.visible = true
+	_held_bone = -1
+	_held_att = null
+	var n: Node = _held_src.get_parent()
+	while n != null and n != _skeleton:
+		if n is BoneAttachment3D:
+			_held_att = n
+			_held_bone = _skeleton.find_bone(_held_att.bone_name)
+			break
+		n = n.get_parent()
+	_held_left = false  # which arm the clip holds it with: is the attachment bone under the left forearm?
+	var b := _held_bone
+	while b >= 0:
+		if b == _ik_l.lower:
+			_held_left = true
+		b = _skeleton.get_bone_parent(b)
+	_axes_ready = false
+	gun_action("draw")
+
+
+func _ready_left() -> bool:
+	if _skeleton == null:
+		return false
+	if _ik_l == null:
+		_ik_l = ArmIK.find(_skeleton, _data.get("throw_rigs", []), "left")
+	return _ik_l.valid
 
 
 # Plays clip `key` (e.g. "attack") for `seconds`, over whatever update() would pick.
@@ -359,6 +532,23 @@ func stop_throw() -> void:
 		_model.visible = true
 	if _disc_node:
 		_disc_node.visible = false
+
+
+# Front end of the weapon mesh in hand along `forward` (global), on the barrel's centre line (D-122: the muzzle
+# flash and tracers start here). INF when no weapon is shown.
+func weapon_tip(forward: Vector3) -> Vector3:
+	for k in _props.size() + 1:
+		var mi: MeshInstance3D = _held if k == _props.size() else _props[k]
+		if mi == null or not mi.visible:
+			continue
+		var box := mi.get_aabb()
+		var xf := mi.global_transform
+		var centre := xf * box.get_center()
+		var far := -INF
+		for i in 8:
+			far = maxf(far, (xf * box.get_endpoint(i)).dot(forward))
+		return centre + forward * (far - centre.dot(forward))
+	return Vector3.INF
 
 
 func throwing() -> bool:
@@ -496,6 +686,217 @@ func update(delta: float, attacking: bool, dead: bool, health: float, armed := f
 		for i in _hidden_bones:
 			_skeleton.set_bone_pose_scale(i, Vector3.ONE * 0.001)
 	_apply_throw(delta)
+	_apply_gun(delta)
+	_apply_ride()
+
+
+func _rest_chain(ik: ArmIK) -> void:
+	if ik.valid:
+		_skeleton.reset_bone_pose(ik.upper)
+		_skeleton.reset_bone_pose(ik.lower)
+		_skeleton.reset_bone_pose(ik.end)
+
+
+# D-124: hands on the bar grips, feet on the pegs, torso tucked by `tuck` (rad), every frame while riding.
+func set_ride_pose(grip_l: Vector3, grip_r: Vector3, peg_l: Vector3, peg_r: Vector3, tuck: float) -> void:
+	_ride_on = true
+	_ride_grip_l = grip_l
+	_ride_grip_r = grip_r
+	_ride_peg_l = peg_l
+	_ride_peg_r = peg_r
+	_ride_tuck = tuck
+
+
+func clear_ride_pose() -> void:
+	_ride_on = false
+	if _model and not _first_person:
+		_model.position = Vector3.ZERO  # back from sliding up the seat
+
+
+func _apply_ride() -> void:
+	if not _ride_on or not on_bike or not advanced or _skeleton == null or not _ready_ik() or not _ready_left():
+		return
+	if _ik_leg_l == null:
+		_ik_leg_l = ArmIK.find(_skeleton, _data.get("throw_rigs", []), "leg_l")
+		_ik_leg_r = ArmIK.find(_skeleton, _data.get("throw_rigs", []), "leg_r")
+	# Start from the rest pose for the bones the pose drives: a ride clip that doesn't key them would otherwise keep
+	# last frame's bend / IK and pile it up every frame.
+	_rest_chain(_ik)
+	_rest_chain(_ik_l)
+	_rest_chain(_ik_leg_l)
+	_rest_chain(_ik_leg_r)
+	for bone in _ik.spine:
+		_skeleton.reset_bone_pose(bone)
+	if _model and not _first_person:
+		_model.position = Vector3.ZERO
+	var node_to_skel := _skeleton.global_transform.affine_inverse() * global_transform
+	var skel_to_node := node_to_skel.affine_inverse()
+	var b := node_to_skel.basis
+	_ik.bend(_skeleton, b, 0.0, _ride_tuck)
+	var reach_r := _ik.arm_length(_skeleton) * 0.97
+	var reach_l := _ik_l.arm_length(_skeleton) * 0.97
+	for k in 8:  # bars out of reach (a long tank, a short rider): lean further forward, a bit at a time
+		if _ik.shoulder(_skeleton).distance_to(node_to_skel * _ride_grip_r) <= reach_r \
+				and _ik_l.shoulder(_skeleton).distance_to(node_to_skel * _ride_grip_l) <= reach_l:
+			break
+		_ik.bend(_skeleton, b, 0.0, 0.08)
+	# Still short (a reclined seat pose): slide the rider up the seat toward the bars until the arms reach.
+	var sh_mid := skel_to_node * (_ik.shoulder(_skeleton) + _ik_l.shoulder(_skeleton)) * 0.5
+	var g_mid := (_ride_grip_r + _ride_grip_l) * 0.5
+	var short := maxf(_ik.shoulder(_skeleton).distance_to(node_to_skel * _ride_grip_r) - reach_r,
+		_ik_l.shoulder(_skeleton).distance_to(node_to_skel * _ride_grip_l) - reach_l) * skel_to_node.basis.get_scale().x
+	if short > 0.0 and _model:
+		var flat := Vector3(g_mid.x - sh_mid.x, 0.0, g_mid.z - sh_mid.z)
+		if flat.length() > 0.001:
+			_model.position += flat.normalized() * minf(short + 0.02, 0.45)
+			node_to_skel = _skeleton.global_transform.affine_inverse() * global_transform
+			skel_to_node = node_to_skel.affine_inverse()
+			b = node_to_skel.basis
+	_ik.reach(_skeleton, node_to_skel * _ride_grip_r, b * Vector3(1.0, -0.6, 0.3))
+	_ik_l.reach(_skeleton, node_to_skel * _ride_grip_l, b * Vector3(-1.0, -0.6, 0.3))
+	ride_error = maxf((skel_to_node * _ik.hand_tip(_skeleton)).distance_to(_ride_grip_r),
+		(skel_to_node * _ik_l.hand_tip(_skeleton)).distance_to(_ride_grip_l))
+	if _ik_leg_l.valid and _ik_leg_r.valid:
+		var up := Vector3(0, 0.07, 0)  # the ankle sits above the peg
+		_ik_leg_l.reach(_skeleton, node_to_skel * (_ride_peg_l + up), b * Vector3(-0.4, 0.2, -1.0))
+		_ik_leg_r.reach(_skeleton, node_to_skel * (_ride_peg_r + up), b * Vector3(0.4, 0.2, -1.0))
+		ride_error = maxf(ride_error, maxf((skel_to_node * _ik_leg_l.hand_tip(_skeleton)).distance_to(_ride_peg_l + up),
+			(skel_to_node * _ik_leg_r.hand_tip(_skeleton)).distance_to(_ride_peg_r + up)))
+
+
+# After the clip is sampled (D-123): the held weapon moved by the playing clips about the right-hand grip, the right
+# hand on the grip and the left on the support point (or free).
+func _apply_gun(delta: float) -> void:
+	if _act != "":
+		_act_t += delta / _act_s
+		if _act_t >= 1.0:
+			var was := _act
+			_act = ""
+			if was == "holster" and _switching:
+				_switching = false
+				_show_gun(_next_mesh, _next_id)
+	_kick_t = minf(_kick_t + delta / _kick_s, 1.0)
+	if _first_person and _model:  # first person: the arms come up while a weapon is held so it is in view
+		var on := _held != null and _held.visible and _throw_style == ""
+		_model.position = _fp_base + (Vector3(0.0, float(GunPose.data().get("fp_lift_m", 0.0)),
+			-float(GunPose.data().get("fp_forward_m", 0.0))) if on else Vector3.ZERO)
+	if _held == null or not _held.visible or _throw_style != "" or not advanced:
+		return
+	var node_to_skel := _skeleton.global_transform.affine_inverse() * global_transform
+	var skel_to_node := node_to_skel.affine_inverse()
+	if _held_att:
+		_held_att.on_skeleton_update()  # the clip pose of this frame, before any IK
+	var w_clip := global_transform.affine_inverse() * _held_src.global_transform
+	if not _axes_ready:
+		_find_axes(w_clip, skel_to_node * (_ik_l if _held_left else _ik).hand_tip(_skeleton))
+	var off := Vector3.ZERO
+	var rot := Vector3.ZERO
+	var left := 0.0
+	var twist := 0.0
+	if _act != "":
+		GunPose.sample_into(_act_clip, _act_t, _gs)
+		off = _gs.off
+		rot = _gs.rot
+		left = _gs.left
+		twist = _gs.twist
+	if _kick_t < 1.0 and _kick_clip:
+		GunPose.sample_into(_kick_clip, _kick_t, _ks)
+		var ks := float(_gun_def.get("kick_scale", 1.0)) * (float(GunPose.data().get("fp_kick_scale", 0.5)) if _first_person else 1.0)
+		off += _ks.off * ks
+		rot += _ks.rot * ks
+		left = maxf(left, _ks.left)
+	var w_base := w_clip
+	var hold: Variant = _gun_def.get("fp_hold" if _first_person else "hold")
+	if hold is Array:  # a set hold: grip at [x, y, z] arm lengths from the right shoulder, barrel ahead + pitch / yaw
+		var h: Array = hold
+		var sh := skel_to_node * _ik.shoulder(_skeleton)
+		var arm := _ik.arm_length(_skeleton) * skel_to_node.basis.get_scale().x
+		var canon := Basis(_side_ax, _up_ax, -_barrel_ax).transposed()
+		var b := Basis.from_euler(Vector3(deg_to_rad(float(h[3])), deg_to_rad(float(h[4])), 0.0)) * canon \
+			* Basis.from_scale(w_clip.basis.get_scale())
+		var g := sh + Vector3(float(h[0]), float(h[1]), float(h[2])) * arm
+		w_base = Transform3D(b, g - b * _grip_local)
+	var g0 := w_base * _grip_local
+	var r := Basis.from_euler(rot * (PI / 180.0))
+	var wd := Transform3D(Basis(Vector3.UP, deg_to_rad(twist)), Vector3.ZERO) * Transform3D(r, g0 + off) \
+		* Transform3D(Basis.IDENTITY, -g0) * w_base
+	if twist != 0.0:
+		_ik.bend(_skeleton, node_to_skel.basis, deg_to_rad(twist), 0.0)
+	# Keep both grips within reach: pull the weapon in toward a shoulder it would leave the hand short of.
+	var d := GunPose.data()
+	var sup: Variant = _gun_def.get("support")
+	var box := _held_src.get_aabb()
+	var sup_local := Vector3.ZERO
+	if sup is Array:
+		var a: Array = sup
+		sup_local = box.get_center() + _barrel_ax * (float(a[0]) - 0.5) * absf(box.size.dot(_barrel_ax)) \
+			+ _up_ax * float(a[1]) * absf(box.size.dot(_up_ax)) + _side_ax * float(a[2]) * absf(box.size.dot(_side_ax))
+	var scale_k := skel_to_node.basis.get_scale().x
+	var sh_r := skel_to_node * _ik.shoulder(_skeleton)
+	var sh_l := skel_to_node * _ik_l.shoulder(_skeleton)
+	var reach_r := _ik.arm_length(_skeleton) * scale_k * 0.96
+	var reach_l := _ik_l.arm_length(_skeleton) * scale_k * 0.96
+	for k in 2:
+		var gr := wd * _grip_local
+		if gr.distance_to(sh_r) > reach_r:
+			wd.origin += sh_r + (gr - sh_r).normalized() * reach_r - gr
+		if sup is Array and left < 0.5:
+			var sp := wd * sup_local
+			if sp.distance_to(sh_l) > reach_l:
+				wd.origin += (sh_l + (sp - sh_l).normalized() * reach_l - sp) * (1.0 - left * 2.0)
+	_held.transform = wd
+	var target_r := wd * _grip_local
+	_ik.reach(_skeleton, node_to_skel * target_r, node_to_skel.basis * GunPose._v3(d.get("pole_right", [0.8, -1, 0.5])))
+	grip_error_r = (skel_to_node * _ik.hand_tip(_skeleton)).distance_to(target_r)
+	var arm_l := _ik_l.arm_length(_skeleton) * scale_k
+	var free := skel_to_node * _ik_l.shoulder(_skeleton) + GunPose._v3(d.get("left_rest", [0, -0.9, -0.1])) * arm_l
+	var target_l := free
+	if sup is Array:
+		target_l = (wd * sup_local).lerp(free, clampf(left, 0.0, 1.0))
+	_ik_l.reach(_skeleton, node_to_skel * target_l, node_to_skel.basis * GunPose._v3(d.get("pole_left", [-0.8, -1, 0.5])))
+	grip_error_l = (skel_to_node * _ik_l.hand_tip(_skeleton)).distance_to(target_l) if sup is Array and left < 0.01 else 0.0
+	if gun_debug_on:
+		gun_debug = "shR %s shL %s armR %.3f armL %.3f grip %s sup %s shL->sup %.3f len %.3f tipL %s" % [
+			skel_to_node * _ik.shoulder(_skeleton), skel_to_node * _ik_l.shoulder(_skeleton), _ik.arm_length(_skeleton) * skel_to_node.basis.get_scale().x,
+			arm_l, target_r, target_l, (skel_to_node * _ik_l.shoulder(_skeleton)).distance_to(target_l),
+			absf(_held_src.get_aabb().size.dot(_barrel_ax)) * w_clip.basis.get_scale().x, skel_to_node * _ik_l.hand_tip(_skeleton)]
+		gun_debug += " | muzzle dir %s up dir %s" % [(wd.basis * _barrel_ax).normalized(), (wd.basis * _up_ax).normalized()]
+		gun_debug += " | bone %d %s src %s wclip %s bar %s up %s scale %s box %s path %s" % [_held_bone,
+			_skeleton.get_bone_name(_held_bone) if _held_bone >= 0 else "-", global_transform.affine_inverse() * _held_src.global_position,
+			w_clip.origin, _barrel_ax, _up_ax, w_clip.basis.get_scale(), _held_src.get_aabb(), _skeleton.get_path_to(_held_src)]
+
+
+# The weapon's own axes: barrel = its longest side, toward the end farther from the hand (muzzle / blade); up = the
+# mesh's "up" from weapon_anims.json "meshes", else the other side pointing most up in the clip's hold; the grip is
+# the mesh's "grip" point there, else where the clip has the hand.
+func _find_axes(w_clip: Transform3D, hand: Vector3) -> void:
+	var axes: Array[Vector3] = [Vector3.RIGHT, Vector3.UP, Vector3.BACK]
+	var box := _held_src.get_aabb()
+	var m: Dictionary = GunPose.data().get("meshes", {}).get(_gun_mesh, {})
+	_grip_local = GunPose._v3(m.grip) if m.has("grip") else w_clip.affine_inverse() * hand
+	var bi := 0
+	for i in 3:
+		if absf(box.size.dot(axes[i])) > absf(box.size.dot(axes[bi])):
+			bi = i
+	var lo := box.position.dot(axes[bi])  # the muzzle / blade is the end farther from the hand
+	var hi := (box.position + box.size).dot(axes[bi])
+	var g := _grip_local.dot(axes[bi])
+	_barrel_ax = axes[bi] * (1.0 if hi - g >= g - lo else -1.0)
+	if m.has("up"):
+		_up_ax = GunPose._v3(m.up)
+	else:
+		var best := -1.0
+		var ui := (bi + 1) % 3
+		for i in 3:
+			if i == bi:
+				continue
+			var v := (w_clip.basis * axes[i]).normalized()
+			if absf(v.dot(Vector3.UP)) > best:
+				best = absf(v.dot(Vector3.UP))
+				ui = i
+		_up_ax = axes[ui] * signf((w_clip.basis * axes[ui]).dot(Vector3.UP) + 0.0001)
+	_side_ax = _barrel_ax.cross(_up_ax).normalized()
+	_axes_ready = true
 
 
 # Shrinks these bones (names without the "mixamorig_" prefix, e.g. "LeftUpLeg") to nothing every frame.

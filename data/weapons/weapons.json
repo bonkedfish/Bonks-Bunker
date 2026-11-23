@@ -2,37 +2,54 @@
 	"pistol_9mm": {
 		"name": "9mm Pistol", "kind": "gun", "damage": 25.0, "fire_interval": 0.2, "range": 80.0, "mag_size": 12.0,
 		"ammo_item": "ammo_9mm", "reload_time": 1.4, "noise_radius": 35.0,
-		"mesh": "Pistol", "spread_deg": 0.6, "wear": 0.0012, "mod_slots": ["optic", "muzzle", "mag"]
+		"mesh": "Pistol", "spread_deg": 0.6, "wear": 0.0012, "mod_slots": ["optic", "muzzle", "mag"],
+		"feel": {"kick": [1.3, 0.35], "pattern": [[1.0, 0.4], [0.9, -0.5], [1.1, 0.2], [1.0, -0.2]], "recover": 9.0, "bloom": [0.35, 2.5, 3.5], "ads_spread": 0.5, "ads_zoom": 1.15, "vm_kick": [0.05, 0.012, 5.0], "flash": 1.0},
+		"reload_cues": [[0.15, "gun_mag_out"], [0.55, "gun_mag_in"], [0.85, "gun_slide"]], "eject": "fire"
 	},
 	"revolver_44": {
-		"name": "Prairie .44 Revolver", "kind": "gun", "damage": 55.0, "fire_interval": 0.55, "range": 90.0, "mag_size": 6.0,
+		"name": "Prairie .44 Revolver", "kind": "gun", "damage": 70.0, "fire_interval": 0.55, "range": 90.0, "mag_size": 6.0,
 		"ammo_item": "ammo_44", "reload_time": 2.4, "noise_radius": 45.0,
-		"mesh": "Pistol", "spread_deg": 0.8, "wear": 0.002, "mod_slots": ["optic", "muzzle"]
+		"mesh": "Pistol", "spread_deg": 0.8, "wear": 0.002, "mod_slots": ["optic", "muzzle"],
+		"feel": {"kick": [3.2, 0.7], "pattern": [[1.0, 0.5], [1.0, -0.4], [1.1, 0.3]], "recover": 10.0, "bloom": [0.8, 3.0, 2.5], "ads_spread": 0.45, "ads_zoom": 1.2, "vm_kick": [0.09, 0.025, 11.0], "flash": 1.5},
+		"reload_cues": [[0.08, "revolver_open"], [0.3, "shell_in"], [0.5, "shell_in"], [0.7, "shell_in"], [0.9, "revolver_close"]], "eject": "reload"
 	},
 	"smg_9mm": {
-		"name": "Scrapper SMG", "kind": "gun", "damage": 15.0, "fire_interval": 0.08, "range": 60.0, "mag_size": 30.0,
+		"name": "Scrapper SMG", "kind": "gun", "damage": 27.0, "fire_interval": 0.08, "range": 60.0, "mag_size": 30.0,
 		"ammo_item": "ammo_9mm", "reload_time": 2.0, "noise_radius": 40.0,
-		"mesh": "SMG", "spread_deg": 2.6, "auto": true, "wear": 0.0006, "mod_slots": ["optic", "muzzle", "mag"]
+		"mesh": "SMG", "spread_deg": 2.6, "auto": true, "wear": 0.0006, "mod_slots": ["optic", "muzzle", "mag"],
+		"feel": {"kick": [0.7, 0.4], "pattern": [[1.0, 0.2], [1.0, 0.6], [0.9, -0.2], [1.1, -0.6], [1.0, 0.1], [0.9, 0.5]], "recover": 7.0, "bloom": [0.22, 3.6, 5.0], "ads_spread": 0.6, "ads_zoom": 1.15, "vm_kick": [0.03, 0.006, 2.0], "flash": 0.9},
+		"reload_cues": [[0.15, "gun_mag_out"], [0.55, "gun_mag_in"], [0.85, "gun_slide"]], "eject": "fire"
 	},
 	"shotgun_pump": {
-		"name": "Platte Pump Shotgun", "kind": "gun", "damage": 12.0, "fire_interval": 0.9, "range": 30.0, "mag_size": 6.0,
+		"name": "Platte Pump Shotgun", "kind": "gun", "damage": 16.0, "fire_interval": 0.9, "range": 30.0, "mag_size": 6.0,
 		"ammo_item": "ammo_shells", "reload_time": 2.8, "noise_radius": 55.0,
-		"mesh": "Shotgun", "pellets": 8.0, "spread_deg": 6.0, "wear": 0.002, "mod_slots": ["muzzle", "mag"]
+		"mesh": "Shotgun", "pellets": 8.0, "spread_deg": 6.0, "wear": 0.002, "mod_slots": ["muzzle", "mag"],
+		"feel": {"kick": [4.5, 0.9], "pattern": [[1.0, 0.4], [1.0, -0.4]], "recover": 9.0, "bloom": [1.0, 3.0, 2.0], "ads_spread": 0.75, "ads_zoom": 1.1, "vm_kick": [0.13, 0.035, 13.0], "flash": 1.9},
+		"reload_cues": [[0.15, "shell_in"], [0.35, "shell_in"], [0.55, "shell_in"], [0.72, "shell_in"], [0.9, "gun_pump"]], "eject": "pump",
+		"cycle": {"at": 0.35, "sound": "gun_pump"}
 	},
 	"rifle_hunting": {
-		"name": "Sandhills Hunting Rifle", "kind": "gun", "damage": 70.0, "fire_interval": 1.1, "range": 160.0, "mag_size": 5.0,
+		"name": "Sandhills Hunting Rifle", "kind": "gun", "damage": 110.0, "fire_interval": 1.1, "range": 160.0, "mag_size": 5.0,
 		"ammo_item": "ammo_308", "reload_time": 2.6, "noise_radius": 70.0,
-		"mesh": "Rifle", "spread_deg": 0.15, "zoom": 1.6, "wear": 0.002, "mod_slots": ["optic", "muzzle", "mag"]
+		"mesh": "Rifle", "spread_deg": 0.15, "zoom": 1.6, "wear": 0.002, "mod_slots": ["optic", "muzzle", "mag"],
+		"feel": {"kick": [3.4, 0.5], "pattern": [[1.0, 0.3], [1.0, -0.3]], "recover": 8.0, "bloom": [0.6, 2.0, 2.0], "ads_spread": 0.3, "ads_zoom": 1.3, "vm_kick": [0.1, 0.022, 9.0], "flash": 1.5},
+		"reload_cues": [[0.12, "gun_bolt"], [0.45, "gun_mag_out"], [0.65, "gun_mag_in"], [0.9, "gun_bolt"]], "eject": "bolt",
+		"cycle": {"at": 0.45, "sound": "gun_bolt"}
 	},
 	"rifle_ar": {
-		"name": "Union Pacific AR-15", "kind": "gun", "damage": 28.0, "fire_interval": 0.11, "range": 120.0, "mag_size": 30.0,
+		"name": "Union Pacific AR-15", "kind": "gun", "damage": 38.0, "fire_interval": 0.11, "range": 120.0, "mag_size": 30.0,
 		"ammo_item": "ammo_556", "reload_time": 2.2, "noise_radius": 60.0,
-		"mesh": "Rifle", "spread_deg": 1.4, "auto": true, "zoom": 1.3, "wear": 0.0008, "mod_slots": ["optic", "muzzle", "mag"]
+		"mesh": "Rifle", "spread_deg": 1.4, "auto": true, "zoom": 1.3, "wear": 0.0008, "mod_slots": ["optic", "muzzle", "mag"],
+		"feel": {"kick": [0.95, 0.35], "pattern": [[1.0, 0.2], [1.1, 0.5], [1.0, -0.1], [1.2, -0.5], [1.0, 0.3], [0.9, -0.2]], "recover": 8.0, "bloom": [0.18, 3.0, 5.0], "ads_spread": 0.5, "ads_zoom": 1.25, "vm_kick": [0.035, 0.008, 2.5], "flash": 1.1},
+		"reload_cues": [[0.15, "gun_mag_out"], [0.55, "gun_mag_in"], [0.85, "gun_slide"]], "eject": "fire"
 	},
 	"rifle_sniper": {
-		"name": "Cornhusker Long Rifle", "kind": "gun", "damage": 120.0, "fire_interval": 1.6, "range": 260.0, "mag_size": 4.0,
+		"name": "Cornhusker Long Rifle", "kind": "gun", "damage": 200.0, "fire_interval": 1.6, "range": 260.0, "mag_size": 4.0,
 		"ammo_item": "ammo_308", "reload_time": 3.2, "noise_radius": 85.0,
-		"mesh": "Rifle", "spread_deg": 0.05, "zoom": 3.0, "wear": 0.0025, "mod_slots": ["optic", "muzzle"]
+		"mesh": "Rifle", "spread_deg": 0.05, "zoom": 3.0, "wear": 0.0025, "mod_slots": ["optic", "muzzle"],
+		"feel": {"kick": [5.5, 0.8], "pattern": [[1.0, 0.3], [1.0, -0.3]], "recover": 7.0, "bloom": [0.5, 1.5, 1.5], "ads_spread": 0.2, "ads_zoom": 1.3, "vm_kick": [0.13, 0.03, 11.0], "flash": 1.9},
+		"reload_cues": [[0.1, "gun_bolt"], [0.4, "gun_mag_out"], [0.62, "gun_mag_in"], [0.9, "gun_bolt"]], "eject": "bolt",
+		"cycle": {"at": 0.6, "sound": "gun_bolt"}
 	},
 	"bat_baseball": {
 		"name": "Baseball Bat", "kind": "melee", "damage": 40.0, "windup": 0.2, "swing_interval": 0.75, "range": 2.2,

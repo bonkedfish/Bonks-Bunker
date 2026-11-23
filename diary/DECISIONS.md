@@ -579,3 +579,89 @@ Locked unless flagged. Each entry: decision — reason.
   (SubtitleUI.caption_top); the ground shader fades into a 7x larger rotated copy of the grass past 20-90 m and
   adds broad 70 m brightness / dry-green patches to break up the distance (streets.json ground "far"; shared
   ground material, no re-bake - run refresh_street_materials after changing it).
+- **D-121** (2026-11-22) Job 1, zombie health + gun damage (user: data only; my calls, logged per the user's
+  "make the best call" instruction).
+  * "Every zombie type" = the regular zombie enemies: the five open-world types (Shambler 80->200, Runner
+    45->112.5, Bloater 120->300, Riot Cop 160->400, Spitter 70->175) and Kearney High's three zombie mobs (Hall
+    Monitor 55->137.5, Linebacker 320->800, Lunch Lady 90->225). NOT changed: bosses (Bearcat, Big Darlene, Hunter
+    Conner - hand-tuned scripted fights with enrage at 50%, and Hunter is human), the giant jackrabbit (animal),
+    raiders and Suits (humans).
+  * Pistol stays 25. "More damage than the pistol" is read per trigger pull, so the shotgun counts all 8 pellets
+    (a single buckshot pellet out-hitting a 9mm round would be unrealistic and make it a one-shot cannon).
+    Per shot / shots to drop a 200 HP Shambler (pistol: 8): revolver 55->70 (3), SMG 15->27 (8, but 12.5 rounds/s),
+    shotgun 12->16 x8 = 128 (2), hunting rifle 70->110 (2), AR 28->38 (6), long rifle 120->200 (1). Rarity / wear
+    multipliers on top are unchanged. Melee and the Golden Ace (thrown) untouched - not guns.
+- **D-122** (2026-11-22) Job 2, weapon realism, arcade-plus (user spec; my calls inside it, per "make the best call"):
+  * Recoil = a real view kick (the aim moves, so it matters), each gun's small repeating [pitch, yaw] pattern; the
+    view only starts coming back 0.35 s (burst_reset_s) after the last shot, so a held burst climbs and a pause
+    settles it (AR: ~1 deg/shot, recover 8 deg/s; shotgun 4.5; long rifle 5.5). Kick is local feedback on the
+    shooter's own camera; the host still uses the aim the client sends, as before.
+  * Spread bloom is HOST-side (never trust the client): WeaponHolder keeps a bloom per player, +per-shot up to a
+    cap, recovering per second, and hands CombatWorld.host_fire the real cone; the owning client mirrors it only for
+    its tracers. Aim down sights = new intent bit FLAG_AIM (256; ALL_FLAGS 255 -> 511), ads_spread x the cone
+    (AR 0.5, long rifle 0.2, shotgun 0.75). Every gun now aims (ads_zoom 1.1-1.3 unless the gun / scope zooms more);
+    the first-person gun slides to the middle (gun_feel.json ads_offset).
+  * Reload timing: 3-5 sound cues per gun at data fractions of reload_time (mag out / in / slide, shells + pump,
+    bolt, revolver open / shells / close) plus a progress bar under the ammo line. Pump and bolt guns play their
+    cycle sound after each shot and eject their casing then; the revolver dumps its empties when the reload starts.
+  * Muzzle flash: pooled billboard quads + small shadowless omni lights (8). Casings: a pool of 32 meshes flown by
+    pure GunFeelRules.casing_step (no physics bodies), landing on the shooter's floor height, 2.5 s life, only within
+    25 m of the camera. Raiders' generic gun gets a flash, spit and Bonk-less shots nothing extra.
+  * Sounds: every gun gets its own shot built from the CC0 pistol recordings (tools/audio/build_gun_sounds.py:
+    pitch + synthesized boom / supersonic crack / longer tail), plus synthesized mechanical cues and casing drops.
+    No downloads needed. Pistol keeps its recordings.
+  * Data: per gun in weapons.json (feel, reload_cues, eject, cycle); shared in data/weapons/gun_feel.json. Damage
+    untouched. The first-person kick no longer uses a Tween (no allocation per shot).
+  * Bloom recovers only once the trigger has been off for burst_reset_s (same rule as the view kick), on the host and
+    the client mirror - recovering every tick outran the per-shot growth, so a held AR never bloomed.
+  * Shots (tracers, muzzle flash, ejected casings) start at the front of the gun mesh actually in the first-person
+    hand (CharacterAnimator.weapon_tip), not the old hidden box-pistol marker that sat off to the right.
+- **D-123** (2026-11-23) Job 3, weapon animations hand-made in code (user spec; my calls inside it):
+  * Same approach as the disc throw (D-117): GunPose clips in data/weapons/weapon_anims.json (keys: offset, rotation
+    about the right-hand grip, how free the left hand is, torso twist), ArmIK for both arms (throw_rigs gain a "left"
+    entry per rig). Presentation only, never gameplay.
+  * Layered on the model's OWN gun-holding clip instead of replacing it: the kit mesh is drawn as a copy placed where
+    the clip holds it, moved by the playing action clip (draw / holster / reload / swing) plus a kick clip, then the
+    right hand is IK'd onto the grip and the left onto a support point given per weapon as fractions of the gun's box
+    (rifles / shotgun at the fore-end, SMG under the barrel, pistols a cupped two-hand grip; bat and axe two hands on
+    the handle; knife one-handed). Why: keeps walk / run / idle motion and both rigs working with no per-rig hold data,
+    and a drawn copy lets the kit rig (whose "hand" is the end of the forearm bone) hold the gun with the wrist free.
+  * The weapon's axes come from the clip's hold: barrel = its longest side, pointing away from the hand.
+  * Clips are shared by family (short / long draw + holster, magazine / pistol / revolver / shell-by-shell / bolt
+    reloads, light / heavy / pump / bolt kicks, bat / axe / knife swings); each weapon picks its clips and seconds.
+    Reload runs over the weapon's reload_time; swings strike at the weapon's windup.
+  * Switching weapons holsters the old one, then draws the new one (all peers). Other players: new replicated
+    Weapons.net_weapon (held weapon id) and net_swings (a swing counter); reload from net_reloading; kick from the
+    shot effects RPC. First person gets the same clips on its arms; its kick is halved (fp_kick_scale 0.5) because
+    the view model already slides back on each shot (D-122).
+  * Hold (after the first test): each weapon has a set hold, its grip at [x, y, z] arm lengths from the right shoulder
+    plus a barrel pitch / yaw ("hold"; first person "fp_hold"), instead of the clip's own hold - the kit survivors'
+    clips carry the gun in the LEFT hand (attached to Middle1.L) at a spot the other hand can't reach.
+  * Kit weapon meshes are shared by both rigs, so their axes are data ("meshes": grip at the mesh origin, up = +Z);
+    the barrel is the longest side toward the end farther from the grip.
+  * If a grip would be out of an arm's reach (the kit guns are big for the chibi arms: AR 1.5 m long), the weapon is
+    slid toward that shoulder until both hands reach - so the hands never leave the grips.
+  * First person: the arms model is raised 0.1 m and moved 0.25 m forward while a weapon is held (fp_lift_m,
+    fp_forward_m) and holds it high (fp_hold y +0.6-0.65 arm lengths), so gun and hands are in view; first-person kick
+    scaled to 0.3. (0.45 m lift put the camera right on top of the hands - the gun filled the screen.)
+- **D-124** (2026-11-23) Job 4, motorcycles simulation-lite (user spec; my calls inside it). Builds on D-083 / D-085
+  without reopening them: manual clutch + gears, Mayhem-style lean-steer and turn_grip 2.0 all stay as they are.
+  * Suspension: a spring-damper per end (front fork, rear shock) in pure BikeRules.chassis(), in fractions of each
+    bike's travel (new per-bike travel_m: dirt / moto 0.28 m, cafe / sport 0.12, cruiser 0.10). Braking loads the fork
+    (dive), drive squats the shock, a wheelie / stoppie unloads the lifted end, and the ground pushing up (landings,
+    kerbs, slopes - the change in the bike's vertical speed on the ground) kicks both. Visual: the frame drops and
+    pitches over the wheels; wheels stay on the ground.
+  * Skids, forgiving: the rear steps out when you brake while steering at speed (a little even braking straight
+    from high speed) or give it gas leaned over in 1st / 2nd (a power slide). The slide turns the bike a bit MORE
+    (an assist, never a crash), brakes keep full strength, the skid fades when you let go. A screech loop plays with it.
+  * Weight shift: the rider leans further into a turn than the bike (x1.3), hangs off the inside, slides back on
+    the gas / wheelies and forward on the brakes (pure BikeRules.rider_shift). Rider pose: hands IK'd onto the bar
+    grips, feet onto the pegs, torso tucked per bar type (wide 12 deg, clip-ons 30, ape -4) - ArmIK, both rigs.
+  * Engine: still the D-083 rev-band loops pitched by rpm (so it rises with speed and drops on each upshift), plus
+    louder on the gas than off it (load_db 5) and a touch deeper per higher gear (gear_pitch -1.5 %).
+  * Better model: foot pegs, brake discs + calipers, chain + sprockets, fork lowers, shock spring, radiator
+    (dirt / moto / sport), mirrors (street / cruiser), lever + grips; wheels get more spokes (cast 5-spoke on the
+    street bikes).
+  * Co-op: the host's chassis numbers are the truth; net_state grows 10 -> 15 floats (fork, shock, slide, skid,
+    throttle) and other players' bikes ease toward them like lean and pitch already do. The owner predicts them with
+    the same pure code.

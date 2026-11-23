@@ -895,3 +895,47 @@ a release, then gh release view) went to main as 02768d7.
   the haze flattens the ground anyway, and the far-LOD terrain (beyond the near cells) is vertex colour and does
   not use this shader. Grass perf unchanged: 6.0 ms, ~450 draw calls. Small leftover: the carried-disc dots above
   the panel can touch the "E: start a round" prompt at a course box.
+- 2026-11-22 D-121 DONE (job 1, data only): zombie max health x2.5 (Shambler 200, Runner 112.5, Bloater 300, Riot
+  Cop 400, Spitter 175, Hall Monitor 137.5, Linebacker 800, Lunch Lady 225; bosses / raiders / Suits / jackrabbit
+  unchanged); gun damage per shot: pistol 25 (unchanged), revolver 70, SMG 27, shotgun 16 x 8 pellets, hunting rifle
+  110, AR 38, long rifle 200. gear_test 0 failures (new check: every gun out-damages the pistol per shot; shotgun
+  blast on the dummy 112), zombie_types_test 0 failures (new check: health x2.5, bosses unchanged; 48 zombies 6.0 ms
+  frame, 6.4 ms physics, 732 draw calls). No visuals changed.
+- 2026-11-22 D-122 DONE (job 2, weapon realism): gun_feel_test 0 failures - pattern repeats every 6 AR shots, a
+  4-shot burst kicks the view 4.1 deg and is back to 0 1.8 s later, host bloom grows (0.72 deg after 4 shots, cap 3)
+  and recovers, cone 1.4 deg hip / 0.70 aimed, flash lit on a shot (at the barrel tip now), casings fly / land /
+  vanish (pool, no new objects over 3 bursts), reload bar + 3 cues, damage unchanged. gear_test 0 failures, coop_test
+  PASS. Perf firing the AR in the bunker: 6.0-6.4 ms frame, 383-399 draw calls, ~1.7 GB VRAM, 391-394 MB static.
+  Shots gun_flash / gun_casings / gun_ads / gun_reload.png. Limit: aiming only nudges the chibi kit gun toward the
+  middle - the sights don't line up with the crosshair (job 3 gives the gun a real hold).
+- 2026-11-23 D-123 DONE (job 3, weapon animations): tests/weapon_anim_test.tscn 0 failures - all 10 weapons on a
+  kit survivor, a UBC body and first-person arms: both hands on the grips (0.000 m error) at rest, through every
+  gun's kick and reload (left hand off only where the clip frees it: mag swap, shells, bolt) and every melee swing;
+  reloads move the gun 0.19-0.48 m, swings sweep 0.7-1.0 m; switching holsters the AR, then draws the pistol.
+  Shots wanim_*.png (+ _fp). gun_feel_test 0 failures (flash at the barrel tip, kick, bloom, no object growth);
+  coop_test PASS with a new check: the client sees the host's body holding its pistol (grip error 0.000 m).
+  Perf: in game firing the AR 5.8-6.6 ms, 375-377 draw calls (was 383-399), ~1.6 GB VRAM; the anim test scene with 3
+  animated bodies 5.9-6.8 ms, 26 draw calls. Limits: kit guns are cartoon-big in the chibi hands (AR 1.5 m); aiming
+  still slides the view model (no sight picture); tests/weapon_anim_dbg.tscn is a leftover debug copy of the test.
+- 2026-11-23 D-124 DONE (job 4, motorcycles sim-lite): bike_test 0 failures - pure chassis: braking dives the fork
+  0.30 -> 0.53 of travel and lifts the rear (0.22), the gas squats the rear (0.44), a 5 m/s landing compresses the
+  fork to 0.73 and settles, brake + steer at 58 km/h skids (1.0) with the tail out 16 deg and an extra -0.17 rad/s of
+  turn, straight braking at 43 km/h only chirps (0.35), no skid at 11 km/h, power slide leaned over on the gas in 2nd
+  (0.83), skid + slide fade on release; rider leans 9 deg past the bike, hangs 4 cm in, shifts 6 cm back on the gas /
+  9 cm forward braking; in game the rider's hands are on the grips and feet on the pegs (0.000 m) riding and stopped
+  (bike_side.png). All D-083 checks still pass (gears, stall, wheelie, refuel, loop crash). coop_test PASS with new
+  steps 13 / 14 on the Cope Stadium field: host and client each ride a dirt bike (40 km/h, lean 46 deg, fork dive
+  0.56, skid 0.6); the client's copy of the host's bike leans 46 / dives 0.54 with at most 1.5 deg change per frame;
+  the client's own prediction ends 0.00 m from the host's truth. Perf riding at Cope Stadium 5.9-6.8 ms, 529-561 draw
+  calls (on foot there 5.8-6.4 ms, 454-496), ~1.8-1.9 GB VRAM. Not hand-played; only the dirt bike and the UBC rig
+  were ridden in tests (grips / pegs are computed for all five bikes). The rider slides up the seat to reach the bars
+  (the UAL "Driving" clip is reclined), so on the dirt bike they sit near the tank.
+- 2026-11-23 end of the four jobs (D-121..D-124), nothing released or pushed. Regression after job 4:
+  weapon_anim_test 0 failures, zombie_types_test 0 failures (48 zombies 5.8 ms frame, 714 draw calls), gun_feel_test
+  0, gear_test 0, coop_test PASS (now with the bike steps), bike_test 0. Leftovers:
+  CharacterAnimator keeps a test-only gun_debug string
+  (filled only when a test turns it on). Next: hand-play the guns and bikes; the sight picture for
+  aiming (the view model still slides rather than lining up the sights); ride the other four bikes and the kit rig.
+- 2026-11-23 user approved: deleted tests/weapon_anim_dbg.* and its wdbg_*.png shots (one-run tools/delete_once,
+  which removed itself). Releasing alpha3.4 ("Lock and Load", notes data/release/notes/alpha3.4.md) with
+  tools/release/release.tscn, then release_notes.tscn for the long notes.

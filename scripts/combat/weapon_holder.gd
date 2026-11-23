@@ -12,8 +12,15 @@
 # click; "auto" guns fire while held. Thrown (Golden Ace, D-088): one throw in the air at a time.
 # Sounds (D-077): the local player hears their own fire / dry click / reload / swing here; others hear shots and
 # melee hits through CombatWorld.
-# Depends on: WeaponDB, GearRules, CombatRules, CombatWorld (group "combat_world"), Viewmodel, InventoryHolder,
-# parent Player, Sfx.
+# Gun feel (D-122): the host keeps a spread bloom per player that grows with each shot and recovers once the
+# shooting stops for burst_reset_s (GunFeelRules), tightened while the aim flag (right mouse, FLAG_AIM) is held, and passes the real cone to
+# CombatWorld.host_fire. The local player's own feedback - view kick from the gun's recoil pattern, the gun kicking
+# back, the pump / bolt cycle sound, reload sound cues at their data fractions, a revolver dumping its empties -
+# runs in local_feel_step(), never anything that decides a hit.
+# D-123: net_weapon (held weapon id) and net_swings (a count of melee swings) let other peers animate this player;
+# the local reload start plays the first-person reload clip.
+# Depends on: WeaponDB, GearRules, CombatRules, GunFeelRules, CombatWorld (group "combat_world"), GunFx (group
+# "gun_fx"), Viewmodel, InventoryHolder, parent Player, Sfx.
 class_name WeaponHolder
 extends Node
 
@@ -21,6 +28,7 @@ const FLAG_FIRE := 8
 const FLAG_RELOAD := 16
 const FLAG_SLOT2 := 32
 const FLAG_SLOT3 := 128
+const FLAG_AIM := 256  # right mouse held with a gun: aiming down sights (D-122)
 const SLOT_NAMES := ["gun1", "gun2", "melee"]
 const FLUSH_SECONDS := 5.0
 
@@ -31,6 +39,8 @@ var net_reserve := 0
 var net_reloading := false
 var net_mesh := ""
 var net_armed := false
+var net_weapon := ""   # D-123: held weapon id (other players' animations)
+var net_swings := 0    # D-123: melee swings started (other players see each one)
 
 var viewmodel: Node3D  # set by Player
 var inventory: InventoryHolder:  # set by Player
@@ -60,6 +70,18 @@ var _local_time := 0.0
 var _local_next_attack := 0.0
 var _local_fire_prev := false
 var _local_reloading_prev := false
+var _bloom := 0.0            # host: spread bloom (deg) of the held gun
+var last_cone := 0.0         # host: the cone (deg) the last shot got (tests / debug)
+var _host_last_shot := -10.0
+var _local_last_shot := -10.0
+var _local_bloom := 0.0      # owning client: the same, mirrored for its own tracers
+var _burst := 0              # local: shot index in the current burst (recoil pattern)
+var _last_shot_t := -10.0
+var _feel_time := 0.0
+var _cycle_left := -1.0      # local: seconds to the pump / bolt sound
+var _cycle_sound := ""
+var _reload_elapsed := -1.0  # local: how far into the current reload (-1 = not reloading)
+var _cues_played := 0
 
 var _combat: Node
 @onready var _player: CharacterBody3D = get_parent()
@@ -177,6 +199,7 @@ func host_step(flags: int, aim_yaw: float, aim_pitch: float, view_tick: float, d
 	var want_slot := slot_of_flags(flags)
 	if want_slot != _slot:
 		host_flush()
+		_bloom = 0.0
 		_slot = want_slot
 		_reload_end = 0.0
 		_swing_at = -1.0
@@ -190,6 +213,9 @@ func host_step(flags: int, aim_yaw: float, aim_pitch: float, view_tick: float, d
 	var kind := str(w.get("kind", ""))
 
 	if kind == "gun":
+		var feel: Dictionary = w.get("feel", {})
+		if _sim_time - _host_last_shot > float(GunFeelRules.tuning().burst_reset_s):  # recovers once you stop
+			_bloom = GunFeelRules.bloom_recover(_bloom, feel, delta)
 		var trigger := fire_down if bool(w.get("auto", false)) else fire_pressed
 		if reload_pressed:
 			_start_reload(w)
@@ -203,9 +229,13 @@ func host_step(flags: int, aim_yaw: float, aim_pitch: float, view_tick: float, d
 				_mags[_slot] -= 1
 				_wear[_slot] += float(w.get("wear", 0.0))
 				_next_attack = _sim_time + float(w.fire_interval)
-				_combat.host_fire(_player, w, eye, dir, view_tick)
+				var cone := GunFeelRules.shot_spread(float(w.get("spread_deg", 0.0)), _bloom, (flags & FLAG_AIM) != 0, feel)
+				last_cone = cone
+				_combat.host_fire(_player, w, eye, dir, view_tick, true, cone)
+				_bloom = GunFeelRules.bloom_after_shot(_bloom, feel)
+				_host_last_shot = _sim_time
 				if _player.is_local:
-					viewmodel.kick()
+					_local_fired(w)
 	elif kind == "thrown":
 		if fire_pressed and _sim_time >= _next_attack and not _combat.host_has_throw(_player):
 			_next_attack = _sim_time + float(w.fire_interval)
@@ -216,6 +246,7 @@ func host_step(flags: int, aim_yaw: float, aim_pitch: float, view_tick: float, d
 		if fire_pressed and _sim_time >= _next_attack and _swing_at < 0.0:
 			_swing_at = _sim_time + float(w.windup)
 			_next_attack = _sim_time + float(w.swing_interval)
+			net_swings += 1
 			if _player.is_local:
 				viewmodel.swing(float(w.windup))
 				Sfx.play_local(_sound(w, "swing"))
@@ -230,7 +261,7 @@ func _start_reload(w: Dictionary) -> void:
 	if _reload_end > 0.0 or _mags[_slot] >= int(w.get("mag_size", 0)) or _spare_ammo(w) <= 0:
 		return
 	_reload_end = _sim_time + float(w.reload_time)
-	if _player.is_local:
+	if _player.is_local and not w.has("reload_cues"):  # guns with cues play them in local_feel_step (D-122)
 		Sfx.play_local(_sound(w, "reload"))
 
 
@@ -253,6 +284,7 @@ func _publish() -> void:
 	net_reloading = _reload_end > 0.0
 	net_mesh = str(w.get("mesh", ""))
 	net_armed = str(w.get("kind", "")) == "gun"
+	net_weapon = str(w.get("id", ""))
 
 
 # --- owning client (feedback only, never damage) ----------------------------------
@@ -262,10 +294,14 @@ func client_step(flags: int, slot: int, delta: float, dead: bool) -> void:
 	var fire_down := (flags & FLAG_FIRE) != 0
 	var pressed := fire_down and not _local_fire_prev
 	_local_fire_prev = fire_down
-	if net_reloading and not _local_reloading_prev and not weapon_in_slot(net_slot).is_empty():
+	if net_reloading and not _local_reloading_prev and not weapon_in_slot(net_slot).is_empty() \
+			and not weapon_in_slot(net_slot).has("reload_cues"):
 		Sfx.play_local(_sound(weapon_in_slot(net_slot), "reload"))
 	_local_reloading_prev = net_reloading
 	var w := weapon_in_slot(slot)
+	var feel: Dictionary = w.get("feel", {})
+	if _local_time - _local_last_shot > float(GunFeelRules.tuning().burst_reset_s):
+		_local_bloom = GunFeelRules.bloom_recover(_local_bloom, feel, delta)
 	if w.is_empty() or dead or _local_time < _local_next_attack:
 		return
 	var kind := str(w.get("kind", ""))
@@ -277,9 +313,12 @@ func client_step(flags: int, slot: int, delta: float, dead: bool) -> void:
 		if net_reloading or net_mag <= 0 or net_slot != slot:
 			return
 		_local_next_attack = _local_time + float(w.fire_interval)
-		viewmodel.kick()
 		Sfx.play_local(_sound(w, "fire"))
-		_combat.local_tracer(_player, w)
+		_combat.local_tracer(_player, w, GunFeelRules.shot_spread(float(w.get("spread_deg", 0.0)), _local_bloom,
+			(flags & FLAG_AIM) != 0, feel))
+		_local_bloom = GunFeelRules.bloom_after_shot(_local_bloom, feel)
+		_local_last_shot = _local_time
+		_local_fired(w)
 	elif kind == "thrown":
 		_local_next_attack = _local_time + float(w.fire_interval)
 		Sfx.play_local(_sound(w, "swing"))
@@ -287,6 +326,58 @@ func client_step(flags: int, slot: int, delta: float, dead: bool) -> void:
 		_local_next_attack = _local_time + float(w.swing_interval)
 		viewmodel.swing(float(w.windup))
 		Sfx.play_local(_sound(w, "swing"))
+
+
+# Local player's own feedback for one shot (D-122): view kick from the recoil pattern, the gun kicking back, and
+# the pump / bolt cycle sound to come.
+func _local_fired(w: Dictionary) -> void:
+	var feel: Dictionary = w.get("feel", {})
+	_burst = _burst + 1 if _feel_time - _last_shot_t < float(GunFeelRules.tuning().burst_reset_s) else 0
+	_last_shot_t = _feel_time
+	if _player.has_method("add_recoil"):
+		_player.add_recoil(GunFeelRules.kick(feel, _burst), float(feel.get("recover", 8.0)))
+	viewmodel.kick(feel)
+	var cyc: Dictionary = w.get("cycle", {})
+	if not cyc.is_empty():
+		_cycle_left = float(cyc.at)
+		_cycle_sound = str(cyc.sound)
+
+
+# Local player, once per physics frame (D-122): the pump / bolt sound after a shot, reload sound cues at their
+# fractions of reload_time (from the replicated reloading flag, so host and client alike), a revolver's empties.
+func local_feel_step(delta: float) -> void:
+	_feel_time += delta
+	if _cycle_left >= 0.0:
+		_cycle_left -= delta
+		if _cycle_left < 0.0:
+			Sfx.play_local(_cycle_sound)
+	var w := weapon_in_slot(net_slot)
+	if not net_reloading:
+		_reload_elapsed = -1.0
+		return
+	if _reload_elapsed < 0.0:  # a reload just started
+		_reload_elapsed = 0.0
+		viewmodel.reload(float(w.get("reload_time", 1.0)))
+		_cues_played = 0
+		_cycle_left = -1.0
+		if str(w.get("eject", "")) == "reload":
+			var fx := get_tree().get_first_node_in_group("gun_fx")
+			if fx:
+				for k in maxi(int(w.get("mag_size", 0)) - net_mag, 0):
+					fx.eject_now(_player.muzzle_position(), _player.global_basis.x, _player.global_position.y, false, k * 0.04)
+	_reload_elapsed += delta
+	var cues: Array = w.get("reload_cues", [])
+	var i := GunFeelRules.due_cue(cues, _cues_played, reload_progress())
+	if i >= 0:
+		_cues_played += 1
+		Sfx.play_local(str(cues[i][1]))
+
+
+# 0..1 through the current reload, or -1 when not reloading (the HUD bar).
+func reload_progress() -> float:
+	if not net_reloading or _reload_elapsed < 0.0:
+		return -1.0
+	return GunFeelRules.reload_progress(_reload_elapsed, float(weapon_in_slot(net_slot).get("reload_time", 1.0)))
 
 
 # Sound event id for this weapon (D-077): "<weapon id>_<what>", e.g. pistol_9mm_fire.

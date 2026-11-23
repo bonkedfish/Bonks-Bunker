@@ -13,7 +13,12 @@
 #   Everyone: draws the bike under the rider (lean, wheelie / stoppie pitch, spinning wheels), sits the rider's body on
 #          it (CharacterAnimator.on_bike), plays the engine (BikeSound).
 # Replicated by the player's Sync: net_ride ("id|model|scheme", "" = on foot; on change) and net_state (always):
-# [speed, heading, pitch, pitch_rate, lean, rpm, gear, flags (1 engine, 2 limiter, 4 clutch in), clutch, fuel].
+# [speed, heading, pitch, pitch_rate, lean, rpm, gear, flags (1 engine, 2 limiter, 4 clutch in), clutch, fuel,
+#  fork, shock, slide, skid, accel] (D-124: suspension 0..1 of travel, the slide angle, skid 0..1, m/s^2 along).
+# D-124 chassis: simulate() also runs BikeRules.chassis (suspension, skids, slides) on the host and the owner; every
+# peer draws the frame sitting down on its suspension over the wheels, the tail stepping out in a slide, the rider
+# leaning past the bike and shifting with the gas / brakes (BikeRules.rider_shift), hands on the bar grips and feet
+# on the pegs (CharacterAnimator.set_ride_pose), and the engine louder on the gas, a skid screech (BikeSound).
 # Depends on: BikeRules, BikeMesh, BikeSound, BikeHud, BikeDirector (group "bike_director"), Player (parent: head,
 # camera, viewmodel, body, health, life, inventory, velocity, yaw / pitch, is_local, peer_id), HUD (group "hud"), Sfx.
 class_name BikeRider
@@ -31,7 +36,7 @@ const RECENTER_RATE := 1.8
 const ZOMBIE_HIT_COOLDOWN := 0.6
 
 var net_ride := ""
-var net_state := PackedFloat32Array([0, 0, 0, 0, 0, 0, 0, 0, 1, 0])
+var net_state := PackedFloat32Array([0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0.3, 0.3, 0, 0, 0])
 
 var bike_id := ""
 var model := ""
@@ -50,6 +55,17 @@ var _b: Dictionary = {}
 var _t: Dictionary = {}
 var _ride_seen := ""
 var _pivot: Node3D
+var _frame: Node3D  # D-124: the bike body on its suspension (child of _pivot; the wheels stay on _pivot)
+var _accel := 0.0     # host / owner: smoothed m/s^2 along the heading
+var _ground_vy := 0.0
+var _vis_fork := 0.3
+var _vis_shock := 0.3
+var _vis_slide := 0.0
+var _vis_skid := 0.0
+var _vis_accel := 0.0
+var _grips: Array[Vector3] = []
+var _pegs: Array[Vector3] = []
+var _tuck := 0.0  # rad: the rider's lean forward for this bike's bars
 var _wheels: Array[MeshInstance3D] = []
 var _sound: BikeSound
 var _hud: BikeHud
@@ -137,6 +153,11 @@ func _pack() -> void:
 	net_state[7] = float(flags)
 	net_state[8] = float(_s.clutch)
 	net_state[9] = float(_s.fuel)
+	net_state[10] = float(_s.fork)
+	net_state[11] = float(_s.shock)
+	net_state[12] = float(_s.slide)
+	net_state[13] = float(_s.skid)
+	net_state[14] = _accel
 
 
 func _host_crash(why: String, speed: float) -> void:
@@ -248,6 +269,7 @@ func simulate(move: Vector2, flags: int, gear: int) -> void:
 	var on_floor: bool = player.is_on_floor()
 	var vy: float = player.velocity.y
 	var before := float(_s.speed)
+	var y0: float = player.global_position.y
 	BikeRules.step(_s, _b, _t, throttle, brake, steer, rider, (flags & FLAG_SPRINT) != 0, on_floor, dt)
 	heading = wrapf(heading + float(_s.yaw_rate) * dt, -PI, PI)
 	player.rotation.y = heading
@@ -258,6 +280,16 @@ func simulate(move: Vector2, flags: int, gear: int) -> void:
 	player.velocity = fwd * float(_s.speed) + Vector3.UP * vy
 	player.move_and_slide()
 	var after: float = Vector3(player.velocity.x, 0.0, player.velocity.z).dot(fwd)
+	# D-124 chassis: how much harder the ground pushed the bike up this tick (a landing is its fall speed).
+	var now_floor: bool = player.is_on_floor()
+	var gvy: float = (player.global_position.y - y0) / maxf(dt, 0.0001) if on_floor and now_floor else 0.0
+	var ground_dv := gvy - _ground_vy if on_floor and now_floor else (-vy if now_floor and not on_floor else 0.0)
+	_ground_vy = gvy
+	BikeRules.chassis(_s, _b, _t, throttle, brake, steer, now_floor, ground_dv, dt)
+	_accel = lerpf(_accel, (float(_s.speed) - before) / maxf(dt, 0.0001), 0.2)
+	if now_floor:  # a slide swings the heading further into the turn
+		heading = wrapf(heading + BikeRules.slide_yaw_rate(_s, _t) * dt, -PI, PI)
+		player.rotation.y = heading
 	var hit_zombie := false
 	for i in player.get_slide_collision_count():
 		var c: Object = player.get_slide_collision(i).get_collider()
@@ -392,10 +424,20 @@ func _process(delta: float) -> void:
 		_vis_heading = heading
 		_vis_pitch = float(_s.pitch)
 		_vis_lean = float(_s.lean)
+		_vis_fork = float(_s.fork)
+		_vis_shock = float(_s.shock)
+		_vis_slide = float(_s.slide)
+		_vis_skid = float(_s.skid)
+		_vis_accel = _accel
 	else:  # other players' bikes: ease toward the host's numbers
 		_vis_heading = lerp_angle(_vis_heading, net_state[1], k)
 		_vis_pitch = lerpf(_vis_pitch, net_state[2], k)
 		_vis_lean = lerpf(_vis_lean, net_state[4], k)
+		_vis_fork = lerpf(_vis_fork, net_state[10], k)
+		_vis_shock = lerpf(_vis_shock, net_state[11], k)
+		_vis_slide = lerpf(_vis_slide, net_state[12], k)
+		_vis_skid = lerpf(_vis_skid, net_state[13], k)
+		_vis_accel = lerpf(_vis_accel, net_state[14], k)
 		player.rotation.y = _vis_heading
 		player.head.rotation.y = wrapf(player.net_yaw - _vis_heading, -PI, PI)
 	var gear_now := int(_s.gear) if local_sim else int(net_state[6])
@@ -407,15 +449,26 @@ func _process(delta: float) -> void:
 	var pt := Vector3(0, 0, axle[0].z if _vis_pitch >= 0.0 else axle[1].z)  # wheelie: rear contact, stoppie: front
 	var pitch_xf := Transform3D(Basis.IDENTITY, pt) * Transform3D(Basis(Vector3.RIGHT, _vis_pitch), Vector3.ZERO) \
 		* Transform3D(Basis.IDENTITY, -pt)
-	_pivot.transform = Transform3D(Basis(Vector3.BACK, -_vis_lean), Vector3.ZERO) * pitch_xf
+	_pivot.transform = Transform3D(Basis(Vector3.UP, -_vis_slide) * Basis(Vector3.BACK, -_vis_lean), Vector3.ZERO) * pitch_xf
+	# D-124: the frame sits down on its suspension over the wheels (drops and pitches by the two ends' compression).
+	var travel := float(_b.travel_m)
+	var rest := float(_t.susp_static)
+	var dc_f := (_vis_fork - rest) * travel
+	var dc_r := (_vis_shock - rest) * travel
+	_frame.transform = Transform3D(Basis(Vector3.RIGHT, atan2(dc_r - dc_f, float(_b.shape.wheelbase))),
+		Vector3(0, -(dc_f + dc_r) * 0.5, 0))
 	for w in _wheels:
 		w.rotation.x -= speed / float(_b.shape.wheel_r) * delta
-	player.body.transform = _pivot.transform * Transform3D(Basis.IDENTITY, Vector3(0, float(_b.shape.get("rider_y", 0.3)), 0.1))
+	var shift := BikeRules.rider_shift(_vis_lean, _vis_accel, _vis_pitch, 0.0, float(_b.lean_deg), _t)
+	var seat := Transform3D(Basis(Vector3.BACK, -shift.x), Vector3(shift.z, float(_b.shape.get("rider_y", 0.3)), 0.1 + shift.y))
+	player.body.transform = _pivot.transform * _frame.transform * seat
+	var inv := seat.affine_inverse()  # bar grips and pegs in the rider's own frame (D-124 pose)
+	player.body.set_ride_pose(inv * _grips[0], inv * _grips[1], inv * _pegs[0], inv * _pegs[1], _tuck)
 	var flags := int(net_state[7])
 	var rpm := float(_s.rpm) if local_sim else net_state[5]
 	var engine_on := bool(_s.engine) if local_sim else (flags & 1) != 0
 	var limiter := bool(_s.limiter) if local_sim else (flags & 2) != 0
-	_sound.update(rpm, engine_on, limiter, delta)
+	_sound.update(rpm, engine_on, limiter, delta, clampf(_vis_accel / 3.0, 0.0, 1.0), gear_now, _vis_skid)
 	if player.is_local:
 		_owner_view(delta, speed)
 		if _hud:
@@ -471,9 +524,11 @@ func _apply_ride() -> void:
 		if _pivot:
 			_pivot.queue_free()
 			_pivot = null
+			_frame = null
 			_wheels.clear()
 			_sound = null
 		player.body.transform = Transform3D.IDENTITY
+		player.body.clear_ride_pose()
 	player.body.on_bike = on
 	if player.is_local:
 		player.viewmodel.visible = not on
@@ -500,10 +555,15 @@ func _build_visual() -> void:
 	_wheels.clear()
 	_pivot = Node3D.new()
 	add_child(_pivot)
+	_frame = Node3D.new()
+	_pivot.add_child(_frame)
 	var mi := MeshInstance3D.new()
 	mi.mesh = BikeMesh.body(model, scheme)
 	mi.visibility_range_end = 250.0
-	_pivot.add_child(mi)
+	_frame.add_child(mi)
+	_grips = BikeMesh.grips(model)
+	_pegs = BikeMesh.pegs(model)
+	_tuck = deg_to_rad(float((_t.get("rider_tuck_deg", {}) as Dictionary).get(str(_b.shape.bars), 10.0)))
 	for a: Vector3 in BikeMesh.axles(model):
 		var holder := Node3D.new()
 		holder.position = a
@@ -515,7 +575,7 @@ func _build_visual() -> void:
 		_wheels.append(w)
 	_sound = BikeSound.new()
 	_pivot.add_child(_sound)
-	_sound.setup(str(_b.engine), float(_b.redline_rpm), float(_t.sound_m))
+	_sound.setup(str(_b.engine), float(_b.redline_rpm), float(_t.sound_m), _t)
 
 
 @rpc("authority", "call_local", "reliable")

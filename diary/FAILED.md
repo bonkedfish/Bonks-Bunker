@@ -218,8 +218,34 @@ Approach — why it failed — what replaced it.
   failures that passed on a re-run with no change: coop_test "client fired" (magazine unchanged) and
   disc_golf_test "throw out of turn refused". (4) The course box used to hand out EVERY disc in discs.json - with a
   catalog that would have given everyone 20 free discs; it now reads tuning starter_discs.
-- 2026-11-22 D-120: (1) first try at the FP disc anchor ([0.18,-0.22,-0.5]) put the disc below the view at the
-  reach-back for 4 of 5 styles - fixed with [0.16,-0.06,-0.62]. (2) Ground far-blend test shots from eye level were
-  blocked by a house; from 35 m up the change is hard to see because haze flattens everything past ~120 m. A red
-  tint shot (ground_far_red) proved the shared material IS live on all 15 near cells, and macro was raised 0.16 ->
-  0.35 / hue 0.12 -> 0.25 to show at all.
+- 2026-11-22 D-121 (job 1): zombie_types_test perf check failed once (48 zombies: physics 12.4 ms, worst 15.8) right
+  after gear_test; a straight re-run with no change gave 6.4 ms (worst 6.9). Health/damage data can't change physics
+  cost - treat a single physics spike there as noise and re-run before chasing it.
+- 2026-11-22 D-122 (job 2): (1) Bloom recovering every host tick (AR 5 deg/s) beat its growth (+0.18 per 0.11 s
+  shot) - the cone never grew; fixed by recovering only after burst_reset_s of not shooting. (2) The flash check
+  failed (0 lit) because a 0.05 s flash had ended before a check 0.02 s + 3 physics frames later; the test now
+  watches each frame. (3) The flash/tracer started at the hidden box pistol's Muzzle marker, visibly right of the
+  AR's barrel - fixed by taking the front of the held mesh. (4) Looted guns start with an empty magazine - the
+  test reloads before firing.
+- 2026-11-23 D-123 (job 3): (1) Laying the gun on the model's own clip hold failed on the kit rig - its clip holds
+  weapons in the LEFT hand (Middle1.L) and the right hand then reached 0.2-0.5 m short; fixed with a set hold per
+  weapon. (2) Reading the prop's pose from bone_global_pose x a cached local transform gave the wrong place on the kit;
+  BoneAttachment3D.on_skeleton_update() then the prop's own global transform is right. (3) Guessing the gun's up
+  axis from the clip picked different axes on the two rigs for the SAME kit mesh - now data. (4) A 3/4 test camera
+  made level guns look tilted up (perspective); a side view + red copy proved them level - check with a side view
+  first. (5) First-person lift 0.45 m: hands and gun filled the screen; 0.1 m lift + 0.25 m forward reads right.
+  (6) coop_test "client fired: magazine unchanged" failed 3 runs in a row, then passed with no code change (only
+  added logging) - the known flake from D-117/119, cause still not found. (7) gun_feel_test object count rose 1-3 per burst on two runs after D-123, then held flat (27925 x3, nodes /
+  resources / orphans logged too) on the next with no code change - noise from something outside the gun code.
+- 2026-11-23 D-123 / D-124: (1) Job 3's other-player gun kick (CombatWorld._body_kick) crashed when Bonk shot -
+  Bonk is in the "players" group but has no is_local / body; only bike_test (Bonk near you) caught it. Fixed by
+  checking the property. (2) D-124 landing: bump_gain 0.6 then 1.5 only reached 0.62 of fork travel on a 5 m/s
+  landing; 2.0.
+  (3) Again: re-copying a fixed file into an outputs folder I had already committed from sent the OLD copy - the
+  Player-type fix "didn't work". Always a new folder per commit.
+- 2026-11-23 D-124 rider pose: (1) The UBC "Driving" clip doesn't hold the spine / arms the way the IK needs and
+  the bend piled up every frame - the rider folded backward head-down behind the seat; fixed by resetting the driven
+  bones to rest before each pose. (2) That clip sits reclined: shoulders 1.0 m from the bars with 0.57 m arms; leaning
+  forward alone (+37 deg) only got to 0.86 m; the rider now also slides up the seat toward the bars until the hands
+  reach (0.000 m error). (3) One bike_test perf sample read 14.5 ms riding; the next three 5.9-6.8 ms with no
+  change - the PC was busy.

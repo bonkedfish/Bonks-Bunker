@@ -1,0 +1,20 @@
+{
+	"note": "Shared gun feel numbers (D-122). Per-gun numbers are in weapons.json \"feel\" (kick [pitch, yaw] deg, pattern [[pitch mult, yaw mult], ...] repeating per burst, recover deg/s the view kick returns, bloom [deg per shot, max deg, deg/s back], ads_spread multiplier and ads_zoom while aiming, vm_kick [back m, up m, tilt deg] of the first-person gun, flash size) and \"reload_cues\" [[fraction of reload_time, sound], ...], \"eject\" (fire / pump / bolt / reload: when a casing flies out) and \"cycle\" {at s after the shot, sound} for pump and bolt guns. burst_reset_s: a pause this long starts the recoil pattern again, and only then do the view kick and the spread bloom start recovering. ads_offset: where the first-person gun moves while aiming (m, camera space); ads_speed: how fast it gets there. flash_*: pooled muzzle flashes (quad + light); casing_*: pooled ejected casings (no physics bodies), only within casing_max_m of the camera.",
+	"burst_reset_s": 0.35,
+	"ads_offset": [-0.115, 0.045, 0.05],
+	"ads_speed": 14.0,
+	"vm_kick_return": 14.0,
+	"flash_pool": 8,
+	"flash_seconds": 0.05,
+	"flash_size_m": 0.22,
+	"flash_light_energy": 2.5,
+	"flash_light_range_m": 5.0,
+	"flash_color": [1.0, 0.78, 0.42],
+	"casing_pool": 32,
+	"casing_life_s": 2.5,
+	"casing_gravity": 9.8,
+	"casing_bounce": 0.35,
+	"casing_speed": [1.8, 1.4, 0.4],
+	"casing_max_m": 25.0,
+	"casing_sound_m": 12.0
+}

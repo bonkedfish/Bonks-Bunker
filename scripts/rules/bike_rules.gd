@@ -5,10 +5,15 @@
 # from lean and speed, a slow paddle-turn when nearly stopped) and pitch (throttle / clutch-kick wheelies, brake
 # stoppies, leaning back / forward, free pitch in the air). Also: when a bike crashes, crash damage, refuelling, and
 # which bike (if any) is parked in a map cell for a world.
+# D-124 chassis(): suspension (a spring-damper per end in fractions of travel: brake dive, drive squat, the lifted
+# end of a wheelie / stoppie unloading, bumps from the ground), forgiving skids (braking while steering at speed, or
+# a power slide leaned over on the gas in 1st / 2nd: the tail steps out, the slide adds turn, never a crash) and
+# rider_shift() (how far the rider leans past the bike and shifts fore / aft / sideways).
 # State `s` is a Dictionary mutated in place (no allocation per tick): speed (m/s along the heading, < 0 = pushed back),
 # rpm, free_rpm, gear (0 = neutral), clutch, lean (rad, + = right), pitch (rad, + = nose up), pitch_rate, yaw_rate
 # (d rotation.y / dt), drive (m/s^2 last tick), engine (running), limiter, stalled / out_of_gas (set on the tick it
-# happens; the caller clears them), fuel (litres).
+# happens; the caller clears them), fuel (litres); D-124: fork / shock (0..1 of travel compressed), fork_v / shock_v,
+# skid (0..1), slide (rad, + = nose right of the direction of travel).
 # Inputs: throttle / brake 0..1, steer -1..1 (+ = right), rider -1..1 (+ = lean back), clutch_held.
 # Pure: no scene or rendering dependencies. Depends on: DataLoader.
 class_name BikeRules
@@ -20,7 +25,7 @@ const SCHEMA := {"note": TYPE_STRING, "tuning": TYPE_DICTIONARY, "bikes": TYPE_D
 const BIKE_SCHEMA := {
 	"name": TYPE_STRING, "gear_top_kmh": TYPE_ARRAY, "idle_rpm": TYPE_FLOAT, "redline_rpm": TYPE_FLOAT,
 	"accel": TYPE_FLOAT, "torque": TYPE_ARRAY, "wheelie": TYPE_FLOAT, "lean_deg": TYPE_FLOAT, "brake": TYPE_FLOAT,
-	"tank_l": TYPE_FLOAT, "engine": TYPE_STRING, "spawn_weight": TYPE_FLOAT, "shape": TYPE_DICTIONARY,
+	"tank_l": TYPE_FLOAT, "engine": TYPE_STRING, "spawn_weight": TYPE_FLOAT, "shape": TYPE_DICTIONARY, "travel_m": TYPE_FLOAT,
 	"schemes": TYPE_ARRAY,
 }
 const TUNING_KEYS := ["clutch_release_s", "stall_rpm_frac", "rev_up_rpm_s", "rev_down_rpm_s", "rolling_mps2",
@@ -28,7 +33,9 @@ const TUNING_KEYS := ["clutch_release_s", "stall_rpm_frac", "rev_up_rpm_s", "rev
 	"pitch_damping", "pitch_spring", "clutch_kick", "stoppie", "loop_deg", "endo_deg", "land_pitch_deg", "land_vy", "impact_mps",
 	"crash_safe_mps", "crash_damage_per_mps", "crash_damage_max", "knock_off_damage", "back_push_mps", "idle_lpm",
 	"full_lpm", "gas_can_l", "spawn_chance", "dismount_max_mps", "zombie_hit_mps", "zombie_damage_per_mps",
-	"zombie_hit_slow", "parked_view_m", "sound_m"]
+	"zombie_hit_slow", "parked_view_m", "sound_m", "susp_static", "susp_spring", "susp_damping", "dive_per_mps2",
+	"squat_per_mps2", "bump_gain", "skid_min_mps", "skid_full_mps", "skid_rate", "slide_deg", "slide_rate", "slide_turn",
+	"rider_lean_extra", "rider_shift_m", "rider_hang_m", "engine_load_db", "engine_gear_pitch", "skid_db"]
 
 static var _data: Dictionary = {}
 
@@ -65,7 +72,8 @@ static func has_bike(id: String) -> bool:
 static func new_state(fuel: float) -> Dictionary:
 	return {"speed": 0.0, "rpm": 0.0, "free_rpm": 0.0, "gear": 0, "clutch": 1.0, "lean": 0.0, "pitch": 0.0,
 		"pitch_rate": 0.0, "yaw_rate": 0.0, "drive": 0.0, "engine": fuel > 0.0, "limiter": false, "stalled": false,
-		"out_of_gas": false, "fuel": fuel}
+		"out_of_gas": false, "fuel": fuel, "fork": 0.3, "fork_v": 0.0, "shock": 0.3, "shock_v": 0.0, "skid": 0.0,
+		"slide": 0.0}
 
 
 static func gears(b: Dictionary) -> int:
@@ -205,6 +213,71 @@ static func step(s: Dictionary, b: Dictionary, t: Dictionary, throttle: float, b
 		if float(s.fuel) <= 0.0:
 			s.engine = false
 			s.out_of_gas = true
+
+
+# D-124: one tick of the chassis, right after step(): suspension, skid and slide. ground_dv = how much faster the
+# ground pushed the bike up this tick (m/s; a landing is + its fall speed).
+static func chassis(s: Dictionary, b: Dictionary, t: Dictionary, throttle: float, brake: float, steer: float,
+		on_floor: bool, ground_dv: float, dt: float) -> void:
+	var v := absf(float(s.speed))
+	var p := float(s.pitch)
+	var rest := float(t.susp_static)
+	var decel := brake * float(b.brake) * clampf(v / 2.0, 0.0, 1.0) if on_floor else 0.0
+	var drive := maxf(float(s.drive), 0.0) if on_floor else 0.0
+	var fork_t := clampf(rest + decel * float(t.dive_per_mps2) - drive * float(t.squat_per_mps2) * 0.5, 0.0, 1.0)
+	var shock_t := clampf(rest + drive * float(t.squat_per_mps2) - decel * float(t.dive_per_mps2) * 0.4, 0.0, 1.0)
+	if not on_floor:
+		fork_t = 0.0  # in the air both ends hang out
+		shock_t = 0.0
+	elif p > 0.02:
+		fork_t = 0.0  # wheelie: the front is off the ground
+	elif p < -0.02:
+		shock_t = 0.0  # stoppie: the rear is
+	var kick := maxf(ground_dv, 0.0) * float(t.bump_gain) if on_floor else 0.0
+	var k := float(t.susp_spring)
+	var c := float(t.susp_damping)
+	var fv := float(s.fork_v) + (k * (fork_t - float(s.fork)) - c * float(s.fork_v)) * dt + kick
+	var sv := float(s.shock_v) + (k * (shock_t - float(s.shock)) - c * float(s.shock_v)) * dt + kick
+	var f := float(s.fork) + fv * dt
+	var sh := float(s.shock) + sv * dt
+	if f < 0.0 or f > 1.0:  # topped / bottomed out
+		f = clampf(f, 0.0, 1.0)
+		fv = 0.0
+	if sh < 0.0 or sh > 1.0:
+		sh = clampf(sh, 0.0, 1.0)
+		sv = 0.0
+	s.fork = f
+	s.fork_v = fv
+	s.shock = sh
+	s.shock_v = sv
+	# Skid: braking while steering at speed (some even straight from high speed), or a power slide on the gas leaned
+	# over in 1st / 2nd. Forgiving: it eases in and out and only ever helps the turn.
+	var target := 0.0
+	if on_floor and v > float(t.skid_min_mps) and absf(p) < 0.1:
+		var fast := clampf((v - float(t.skid_min_mps)) / maxf(float(t.skid_full_mps) - float(t.skid_min_mps), 0.1), 0.0, 1.0)
+		target = brake * fast * (0.35 + 0.65 * absf(steer))
+		var g := int(s.gear)
+		var lean_max := deg_to_rad(float(b.lean_deg))
+		if g >= 1 and g <= 2 and bool(s.engine):
+			target = maxf(target, throttle * clampf((absf(float(s.lean)) - lean_max * 0.5) / (lean_max * 0.5), 0.0, 1.0))
+	s.skid = move_toward(float(s.skid), clampf(target, 0.0, 1.0), float(t.skid_rate) * dt)
+	var side := signf(steer) if absf(steer) > 0.1 else signf(float(s.lean))
+	var slide_to := side * float(s.skid) * deg_to_rad(float(t.slide_deg))
+	s.slide = move_toward(float(s.slide), slide_to, float(t.slide_rate) * dt)
+
+
+# D-124: the extra turn a slide gives (d rotation.y / dt, same convention as yaw_rate) - the forgiving part.
+static func slide_yaw_rate(s: Dictionary, t: Dictionary) -> float:
+	return -float(s.slide) * float(t.slide_turn)
+
+
+# D-124: the rider's weight shift for the look: x = extra roll past the bike (rad, same sign as lean), y = fore / aft
+# (m, + = back), z = sideways hang toward the inside of the turn (m, + = right). drive / pitch / brake decel move them
+# back and forth; rider (-1 forward .. +1 back, the lean keys) adds to it.
+static func rider_shift(lean: float, drive: float, pitch: float, rider: float, lean_max_deg: float, t: Dictionary) -> Vector3:
+	var fore := clampf((drive / 10.0) + pitch * 0.5 + rider * 0.5, -1.0, 1.0) * float(t.rider_shift_m)
+	var lean_frac := clampf(lean / maxf(deg_to_rad(lean_max_deg), 0.01), -1.0, 1.0)
+	return Vector3(lean * float(t.rider_lean_extra), fore, lean_frac * float(t.rider_hang_m))
 
 
 # B: the engine restarts with fuel, and the clutch in or in neutral.

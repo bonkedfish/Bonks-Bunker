@@ -5,6 +5,9 @@
 # drop + pickup, crafting at the bunker workbench, Bonk in the same place on both, firing, swimming, then the client leaves and the host saves.
 # Names (D-081): both get the name prompt in a new world, name themselves, and see each other's name tag.
 # John Pork (D-091): the client walks up to his tent and presses E; the host must see the talk start.
+# Weapons (D-123): the client sees the host's body holding its gun with both hands. Motorcycles (D-124): on the Cope
+# Stadium field the host rides while the client watches its interpolated copy, then the client rides while the host
+# checks the truth (lean, fork dive, skid) and that the client's prediction ends where the host put it.
 # Host log + client reports -> tests/_look/coop_result.txt; screenshots coop_client_*.png.
 # Depends on: scenes/main.tscn, Net, WorldDrops, Workbench, ItemUse, MovementRules, SaveStore.
 extends Node
@@ -116,6 +119,9 @@ func _host_run() -> void:
 	await _ask(peer, 10, bonk.global_position)
 	# 7. Firing.
 	await _ask(peer, 7, null)
+	var cw: WeaponHolder = client.weapons
+	_say("host: client's gun on the host: slot %d mag %d sim %.2f next %.2f reload_end %.2f fire_prev %s queued %d" % [
+		cw._slot, cw._mags[cw._slot], cw._sim_time, cw._next_attack, cw._reload_end, cw._fire_prev, client._q_count])
 	# 8. Swimming in Yanney Park Lake.
 	_teleport(client, Vector3(-270, _surface(Vector3(-270, 0, 180)) + 0.3, 180))
 	await get_tree().create_timer(5.0).timeout
@@ -140,6 +146,8 @@ func _host_run() -> void:
 		int(dlg._talker), int(client.peer_id)])
 	if int(dlg._talker) == int(client.peer_id):
 		dlg._end()
+	# 13 / 14. Motorcycles in co-op (D-124).
+	await _bike_coop(peer, client, me)
 	# 9. Leave + save.
 	_step.rpc_id(peer, 9, null)
 	await get_tree().create_timer(4.0).timeout
@@ -152,6 +160,112 @@ func _host_run() -> void:
 	names.sort()
 	_check(names == ["Guest Tester", "Host Tester"], "save keeps both names %s" % [names])
 	await _finish()
+
+
+# D-124: two dirt bikes on the Cope Stadium field. 13: the host rides (gas, lean right, brake hard while turning)
+# while the client watches its copy of the host's bike - it must lean and dive like the host's and move smoothly
+# (interpolated). 14: the client rides the same way; the host's numbers (the truth) must show the lean, the fork
+# diving under braking and the skid, and the client's own prediction must end where the host put it.
+var _bike_samples := Vector4.ZERO  # host: max lean, max fork, max skid, max speed of the body being watched
+var _bike_watch := false
+var _bike_lean_speed := 0.0
+
+
+func _bike_coop(peer: int, client: Node3D, me: Node3D) -> void:
+	var lm := get_tree().root.find_child("cope_stadium", true, false) as Node3D
+	var dir := get_tree().get_first_node_in_group("bike_director")
+	if lm == null or dir == null:
+		_check(false, "bikes: cope_stadium and the bike director are there")
+		return
+	var xf := lm.global_transform
+	var heading := xf.basis.get_euler().y + PI
+	var a := xf * Vector3(0, 0.15, -54)  # bike_test's clear lane down the field (the tents stand either side)
+	var b := xf * Vector3(12, 0.15, -54)  # bike_test's crash lane
+	var id_h: String = dir.host_spawn_test("dirt_250", 1, 6.0, a, heading)
+	var id_c: String = dir.host_spawn_test("dirt_250", 2, 6.0, b, heading)
+	_teleport(me, a + xf.basis * Vector3(-1.2, 0.3, 0))
+	_teleport(client, b + xf.basis * Vector3(1.2, 0.3, 0))
+	await get_tree().create_timer(5.0).timeout
+	dir.host_mount(1, id_h)
+	dir.host_mount(client.peer_id, id_c)
+	await get_tree().create_timer(1.0).timeout
+	_check(me.bike.mounted and client.bike.mounted, "bikes: host and client both mounted (%s / %s)" % [me.bike.mounted, client.bike.mounted])
+	if not (me.bike.mounted and client.bike.mounted):
+		return
+	# 13: the host rides, the client watches.
+	_bike_samples = Vector4.ZERO
+	_bike_watch = true
+	_watch_bike(me)
+	_host_ride()
+	await _ask(peer, 13, null)
+	_bike_watch = false
+	_say("host: after my ride: still riding %s, skid peak %.2f, top %.0f km/h" % [me.bike.mounted, _bike_samples.z, _bike_samples.w * 3.6])
+	var host_lean := _bike_samples.x
+	var host_fork := _bike_samples.y
+	var seen: Array = _reports.get(13 + 100, [0.0, 0.0, 99.0])
+	_check(float(seen[0]) > host_lean * 0.7 and float(seen[1]) > 0.4 and float(seen[2]) < 3.0,
+		"host: my bike leaned %.0f deg (at %.1f m/s) and dived %.2f; the client's copy leaned %.0f, dived %.2f, biggest frame step %.1f deg" % [
+		rad_to_deg(host_lean), _bike_lean_speed, host_fork, rad_to_deg(float(seen[0])), float(seen[1]), float(seen[2])])
+	# 14: the client rides, the host checks.
+	await get_tree().create_timer(1.0).timeout
+	_bike_samples = Vector4.ZERO
+	_bike_watch = true
+	_watch_bike(client)
+	await _ask(peer, 14, null)
+	_bike_watch = false
+	var mine: Array = _reports.get(14 + 100, [0.0, Vector3.ZERO])
+	var off: float = client.global_position.distance_to(mine[1]) if mine[1] is Vector3 else 99.0
+	_check(_bike_samples.x > deg_to_rad(15.0) and _bike_samples.y > 0.45 and _bike_samples.z > 0.2 and off < 1.0,
+		"host: the client's bike (host truth) hit %.0f km/h, leaned %.0f deg, fork dived to %.2f, skidded %.2f; client's prediction %.2f m off" % [
+		_bike_samples.w * 3.6, rad_to_deg(_bike_samples.x), _bike_samples.y, _bike_samples.z, off])
+	await _shot("coop_host_bikes.png")
+
+
+func _watch_bike(p: Node3D) -> void:
+	while _bike_watch:
+		await get_tree().physics_frame
+		if p.bike.mounted:
+			var st: Dictionary = p.bike._s
+			_bike_samples = Vector4(maxf(_bike_samples.x, absf(float(st.lean))), maxf(_bike_samples.y, float(st.fork)),
+				maxf(_bike_samples.z, float(st.skid)), maxf(_bike_samples.w, float(st.speed)))
+			if absf(float(st.lean)) >= _bike_samples.x - 0.0001:
+				_bike_lean_speed = float(st.speed)
+
+
+# Clutch, 1st, gas 2.5 s leaning forward (no wheelie), sit up and lean right on the gas, then brake hard still
+# steering right (a skid).
+func _ride_inputs() -> void:
+	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+	Input.action_press("sprint")
+	await get_tree().create_timer(0.2).timeout
+	var e := InputEventAction.new()
+	e.action = "bike_shift_up"
+	e.pressed = true
+	Input.parse_input_event(e)
+	await get_tree().process_frame
+	var u := InputEventAction.new()
+	u.action = "bike_shift_up"
+	u.pressed = false
+	Input.parse_input_event(u)
+	await get_tree().create_timer(0.2).timeout
+	Input.action_press("crouch")  # lean forward: keeps the front down on the gas in 1st
+	Input.action_press("move_forward")
+	await get_tree().create_timer(0.3).timeout
+	Input.action_release("sprint")
+	await get_tree().create_timer(2.2).timeout
+	Input.action_release("crouch")  # sit up before braking (leaning forward on the brakes goes over the bars)
+	Input.action_press("move_right")  # short: the lane has tents either side
+	await get_tree().create_timer(0.45).timeout
+	Input.action_release("move_forward")
+	Input.action_press("move_back")
+	await get_tree().create_timer(1.4).timeout
+	Input.action_release("move_right")
+	Input.action_release("move_back")
+	await get_tree().create_timer(0.6).timeout
+
+
+func _host_ride() -> void:
+	await _ride_inputs()
 
 
 func _ask(peer: int, n: int, arg: Variant) -> void:
@@ -190,6 +304,24 @@ func _finish() -> void:
 	SaveStore.delete(_main.saves.world_slug)
 	await get_tree().create_timer(15.0).timeout
 	get_tree().quit()
+
+
+@rpc("any_peer", "call_remote", "reliable")
+func _bike_report(n: int, data: Array) -> void:
+	_reports[n + 100] = data
+
+
+var _ride_watch := false
+var _ride_max := Vector3.ZERO
+var _ride_top := 0.0
+
+
+func _ride_sampler(me: Node3D) -> void:
+	while _ride_watch:
+		await get_tree().physics_frame
+		var st: Dictionary = me.bike._s
+		_ride_max = Vector3(maxf(_ride_max.x, absf(float(st.lean))), maxf(_ride_max.y, float(st.fork)), maxf(_ride_max.z, float(st.skid)))
+		_ride_top = maxf(_ride_top, float(st.speed))
 
 
 @rpc("any_peer", "call_remote", "reliable")
@@ -266,11 +398,60 @@ func _step(n: int, arg: Variant) -> void:
 				"at the bench (%.1f m, synced after host teleport), crafted: ammo %d -> %d" % [d, a0, me.inventory.count("ammo_9mm")])
 		7:
 			var mag0: int = me.weapons.net_mag
+			var pre := "fire held before %s, local prev %s" % [Input.is_action_pressed("fire"), me.weapons._local_fire_prev]
 			Input.action_press("fire")
 			await get_tree().create_timer(0.8).timeout
 			Input.action_release("fire")
-			await get_tree().create_timer(0.8).timeout
-			_report.rpc_id(1, n, me.weapons.net_mag < mag0, "fired: magazine %d -> %d (host-confirmed)" % [mag0, me.weapons.net_mag])
+			var tw := Time.get_ticks_msec()  # the host's magazine can take a moment to replicate back (it did fire)
+			while me.weapons.net_mag >= mag0 and Time.get_ticks_msec() - tw < 3000:
+				await get_tree().create_timer(0.1).timeout
+			var hb: Node3D = null  # D-123: the host's body here holds its weapon with both hands
+			for p in get_tree().get_nodes_in_group("players"):
+				if "water" in p and p.peer_id == 1:
+					hb = p
+			var holds: bool = hb != null and hb.weapons.net_weapon != "" and hb.body._gun_id == hb.weapons.net_weapon \
+				and hb.body._held != null and hb.body._held.visible and hb.body.grip_error_r < 0.04
+			_report.rpc_id(1, n, me.weapons.net_mag < mag0 and holds, "fired: magazine %d -> %d (host-confirmed); host's body holds '%s' (grip err %.3f m) [me: slot %d/%d '%s' reloading %s mouse %d cutscene %s disc %s sport '%s' hp %.0f]" % [
+				mag0, me.weapons.net_mag, hb.body._gun_id if hb else "-", hb.body.grip_error_r if hb else -1.0, me.selected_slot,
+				me.weapons.net_slot, me.weapons.net_weapon, me.weapons.net_reloading, Input.mouse_mode, me.cutscene, me.disc.active,
+				me.sport.mode, me.health.current] + " " + pre)
+		13:  # watch the host's bike for 6 s (my copy is interpolated)
+			var hb: Node3D = null
+			for p in get_tree().get_nodes_in_group("players"):
+				if "water" in p and p.peer_id == 1:
+					hb = p
+			var lean := 0.0
+			var fork := 0.0
+			var step := 0.0
+			var last := 0.0
+			var shot := false
+			var t0 := Time.get_ticks_msec()
+			while Time.get_ticks_msec() - t0 < 6000 and hb:
+				await get_tree().process_frame
+				var l: float = hb.bike._vis_lean
+				if Time.get_ticks_msec() - t0 > 300:
+					step = maxf(step, rad_to_deg(absf(l - last)))
+				last = l
+				lean = maxf(lean, absf(l))
+				fork = maxf(fork, float(hb.bike._vis_fork))
+				if not shot and absf(l) > deg_to_rad(15.0):
+					shot = true
+					await _shot("coop_client_sees_host_bike.png")
+					last = hb.bike._vis_lean  # the screenshot stalls a frame: don't count that step
+			_bike_report.rpc_id(1, 13, [lean, fork, step])
+			_report.rpc_id(1, n, hb != null and lean > deg_to_rad(12.0),
+				"watched the host ride: lean up to %.0f deg, fork %.2f, biggest frame step %.1f deg" % [rad_to_deg(lean), fork, step])
+		14:  # ride myself (I predict, the host decides)
+			_ride_watch = true
+			_ride_max = Vector3.ZERO
+			_ride_top = 0.0
+			_ride_sampler(me)
+			await _ride_inputs()
+			_ride_watch = false
+			_bike_report.rpc_id(1, 14, [_ride_max.x, me.global_position])
+			_report.rpc_id(1, n, me.bike.mounted and _ride_max.x > deg_to_rad(15.0),
+				"rode: my prediction hit %.0f km/h, leaned %.0f deg, fork %.2f, skid %.2f, still riding %s" % [_ride_top * 3.6,
+				rad_to_deg(_ride_max.x), _ride_max.y, _ride_max.z, me.bike.mounted])
 		8:
 			var surf := _surface(me.global_position)
 			await _shot("coop_client_swim.png")

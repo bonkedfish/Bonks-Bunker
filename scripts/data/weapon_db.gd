@@ -1,7 +1,8 @@
 # WeaponDB — weapon definitions from data/weapons/weapons.json, looked up by string ID.
 # Each entry is validated against the schema for its "kind" (gun, melee or thrown, D-088), plus optional keys
 # (D-087): mesh (kit weapon mesh shown in hand), spread_deg, pellets, auto (fires while held), zoom, wear
-# (condition lost per attack), mod_slots, speed (thrown). Pure: no scene or rendering dependencies.
+# (condition lost per attack), mod_slots, speed (thrown); D-122 gun feel: feel (recoil, bloom, aim, kick, flash),
+# reload_cues, eject, cycle (see data/weapons/gun_feel.json note). Pure: no scene or rendering dependencies.
 # Depends on: DataLoader.
 class_name WeaponDB
 extends RefCounted
@@ -26,6 +27,7 @@ const SCHEMAS := {
 const OPTIONAL := {
 	"mesh": TYPE_STRING, "spread_deg": TYPE_FLOAT, "pellets": TYPE_FLOAT, "auto": TYPE_BOOL, "zoom": TYPE_FLOAT,
 	"wear": TYPE_FLOAT, "mod_slots": TYPE_ARRAY,
+	"feel": TYPE_DICTIONARY, "reload_cues": TYPE_ARRAY, "eject": TYPE_STRING, "cycle": TYPE_DICTIONARY,
 }
 
 static var _weapons: Dictionary = {}

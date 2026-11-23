@@ -4245,8 +4245,14 @@
 		"Foot.R"
 	],
 	"throw_rigs": [
-		{"spine": ["Abdomen", "Torso"], "upper": "UpperArm.R", "lower": "LowerArm.R", "end": "LowerArm.R", "tip": [0, 0.3, 0]},
-		{"spine": ["spine_01", "spine_02", "spine_03"], "upper": "upperarm_r", "lower": "lowerarm_r", "end": "hand_r", "tip": [0, 0.09, 0.02]}
+		{"spine": ["Abdomen", "Torso"], "upper": "UpperArm.R", "lower": "LowerArm.R", "end": "LowerArm.R", "tip": [0, 0.3, 0],
+			"left": {"upper": "UpperArm.L", "lower": "LowerArm.L", "end": "LowerArm.L", "tip": [0, 0.3, 0]},
+			"leg_l": {"upper": "UpperLeg.L", "lower": "LowerLeg.L", "end": "Foot.L", "tip": [0, 0, 0]},
+			"leg_r": {"upper": "UpperLeg.R", "lower": "LowerLeg.R", "end": "Foot.R", "tip": [0, 0, 0]}},
+		{"spine": ["spine_01", "spine_02", "spine_03"], "upper": "upperarm_r", "lower": "lowerarm_r", "end": "hand_r", "tip": [0, 0.09, 0.02],
+			"left": {"upper": "upperarm_l", "lower": "lowerarm_l", "end": "hand_l", "tip": [0, 0.09, 0.02]},
+			"leg_l": {"upper": "thigh_l", "lower": "calf_l", "end": "foot_l", "tip": [0, 0, 0]},
+			"leg_r": {"upper": "thigh_r", "lower": "calf_r", "end": "foot_r", "tip": [0, 0, 0]}}
 	],
 	"player_models": [
 		"survivor_lis",

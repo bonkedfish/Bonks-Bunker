@@ -6,13 +6,13 @@
 # "SafeZones" (D-101: where hostiles stay away), "SuitWatcher" (D-104: the man in the suit) and the world-event
 # nodes "DayNight", "Bed", "Encounters", "Oddities", "Collectibles" and "RareEvents" (D-105..D-110) on every peer,
 # plus "Dread" and "ZombieVoices" (D-114: heartbeat, muffling, shake, grab overlay; zombie groans) and "Grass"
-# (D-115: 3D grass around the camera).
+# (D-115: 3D grass around the camera) and "GunFx" (D-122: pooled muzzle flashes + ejected casings).
 # Any failed, timed-out or ended session reloads Main with a fresh lobby client (Net.leave_to_menu, D-091) and the
 # start screen shows why (Net.menu_message).
 # Depends on: Net autoload, scenes/player.tscn, SaveDirector ("Saves"), WorldPicker, PlayerIdentity, PauseMenu,
 # CharacterCreator, AppearanceRules (a new body starts with a random look, D-096), BikeDirector, WeatherDirector,
 # SafeZones, SuitWatcher, DayNight, BunkerBed, EncounterDirector, WorldOddities, CollectibleManager, RareEventDirector,
-# Dread, ZombieVoices, GrassField.
+# Dread, ZombieVoices, GrassField, GunFx.
 extends Node3D
 
 const PLAYER_SCENE := preload("res://scenes/player.tscn")
@@ -64,7 +64,8 @@ func _ready() -> void:
 	for pair: Array in [[DayNight.new(), "DayNight"], [BunkerBed.new(), "Bed"],
 			[EncounterDirector.new(), "Encounters"], [WorldOddities.new(), "Oddities"],
 			[CollectibleManager.new(), "Collectibles"], [RareEventDirector.new(), "RareEvents"],
-			[Dread.new(), "Dread"], [ZombieVoices.new(), "ZombieVoices"], [GrassField.new(), "Grass"]]:
+			[Dread.new(), "Dread"], [ZombieVoices.new(), "ZombieVoices"], [GrassField.new(), "Grass"],
+			[GunFx.new(), "GunFx"]]:
 		var node: Node = pair[0]
 		node.name = str(pair[1])  # fixed names: their RPCs need the same path on every peer
 		add_child(node)

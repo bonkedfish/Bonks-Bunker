@@ -68,6 +68,13 @@ func _pure() -> void:
 	var ms := GearRules.weapon_stats(smg)
 	_check(is_equal_approx(float(GearRules.weapon_stats(std).damage), 25.0) and absf(float(ws.damage) - 15.725) < 0.01,
 		"pistol damage 25 standard, %.2f worn at 35%%" % float(ws.damage))
+	var more := true  # D-121: every other gun hits harder per trigger pull than the pistol (shotgun = all pellets)
+	var per_shot := {}
+	for gid: String in ["revolver_44", "smg_9mm", "shotgun_pump", "rifle_hunting", "rifle_ar", "rifle_sniper"]:
+		var wd := WeaponDB.get_weapon(gid)
+		per_shot[gid] = float(wd.damage) * float(wd.get("pellets", 1.0))
+		more = more and float(per_shot[gid]) > 25.0
+	_check(more, "every other gun out-damages the pistol's 25 per shot: %s" % str(per_shot))
 	_check(int(ms.mag_size) == 45 and absf(float(ms.noise_radius) - 12.0) < 0.01 and GearRules.display_name(worn) == "Worn 9mm Pistol",
 		"SMG + extended mag 45 rounds, suppressed noise %.0f m; names '%s'" % [float(ms.noise_radius), GearRules.display_name(worn)])
 	_check(not GearRules.can_attach(smg, "mod_quick_mag") and GearRules.can_attach(smg, "mod_red_dot")

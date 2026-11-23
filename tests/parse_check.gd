@@ -1,7 +1,7 @@
 # ParseCheck — loads the given scripts and prints whether each compiled (parse errors print above). Dev helper.
 extends Node
 
-const PATHS := ["res://tests/disc_catalog_test.gd", "res://tools/map_import/house_details.gd", "res://tools/map_import/building_looks.gd", "res://tests/house_look.gd", "res://tests/car_lineup.gd", "res://tools/map_import/vegetation_builder.gd", "res://tools/map_import/build_cells.gd",
+const PATHS := ["res://scripts/rules/bike_rules.gd", "res://scripts/vehicles/bike_rider.gd", "res://scripts/vehicles/bike_sound.gd", "res://scripts/vehicles/bike_mesh.gd", "res://tests/bike_test.gd", "res://tests/coop_test.gd", "res://scripts/visual/gun_pose.gd", "res://scripts/visual/arm_ik.gd", "res://scripts/visual/character_animator.gd", "res://tests/weapon_anim_test.gd", "res://scripts/rules/gun_feel_rules.gd", "res://scripts/fx/gun_fx.gd", "res://scripts/combat/weapon_holder.gd", "res://scripts/combat/combat_world.gd", "res://scripts/player/player.gd", "res://scripts/player/viewmodel.gd", "res://scripts/ui/hud.gd", "res://scripts/main.gd", "res://scripts/data/weapon_db.gd", "res://tests/gun_feel_test.gd", "res://tools/map_import/house_details.gd", "res://tools/map_import/building_looks.gd", "res://tests/house_look.gd", "res://tests/car_lineup.gd", "res://tools/map_import/vegetation_builder.gd", "res://tools/map_import/build_cells.gd",
 	"res://scripts/world/grass_field.gd", "res://tools/map_import/build_grass_masks.gd",
 	"res://tools/map_import/refresh_street_materials.gd", "res://tools/map_import/street_looks.gd", "res://tests/ground_look.gd",
 	"res://tools/release/release.gd", "res://scripts/rules/scare_rules.gd", "res://scripts/ai/zombie_scare.gd", "res://scripts/visual/twitch.gd",

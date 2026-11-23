@@ -118,6 +118,75 @@ func _pure() -> void:
 	_check(is_equal_approx(float(r[0]), 7.0) and int(r[1]) == 2, "refuel 1 L + 3 cans into a 7 L tank: %s" % [r])
 	_check(BikeRules.crash_damage(20.0, t) > 20.0 and BikeRules.crash_damage(2.0, t) == 0.0,
 		"crash damage at 20 m/s %.0f, at 2 m/s %.0f" % [BikeRules.crash_damage(20.0, t), BikeRules.crash_damage(2.0, t)])
+	_chassis_pure(dirt, t)
+
+
+# D-124 chassis, pure: rest sag, brake dive, gas squat, a landing bottoms the fork toward full, a brake-turn at speed
+# skids and the slide adds turn, no skid slow or riding straight easy, a power slide leaned over on the gas in 1st,
+# the slide and skid fade when you let go, the rider leans past the bike and shifts with the gas / brakes.
+func _chassis_pure(dirt: Dictionary, t: Dictionary) -> void:
+	var dt := 1.0 / 60.0
+	var s := BikeRules.new_state(5.0)
+	s.speed = 12.0
+	s.gear = 3
+	s.clutch = 1.0
+	s.engine = true
+	for i in 60:
+		BikeRules.chassis(s, dirt, t, 0.0, 0.0, 0.0, true, 0.0, dt)
+	var rest := float(s.fork)
+	var max_fork := 0.0
+	for i in 40:
+		BikeRules.chassis(s, dirt, t, 0.0, 1.0, 0.0, true, 0.0, dt)
+		max_fork = maxf(max_fork, float(s.fork))
+	_check(absf(rest - float(t.susp_static)) < 0.02 and max_fork > rest + 0.15 and float(s.shock) < rest,
+		"braking dives the fork (rest %.2f -> %.2f of travel), the rear rises (%.2f)" % [rest, max_fork, float(s.shock)])
+	_check(float(s.skid) > 0.0 and float(s.skid) < 0.5, "hard straight braking at 43 km/h: a light skid (%.2f)" % float(s.skid))
+	s = BikeRules.new_state(5.0)
+	s.speed = 8.0
+	s.drive = 7.0
+	for i in 40:
+		BikeRules.chassis(s, dirt, t, 1.0, 0.0, 0.0, true, 0.0, dt)
+	_check(float(s.shock) > float(t.susp_static) + 0.1, "the gas squats the rear (%.2f of travel)" % float(s.shock))
+	s = BikeRules.new_state(5.0)
+	var peak := 0.0
+	BikeRules.chassis(s, dirt, t, 0.0, 0.0, 0.0, true, 5.0, dt)  # landing from 5 m/s
+	for i in 60:
+		BikeRules.chassis(s, dirt, t, 0.0, 0.0, 0.0, true, 0.0, dt)
+		peak = maxf(peak, float(s.fork))
+	_check(peak > 0.65 and absf(float(s.fork) - float(t.susp_static)) < 0.05,
+		"a 5 m/s landing compresses both ends (fork peak %.2f) and settles back (%.2f)" % [peak, float(s.fork)])
+	s = BikeRules.new_state(5.0)
+	s.speed = 16.0
+	s.gear = 3
+	s.lean = deg_to_rad(30.0)
+	for i in 60:
+		BikeRules.chassis(s, dirt, t, 0.0, 1.0, 1.0, true, 0.0, dt)
+	var slide := float(s.slide)
+	_check(float(s.skid) > 0.8 and slide > deg_to_rad(10.0) and BikeRules.slide_yaw_rate(s, t) < 0.0,
+		"brake + steer right at 58 km/h: skid %.2f, the tail steps out %.0f deg, the slide turns it further right (%.2f rad/s)" % [
+		float(s.skid), rad_to_deg(slide), BikeRules.slide_yaw_rate(s, t)])
+	for i in 90:
+		BikeRules.chassis(s, dirt, t, 0.0, 0.0, 0.0, true, 0.0, dt)
+	_check(float(s.skid) == 0.0 and absf(float(s.slide)) < 0.001, "let go: the skid and slide fade out (%.2f, %.3f)" % [float(s.skid), float(s.slide)])
+	s = BikeRules.new_state(5.0)
+	s.speed = 3.0
+	for i in 60:
+		BikeRules.chassis(s, dirt, t, 0.0, 1.0, 1.0, true, 0.0, dt)
+	_check(float(s.skid) == 0.0, "no skid at 11 km/h")
+	s = BikeRules.new_state(5.0)
+	s.speed = 10.0
+	s.gear = 2
+	s.lean = deg_to_rad(42.0)
+	for i in 60:
+		BikeRules.chassis(s, dirt, t, 1.0, 0.0, 1.0, true, 0.0, dt)
+	_check(float(s.skid) > 0.5, "power slide: on the gas leaned over in 2nd (skid %.2f)" % float(s.skid))
+	var lean := deg_to_rad(30.0)
+	var sh := BikeRules.rider_shift(lean, 0.0, 0.0, 0.0, float(dirt.lean_deg), t)
+	var gas := BikeRules.rider_shift(0.0, 6.0, 0.0, 0.0, float(dirt.lean_deg), t)
+	var brk := BikeRules.rider_shift(0.0, -9.0, 0.0, 0.0, float(dirt.lean_deg), t)
+	_check(sh.x > 0.0 and sh.z > 0.0 and gas.y > 0.0 and brk.y < 0.0,
+		"rider leans %.0f deg past the bike, hangs %.2f m inside, shifts back %.2f m on the gas, forward %.2f m braking" % [
+		rad_to_deg(sh.x), sh.z, gas.y, brk.y])
 
 
 # --- in game -------------------------------------------------------------------------------------
@@ -160,6 +229,7 @@ func _ride_tests(_main: Node) -> void:
 		max_pitch = maxf(max_pitch, float(bike._s.pitch))
 	_check(bike.mounted and top1 > 8.0, "launch in 1st: %.0f km/h, still riding %s" % [top1 * 3.6, bike.mounted])
 	await _shot_player("bike_riding.png")
+	var ride_err_moving: float = _me.body.ride_error
 	# 1st -> 2nd.
 	Input.action_press("sprint")
 	Input.action_release("move_forward")
@@ -181,6 +251,10 @@ func _ride_tests(_main: Node) -> void:
 	await get_tree().create_timer(2.5).timeout
 	Input.action_release("move_back")
 	_check(float(bike._s.speed) < 1.0, "brakes stop it, then S paddles it back (%.1f m/s)" % float(bike._s.speed))
+	# D-124: the rider's hands on the grips and feet on the pegs (riding and stopped), seen from the side.
+	_check(maxf(ride_err_moving, _me.body.ride_error) < 0.06, "rider pose: hands on the grips, feet on the pegs (worst %.3f m riding, %.3f stopped)" % [
+		ride_err_moving, _me.body.ride_error])
+	await _shot("bike_side.png", _me.global_position + _me.global_basis.x * 2.4 + Vector3.UP * 0.8, _me.global_position + Vector3.UP * 0.7)
 	# Down to 1st, wheelie: lean back + gas.
 	_tap("bike_shift_down")
 	await get_tree().create_timer(0.1).timeout
@@ -244,6 +318,7 @@ func _ride_tests(_main: Node) -> void:
 	# Crash: a fresh bike in the clear lane (x 12) - clutch kick in 1st, leaning back, never easing off -> loops.
 	bike.host_dismount(false)
 	await get_tree().create_timer(0.3).timeout
+	await _perf("on foot at the same spot")  # D-124: what riding itself costs
 	var lane := _xf * Vector3(12, 0.15, -45)
 	var id2: String = dir.host_spawn_test("dirt_250", 0, 6.0, lane, heading)
 	_me.global_position = lane + Vector3.UP * 0.3

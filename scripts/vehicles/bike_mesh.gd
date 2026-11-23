@@ -4,6 +4,10 @@
 # low / under / dual), headlight, tail light. One vertex-coloured surface per (bike, colour scheme), built once and
 # shared by every bike that looks the same; the two wheels are a separate shared mesh (one per bike model) so a ridden
 # bike can spin them. Local frame: ground under the bike's middle at y 0, front = -Z, rear axle at +wheelbase/2.
+# D-124 detail: foot pegs (rearsets / forward controls by type), levers on the grips, mirrors (street / cruiser),
+# radiator (dirt / moto / sport), chain + sprockets, fork lowers, a coil on the shock, a plate; wheels with brake
+# discs and wire spokes (dirt / moto / cruiser) or cast 5-spokes (street). grips() / pegs() give where the rider's
+# hands and feet go (BikeRider poses the rider there).
 # Presentation only. Depends on: BikeRules (bike data).
 class_name BikeMesh
 extends RefCounted
@@ -143,6 +147,35 @@ static func _build_body(b: Dictionary, scheme: int) -> ArrayMesh:
 		"dual":
 			for y: float in [0.0, 0.1]:
 				_beam(st, eng_c + Vector3(0.14, -0.05 + y, -0.05), Vector3(0.2, r * 0.7 + y, wb * 0.5 + 0.25), 0.08, chrome)
+	# D-124 detail: pegs, levers, mirrors, radiator, chain + sprockets, fork lowers, shock coil, plate.
+	for pg: Vector3 in _pegs_of(sh):
+		_box(st, pg, Vector3(0.12, 0.03, 0.05) if str(sh.fenders) != "cruiser" else Vector3(0.12, 0.02, 0.22), metal)
+		_beam(st, pg - Vector3(signf(pg.x) * 0.06, 0, 0), Vector3(signf(pg.x) * 0.1, pg.y + 0.05, pg.z), 0.03, frame)
+	for g: Vector3 in _grips_of(sh):
+		_box(st, g, Vector3(0.1, 0.045, 0.045), dark)  # grip
+		_beam(st, g + Vector3(-signf(g.x) * 0.04, 0.02, -0.02), g + Vector3(signf(g.x) * 0.06, 0.0, -0.1), 0.015, metal)  # lever
+	if str(sh.fenders) in ["street", "cruiser"]:
+		for g: Vector3 in _grips_of(sh):
+			var m := g + Vector3(signf(g.x) * -0.08, 0.22, 0.02)
+			_beam(st, g + Vector3(-signf(g.x) * 0.08, 0.02, 0), m, 0.015, dark)
+			_box(st, m + Vector3(signf(g.x) * 0.03, 0.03, 0), Vector3(0.09, 0.06, 0.02), chrome)
+	if str(sh.fenders) in ["dirt", "moto"] or bool(sh.fairing):
+		_box(st, Vector3(0, r * 1.3, -0.3), Vector3(0.3, 0.24, 0.04), Color(0.2, 0.21, 0.22))
+		_box(st, Vector3(0, r * 1.3, -0.322), Vector3(0.26, 0.2, 0.005), Color(0.35, 0.36, 0.37))
+	var spr_f := Vector3(-0.13, r * 0.95 - 0.05, 0.02)
+	var spr_r := Vector3(-0.13, r, wb * 0.5)
+	_disc_at(st, spr_f, 0.045, 0.02, dark)
+	_disc_at(st, spr_r, r * 0.42, 0.015, metal)
+	_beam(st, spr_f + Vector3(0, 0.045, 0), spr_r + Vector3(0, r * 0.42, 0), 0.02, Color(0.18, 0.17, 0.16))
+	_beam(st, spr_f - Vector3(0, 0.045, 0), spr_r - Vector3(0, r * 0.42, 0), 0.02, Color(0.18, 0.17, 0.16))
+	for x: float in [-0.09, 0.09]:  # fork lowers (the sliding part) + brake caliper on the left
+		_beam(st, front + Vector3(x, 0, 0), front.lerp(head, 0.38) + Vector3(x, 0, 0), 0.065, dark)
+	_box(st, front + Vector3(-0.1, r * 0.45, 0.06), Vector3(0.04, 0.09, 0.12), Color(0.7, 0.15, 0.1))
+	var sh_a := pivot + Vector3(0, 0.05, 0.12)
+	var sh_b := Vector3(0, seat_h - 0.08, 0.25)
+	_beam(st, sh_a.lerp(sh_b, 0.2), sh_a.lerp(sh_b, 0.75), 0.075, Color(0.9, 0.75, 0.1) if str(sh.fenders) in ["dirt", "moto"] else Color(0.6, 0.6, 0.62))
+	if str(sh.fenders) in ["street", "cruiser"]:
+		_box(st, Vector3(0, seat_h - 0.12, wb * 0.5 + 0.2), Vector3(0.18, 0.12, 0.01), Color(0.9, 0.88, 0.8))
 	# Lights.
 	_box(st, head + Vector3(0, 0.02 if bool(sh.fairing) else 0.12, -0.18 if bool(sh.fairing) else -0.1), Vector3(0.14, 0.11, 0.05), Color(0.95, 0.92, 0.75))
 	_box(st, Vector3(0, seat_h + 0.02, wb * 0.5 + 0.12), Vector3(0.1, 0.05, 0.03), Color(0.85, 0.05, 0.05))
@@ -161,15 +194,52 @@ static func _build_wheel(sh: Dictionary) -> ArrayMesh:
 	_disc(st, r, w, Color(0.06, 0.06, 0.06))                # tyre
 	_disc(st, r * 0.72, w + 0.01, Color(0.5, 0.51, 0.53))   # rim face
 	_disc(st, r * 0.14, w + 0.06, Color(0.75, 0.76, 0.78))  # hub
-	for i in 6:  # spokes so the spin reads
-		var a := TAU * i / 6.0
-		var p := Vector3(0, sin(a), cos(a)) * r * 0.42
-		st.set_color(Color(0.3, 0.31, 0.33))
-		_box(st, p, Vector3(w + 0.012, 0.035, r * 0.6), Color(0.3, 0.31, 0.33), Basis(Vector3.RIGHT, -a))
+	_disc_at(st, Vector3(-w * 0.5 - 0.015, 0, 0), r * 0.48, 0.008, Color(0.62, 0.63, 0.66))  # brake disc
+	if str(sh.fenders) == "street":  # cast 5-spoke
+		for i in 5:
+			var a := TAU * i / 5.0
+			_box(st, Vector3(0, sin(a), cos(a)) * r * 0.42, Vector3(w * 0.6, 0.05, r * 0.58), Color(0.16, 0.16, 0.17), Basis(Vector3.RIGHT, -a))
+	else:  # wire spokes, crossed
+		for i in 16:
+			var a := TAU * i / 16.0
+			var side := -1.0 if i % 2 == 0 else 1.0
+			_box(st, Vector3(side * w * 0.2, sin(a) * r * 0.42, cos(a) * r * 0.42), Vector3(0.008, 0.008, r * 0.58),
+				Color(0.7, 0.71, 0.73), Basis(Vector3.RIGHT, -a))
 	st.generate_normals()
 	var mesh := st.commit()
 	mesh.surface_set_material(0, _rubber)
 	return mesh
+
+
+# D-124: left and right bar grip points (where the rider's hands go), bike frame.
+static func grips(id: String) -> Array[Vector3]:
+	return _grips_of(BikeRules.bike(id).shape)
+
+
+static func _grips_of(sh: Dictionary) -> Array[Vector3]:
+	var head := Vector3(0, float(sh.seat_h) + 0.1, -float(sh.wheelbase) * 0.5 + 0.3)
+	match str(sh.bars):
+		"clipons":
+			return [head + Vector3(-0.29, 0.0, 0.14), head + Vector3(0.29, 0.0, 0.14)]
+		"ape":
+			return [head + Vector3(-0.3, 0.45, 0.12), head + Vector3(0.3, 0.45, 0.12)]
+	return [head + Vector3(-0.36, 0.2, 0.06), head + Vector3(0.36, 0.2, 0.06)]
+
+
+# D-124: left and right foot peg points, bike frame (rearsets on the street bikes, forward controls on the cruiser).
+static func pegs(id: String) -> Array[Vector3]:
+	return _pegs_of(BikeRules.bike(id).shape)
+
+
+static func _pegs_of(sh: Dictionary) -> Array[Vector3]:
+	var r := float(sh.wheel_r)
+	var p := Vector3(0.19, r * 0.95, 0.12)
+	match str(sh.fenders):
+		"street":
+			p = Vector3(0.17, r + 0.12, 0.22)
+		"cruiser":
+			p = Vector3(0.22, r * 0.85, -0.3)
+	return [Vector3(-p.x, p.y, p.z), p]
 
 
 # --- primitives ------------------------------------------------------------------------------------
@@ -218,6 +288,23 @@ static func _disc(st: SurfaceTool, r: float, w: float, col: Color) -> void:
 		for v: Vector3 in [l0, r0, r1, l0, r1, l1]:  # tread
 			st.add_vertex(v)
 		for v: Vector3 in [Vector3(-hw, 0, 0), l1, l0, Vector3(hw, 0, 0), r0, r1]:  # sides
+			st.add_vertex(v)
+
+
+# The same, centred at c.
+static func _disc_at(st: SurfaceTool, c: Vector3, r: float, w: float, col: Color) -> void:
+	st.set_color(col)
+	var hw := w * 0.5
+	for i in SEGMENTS:
+		var a0 := TAU * i / SEGMENTS
+		var a1 := TAU * (i + 1) / SEGMENTS
+		var p0 := c + Vector3(0, sin(a0) * r, cos(a0) * r)
+		var p1 := c + Vector3(0, sin(a1) * r, cos(a1) * r)
+		var l0 := p0 + Vector3(-hw, 0, 0)
+		var l1 := p1 + Vector3(-hw, 0, 0)
+		var r0 := p0 + Vector3(hw, 0, 0)
+		var r1 := p1 + Vector3(hw, 0, 0)
+		for v: Vector3 in [l0, r0, r1, l0, r1, l1, c + Vector3(-hw, 0, 0), l1, l0, c + Vector3(hw, 0, 0), r0, r1]:
 			st.add_vertex(v)
 
 

@@ -1,0 +1,6 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://tests/weapon_anim_test.gd" id="1_wa"]
+
+[node name="WeaponAnimTest" type="Node3D"]
+script = ExtResource("1_wa")

@@ -3,6 +3,7 @@
 # player and a nearby zombie, Runner hearing, a Spitter hitting from range, drops on death, spawn types by distance
 # from the bunker, a lineup screenshot and frame time with the full pool (40) active.
 # Results: tests/_look/zombie_types_result.txt (ends with the failure count); zombie_types_lineup.png.
+# D-121: zombie max health is 2.5x the old numbers (pure check).
 # Depends on: scenes/main.tscn, ZombieDirector, CombatWorld, WorldDrops, ZombieTypeRules, EnemyDB, LootDB, LootRules.
 extends Node
 
@@ -19,7 +20,6 @@ var _combat: Node
 
 func _ready() -> void:
 	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(OUT_DIR))
-	ZombieScare.roles_off = true  # D-114 traits are random per activation; this test wants plain zombies
 	_pure()
 	var main: Node = load("res://scenes/main.tscn").instantiate()
 	add_child(main)
@@ -81,6 +81,14 @@ func _pure() -> void:
 		and ZombieTypeRules.burst_damage(burst, 4.6) == 0.0, "burst: 50 at the centre, 17.5 at 4.5 m, 0 beyond")
 	for id: String in TYPES:
 		_check(not EnemyDB.get_enemy(id).is_empty(), "enemy '%s' loads" % id)
+	# Job 1 (D-121): zombie health x2.5 (was 80 / 45 / 120 / 160 / 70; Kearney High mobs 55 / 320 / 90).
+	var hp := {"zombie_shambler": 200.0, "zombie_runner": 112.5, "zombie_bloater": 300.0, "zombie_riot": 400.0,
+		"zombie_spitter": 175.0, "hall_monitor": 137.5, "linebacker": 800.0, "lunch_lady": 225.0}
+	var hp_ok := true
+	for id: String in hp:
+		hp_ok = hp_ok and is_equal_approx(float(EnemyDB.get_enemy(id).max_health), float(hp[id]))
+	_check(hp_ok and is_equal_approx(float(EnemyDB.get_enemy("bearcat").max_health), 1100.0),
+		"zombie health x2.5 (Shambler %.0f), bosses unchanged" % float(EnemyDB.get_enemy("zombie_shambler").max_health))
 	for t: String in ["zombie_riot", "zombie_bloater", "zombie_spitter"]:
 		_check(not LootDB.get_table(t).is_empty(), "drop table '%s' loads" % t)
 	var recipes := DataLoader.load_json("res://data/crafting/recipes.json")
