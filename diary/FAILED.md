@@ -210,3 +210,11 @@ Approach — why it failed — what replaced it.
   build_cells run silently vanished ~10 min in with no error and no files written (another chat was using Godot at
   the same time); a plain re-run finished. Poll every few minutes and check index.json's time before trusting a bake.
   (3) D-117 was already taken by another chat's disc golf work - read the end of DECISIONS.md right before writing.
+- 2026-11-22 D-117/D-119: (1) device_commit_files of a file I had just rewritten at the SAME outputs path sent the
+  previous copy (the store serves a cached version for a while) - the roller fix looked like it did nothing. Always
+  write each round of changes to a NEW outputs folder, and stage the file back to check before testing. (2) Raising
+  the first-person body during a throw (+0.75 m) to bring the swing into view put the camera inside the chibi
+  survivor's torso and hair - reverted; the kit model's shoulders are ~0.85 m below the eye. (3) Two one-off test
+  failures that passed on a re-run with no change: coop_test "client fired" (magazine unchanged) and
+  disc_golf_test "throw out of turn refused". (4) The course box used to hand out EVERY disc in discs.json - with a
+  catalog that would have given everyone 20 free discs; it now reads tuning starter_discs.

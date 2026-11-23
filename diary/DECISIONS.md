@@ -562,3 +562,13 @@ Locked unless flagged. Each entry: decision — reason.
   windows so they line up; boarded windows are now 3D boards (the shader's painted boards are off). Detail draws to
   220 m (visibility range), the far shells are unchanged. Sheds get none. Driveway cars moved out to 5.4 m and porch
   packages to 2.9 m so they clear porches and steps. Needs a full build_cells re-bake + build_grass_masks.
+- **D-119** (2026-11-22) Disc catalog at John Pork's. User picks: BIG CATALOG (10 made-up molds x base + premium
+  plastic = 20 discs: Platte Comet, Long Haul, Sandhill Crane, Fence Post, Buffalo, Tumbleweed, Grain Elevator,
+  Cornhusk, The Brick, Anvil - no real brands) over a 9-disc bag / 4-disc set; EXPENSIVE, 50-150 BOTTLE CAPS (base
+  50-75, premium 90-140) over tiered 15-50 / cheap 5-10; 3 STILL CYCLES the discs you own (fastest first) over a
+  bag wheel. Plastic matters: base slips more on release (aim 2.5 deg / tilt 5 deg, 1 sigma, host-rolled) and beats
+  in 4x faster (0.012 per throw, +0.03 per tree hit; premium 0.7 deg, 0.003 / 0.01); a beaten-in disc flies with
+  more turn (up to -1.5) and less fade (up to -50%). Wear is per player character per disc id (copies share it),
+  host-owned, saved in the world as disc_wear. The course box now hands out only the three starters. Also: the
+  user chose to LEAVE first-person throws as they are (the chibi survivor's swing happens below the camera; others
+  see it in third person) over a disc-only FP swing or a dedicated FP arm.

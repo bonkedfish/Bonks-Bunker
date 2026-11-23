@@ -18,6 +18,9 @@
 #          with the world through SaveDirector (host_load_records / host_save_records), shown on the record boards.
 #          D-117: every throw has a style (backhand, forehand, putt, tomahawk, roller - DiscFlightRules.style); a
 #          roller that lands on its edge rolls along the ground (DiscFlightRules.roll_step) until it falls over.
+#          D-119: the course box hands out only the starter discs (tuning starter_discs; the rest are bought from
+#          John Pork); each release slips by its plastic (DiscFlightRules.slip) and each disc beats in as it's thrown
+#          (`wear`, per player character per disc id, saved with the world through SaveDirector; flies worn()).
 #   Every peer: the scorecard (`card` + `turn`, synced whole on change), disc flights played back from the host's
 #          path (one pooled disc per player, left lying at the lie) with a DiscTracer line kept until the thrower
 #          walks up to the disc, the ace replay, the disc golf HUD, minimap basket + tee. The thrower's swing is drawn
@@ -50,6 +53,7 @@ var card: Dictionary = {}
 var turn := 0             # peer whose throw it is (0 = nobody can throw right now)
 var wind := Vector2.ZERO  # m/s in map x / z, the way it blows (D-076)
 var records: Dictionary = {}  # course id -> DiscRecordsRules record set (D-082); host-owned, saved with the world
+var wear: Dictionary = {}     # player save key -> {disc id: 0 new .. 1 beaten in} (D-119); host-owned, saved
 
 var _t: Dictionary
 var _rng := RandomNumberGenerator.new()
@@ -221,15 +225,30 @@ func request_throw(disc_id: String, power: float, yaw: float, pitch: float, tilt
 	power = off.x
 	yaw = off.y
 	tilt = off.z
+	var disc: Dictionary = DiscFlightRules.discs()[disc_id]
+	var slip := DiscFlightRules.slip(disc, _t, _rng)  # base plastic slips more than premium (D-119)
+	yaw += slip.x
+	tilt += slip.y
+	var key := _save_key(p.peer_id)
+	var w := float((wear.get(key, {}) as Dictionary).get(disc_id, 0.0))
 	var cl := DiscGolfRules.clamp_throw(power, tilt, _t)
 	var from: Vector3 = p.global_position + Vector3.UP * float(_t.launch_height_m)
 	if not DiscFlightRules.styles().has(style_id):
 		style_id = "backhand"
-	var f := DiscFlightRules.launch(DiscFlightRules.discs()[disc_id], cl.x, from, yaw,
+	var f := DiscFlightRules.launch(DiscFlightRules.worn(disc, w, _t), cl.x, from, yaw,
 		DiscFlightRules.launch_pitch(clampf(pitch, -1.5, 1.5), _t), cl.y, DiscFlightRules.style(style_id), _t)
 	f.wind = Vector3(wind.x, 0.0, wind.y) * float(_t.wind_effect)
 	var out := _simulate(f, c.basket_position(int(e.hole)), c)
 	e.throws = int(e.throws) + 1
+	var trees := 0
+	var contacts: PackedFloat32Array = out[4]
+	for i in range(1, contacts.size(), 2):
+		if HIT_SOUNDS[int(contacts[i])] == "disc_tree":
+			trees += 1
+	if not wear.has(key):
+		wear[key] = {}
+	wear[key][disc_id] = DiscFlightRules.wear_after(w, disc, trees, _t)
+	e["wear"] = (wear[key] as Dictionary).duplicate()  # the HUD shows it (card is synced)
 	var drop := _shore_drop(out[0], c) if out[5] else Vector3.INF  # in the water: throw again from the shore (D-082)
 	_in_flight[p.peer_id] = [_duration(out[0]) + 0.2 + MAX_THROW_LEAD, out[2], out[3], [out[0], out[1], disc_id, style_id], drop]
 	_play.rpc(p.peer_id, disc_id, out[0], out[1], style_id, out[4])
@@ -262,13 +281,14 @@ func _physics_process(delta: float) -> void:
 
 
 func _host_join(p: Node, c: DiscCourse, hole := 0) -> void:
-	for id: String in DiscFlightRules.discs():
-		if p.inventory.count(id) <= 0:
-			p.inventory.host_add(id, 1)
+	for id: Variant in _t.get("starter_discs", []):  # the catalog is bought from John Pork (D-119)
+		if p.inventory.count(str(id)) <= 0:
+			p.inventory.host_add(str(id), 1)
 	var strokes: Array = []
 	strokes.resize(c.hole_count())
 	strokes.fill(0)
-	card[p.peer_id] = {"hole": hole, "throws": 0, "strokes": strokes, "lie": c.tee_position(hole), "out": false, "done": false, "left": false}
+	card[p.peer_id] = {"hole": hole, "throws": 0, "strokes": strokes, "lie": c.tee_position(hole), "out": false, "done": false, "left": false,
+		"wear": (wear.get(_save_key(p.peer_id), {}) as Dictionary).duplicate()}
 
 
 # A disc has come to rest (its flight has played out on screen). shot = [path, rolls, disc id, style] for the ace
@@ -497,6 +517,21 @@ func host_load_records(saved: Dictionary) -> void:
 
 func host_save_records() -> Dictionary:
 	return records.duplicate(true)
+
+
+func host_load_wear(saved: Dictionary) -> void:
+	wear = saved.duplicate(true)
+
+
+func host_save_wear() -> Dictionary:
+	return wear.duplicate(true)
+
+
+# Host: the save key of a peer's character (as course records use it), or "peer_<id>" with no save running.
+func _save_key(peer: int) -> String:
+	var saves := get_tree().get_first_node_in_group("save_director")
+	var key: String = saves.key_of(peer) if saves and saves.has_method("key_of") else ""
+	return key if key != "" else "peer_%d" % peer
 
 
 # The whole flight at once: returns [path, rolls, rest position, holed, contacts as [time, kind] pairs for sounds,

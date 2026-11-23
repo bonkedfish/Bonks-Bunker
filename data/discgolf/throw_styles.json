@@ -299,7 +299,7 @@
 		"putt": {
 			"name": "Putt",
 			"hand": 1.0,
-			"power_mult": 0.5,
+			"power_mult": 0.47,
 			"pitch_add_deg": -2.0,
 			"roll_add_deg": 0.0,
 			"lift_mult": 1.0,
@@ -647,9 +647,9 @@
 					[
 						0.55,
 						[
-							0.05,
-							-0.8,
-							-0.8
+							0.04,
+							-0.68,
+							-0.7
 						],
 						[
 							0.7,

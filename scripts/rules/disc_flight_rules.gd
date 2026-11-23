@@ -8,6 +8,9 @@
 # forehand — and the roll tilts the lift sideways, which is the curve. Tree crowns: canopy_hit() (ellipsoid test).
 # Wind (D-076): Flight.wind (m/s) — drag works on the speed through the air, so the disc drifts with it; next_wind()
 # rolls the next shift, wind_from() names where it comes from. Ground, trunks and the basket are the caller's job (DiscGolfDirector with physics rays, DiscGolfRules for baskets).
+# Catalog (D-119): bag_order() sorts the discs fastest first; each disc's plastic tier (base | premium, "plastics" in
+# the tuning) sets how far a release slips (slip()) and how fast it beats in (wear_after()); worn() turns a disc's
+# numbers into its beat-in flight (more turn, less fade).
 # One Flight object per throw; step() allocates nothing. Depends on: DataLoader, data/discgolf/discs.json,
 # data/discgolf/throw_styles.json, data/tuning/disc_golf.json.
 class_name DiscFlightRules
@@ -18,7 +21,7 @@ const TUNING_PATH := "res://data/tuning/disc_golf.json"
 const STYLES_PATH := "res://data/discgolf/throw_styles.json"
 const DISC_SCHEMA := {"speed": TYPE_FLOAT, "glide": TYPE_FLOAT, "turn": TYPE_FLOAT, "fade": TYPE_FLOAT,
 	"full_speed_mps": TYPE_FLOAT, "color": TYPE_ARRAY}
-const DISC_OPTIONAL := ["shape", "plastic", "stamp"]  # looks only (DiscMesh, D-117)
+const DISC_OPTIONAL := ["shape", "plastic", "stamp", "tier"]  # looks only (DiscMesh, D-117); tier = plastic (D-119)
 const STYLE_SCHEMA := {"name": TYPE_STRING, "hand": TYPE_FLOAT, "power_mult": TYPE_FLOAT, "pitch_add_deg": TYPE_FLOAT,
 	"roll_add_deg": TYPE_FLOAT, "lift_mult": TYPE_FLOAT, "turn_mult": TYPE_FLOAT, "fade_mult": TYPE_FLOAT,
 	"flip_rate_deg": TYPE_FLOAT, "max_roll_deg": TYPE_FLOAT, "ground_roll": TYPE_BOOL, "spin": TYPE_FLOAT, "anim": TYPE_DICTIONARY}
@@ -36,7 +39,8 @@ const TUNING_SCHEMA := {"note": TYPE_STRING, "lift_base": TYPE_FLOAT, "lift_glid
 	"pole_radius_m": TYPE_FLOAT, "start_radius_m": TYPE_FLOAT, "box_use_m": TYPE_FLOAT, "lie_radius_m": TYPE_FLOAT,
 	"tee_radius_m": TYPE_FLOAT, "max_strokes": TYPE_FLOAT, "leave_m": TYPE_FLOAT, "wind_max_mph": TYPE_FLOAT,
 	"wind_shift_s": TYPE_ARRAY, "wind_turn_max_deg": TYPE_FLOAT, "wind_effect": TYPE_FLOAT, "ace_slowmo": TYPE_FLOAT,
-	"ace_slowmo_s": TYPE_FLOAT, "impaired_throw": TYPE_DICTIONARY, "water_penalty": TYPE_FLOAT, "rewards": TYPE_DICTIONARY}
+	"ace_slowmo_s": TYPE_FLOAT, "impaired_throw": TYPE_DICTIONARY, "water_penalty": TYPE_FLOAT, "rewards": TYPE_DICTIONARY,
+	"plastics": TYPE_DICTIONARY, "wear": TYPE_DICTIONARY, "starter_discs": TYPE_ARRAY}
 const G := 9.8
 const MPH := 0.44704  # m/s
 const COMPASS := ["N", "NE", "E", "SE", "S", "SW", "W", "NW"]
@@ -46,6 +50,7 @@ static var _tuning: Dictionary = {}
 static var _styles: Dictionary = {}
 static var _style_order: PackedStringArray = []
 static var _styles_fp: Dictionary = {}
+static var _bag_order: PackedStringArray = []
 
 
 class Flight:
@@ -141,6 +146,48 @@ static func tuning() -> Dictionary:
 
 static func is_disc(id: String) -> bool:
 	return discs().has(id)
+
+
+# Every disc id, fastest first (drivers .. putters), then by id - the order 3 steps through the discs you carry.
+static func bag_order() -> PackedStringArray:
+	if _bag_order.is_empty():
+		var ids := discs().keys()
+		ids.sort_custom(func(a: String, b: String) -> bool:
+			var sa := float(_discs[a].speed)
+			var sb := float(_discs[b].speed)
+			return sa > sb if sa != sb else a < b)
+		_bag_order = PackedStringArray(ids)
+	return _bag_order
+
+
+# The plastic tier's numbers (D-119): {name, slip_deg, wear_per_throw, wear_per_tree}; unknown tiers are base.
+static func plastic(disc: Dictionary, t: Dictionary) -> Dictionary:
+	var all: Dictionary = t.get("plastics", {})
+	return all.get(str(disc.get("tier", "base")), all.get("base", {}))
+
+
+# A disc's numbers once it has beaten in (wear 0 new .. 1 fully worn): turn more negative, less fade. A copy.
+static func worn(disc: Dictionary, wear: float, t: Dictionary) -> Dictionary:
+	var w := clampf(wear, 0.0, 1.0)
+	if w <= 0.0:
+		return disc
+	var out := disc.duplicate()
+	var wt: Dictionary = t.get("wear", {})
+	out.turn = float(disc.turn) + float(wt.get("turn_add", -1.5)) * w
+	out.fade = float(disc.fade) * (1.0 - float(wt.get("fade_cut", 0.5)) * w)
+	return out
+
+
+# How the release slips in the hand (host-rolled): Vector2(yaw error in radians, tilt error in degrees).
+static func slip(disc: Dictionary, t: Dictionary, rng: RandomNumberGenerator) -> Vector2:
+	var deg := float(plastic(disc, t).get("slip_deg", 0.0))
+	return Vector2(deg_to_rad(rng.randfn(0.0, deg)), rng.randfn(0.0, deg * 2.0))
+
+
+# Wear after one throw that clipped `tree_hits` tree crowns.
+static func wear_after(wear: float, disc: Dictionary, tree_hits: int, t: Dictionary) -> float:
+	var pl := plastic(disc, t)
+	return clampf(wear + float(pl.get("wear_per_throw", 0.0)) + float(pl.get("wear_per_tree", 0.0)) * tree_hits, 0.0, 1.0)
 
 
 # Launch pitch (radians) for a camera pitch (radians).

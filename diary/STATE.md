@@ -866,3 +866,19 @@ a release, then gh release view) went to main as 02768d7.
   Looks to judge by eye: burned windows read dark brown rather than black under sun; garage doors are plain panels
   with seams; no interiors (doors are not openable - a caved roof shows the empty inside). Not in a release yet.
   Possible saving if primitives matter: drop the never-seen bottom face of trim boxes (~20%).
+- 2026-11-22 D-117 DONE (finished in the houses chat): fixed the leftovers - big_update_test / disc_golf_test still
+  passed the old bool to DiscFlightRules.launch and _ace; full putt 25.8 m -> power_mult 0.5 -> 0.47 (24.4 m); the
+  roller's release key was out of arm's reach ([0.05,-0.8,-0.8] = 1.13 arm lengths -> [0.04,-0.68,-0.7]);
+  disc_golf_test now closes the character creator (it covered every course screenshot). disc_look 0 failures (IK
+  error 0-0.011 m everywhere), disc_golf_test 54 PASS / 0, coop_test PASS. Screenshots: baskets with link chains,
+  mulch ring, tee pads + signs, discs, survivor poses all read right. KNOWN: in first person the throw is not seen -
+  the hand stays 0.9-1.2 m below the camera (disc_look logs it in camera space); user chose to leave it (D-119
+  entry). Centennial 723-829 draw calls (was 724 before D-117), 5.7-5.8 ms. The disc HUD panel sits where NPC
+  subtitles go (John Pork's lines overlap it when a disc is out). Not hand-played yet.
+- 2026-11-22 D-119 DONE: disc catalog. tests/disc_catalog_test.tscn 0 failures: 20 catalog discs (10 base, 10
+  premium) + 3 starters, all items, all sold by John Pork 50-140 caps (shop -> "Discs. Real ones." -> 5 pages),
+  full-power backhands 54-122 m, bag order fastest first, base slip 2.58 deg vs premium 0.67, 20 throws = base 24%
+  / premium 6% beaten in, a fully beaten-in Sandhill Crane ends 6.5 m further right. disc_look_catalog.png shows all
+  23. HUD: a dot per carried disc above the panel, the one in hand named with its plastic, flight numbers and
+  "beaten in N%". Wear only shows during a round (it rides on the synced card). Base vs premium look: matte + scuffed
+  vs glossy + gold foil (the per-player wear is not drawn on the disc). Not in a release yet.

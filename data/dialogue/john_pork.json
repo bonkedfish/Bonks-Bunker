@@ -88,6 +88,10 @@
 							"next": "shop_party"
 						},
 						{
+							"text": "Discs. Real ones.",
+							"next": "shop_discs"
+						},
+						{
 							"text": "Never mind.",
 							"next": "menu"
 						}
@@ -607,6 +611,616 @@
 					"speaker": "John Pork",
 					"text": "Throw straight, drink crooked!",
 					"end": true
+				},
+				"shop_discs": {
+					"speaker": "John Pork",
+					"text": "Hand-pressed, prairie-tested, only slightly irradiated. Base plastic slips when you throw it and beats in fast. Premium grips and holds its line. Bottle caps only - discs are serious business.",
+					"choices": [
+						{
+							"text": "Distance drivers.",
+							"next": "discs_distance"
+						},
+						{
+							"text": "Fairway and control drivers.",
+							"next": "discs_fairway"
+						},
+						{
+							"text": "Utility discs and rollers.",
+							"next": "discs_utility"
+						},
+						{
+							"text": "Midranges.",
+							"next": "discs_mids"
+						},
+						{
+							"text": "Putters and approach discs.",
+							"next": "discs_putters"
+						},
+						{
+							"text": "Back.",
+							"next": "shop"
+						}
+					]
+				},
+				"broke_caps": {
+					"speaker": "John Pork",
+					"text": "Ope - not enough caps, buddy. Bottle caps. Little metal hats. Check every cooler in Kearney.",
+					"choices": [
+						{
+							"text": "Right.",
+							"next": "shop_discs"
+						}
+					]
+				},
+				"sold_disc_comet_base": {
+					"speaker": "John Pork",
+					"text": "One Platte Comet (Base). She'll flip more once she's beat in. That's character.",
+					"give": {
+						"disc_comet_base": 1
+					},
+					"give_every_time": true,
+					"choices": [
+						{
+							"text": "Another disc.",
+							"next": "shop_discs"
+						},
+						{
+							"text": "That's all.",
+							"next": "menu"
+						}
+					]
+				},
+				"sold_disc_comet_premium": {
+					"speaker": "John Pork",
+					"text": "One Platte Comet (Premium). Treat her right and she'll treat you right.",
+					"give": {
+						"disc_comet_premium": 1
+					},
+					"give_every_time": true,
+					"choices": [
+						{
+							"text": "Another disc.",
+							"next": "shop_discs"
+						},
+						{
+							"text": "That's all.",
+							"next": "menu"
+						}
+					]
+				},
+				"sold_disc_long_haul_base": {
+					"speaker": "John Pork",
+					"text": "One Long Haul (Base). She'll flip more once she's beat in. That's character.",
+					"give": {
+						"disc_long_haul_base": 1
+					},
+					"give_every_time": true,
+					"choices": [
+						{
+							"text": "Another disc.",
+							"next": "shop_discs"
+						},
+						{
+							"text": "That's all.",
+							"next": "menu"
+						}
+					]
+				},
+				"sold_disc_long_haul_premium": {
+					"speaker": "John Pork",
+					"text": "One Long Haul (Premium). Treat her right and she'll treat you right.",
+					"give": {
+						"disc_long_haul_premium": 1
+					},
+					"give_every_time": true,
+					"choices": [
+						{
+							"text": "Another disc.",
+							"next": "shop_discs"
+						},
+						{
+							"text": "That's all.",
+							"next": "menu"
+						}
+					]
+				},
+				"sold_disc_crane_base": {
+					"speaker": "John Pork",
+					"text": "One Sandhill Crane (Base). She'll flip more once she's beat in. That's character.",
+					"give": {
+						"disc_crane_base": 1
+					},
+					"give_every_time": true,
+					"choices": [
+						{
+							"text": "Another disc.",
+							"next": "shop_discs"
+						},
+						{
+							"text": "That's all.",
+							"next": "menu"
+						}
+					]
+				},
+				"sold_disc_crane_premium": {
+					"speaker": "John Pork",
+					"text": "One Sandhill Crane (Premium). Treat her right and she'll treat you right.",
+					"give": {
+						"disc_crane_premium": 1
+					},
+					"give_every_time": true,
+					"choices": [
+						{
+							"text": "Another disc.",
+							"next": "shop_discs"
+						},
+						{
+							"text": "That's all.",
+							"next": "menu"
+						}
+					]
+				},
+				"sold_disc_fence_post_base": {
+					"speaker": "John Pork",
+					"text": "One Fence Post (Base). She'll flip more once she's beat in. That's character.",
+					"give": {
+						"disc_fence_post_base": 1
+					},
+					"give_every_time": true,
+					"choices": [
+						{
+							"text": "Another disc.",
+							"next": "shop_discs"
+						},
+						{
+							"text": "That's all.",
+							"next": "menu"
+						}
+					]
+				},
+				"sold_disc_fence_post_premium": {
+					"speaker": "John Pork",
+					"text": "One Fence Post (Premium). Treat her right and she'll treat you right.",
+					"give": {
+						"disc_fence_post_premium": 1
+					},
+					"give_every_time": true,
+					"choices": [
+						{
+							"text": "Another disc.",
+							"next": "shop_discs"
+						},
+						{
+							"text": "That's all.",
+							"next": "menu"
+						}
+					]
+				},
+				"sold_disc_buffalo_base": {
+					"speaker": "John Pork",
+					"text": "One Buffalo (Base). She'll flip more once she's beat in. That's character.",
+					"give": {
+						"disc_buffalo_base": 1
+					},
+					"give_every_time": true,
+					"choices": [
+						{
+							"text": "Another disc.",
+							"next": "shop_discs"
+						},
+						{
+							"text": "That's all.",
+							"next": "menu"
+						}
+					]
+				},
+				"sold_disc_buffalo_premium": {
+					"speaker": "John Pork",
+					"text": "One Buffalo (Premium). Treat her right and she'll treat you right.",
+					"give": {
+						"disc_buffalo_premium": 1
+					},
+					"give_every_time": true,
+					"choices": [
+						{
+							"text": "Another disc.",
+							"next": "shop_discs"
+						},
+						{
+							"text": "That's all.",
+							"next": "menu"
+						}
+					]
+				},
+				"sold_disc_tumbleweed_base": {
+					"speaker": "John Pork",
+					"text": "One Tumbleweed (Base). She'll flip more once she's beat in. That's character.",
+					"give": {
+						"disc_tumbleweed_base": 1
+					},
+					"give_every_time": true,
+					"choices": [
+						{
+							"text": "Another disc.",
+							"next": "shop_discs"
+						},
+						{
+							"text": "That's all.",
+							"next": "menu"
+						}
+					]
+				},
+				"sold_disc_tumbleweed_premium": {
+					"speaker": "John Pork",
+					"text": "One Tumbleweed (Premium). Treat her right and she'll treat you right.",
+					"give": {
+						"disc_tumbleweed_premium": 1
+					},
+					"give_every_time": true,
+					"choices": [
+						{
+							"text": "Another disc.",
+							"next": "shop_discs"
+						},
+						{
+							"text": "That's all.",
+							"next": "menu"
+						}
+					]
+				},
+				"sold_disc_grain_elevator_base": {
+					"speaker": "John Pork",
+					"text": "One Grain Elevator (Base). She'll flip more once she's beat in. That's character.",
+					"give": {
+						"disc_grain_elevator_base": 1
+					},
+					"give_every_time": true,
+					"choices": [
+						{
+							"text": "Another disc.",
+							"next": "shop_discs"
+						},
+						{
+							"text": "That's all.",
+							"next": "menu"
+						}
+					]
+				},
+				"sold_disc_grain_elevator_premium": {
+					"speaker": "John Pork",
+					"text": "One Grain Elevator (Premium). Treat her right and she'll treat you right.",
+					"give": {
+						"disc_grain_elevator_premium": 1
+					},
+					"give_every_time": true,
+					"choices": [
+						{
+							"text": "Another disc.",
+							"next": "shop_discs"
+						},
+						{
+							"text": "That's all.",
+							"next": "menu"
+						}
+					]
+				},
+				"sold_disc_cornhusk_base": {
+					"speaker": "John Pork",
+					"text": "One Cornhusk (Base). She'll flip more once she's beat in. That's character.",
+					"give": {
+						"disc_cornhusk_base": 1
+					},
+					"give_every_time": true,
+					"choices": [
+						{
+							"text": "Another disc.",
+							"next": "shop_discs"
+						},
+						{
+							"text": "That's all.",
+							"next": "menu"
+						}
+					]
+				},
+				"sold_disc_cornhusk_premium": {
+					"speaker": "John Pork",
+					"text": "One Cornhusk (Premium). Treat her right and she'll treat you right.",
+					"give": {
+						"disc_cornhusk_premium": 1
+					},
+					"give_every_time": true,
+					"choices": [
+						{
+							"text": "Another disc.",
+							"next": "shop_discs"
+						},
+						{
+							"text": "That's all.",
+							"next": "menu"
+						}
+					]
+				},
+				"sold_disc_brick_base": {
+					"speaker": "John Pork",
+					"text": "One The Brick (Base). She'll flip more once she's beat in. That's character.",
+					"give": {
+						"disc_brick_base": 1
+					},
+					"give_every_time": true,
+					"choices": [
+						{
+							"text": "Another disc.",
+							"next": "shop_discs"
+						},
+						{
+							"text": "That's all.",
+							"next": "menu"
+						}
+					]
+				},
+				"sold_disc_brick_premium": {
+					"speaker": "John Pork",
+					"text": "One The Brick (Premium). Treat her right and she'll treat you right.",
+					"give": {
+						"disc_brick_premium": 1
+					},
+					"give_every_time": true,
+					"choices": [
+						{
+							"text": "Another disc.",
+							"next": "shop_discs"
+						},
+						{
+							"text": "That's all.",
+							"next": "menu"
+						}
+					]
+				},
+				"sold_disc_anvil_base": {
+					"speaker": "John Pork",
+					"text": "One Anvil (Base). She'll flip more once she's beat in. That's character.",
+					"give": {
+						"disc_anvil_base": 1
+					},
+					"give_every_time": true,
+					"choices": [
+						{
+							"text": "Another disc.",
+							"next": "shop_discs"
+						},
+						{
+							"text": "That's all.",
+							"next": "menu"
+						}
+					]
+				},
+				"sold_disc_anvil_premium": {
+					"speaker": "John Pork",
+					"text": "One Anvil (Premium). Treat her right and she'll treat you right.",
+					"give": {
+						"disc_anvil_premium": 1
+					},
+					"give_every_time": true,
+					"choices": [
+						{
+							"text": "Another disc.",
+							"next": "shop_discs"
+						},
+						{
+							"text": "That's all.",
+							"next": "menu"
+						}
+					]
+				},
+				"discs_distance": {
+					"speaker": "John Pork",
+					"text": "Big arms only. These go into the next county.",
+					"choices": [
+						{
+							"text": "75 caps: Platte Comet - distance driver, base plastic (13 | 5 | -1 | 3)",
+							"next": "sold_disc_comet_base",
+							"cost": {
+								"bottle_cap": 75
+							},
+							"cost_fail": "broke_caps"
+						},
+						{
+							"text": "140 caps: Platte Comet - distance driver, premium plastic (13 | 5 | -1 | 3)",
+							"next": "sold_disc_comet_premium",
+							"cost": {
+								"bottle_cap": 140
+							},
+							"cost_fail": "broke_caps"
+						},
+						{
+							"text": "70 caps: Long Haul - understable distance driver, base plastic (12 | 6 | -3 | 1)",
+							"next": "sold_disc_long_haul_base",
+							"cost": {
+								"bottle_cap": 70
+							},
+							"cost_fail": "broke_caps"
+						},
+						{
+							"text": "130 caps: Long Haul - understable distance driver, premium plastic (12 | 6 | -3 | 1)",
+							"next": "sold_disc_long_haul_premium",
+							"cost": {
+								"bottle_cap": 130
+							},
+							"cost_fail": "broke_caps"
+						},
+						{
+							"text": "Back.",
+							"next": "shop_discs"
+						}
+					]
+				},
+				"discs_fairway": {
+					"speaker": "John Pork",
+					"text": "Fairway stuff. Goes where you point it, mostly.",
+					"choices": [
+						{
+							"text": "65 caps: Sandhill Crane - fairway driver, base plastic (9 | 5 | -1 | 2)",
+							"next": "sold_disc_crane_base",
+							"cost": {
+								"bottle_cap": 65
+							},
+							"cost_fail": "broke_caps"
+						},
+						{
+							"text": "120 caps: Sandhill Crane - fairway driver, premium plastic (9 | 5 | -1 | 2)",
+							"next": "sold_disc_crane_premium",
+							"cost": {
+								"bottle_cap": 120
+							},
+							"cost_fail": "broke_caps"
+						},
+						{
+							"text": "60 caps: Fence Post - control driver, base plastic (7 | 5 | 0 | 1)",
+							"next": "sold_disc_fence_post_base",
+							"cost": {
+								"bottle_cap": 60
+							},
+							"cost_fail": "broke_caps"
+						},
+						{
+							"text": "110 caps: Fence Post - control driver, premium plastic (7 | 5 | 0 | 1)",
+							"next": "sold_disc_fence_post_premium",
+							"cost": {
+								"bottle_cap": 110
+							},
+							"cost_fail": "broke_caps"
+						},
+						{
+							"text": "Back.",
+							"next": "shop_discs"
+						}
+					]
+				},
+				"discs_utility": {
+					"speaker": "John Pork",
+					"text": "Headwind discs and rollers. For the creative.",
+					"choices": [
+						{
+							"text": "65 caps: Buffalo - overstable utility driver, base plastic (9 | 3 | 0 | 4)",
+							"next": "sold_disc_buffalo_base",
+							"cost": {
+								"bottle_cap": 65
+							},
+							"cost_fail": "broke_caps"
+						},
+						{
+							"text": "125 caps: Buffalo - overstable utility driver, premium plastic (9 | 3 | 0 | 4)",
+							"next": "sold_disc_buffalo_premium",
+							"cost": {
+								"bottle_cap": 125
+							},
+							"cost_fail": "broke_caps"
+						},
+						{
+							"text": "60 caps: Tumbleweed - understable roller, base plastic (8 | 6 | -4 | 1)",
+							"next": "sold_disc_tumbleweed_base",
+							"cost": {
+								"bottle_cap": 60
+							},
+							"cost_fail": "broke_caps"
+						},
+						{
+							"text": "115 caps: Tumbleweed - understable roller, premium plastic (8 | 6 | -4 | 1)",
+							"next": "sold_disc_tumbleweed_premium",
+							"cost": {
+								"bottle_cap": 115
+							},
+							"cost_fail": "broke_caps"
+						},
+						{
+							"text": "Back.",
+							"next": "shop_discs"
+						}
+					]
+				},
+				"discs_mids": {
+					"speaker": "John Pork",
+					"text": "Mids. The disc that never lies to you.",
+					"choices": [
+						{
+							"text": "55 caps: Grain Elevator - straight midrange, base plastic (5 | 5 | 0 | 1)",
+							"next": "sold_disc_grain_elevator_base",
+							"cost": {
+								"bottle_cap": 55
+							},
+							"cost_fail": "broke_caps"
+						},
+						{
+							"text": "100 caps: Grain Elevator - straight midrange, premium plastic (5 | 5 | 0 | 1)",
+							"next": "sold_disc_grain_elevator_premium",
+							"cost": {
+								"bottle_cap": 100
+							},
+							"cost_fail": "broke_caps"
+						},
+						{
+							"text": "55 caps: Cornhusk - overstable midrange, base plastic (5 | 4 | 0 | 3)",
+							"next": "sold_disc_cornhusk_base",
+							"cost": {
+								"bottle_cap": 55
+							},
+							"cost_fail": "broke_caps"
+						},
+						{
+							"text": "105 caps: Cornhusk - overstable midrange, premium plastic (5 | 4 | 0 | 3)",
+							"next": "sold_disc_cornhusk_premium",
+							"cost": {
+								"bottle_cap": 105
+							},
+							"cost_fail": "broke_caps"
+						},
+						{
+							"text": "Back.",
+							"next": "shop_discs"
+						}
+					]
+				},
+				"discs_putters": {
+					"speaker": "John Pork",
+					"text": "Putters. Where scores go to live or die.",
+					"choices": [
+						{
+							"text": "50 caps: The Brick - putter, base plastic (2 | 3 | 0 | 1)",
+							"next": "sold_disc_brick_base",
+							"cost": {
+								"bottle_cap": 50
+							},
+							"cost_fail": "broke_caps"
+						},
+						{
+							"text": "90 caps: The Brick - putter, premium plastic (2 | 3 | 0 | 1)",
+							"next": "sold_disc_brick_premium",
+							"cost": {
+								"bottle_cap": 90
+							},
+							"cost_fail": "broke_caps"
+						},
+						{
+							"text": "50 caps: Anvil - overstable approach putter, base plastic (3 | 2 | 0 | 3)",
+							"next": "sold_disc_anvil_base",
+							"cost": {
+								"bottle_cap": 50
+							},
+							"cost_fail": "broke_caps"
+						},
+						{
+							"text": "95 caps: Anvil - overstable approach putter, premium plastic (3 | 2 | 0 | 3)",
+							"next": "sold_disc_anvil_premium",
+							"cost": {
+								"bottle_cap": 95
+							},
+							"cost_fail": "broke_caps"
+						},
+						{
+							"text": "Back.",
+							"next": "shop_discs"
+						}
+					]
 				}
 			}
 		}

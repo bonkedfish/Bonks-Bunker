@@ -773,5 +773,125 @@
 		"category": "junk",
 		"weight": 0.05,
 		"value": 4.0
+	},
+	"disc_comet_base": {
+		"name": "Platte Comet (Base)",
+		"category": "gear",
+		"weight": 0.17,
+		"value": 75.0
+	},
+	"disc_comet_premium": {
+		"name": "Platte Comet (Premium)",
+		"category": "gear",
+		"weight": 0.17,
+		"value": 140.0
+	},
+	"disc_long_haul_base": {
+		"name": "Long Haul (Base)",
+		"category": "gear",
+		"weight": 0.17,
+		"value": 70.0
+	},
+	"disc_long_haul_premium": {
+		"name": "Long Haul (Premium)",
+		"category": "gear",
+		"weight": 0.17,
+		"value": 130.0
+	},
+	"disc_crane_base": {
+		"name": "Sandhill Crane (Base)",
+		"category": "gear",
+		"weight": 0.17,
+		"value": 65.0
+	},
+	"disc_crane_premium": {
+		"name": "Sandhill Crane (Premium)",
+		"category": "gear",
+		"weight": 0.17,
+		"value": 120.0
+	},
+	"disc_fence_post_base": {
+		"name": "Fence Post (Base)",
+		"category": "gear",
+		"weight": 0.17,
+		"value": 60.0
+	},
+	"disc_fence_post_premium": {
+		"name": "Fence Post (Premium)",
+		"category": "gear",
+		"weight": 0.17,
+		"value": 110.0
+	},
+	"disc_buffalo_base": {
+		"name": "Buffalo (Base)",
+		"category": "gear",
+		"weight": 0.17,
+		"value": 65.0
+	},
+	"disc_buffalo_premium": {
+		"name": "Buffalo (Premium)",
+		"category": "gear",
+		"weight": 0.17,
+		"value": 125.0
+	},
+	"disc_tumbleweed_base": {
+		"name": "Tumbleweed (Base)",
+		"category": "gear",
+		"weight": 0.17,
+		"value": 60.0
+	},
+	"disc_tumbleweed_premium": {
+		"name": "Tumbleweed (Premium)",
+		"category": "gear",
+		"weight": 0.17,
+		"value": 115.0
+	},
+	"disc_grain_elevator_base": {
+		"name": "Grain Elevator (Base)",
+		"category": "gear",
+		"weight": 0.17,
+		"value": 55.0
+	},
+	"disc_grain_elevator_premium": {
+		"name": "Grain Elevator (Premium)",
+		"category": "gear",
+		"weight": 0.17,
+		"value": 100.0
+	},
+	"disc_cornhusk_base": {
+		"name": "Cornhusk (Base)",
+		"category": "gear",
+		"weight": 0.17,
+		"value": 55.0
+	},
+	"disc_cornhusk_premium": {
+		"name": "Cornhusk (Premium)",
+		"category": "gear",
+		"weight": 0.17,
+		"value": 105.0
+	},
+	"disc_brick_base": {
+		"name": "The Brick (Base)",
+		"category": "gear",
+		"weight": 0.17,
+		"value": 50.0
+	},
+	"disc_brick_premium": {
+		"name": "The Brick (Premium)",
+		"category": "gear",
+		"weight": 0.17,
+		"value": 90.0
+	},
+	"disc_anvil_base": {
+		"name": "Anvil (Base)",
+		"category": "gear",
+		"weight": 0.17,
+		"value": 50.0
+	},
+	"disc_anvil_premium": {
+		"name": "Anvil (Premium)",
+		"category": "gear",
+		"weight": 0.17,
+		"value": 95.0
 	}
 }

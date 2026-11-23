@@ -13,6 +13,7 @@
 #               the world; a dropped weapon / armor piece keeps its instance, D-087)
 #   quests:     { flag: int } (optional, D-054; the party's quest flags + counters, incl. boss_<id>_dead)
 #   disc_records: { course_id: { player_key: {name, best, holes: [int], aces: [int]} } } (optional, D-082)
+#   disc_wear: { player_key: { disc_id: 0..1 } } (optional, D-119; how beaten in each player's discs are)
 #   bikes: { taken: [cell bike id], parked: { bike id: {model, scheme, fuel, pos [x, y, z], yaw, tipped} } } (optional, D-083:
 #          motorcycles players moved, and which cells' own bikes are gone)
 # Zombies are not saved (they respawn). Bump VERSION and add a step to migrate() when the shape changes.

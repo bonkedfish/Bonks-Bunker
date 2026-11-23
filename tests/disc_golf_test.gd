@@ -28,6 +28,10 @@ func _ready() -> void:
 	main.world_picker.choose_new("zz discgolf")
 	main.menu.play_offline.emit()
 	await get_tree().create_timer(5.0).timeout
+	var prompt := get_tree().get_first_node_in_group("name_prompt")  # the character creator covered every shot
+	if prompt and prompt.visible:
+		prompt.submit("Bonk")
+	DiscFlightRules.tuning().plastics.base.slip_deg = 0.0  # D-119: the scripted throws must go where they're aimed
 	var player: Node3D = get_tree().get_first_node_in_group("local_player")
 	var slug: String = main.saves.world_slug
 	var dg: DiscGolfDirector = get_tree().get_first_node_in_group("disc_golf")
@@ -154,7 +158,7 @@ func _ready() -> void:
 			path.append(tee.lerp(cup, i / 90.0) + Vector3.UP * sin(PI * i / 90.0) * 8.0)
 			rolls.append(0.2 * sin(PI * i / 90.0))
 		_stand(player, course.tee_position(4), course.basket_position(4))
-		dg._host_land(me, cup, true, [path, rolls, "disc_driver", false])
+		dg._host_land(me, cup, true, [path, rolls, "disc_driver", "backhand"])
 		await get_tree().create_timer(2.2).timeout
 		var zs := preload("res://scripts/ai/zombie.gd")
 		var hud: CanvasItem = get_tree().get_first_node_in_group("hud")
@@ -231,7 +235,7 @@ func _ready() -> void:
 func _pure() -> void:
 	var t := DiscFlightRules.tuning()
 	var discs := DiscFlightRules.discs()
-	_check("3 discs + tuning load", discs.size() == 3 and not t.is_empty())
+	_check("starter discs + tuning load", discs.has("disc_driver") and discs.has("disc_mid") and discs.has("disc_putter") and not t.is_empty())
 	var want := {"disc_driver": [95.0, 125.0], "disc_mid": [68.0, 92.0], "disc_putter": [45.0, 65.0]}
 	for id: String in want:
 		var full := DiscFlightRules.flat_distance(discs[id], 1.0, t)

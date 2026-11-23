@@ -1,5 +1,5 @@
 # DiscThrower — throwing golf discs (D-069), Player child "Disc"; only the local player's does anything.
-# 3 takes out a disc (driver -> mid-range -> putter of the ones you carry, then back to your weapon; 1 / 2 also put
+# 3 takes out a disc (the ones you carry, fastest first - DiscFlightRules.bag_order, then back to your weapon; 1 / 2 also put
 # it away) - only on a disc golf course (inside a course's bounds + leave_m); walking off one puts it away.
 # With a disc out: hold left click to charge power (0 -> full over charge_seconds), release to throw where
 # you look; right click cancels; Z / X or the mouse wheel tilt the disc (left edge down curves left), F picks the
@@ -14,7 +14,6 @@
 class_name DiscThrower
 extends Node
 
-const ORDER := ["disc_driver", "disc_mid", "disc_putter"]
 
 var active := false
 var disc_id := ""
@@ -35,7 +34,7 @@ func _ready() -> void:
 
 func carried() -> PackedStringArray:
 	var out := PackedStringArray()
-	for id: String in ORDER:
+	for id: String in DiscFlightRules.bag_order():  # fastest first (D-119 catalog)
 		if player.inventory.count(id) > 0:
 			out.append(id)
 	return out

@@ -1,5 +1,6 @@
 # DiscGolfHud — disc golf on the HUD (D-069), added under the HUD by DiscGolfDirector. Draws, for the local player:
-#   * with a disc out: the bag (carried discs, the one in hand highlighted), the throw style (D-117), tilt, and the power
+#   * with a disc out: the bag (a dot per carried disc, the one in hand big; its name, plastic, flight numbers and how
+#     beaten in it is, D-119), the throw style (D-117), tilt, and the power
 #     bar while charging, with a mark at the power that carries to the basket on flat ground; drunk or high (D-082)
 #     the bar shakes and its fill jumps around by how impaired you are (the host adds that much error to the throw);
 #   * during a round: hole, par, length, throw number, feet to the basket and score so far (above the bag), and a
@@ -9,14 +10,13 @@
 #   * near the course only (D-071): the scorecard (every player in the round, per hole, total, to par) while Q is held, for a few seconds after a
 #     hole is scored, and longer when the round ends.
 # Presentation only; redraws ~15x a second (every frame while charging or playing a hole). Depends on: DiscGolfDirector (group
-# "disc_golf"), DiscThrower (local player's "disc"), DiscFlightRules, DiscGolfRules.
+# "disc_golf"), DiscThrower (local player's "disc"), DiscFlightRules, DiscGolfRules, ItemDB.
 extends Control
 
 const REDRAW_SECONDS := 0.066
 const FT := 3.28084
 const CARD_AFTER_HOLE := 5.0
 const CARD_AFTER_ROUND := 15.0
-const NAMES := {"disc_driver": "Driver", "disc_mid": "Mid", "disc_putter": "Putter"}
 
 var _font: Font
 var _bg := StyleBoxFlat.new()
@@ -186,19 +186,28 @@ func _basket_marker(basket: Vector3, metres: float) -> void:
 func _bag(to_basket: float) -> void:
 	var th: Node = _me.disc
 	var have: PackedStringArray = th.carried()
-	var w := 520.0
+	var w := 640.0
 	var r := Rect2(size.x * 0.5 - w * 0.5, size.y - 190.0, w, 86.0)
 	draw_style_box(_bg, r)
-	var x := r.position.x + 12.0
+	var x := r.get_center().x - have.size() * 7.0 + 7.0  # one dot per carried disc above the panel (D-119)
 	for id: String in have:
 		var col: Array = DiscFlightRules.discs()[id].color
 		var sel: bool = id == th.disc_id
-		var label := str(NAMES.get(id, id))
-		draw_circle(Vector2(x + 8.0, r.position.y + 18.0), 8.0 if sel else 6.0, Color(col[0], col[1], col[2]))
-		_text(Vector2(x + 20.0, r.position.y + 24.0), label, 16, Color(1, 1, 1) if sel else Color(0.6, 0.6, 0.6))
+		draw_circle(Vector2(x, r.position.y - 10.0), 6.0 if sel else 4.0, Color(col[0], col[1], col[2]))
 		if sel:
-			draw_line(Vector2(x, r.position.y + 31.0), Vector2(x + 24.0 + _font.get_string_size(label, HORIZONTAL_ALIGNMENT_LEFT, -1, 16).x, r.position.y + 31.0), Color(col[0], col[1], col[2]), 2.0)
-		x += 40.0 + _font.get_string_size(label, HORIZONTAL_ALIGNMENT_LEFT, -1, 16).x
+			draw_arc(Vector2(x, r.position.y - 10.0), 8.0, 0.0, TAU, 16, Color(1, 1, 1), 1.5)
+		x += 14.0
+	if DiscFlightRules.discs().has(th.disc_id):
+		var d: Dictionary = DiscFlightRules.discs()[th.disc_id]
+		var label := "%s   %d | %d | %d | %d" % [str(ItemDB.get_item(th.disc_id).get("name", th.disc_id)), roundi(float(d.speed)),
+			roundi(float(d.glide)), roundi(float(d.turn)), roundi(float(d.fade))]
+		var mine: Dictionary = _dg.my_entry()
+		var worn := float((mine.get("wear", {}) as Dictionary).get(th.disc_id, 0.0))
+		if worn >= 0.01:
+			label += "   beaten in %d%%" % roundi(worn * 100.0)
+		var col: Array = d.color
+		draw_circle(Vector2(r.position.x + 20.0, r.position.y + 18.0), 7.0, Color(col[0], col[1], col[2]))
+		_text(Vector2(r.position.x + 34.0, r.position.y + 24.0), label, 15, Color(1, 1, 1))
 	var tilt: float = th.tilt_deg
 	var tilt_text := "flat" if is_zero_approx(tilt) else "%d° %s" % [absi(roundi(tilt)), "left" if tilt > 0.0 else "right"]
 	var grip := "%s   tilt %s" % [str(DiscFlightRules.style(th.style_id).get("name", "Backhand")), tilt_text]

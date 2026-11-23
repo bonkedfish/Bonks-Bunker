@@ -73,6 +73,8 @@ func host_start() -> void:
 	if dg:
 		var rec: Variant = world.get("disc_records", {})
 		dg.host_load_records(rec if typeof(rec) == TYPE_DICTIONARY else {})
+		var worn: Variant = world.get("disc_wear", {})  # D-119
+		dg.host_load_wear(worn if typeof(worn) == TYPE_DICTIONARY else {})
 	for key: String in SUB_DIRECTORS:  # D-105..D-110: encounters, oddities, collectibles, rare events, the clock
 		var node := get_tree().get_first_node_in_group(SUB_DIRECTORS[key])
 		if node:
@@ -206,6 +208,7 @@ func _capture() -> void:
 	var dg := get_tree().get_first_node_in_group("disc_golf")
 	if dg:
 		world["disc_records"] = dg.host_save_records()
+		world["disc_wear"] = dg.host_save_wear()
 	for key: String in SUB_DIRECTORS:
 		var node := get_tree().get_first_node_in_group(SUB_DIRECTORS[key])
 		if node:

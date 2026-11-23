@@ -1,5 +1,5 @@
 {
-	"note": "Throwable discs (D-069), keyed by item id (data/items/items.json). Flight numbers on the usual speed / glide / turn / fade scale (turn < 0 = drifts right on a right-hand backhand at full speed, fade = hooks left as it slows); full_speed_mps = launch speed at full power. Tuned in DiscFlightRules for ~110 m / 80 m / 55 m at full power on flat ground. color = RGB of the plastic. Looks (D-117, DiscMesh, presentation only): shape = rim profile in metres (diameter, height, rim_width = nose to inner rim wall, rim_depth = bottom of the rim to the underside of the flight plate, dome = how much the flight plate rises in the middle, nose 0 = sharp low nose .. 1 = blunt round putter nose), plastic = roughness / clearcoat / wear (0..1 scuffs), stamp = hot-stamp foil colour + design (ring | star | bison). Real-world-like proportions (driver ~21.1 cm x 1.45 cm, 2.2 cm rim; mid ~21.7 x 1.9, 1.3 cm rim; putter ~21.2 x 2.1, 1.0 cm rim), no real brands.",
+	"note": "Throwable discs (D-069), keyed by item id (data/items/items.json). Flight numbers on the usual speed / glide / turn / fade scale (turn < 0 = drifts right on a right-hand backhand at full speed, fade = hooks left as it slows); full_speed_mps = launch speed at full power. Tuned in DiscFlightRules for ~110 m / 80 m / 55 m at full power on flat ground. color = RGB of the plastic. Looks (D-117, DiscMesh, presentation only): shape = rim profile in metres (diameter, height, rim_width = nose to inner rim wall, rim_depth = bottom of the rim to the underside of the flight plate, dome = how much the flight plate rises in the middle, nose 0 = sharp low nose .. 1 = blunt round putter nose), plastic = roughness / clearcoat / wear (0..1 scuffs), stamp = hot-stamp foil colour + design (ring | star | bison). Real-world-like proportions (driver ~21.1 cm x 1.45 cm, 2.2 cm rim; mid ~21.7 x 1.9, 1.3 cm rim; putter ~21.2 x 2.1, 1.0 cm rim), no real brands. Catalog (D-119): disc_<mold>_<tier>, sold by John Pork for bottle caps (data/dialogue/john_pork.json shop_discs); tier = base | premium plastic (grip and wear numbers in data/tuning/disc_golf.json \"plastics\"); the three starters are base plastic.",
 	"disc_driver": {
 		"speed": 12.0,
 		"glide": 5.0,
@@ -32,7 +32,8 @@
 			],
 			"metal": 0.9,
 			"design": "star"
-		}
+		},
+		"tier": "base"
 	},
 	"disc_mid": {
 		"speed": 5.0,
@@ -66,7 +67,8 @@
 			],
 			"metal": 0.6,
 			"design": "bison"
-		}
+		},
+		"tier": "base"
 	},
 	"disc_putter": {
 		"speed": 2.0,
@@ -100,6 +102,707 @@
 			],
 			"metal": 0.85,
 			"design": "ring"
+		},
+		"tier": "base"
+	},
+	"disc_comet_base": {
+		"speed": 13.0,
+		"glide": 5.0,
+		"turn": -1.0,
+		"fade": 3.0,
+		"full_speed_mps": 40.5,
+		"color": [
+			0.95,
+			0.35,
+			0.12
+		],
+		"tier": "base",
+		"shape": {
+			"diameter_m": 0.211,
+			"height_m": 0.0142,
+			"rim_width_m": 0.0231,
+			"rim_depth_m": 0.0112,
+			"dome_m": 0.0009,
+			"nose": 0.05
+		},
+		"plastic": {
+			"roughness": 0.6,
+			"clearcoat": 0.05,
+			"wear": 0.45
+		},
+		"stamp": {
+			"color": [
+				0.85,
+				0.86,
+				0.9
+			],
+			"metal": 0.9,
+			"design": "star"
+		}
+	},
+	"disc_comet_premium": {
+		"speed": 13.0,
+		"glide": 5.0,
+		"turn": -1.0,
+		"fade": 3.0,
+		"full_speed_mps": 40.5,
+		"color": [
+			0.2,
+			0.75,
+			0.95
+		],
+		"tier": "premium",
+		"shape": {
+			"diameter_m": 0.211,
+			"height_m": 0.0142,
+			"rim_width_m": 0.0231,
+			"rim_depth_m": 0.0112,
+			"dome_m": 0.0013,
+			"nose": 0.05
+		},
+		"plastic": {
+			"roughness": 0.14,
+			"clearcoat": 0.85,
+			"wear": 0.12
+		},
+		"stamp": {
+			"color": [
+				0.95,
+				0.78,
+				0.3
+			],
+			"metal": 0.9,
+			"design": "star"
+		}
+	},
+	"disc_long_haul_base": {
+		"speed": 12.0,
+		"glide": 6.0,
+		"turn": -3.0,
+		"fade": 1.0,
+		"full_speed_mps": 39.0,
+		"color": [
+			0.98,
+			0.85,
+			0.2
+		],
+		"tier": "base",
+		"shape": {
+			"diameter_m": 0.2111,
+			"height_m": 0.0148,
+			"rim_width_m": 0.0217,
+			"rim_depth_m": 0.0116,
+			"dome_m": 0.0016,
+			"nose": 0.14
+		},
+		"plastic": {
+			"roughness": 0.6,
+			"clearcoat": 0.05,
+			"wear": 0.45
+		},
+		"stamp": {
+			"color": [
+				0.85,
+				0.86,
+				0.9
+			],
+			"metal": 0.9,
+			"design": "ring"
+		}
+	},
+	"disc_long_haul_premium": {
+		"speed": 12.0,
+		"glide": 6.0,
+		"turn": -3.0,
+		"fade": 1.0,
+		"full_speed_mps": 39.0,
+		"color": [
+			0.85,
+			0.3,
+			0.9
+		],
+		"tier": "premium",
+		"shape": {
+			"diameter_m": 0.2111,
+			"height_m": 0.0148,
+			"rim_width_m": 0.0217,
+			"rim_depth_m": 0.0116,
+			"dome_m": 0.002,
+			"nose": 0.14
+		},
+		"plastic": {
+			"roughness": 0.14,
+			"clearcoat": 0.85,
+			"wear": 0.12
+		},
+		"stamp": {
+			"color": [
+				0.95,
+				0.78,
+				0.3
+			],
+			"metal": 0.9,
+			"design": "ring"
+		}
+	},
+	"disc_crane_base": {
+		"speed": 9.0,
+		"glide": 5.0,
+		"turn": -1.0,
+		"fade": 2.0,
+		"full_speed_mps": 34.7,
+		"color": [
+			0.3,
+			0.8,
+			0.35
+		],
+		"tier": "base",
+		"shape": {
+			"diameter_m": 0.2114,
+			"height_m": 0.0166,
+			"rim_width_m": 0.0176,
+			"rim_depth_m": 0.0129,
+			"dome_m": 0.0009,
+			"nose": 0.4
+		},
+		"plastic": {
+			"roughness": 0.6,
+			"clearcoat": 0.05,
+			"wear": 0.45
+		},
+		"stamp": {
+			"color": [
+				0.85,
+				0.86,
+				0.9
+			],
+			"metal": 0.9,
+			"design": "bison"
+		}
+	},
+	"disc_crane_premium": {
+		"speed": 9.0,
+		"glide": 5.0,
+		"turn": -1.0,
+		"fade": 2.0,
+		"full_speed_mps": 34.7,
+		"color": [
+			0.98,
+			0.55,
+			0.15
+		],
+		"tier": "premium",
+		"shape": {
+			"diameter_m": 0.2114,
+			"height_m": 0.0166,
+			"rim_width_m": 0.0176,
+			"rim_depth_m": 0.0129,
+			"dome_m": 0.0013,
+			"nose": 0.4
+		},
+		"plastic": {
+			"roughness": 0.14,
+			"clearcoat": 0.85,
+			"wear": 0.12
+		},
+		"stamp": {
+			"color": [
+				0.95,
+				0.78,
+				0.3
+			],
+			"metal": 0.9,
+			"design": "bison"
+		}
+	},
+	"disc_fence_post_base": {
+		"speed": 7.0,
+		"glide": 5.0,
+		"turn": 0.0,
+		"fade": 1.0,
+		"full_speed_mps": 31.9,
+		"color": [
+			0.9,
+			0.9,
+			0.85
+		],
+		"tier": "base",
+		"shape": {
+			"diameter_m": 0.2115,
+			"height_m": 0.0178,
+			"rim_width_m": 0.0149,
+			"rim_depth_m": 0.0138,
+			"dome_m": 0.0016,
+			"nose": 0.57
+		},
+		"plastic": {
+			"roughness": 0.6,
+			"clearcoat": 0.05,
+			"wear": 0.45
+		},
+		"stamp": {
+			"color": [
+				0.85,
+				0.86,
+				0.9
+			],
+			"metal": 0.9,
+			"design": "ring"
+		}
+	},
+	"disc_fence_post_premium": {
+		"speed": 7.0,
+		"glide": 5.0,
+		"turn": 0.0,
+		"fade": 1.0,
+		"full_speed_mps": 31.9,
+		"color": [
+			0.25,
+			0.5,
+			0.98
+		],
+		"tier": "premium",
+		"shape": {
+			"diameter_m": 0.2115,
+			"height_m": 0.0178,
+			"rim_width_m": 0.0149,
+			"rim_depth_m": 0.0138,
+			"dome_m": 0.002,
+			"nose": 0.57
+		},
+		"plastic": {
+			"roughness": 0.14,
+			"clearcoat": 0.85,
+			"wear": 0.12
+		},
+		"stamp": {
+			"color": [
+				0.95,
+				0.78,
+				0.3
+			],
+			"metal": 0.9,
+			"design": "ring"
+		}
+	},
+	"disc_buffalo_base": {
+		"speed": 9.0,
+		"glide": 3.0,
+		"turn": 0.0,
+		"fade": 4.0,
+		"full_speed_mps": 34.7,
+		"color": [
+			0.55,
+			0.35,
+			0.2
+		],
+		"tier": "base",
+		"shape": {
+			"diameter_m": 0.2114,
+			"height_m": 0.0166,
+			"rim_width_m": 0.0176,
+			"rim_depth_m": 0.0129,
+			"dome_m": 0.0009,
+			"nose": 0.4
+		},
+		"plastic": {
+			"roughness": 0.6,
+			"clearcoat": 0.05,
+			"wear": 0.45
+		},
+		"stamp": {
+			"color": [
+				0.85,
+				0.86,
+				0.9
+			],
+			"metal": 0.9,
+			"design": "bison"
+		}
+	},
+	"disc_buffalo_premium": {
+		"speed": 9.0,
+		"glide": 3.0,
+		"turn": 0.0,
+		"fade": 4.0,
+		"full_speed_mps": 34.7,
+		"color": [
+			0.9,
+			0.15,
+			0.15
+		],
+		"tier": "premium",
+		"shape": {
+			"diameter_m": 0.2114,
+			"height_m": 0.0166,
+			"rim_width_m": 0.0176,
+			"rim_depth_m": 0.0129,
+			"dome_m": 0.0013,
+			"nose": 0.4
+		},
+		"plastic": {
+			"roughness": 0.14,
+			"clearcoat": 0.85,
+			"wear": 0.12
+		},
+		"stamp": {
+			"color": [
+				0.95,
+				0.78,
+				0.3
+			],
+			"metal": 0.9,
+			"design": "bison"
+		}
+	},
+	"disc_tumbleweed_base": {
+		"speed": 8.0,
+		"glide": 6.0,
+		"turn": -4.0,
+		"fade": 1.0,
+		"full_speed_mps": 33.3,
+		"color": [
+			0.85,
+			0.75,
+			0.5
+		],
+		"tier": "base",
+		"shape": {
+			"diameter_m": 0.2115,
+			"height_m": 0.0172,
+			"rim_width_m": 0.0163,
+			"rim_depth_m": 0.0134,
+			"dome_m": 0.0016,
+			"nose": 0.48
+		},
+		"plastic": {
+			"roughness": 0.6,
+			"clearcoat": 0.05,
+			"wear": 0.45
+		},
+		"stamp": {
+			"color": [
+				0.85,
+				0.86,
+				0.9
+			],
+			"metal": 0.9,
+			"design": "star"
+		}
+	},
+	"disc_tumbleweed_premium": {
+		"speed": 8.0,
+		"glide": 6.0,
+		"turn": -4.0,
+		"fade": 1.0,
+		"full_speed_mps": 33.3,
+		"color": [
+			0.6,
+			0.95,
+			0.3
+		],
+		"tier": "premium",
+		"shape": {
+			"diameter_m": 0.2115,
+			"height_m": 0.0172,
+			"rim_width_m": 0.0163,
+			"rim_depth_m": 0.0134,
+			"dome_m": 0.002,
+			"nose": 0.48
+		},
+		"plastic": {
+			"roughness": 0.14,
+			"clearcoat": 0.85,
+			"wear": 0.12
+		},
+		"stamp": {
+			"color": [
+				0.95,
+				0.78,
+				0.3
+			],
+			"metal": 0.9,
+			"design": "star"
+		}
+	},
+	"disc_grain_elevator_base": {
+		"speed": 5.0,
+		"glide": 5.0,
+		"turn": 0.0,
+		"fade": 1.0,
+		"full_speed_mps": 29.0,
+		"color": [
+			0.95,
+			0.6,
+			0.7
+		],
+		"tier": "base",
+		"shape": {
+			"diameter_m": 0.2117,
+			"height_m": 0.019,
+			"rim_width_m": 0.0123,
+			"rim_depth_m": 0.0147,
+			"dome_m": 0.0016,
+			"nose": 0.74
+		},
+		"plastic": {
+			"roughness": 0.6,
+			"clearcoat": 0.05,
+			"wear": 0.45
+		},
+		"stamp": {
+			"color": [
+				0.85,
+				0.86,
+				0.9
+			],
+			"metal": 0.9,
+			"design": "ring"
+		}
+	},
+	"disc_grain_elevator_premium": {
+		"speed": 5.0,
+		"glide": 5.0,
+		"turn": 0.0,
+		"fade": 1.0,
+		"full_speed_mps": 29.0,
+		"color": [
+			0.95,
+			0.95,
+			0.4
+		],
+		"tier": "premium",
+		"shape": {
+			"diameter_m": 0.2117,
+			"height_m": 0.019,
+			"rim_width_m": 0.0123,
+			"rim_depth_m": 0.0147,
+			"dome_m": 0.002,
+			"nose": 0.74
+		},
+		"plastic": {
+			"roughness": 0.14,
+			"clearcoat": 0.85,
+			"wear": 0.12
+		},
+		"stamp": {
+			"color": [
+				0.95,
+				0.78,
+				0.3
+			],
+			"metal": 0.9,
+			"design": "ring"
+		}
+	},
+	"disc_cornhusk_base": {
+		"speed": 5.0,
+		"glide": 4.0,
+		"turn": 0.0,
+		"fade": 3.0,
+		"full_speed_mps": 29.0,
+		"color": [
+			0.95,
+			0.8,
+			0.35
+		],
+		"tier": "base",
+		"shape": {
+			"diameter_m": 0.2117,
+			"height_m": 0.019,
+			"rim_width_m": 0.0123,
+			"rim_depth_m": 0.0147,
+			"dome_m": 0.0009,
+			"nose": 0.74
+		},
+		"plastic": {
+			"roughness": 0.6,
+			"clearcoat": 0.05,
+			"wear": 0.45
+		},
+		"stamp": {
+			"color": [
+				0.85,
+				0.86,
+				0.9
+			],
+			"metal": 0.9,
+			"design": "bison"
+		}
+	},
+	"disc_cornhusk_premium": {
+		"speed": 5.0,
+		"glide": 4.0,
+		"turn": 0.0,
+		"fade": 3.0,
+		"full_speed_mps": 29.0,
+		"color": [
+			0.4,
+			0.25,
+			0.75
+		],
+		"tier": "premium",
+		"shape": {
+			"diameter_m": 0.2117,
+			"height_m": 0.019,
+			"rim_width_m": 0.0123,
+			"rim_depth_m": 0.0147,
+			"dome_m": 0.0013,
+			"nose": 0.74
+		},
+		"plastic": {
+			"roughness": 0.14,
+			"clearcoat": 0.85,
+			"wear": 0.12
+		},
+		"stamp": {
+			"color": [
+				0.95,
+				0.78,
+				0.3
+			],
+			"metal": 0.9,
+			"design": "bison"
+		}
+	},
+	"disc_brick_base": {
+		"speed": 2.0,
+		"glide": 3.0,
+		"turn": 0.0,
+		"fade": 1.0,
+		"full_speed_mps": 23.0,
+		"color": [
+			0.9,
+			0.88,
+			0.8
+		],
+		"tier": "base",
+		"shape": {
+			"diameter_m": 0.212,
+			"height_m": 0.0208,
+			"rim_width_m": 0.0082,
+			"rim_depth_m": 0.016,
+			"dome_m": 0.0016,
+			"nose": 1.0
+		},
+		"plastic": {
+			"roughness": 0.6,
+			"clearcoat": 0.05,
+			"wear": 0.45
+		},
+		"stamp": {
+			"color": [
+				0.85,
+				0.86,
+				0.9
+			],
+			"metal": 0.9,
+			"design": "ring"
+		}
+	},
+	"disc_brick_premium": {
+		"speed": 2.0,
+		"glide": 3.0,
+		"turn": 0.0,
+		"fade": 1.0,
+		"full_speed_mps": 23.0,
+		"color": [
+			0.95,
+			0.2,
+			0.4
+		],
+		"tier": "premium",
+		"shape": {
+			"diameter_m": 0.212,
+			"height_m": 0.0208,
+			"rim_width_m": 0.0082,
+			"rim_depth_m": 0.016,
+			"dome_m": 0.002,
+			"nose": 1.0
+		},
+		"plastic": {
+			"roughness": 0.14,
+			"clearcoat": 0.85,
+			"wear": 0.12
+		},
+		"stamp": {
+			"color": [
+				0.95,
+				0.78,
+				0.3
+			],
+			"metal": 0.9,
+			"design": "ring"
+		}
+	},
+	"disc_anvil_base": {
+		"speed": 3.0,
+		"glide": 2.0,
+		"turn": 0.0,
+		"fade": 3.0,
+		"full_speed_mps": 25.0,
+		"color": [
+			0.35,
+			0.35,
+			0.38
+		],
+		"tier": "base",
+		"shape": {
+			"diameter_m": 0.2119,
+			"height_m": 0.0202,
+			"rim_width_m": 0.0095,
+			"rim_depth_m": 0.0156,
+			"dome_m": 0.0009,
+			"nose": 0.91
+		},
+		"plastic": {
+			"roughness": 0.6,
+			"clearcoat": 0.05,
+			"wear": 0.45
+		},
+		"stamp": {
+			"color": [
+				0.85,
+				0.86,
+				0.9
+			],
+			"metal": 0.9,
+			"design": "star"
+		}
+	},
+	"disc_anvil_premium": {
+		"speed": 3.0,
+		"glide": 2.0,
+		"turn": 0.0,
+		"fade": 3.0,
+		"full_speed_mps": 25.0,
+		"color": [
+			0.1,
+			0.85,
+			0.75
+		],
+		"tier": "premium",
+		"shape": {
+			"diameter_m": 0.2119,
+			"height_m": 0.0202,
+			"rim_width_m": 0.0095,
+			"rim_depth_m": 0.0156,
+			"dome_m": 0.0013,
+			"nose": 0.91
+		},
+		"plastic": {
+			"roughness": 0.14,
+			"clearcoat": 0.85,
+			"wear": 0.12
+		},
+		"stamp": {
+			"color": [
+				0.95,
+				0.78,
+				0.3
+			],
+			"metal": 0.9,
+			"design": "star"
 		}
 	}
 }

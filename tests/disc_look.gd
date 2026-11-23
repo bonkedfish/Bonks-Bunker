@@ -3,6 +3,7 @@
 # universal) posed at each throw style's reach-back, release and follow-through, plus the first-person arms per
 # style. Screenshots each view, logs the arm IK error per pose and frame time / draw calls / primitives.
 # Results: tests/_look/disc_look.txt (ends with the failure count); screenshots tests/_look/disc_look_*.png.
+# The full disc catalog (D-119) is shot from above (disc_look_catalog.png).
 # Depends on: BasketMesh, TeeBox, DiscMesh, CharacterAnimator, ThrowPose, DiscFlightRules, course_looks.json.
 extends Node
 
@@ -37,7 +38,7 @@ func _ready() -> void:
 	_tee("concrete", "frame", Vector3(-14, 0, 0), 0.5)
 	await _shot("tees", Vector3(-11, 2.2, 6.5), Vector3(-11, 0.4, -1.5))
 	await _shot("sign_post", Vector3(-6.9, 1.15, 0.6), Vector3(-6.9, 1.1, -2.4))
-	# The three discs on the asphalt pad.
+	# The three starters on the asphalt pad.
 	var i := 0
 	for id: String in ["disc_driver", "disc_mid", "disc_putter"]:
 		var mi := MeshInstance3D.new()
@@ -46,6 +47,14 @@ func _ready() -> void:
 		add_child(mi)
 		i += 1
 	await _shot("discs", Vector3(-8.0, 0.45, 0.85), Vector3(-8.0, 0.07, 0.5))
+	# The whole catalog (D-119), fastest first, laid out in rows of six on the grass.
+	var order := DiscFlightRules.bag_order()
+	for k in order.size():
+		var mi := MeshInstance3D.new()
+		mi.mesh = DiscMesh.mesh(order[k])
+		mi.position = Vector3(-14.0 + (k % 6) * 0.26, 0.02, 3.0 + (k / 6) * 0.26)
+		add_child(mi)
+	await _shot("catalog", Vector3(-13.35, 1.0, 3.75 + (order.size() / 6) * 0.13), Vector3(-13.35, 0.0, 3.0 + (order.size() / 6) * 0.13))
 	# Third person: one survivor per style in a row, each rig, three phases.
 	var styles := DiscFlightRules.style_order()
 	for r in RIGS.size():
@@ -86,6 +95,8 @@ func _ready() -> void:
 				await get_tree().process_frame
 			_check(arms.throw_ik_error < 0.06, "first person %s %s: hand %.3f m off" % [st, phase, arms.throw_ik_error])
 			await _grab("fp_%s_%s" % [st, phase])
+			var tip: Vector3 = arms._skeleton.global_transform * arms._ik.hand_tip(arms._skeleton)
+			_log.append("  hand in camera space %s (x right, y up, -z ahead), on screen: %s" % [str(_cam.to_local(tip).snapped(Vector3.ONE * 0.01)), str(_cam.is_position_in_frustum(tip))])
 	# A whole swing plays and ends with the disc gone and hands back to idle.
 	var rel := arms.start_throw("backhand", "disc_driver")
 	_check(rel > 0.2 and rel < 1.0, "backhand releases %.2f s after the start" % rel)
