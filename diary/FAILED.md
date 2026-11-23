@@ -218,3 +218,8 @@ Approach — why it failed — what replaced it.
   failures that passed on a re-run with no change: coop_test "client fired" (magazine unchanged) and
   disc_golf_test "throw out of turn refused". (4) The course box used to hand out EVERY disc in discs.json - with a
   catalog that would have given everyone 20 free discs; it now reads tuning starter_discs.
+- 2026-11-22 D-120: (1) first try at the FP disc anchor ([0.18,-0.22,-0.5]) put the disc below the view at the
+  reach-back for 4 of 5 styles - fixed with [0.16,-0.06,-0.62]. (2) Ground far-blend test shots from eye level were
+  blocked by a house; from 35 m up the change is hard to see because haze flattens everything past ~120 m. A red
+  tint shot (ground_far_red) proved the shared material IS live on all 15 near cells, and macro was raised 0.16 ->
+  0.35 / hue 0.12 -> 0.25 to show at all.

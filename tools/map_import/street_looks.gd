@@ -107,6 +107,10 @@ func make_ground_material() -> ShaderMaterial:
 			m.set_shader_parameter(k, float(l[k]))
 		var t: Array = l.layer_tint
 		m.set_shader_parameter("layer_tint", Color(t[0], t[1], t[2]))
+	var far: Dictionary = g.get("far", {})  # D-120: hides the tiling in the distance
+	for k: String in far:
+		m.set_shader_parameter({"start_m": "far_start_m", "end_m": "far_end_m", "tile_mult": "far_tile_mult",
+			"amount": "far_amount"}.get(k, k), float(far[k]))
 	return m
 
 

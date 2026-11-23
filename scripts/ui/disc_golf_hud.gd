@@ -187,7 +187,9 @@ func _bag(to_basket: float) -> void:
 	var th: Node = _me.disc
 	var have: PackedStringArray = th.carried()
 	var w := 640.0
-	var r := Rect2(size.x * 0.5 - w * 0.5, size.y - 190.0, w, 86.0)
+	var subs := get_tree().get_first_node_in_group("subtitles")
+	var top: float = subs.caption_top() - get_global_rect().position.y if subs else INF  # NPC lines below it (D-120)
+	var r := Rect2(size.x * 0.5 - w * 0.5, minf(size.y - 190.0, top - 112.0), w, 86.0)
 	draw_style_box(_bg, r)
 	var x := r.get_center().x - have.size() * 7.0 + 7.0  # one dot per carried disc above the panel (D-119)
 	for id: String in have:

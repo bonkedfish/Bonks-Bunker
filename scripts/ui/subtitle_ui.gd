@@ -35,6 +35,11 @@ var _pending_choices := PackedStringArray()
 var _pending_is_talker := false
 
 
+# Screen y of the top of the caption block while one is showing, else INF (the disc HUD moves above it, D-120).
+func caption_top() -> float:
+	return _root.get_global_rect().position.y if _root and _root.visible else INF
+
+
 func _ready() -> void:
 	add_to_group("subtitles")
 	set_anchors_preset(Control.PRESET_FULL_RECT)

@@ -61,6 +61,7 @@ var _blend := 0.2
 var riding := false  # standing on the Meepo: idle pose instead of walk/run (D-057)
 var on_bike := false  # sitting on a motorcycle: the "ride" clip, no weapon in hand (D-083)
 var _first_person := false
+var _model: Node3D  # the loaded model (first person: hidden while a disc is in hand - only the disc swings, D-120)
 var _ik: ArmIK            # throwing-arm rig (D-117), found on first use
 var _throw_style := ""    # "" = not throwing
 var _throw_clip: ThrowPose.Clip
@@ -112,6 +113,7 @@ func set_model(id: String, first_person := false, extra := {}) -> bool:
 		return false
 	var model := scene.instantiate() as Node3D
 	add_child(model)
+	_model = model
 	_dress(model)
 	model.rotation.y = deg_to_rad(float(_def.get("yaw_offset_deg", 0.0)))
 	var aabb := _bounds(model)
@@ -353,6 +355,8 @@ func pose_throw(style_id: String, disc_id: String, t: float) -> void:
 
 func stop_throw() -> void:
 	_throw_style = ""
+	if _first_person and _model:
+		_model.visible = true
 	if _disc_node:
 		_disc_node.visible = false
 
@@ -400,6 +404,11 @@ func _apply_throw(delta: float) -> void:
 			if _disc_node:
 				_disc_node.visible = false  # let go
 	ThrowPose.sample_into(_throw_clip, _throw_t, _sample)
+	if _first_person:  # the chibi arm swings below the camera, so first person shows only the disc (D-120)
+		_fp_disc()
+		if not _throw_hold and _throw_t >= 1.0:
+			stop_throw()
+		return
 	var node_to_skel := _skeleton.global_transform.affine_inverse() * global_transform
 	var skel_to_node := node_to_skel.affine_inverse()
 	if advanced:  # the clip re-sampled every bone this frame, so the swing goes on top of a fresh pose
@@ -423,6 +432,19 @@ func _apply_throw(delta: float) -> void:
 		_disc_node.basis = _sample.disc
 	if not _throw_hold and _throw_t >= 1.0:
 		stop_throw()
+
+
+# First person (D-120): the body is hidden and the disc follows the swing on screen - the sampled hand offset
+# scaled down (styles "fp" disc_swing_m per arm length) around a point in front of the camera (disc_anchor_m).
+func _fp_disc() -> void:
+	if _model:
+		_model.visible = false
+	if _disc_node == null or not _disc_node.visible:
+		return
+	var fp: Dictionary = DiscFlightRules.styles_fp()
+	var a: Array = fp.get("disc_anchor_m", [0.16, -0.06, -0.62])
+	_disc_node.position = Vector3(float(a[0]), float(a[1]), float(a[2])) + _sample.hand * float(fp.get("disc_swing_m", 0.28))
+	_disc_node.basis = _sample.disc
 
 
 # Call every frame (all peers). health = current HP (replicated).

@@ -888,3 +888,10 @@ a release, then gh release view) went to main as 02768d7.
   Windows copy in C:/Users/Fishb/BonksAlpha/alpha3.3 (exe 104 MB + pck 3.1 GB). New tool: tools/release/
   export_local.tscn exports a Windows build of the current project to BonksAlpha/dev-<date> without publishing
   (not run yet - the release did the job this time).
+- 2026-11-22 D-120 DONE (not in a release): first-person throws now visible - disc_look 0 failures, the disc is on
+  screen at reach and release for all 5 styles and the body comes back after the swing; disc_golf_test 54 PASS / 0;
+  the disc panel sits above John Pork's lines (cottonmill_tee1.png). Ground: far blend + broad patches live
+  (ground_look 0 failures; ground_far / ground_far_base / ground_far_red shots) - the effect is modest: past ~120 m
+  the haze flattens the ground anyway, and the far-LOD terrain (beyond the near cells) is vertex colour and does
+  not use this shader. Grass perf unchanged: 6.0 ms, ~450 draw calls. Small leftover: the carried-disc dots above
+  the panel can touch the "E: start a round" prompt at a course box.

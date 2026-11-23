@@ -4,6 +4,9 @@
 // on steep slopes; each layer's edge is broken up by noise and by the texture's own detail so it doesn't read as
 // a soft blob. No vertex data needed - patches come from world-space noise, slope from the normal - so existing
 // cells pick it up without a re-bake.
+// Far away (D-120) the 3 m tiles still showed as a grid: past far_start_m the base fades into a much larger,
+// rotated copy (far_tile_mult x tile_m), and broad colour / brightness patches (macro_m across) break up the
+// distance so no repeat is left to read.
 // Mesh contract (written by tools/map_import/build_cells.gd): UV = world (x, z) in metres.
 shader_type spatial;
 render_mode cull_disabled;
@@ -28,6 +31,13 @@ uniform float dirt_amount = 0.0;    // 0..1 share of open ground as bare dirt (0
 uniform float patch_m = 24.0;       // typical patch size, metres
 uniform float slope_dirt = 0.3;     // ground steeper than this (1 - normal.y) turns to dirt
 uniform vec3 layer_tint : source_color = vec3(1.0);
+uniform float far_start_m = 20.0;   // D-120 distance where the large copy starts to take over
+uniform float far_end_m = 90.0;     // ... and where it reaches far_amount
+uniform float far_tile_mult = 7.0;
+uniform float far_amount = 0.8;
+uniform float macro_m = 70.0;       // size of the broad colour patches
+uniform float macro = 0.16;         // their brightness swing
+uniform float macro_hue = 0.12;     // how far they lean yellow-dry vs greener
 
 varying float v_up;
 
@@ -69,6 +79,18 @@ void fragment() {
 	vec3 nrm = mix(texture(normal_tex, uv_a).rgb, texture(normal_tex, uv_b).rgb, blend);
 	float drift = texture(albedo_tex, UV / (tile_m * 97.0) + 0.5).r;
 	alb *= tint * (1.0 - variation * 0.5 + variation * drift * 2.0);
+	float far = smoothstep(far_start_m, far_end_m, length(VERTEX)) * far_amount;
+	if (far > 0.0) {
+		vec2 uv_f = mat2(vec2(0.28, 0.96), vec2(-0.96, 0.28)) * UV / (tile_m * far_tile_mult) + 0.37;
+		alb = mix(alb, texture(albedo_tex, uv_f).rgb * tint, far);
+		arm = mix(arm, texture(arm_tex, uv_f).rgb, far);
+		nrm = mix(nrm, texture(normal_tex, uv_f).rgb, far);
+	}
+	float m1 = fbm(UV / macro_m + 11.3);
+	float m2 = fbm(UV / (macro_m * 1.7) + 57.1);
+	alb *= 1.0 - macro + m1 * macro * 2.0;
+	alb = mix(alb, alb * vec3(1.06, 1.0, 0.82), clamp((m2 - 0.5) * 2.0, 0.0, 1.0) * macro_hue * 4.0);
+	alb = mix(alb, alb * vec3(0.9, 1.04, 0.92), clamp((0.5 - m2) * 2.0, 0.0, 1.0) * macro_hue * 4.0);
 
 	if (grass2_amount > 0.0) {
 		vec2 g_uv = mat2(vec2(0.6, -0.8), vec2(0.8, 0.6)) * UV / grass2_tile_m;

@@ -572,3 +572,10 @@ Locked unless flagged. Each entry: decision — reason.
   host-owned, saved in the world as disc_wear. The course box now hands out only the three starters. Also: the
   user chose to LEAVE first-person throws as they are (the chibi survivor's swing happens below the camera; others
   see it in third person) over a disc-only FP swing or a dedicated FP arm.
+- **D-120** (2026-11-22) Polish after alpha3.3. User picks: FIRST-PERSON DISC-ONLY SWING (reverses the D-119 "leave
+  it") over a dedicated FP throwing arm - while a disc is in hand in first person the body is hidden and only the
+  disc moves through the swing in front of the camera (throw_styles.json fp disc_anchor_m + hand offset x
+  disc_swing_m). Also, inside approved work: the disc HUD panel moves up above NPC captions while one shows
+  (SubtitleUI.caption_top); the ground shader fades into a 7x larger rotated copy of the grass past 20-90 m and
+  adds broad 70 m brightness / dry-green patches to break up the distance (streets.json ground "far"; shared
+  ground material, no re-bake - run refresh_street_materials after changing it).

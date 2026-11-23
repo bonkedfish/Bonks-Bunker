@@ -2,7 +2,8 @@
 	"textures_dir": "res://assets/textures",
 	"ground": {"texture": "grass_dry", "tile_m": 3.0, "tint": [1.0, 1.0, 1.0], "variation": 0.25,
 		"layers": {"grass2": "grass_dirt", "grass2_tile_m": 4.0, "grass2_amount": 0.4, "dirt": "dirt", "dirt_tile_m": 3.0,
-			"dirt_amount": 0.12, "patch_m": 24.0, "slope_dirt": 0.3, "layer_tint": [1.0, 1.0, 1.0]}},
+			"dirt_amount": 0.12, "patch_m": 24.0, "slope_dirt": 0.3, "layer_tint": [1.0, 1.0, 1.0]},
+		"far": {"start_m": 20.0, "end_m": 90.0, "tile_mult": 7.0, "amount": 0.8, "macro_m": 70.0, "macro": 0.35, "macro_hue": 0.25}},
 	"pitched_roof": {"texture": "roof_shingles", "tile_m": 2.0},
 	"surfaces": {
 		"asphalt": {"texture": "road_cracked", "tile_m": 4.0, "tint": [1.0, 1.0, 1.0], "joint_spacing_m": 0.0, "centre_joint": false,

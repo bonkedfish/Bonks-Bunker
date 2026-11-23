@@ -111,6 +111,32 @@ func _ready() -> void:
 		_grass._apply_tier("high")
 	else:
 		_check(false, "found open ground near home")
+	if open != Vector3.INF:  # D-120: the distance with and without the far blend + broad patches
+		var gm := load("res://world/generated/cells/materials/ground.tres") as ShaderMaterial
+		var look_to := home + (open - home).normalized() * 380.0
+		look_to.y = _ground_y(look_to)
+		var eye := home + Vector3.UP * (_ground_y(home) - home.y + 35.0)
+		await _shot("far", eye, look_to)
+		var was_far: Variant = gm.get_shader_parameter("far_amount")
+		var was_macro: Variant = gm.get_shader_parameter("macro")
+		var was_hue: Variant = gm.get_shader_parameter("macro_hue")
+		gm.set_shader_parameter("far_amount", 0.0)
+		gm.set_shader_parameter("macro", 0.0)
+		gm.set_shader_parameter("macro_hue", 0.0)
+		await _shot("far_base", eye, look_to)
+		var was_tint: Variant = gm.get_shader_parameter("tint")
+		gm.set_shader_parameter("tint", Color(3, 0, 0))
+		await _shot("far_red", eye, look_to)
+		gm.set_shader_parameter("tint", was_tint)
+		var n_shared := 0
+		for cell: Node in _streamer.near_loaded.values():
+			var tm := cell.get_node_or_null("Terrain/Mesh") as MeshInstance3D
+			if tm and tm.material_override == gm:
+				n_shared += 1
+		_log.append("near cells using the shared ground material: %d of %d" % [n_shared, _streamer.near_loaded.size()])
+		gm.set_shader_parameter("far_amount", was_far)
+		gm.set_shader_parameter("macro", was_macro)
+		gm.set_shader_parameter("macro_hue", was_hue)
 	await _shot("street_above", home + Vector3(0, 20, 45), home + Vector3(0, 0, -30))
 	var club := get_tree().root.find_child("country_club", true, false) as Node3D
 	if club:

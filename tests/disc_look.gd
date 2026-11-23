@@ -80,7 +80,7 @@ func _ready() -> void:
 			await _shot("tp_side_%s_%s" % [RIGS[r], phase], Vector3(31.5, 1.4, r * 6.0 + 1.0), Vector3(20.0, 1.0, r * 6.0))
 		for b: CharacterAnimator in bodies:
 			b.queue_free()
-	# First person: arms under the camera, per style at reach and release.
+	# First person: only the disc swings on screen (D-120), per style at reach and release.
 	_cam.global_position = Vector3(40, 1.7, 0)
 	_cam.rotation = Vector3.ZERO
 	var arms := CharacterAnimator.new()
@@ -93,17 +93,17 @@ func _ready() -> void:
 			for k in 4:
 				arms.update(0.016, false, false, 100.0)
 				await get_tree().process_frame
-			_check(arms.throw_ik_error < 0.06, "first person %s %s: hand %.3f m off" % [st, phase, arms.throw_ik_error])
+			var disc := arms.get_node("ThrowDisc") as Node3D  # D-120: first person swings only the disc
+			_check(disc.visible and _cam.is_position_in_frustum(disc.global_position) and not arms._model.visible,
+				"first person %s %s: disc on screen at %s, body hidden" % [st, phase, str(_cam.to_local(disc.global_position).snapped(Vector3.ONE * 0.01))])
 			await _grab("fp_%s_%s" % [st, phase])
-			var tip: Vector3 = arms._skeleton.global_transform * arms._ik.hand_tip(arms._skeleton)
-			_log.append("  hand in camera space %s (x right, y up, -z ahead), on screen: %s" % [str(_cam.to_local(tip).snapped(Vector3.ONE * 0.01)), str(_cam.is_position_in_frustum(tip))])
 	# A whole swing plays and ends with the disc gone and hands back to idle.
 	var rel := arms.start_throw("backhand", "disc_driver")
 	_check(rel > 0.2 and rel < 1.0, "backhand releases %.2f s after the start" % rel)
 	for k in 90:
 		arms.update(0.016, false, false, 100.0)
 		await get_tree().process_frame
-	_check(not arms.throwing(), "swing finishes")
+	_check(not arms.throwing() and arms._model.visible, "swing finishes and the first-person body is back")
 	_log.append("%d failure(s)" % _fails)
 	var f := FileAccess.open(OUT_DIR + "/disc_look.txt", FileAccess.WRITE)
 	f.store_string("\n".join(_log))
